@@ -28,42 +28,47 @@ public class MemberController {
 		return "member/login";
 	}
 	
-	@GetMapping("member/findId")
+	@GetMapping("findId")
 	public String findIdForm() throws Exception {
 		return "member/findId";
 	}
 	
-	@PostMapping("member/findId")
+	@PostMapping("findId")
 	public String findIdSubmit() throws Exception {
 		return "redirect:/member/login";
 	}
 	
-	@GetMapping("member/findPwd")
+	@GetMapping("findPwd")
 	public String findPwdForm() throws Exception {
 		return "member/findPwd";
 	}
 	
-	@PostMapping("member/findPwd")
+	@PostMapping("findPwd")
 	public String findPwdSubmit() throws Exception {
 		
 		// 패스워드를 메일로 보내거나, 추가 인증 작업을 하고 로그인 창으로 리다이렉트
 		return "redirect:/member/login";
 	}
 	
-	@GetMapping("member/signup")
+	@GetMapping("signup")
 	public String signupForm() throws Exception {
 		return "member/signup";
 	}
 	
-	@PostMapping("member/singup")
+	@PostMapping("signup")
 	public String signupSubmit() throws Exception {
 		
 		// 로그인을 시켜주고 메인으로 가야할지, 로그인 페이지로 가야할지 모르겠음
 		return "redirect:/member/login";
 	}
 
-
+	@GetMapping("edit")
+	public String editForm() throws Exception {
+		return "member/edit";
+	}
 	
+
+	//////////////////////////////////////////////////////////////////////////////////////// 
 	@GetMapping("updatePwd")
 	public String updatePwdForm() throws Exception{
 		return "member/updatePwd";

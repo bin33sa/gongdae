@@ -23,13 +23,13 @@
 			<div class="row justify-content-center" data-aos="fade-up" data-aos-delay="200">
 				<div class="col-md-5">
 					<div class="bg-white box-shadow my-5 p-5">
-	                    <h3 class="text-center pt-3">패스워드 찾기</h3>
+	                    <h3 class="text-center pt-3">회원가입</h3>
 	                    
 	                    <form name="pwdForm" action="" method="post" class="row g-3 mb-2">
 							<div class="col-12">
 								<p class="form-control-plaintext text-center">
-									회원 아이디를 입력 하세요.
-									메일 인증을 하고 메일에 임시 비번을 보낼지, 그냥 임시 비번을 보여줄지 모르겠다 
+									회원 아이디를 입력 하세요.(회원 정보 입력 받기)
+									회원가입에 성공하면 로그인을 자동으로 시켜주고 메인으로 redirect할지, 로그인 창으로 redirect할지
 								</p>
 	                        </div>
 	                        	                    
@@ -64,7 +64,7 @@ function sendOk() {
 		return;
 	}
 
-	f.action = '${pageContext.request.contextPath}/member/findPwd';
+	f.action = '${pageContext.request.contextPath}/member/signup';
 	f.submit();
 }
 </script>
