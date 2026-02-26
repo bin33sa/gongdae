@@ -57,9 +57,9 @@
 
 						<div class="mt-3">
 							<p class="text-center">
-								<a href="#" class="me-2 border-link-right">아이디 찾기</a>
-								<a href="#" class="me-2 border-link-right">패스워드 찾기</a>
-								<a href="${pageContext.request.contextPath}/" class="border-link-right">회원가입</a>
+								<a href="${pageContext.request.contextPath}/member/findId" class="me-2 border-link-right">아이디 찾기</a>
+								<a href="${pageContext.request.contextPath}/member/findPwd" class="me-2 border-link-right">패스워드 찾기</a>
+								<a href="${pageContext.request.contextPath}/member/signup" class="border-link-right">회원가입</a>
 							</p>
 						</div>
 	                    

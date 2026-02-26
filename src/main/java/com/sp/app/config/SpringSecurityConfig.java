@@ -26,7 +26,7 @@ public class SpringSecurityConfig {
 		requestCache.setMatchingRequestParameterName(null);
 
 		String[] excludeUri = { "/", "/index.jsp", "/member/login", "/member/account", "/member/logout",
-				"/member/userIdCheck", "/member/complete", "/member/pwdFind", "/member/expired", "/dist/**",
+				"/member/userIdCheck", "/member/complete", "/member/findPwd", "/member/expired", "/dist/**",
 				"/guest/main", "/guest/list", "/uploads/photo/**", "/favicon.ico", "/WEB-INF/views/**",
 				"/oauth/kakao/callback" };
 
@@ -36,10 +36,10 @@ public class SpringSecurityConfig {
 
 		http.authorizeHttpRequests(authorize -> authorize
 			.requestMatchers(excludeUri).permitAll()
-			.requestMatchers("/admin/**").hasAnyRole("ADMIN", "EMP")
-			.requestMatchers("/**").hasAnyRole("USER", "INSTRUCTOR", "EMP", "ADMIN") 
 			.anyRequest().permitAll()
-			//.anyRequest().authenticated() 
+			//.requestMatchers("/admin/**").hasAnyRole("ADMIN", "EMP")
+			//.requestMatchers("/**").hasAnyRole("USER", "INSTRUCTOR", "EMP", "ADMIN") 
+			//.anyRequest().authenticated()
 		)
 		.formLogin(login -> login
 			.loginPage("/member/login")
