@@ -38,7 +38,8 @@ public class SpringSecurityConfig {
 			.requestMatchers(excludeUri).permitAll()
 			.requestMatchers("/admin/**").hasAnyRole("ADMIN", "EMP")
 			.requestMatchers("/**").hasAnyRole("USER", "INSTRUCTOR", "EMP", "ADMIN") 
-			.anyRequest().authenticated() 
+			.anyRequest().permitAll()
+			//.anyRequest().authenticated() 
 		)
 		.formLogin(login -> login
 			.loginPage("/member/login")

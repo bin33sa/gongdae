@@ -16,6 +16,8 @@
 </header>
 
 <main>
+	<jsp:include page="/WEB-INF/views/layout/left.jsp"/>
+	
 	<div class="section">
 		<div class="container">
 			메인 화면 입니다.

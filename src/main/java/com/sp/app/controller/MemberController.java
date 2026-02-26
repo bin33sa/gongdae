@@ -26,6 +26,11 @@ public class MemberController {
 		
 		return "member/login";
 	}
+	
+	@GetMapping("member/findId")
+	public String findId() throws Exception {
+		return "member/findId";
+	}
 
 
 	
