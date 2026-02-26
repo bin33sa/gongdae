@@ -66,6 +66,12 @@ public class MemberController {
 	public String editForm() throws Exception {
 		return "member/edit";
 	}
+
+	@PostMapping("edit")
+	public String editSubmit() throws Exception {
+		// 수정 완료 메세지 표시
+		return "member/complete";
+	}
 	
 
 	//////////////////////////////////////////////////////////////////////////////////////// 

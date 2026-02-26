@@ -48,8 +48,9 @@
 
 <script type="text/javascript">
 function sendOk() {
-
-	f.action = '${pageContext.request.contextPath}/';
+	const f = document.templateForm;
+	
+	f.action = '${pageContext.request.contextPath}/member/edit';
 	f.submit();
 }
 </script>

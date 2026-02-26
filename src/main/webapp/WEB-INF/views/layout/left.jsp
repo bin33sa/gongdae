@@ -51,7 +51,7 @@
 		<ul>
 			<li><span>회원 등급 표시</span></li>
 			<li><a href="${pageContext.request.contextPath}/admin/login">관리자 로그인</a></li>
-			<li><a href="${pageContext.request.contextPath}/member/update">회원 정보 수정</a></li>
+			<li><a href="${pageContext.request.contextPath}/member/edit">회원 정보 수정</a></li>
 			<li><a href="${pageContext.request.contextPath}">관리자 문의(미구현)</a></li>
 			<li><a href="${pageContext.request.contextPath}">예약 리스트</a></li>
 			<li><a href="${pageContext.request.contextPath}">이용 후기 작성</a></li>
