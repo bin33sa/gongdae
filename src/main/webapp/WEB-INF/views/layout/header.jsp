@@ -21,6 +21,8 @@
 	</div>
 </div>
 
+<jsp:include page="/WEB-INF/views/layout/left.jsp"/>
+
 <script type="text/javascript">
 
 </script>

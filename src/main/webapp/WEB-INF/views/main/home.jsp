@@ -16,11 +16,15 @@
 </header>
 
 <main>
-	<jsp:include page="/WEB-INF/views/layout/left.jsp"/>
+	
 	
 	<div class="section">
 		<div class="container">
-			메인 화면 입니다.
+			<div>광고, 이벤트, 공지사항 배너</div>
+			<div>공간 종류별 카테고리</div>
+			<div>최근 등록된 공간</div>
+			<div>최근 작성된 리뷰</div>
+			<div>게시판</div>
 		</div>
 	</div>
 </main>
