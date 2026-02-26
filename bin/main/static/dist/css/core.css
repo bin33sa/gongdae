@@ -1,34 +1,40 @@
-
+/*----------------------------------
+# Font & Color Variables
+----------------------------------*/
+/* Fonts */
 :root {
   --default-font: "Malgun Gothic", "맑은 고딕", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --heading-font: "Roboto", "Raleway",  sans-serif;
   --nav-font: "Roboto", "Malgun Gothic", "Nunito", sans-serif;
 }
 
+/* Global Colors - 사이트 전반에 사용 */
 :root { 
-  --background-color: #ffffff; 
-  --default-color: #333333;
-  --sitename-color: #111111; 
-  --title-color: #012970; 
-  --heading-color: #222222; 
-  --accent-color: #106eea; 
-  --surface-color: #ffffff; 
-  --contrast-color: #ffffff;
+  --background-color: #ffffff; /* Background color */
+  --default-color: #333333; /* 텍스트 콘텐츠에 사용되는 기본 색상 */
+  --sitename-color: #111111; /* 사이트 이름에 사용되는 색상 */
+  --title-color: #012970; /* 타이틀에 사용되는 색상 */
+  --heading-color: #222222; /* 제목, 부제목 및 타이틀에 사용되는 색상 */
+  --accent-color: #FF6B6B; /* 브랜드를 대표하는 강조 색상. 버튼, 링크, 그리고 눈에 띄어야 하는 다른 요소들에 사용 */
+  --surface-color: #FFF8F5; /* 서페이스 색상은 카드, 아이콘 박스 또는 전역 배경과 시각적으로 구분이 필요한 다른 요소들과 같은 박스형 요소들의 배경으로 사용 */
+  --contrast-color: #ffffff; /* 텍스트의 대비 색상으로, 강조 색상, 제목 색상 또는 기본 색상 배경에 대해 가독성을 보장 */
   
-  --table-bg: #ffffff; 
+  --table-bg: #ffffff; /* 테이블 배경색 */
 }
 
+/* Nav Menu Colors - 네비게이션 메뉴에 사용 */
 :root {
-  --nav-color: #333333;  
-  --nav-hover-color: #106eea;
-  --nav-mobile-background-color: #ffffff; 
-  --nav-dropdown-background-color: #ffffff; 
-  --nav-dropdown-color: #333333; 
-  --nav-dropdown-hover-color: #106eea; 
+  --nav-color: #333333;  /* The default color of the main navmenu links */
+  --nav-hover-color: #106eea; /* Applied to main navmenu links when they are hovered over or active */
+  --nav-mobile-background-color: #ffffff; /* Used as the background color for mobile navigation menu */
+  --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
+  --nav-dropdown-color: #333333; /* Used for navigation links of the dropdown items in the navigation menu. */
+  --nav-dropdown-hover-color: #106eea; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
 }
 
-
+/* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
 .light-background {
+  /* --background-color: #f7f7f7; */
   --background-color: #f8f9fa;
   --surface-color: #ffffff;
 }
@@ -60,10 +66,14 @@
   --surface-color: #ffffff;
 }
 
+/* Smooth scroll */
 :root {
   scroll-behavior: smooth;
 }
 
+/*----------------------------------
+# General Styling & Shared Classes
+----------------------------------*/
 * {
   padding: 0; margin: 0;
 }
@@ -83,12 +93,14 @@ body {
 }
 
 a {
+  /* color: var(--accent-color); */
   color: var(--default-color);
   text-decoration: none;
   transition: 0.3s;
 }
 
 a:hover {
+  /* color: color-mix(in srgb, var(--accent-color), transparent 25%); */
   color: var(--accent-color);
   text-decoration: none;
 }
@@ -97,6 +109,10 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--heading-color);
   font-family: var(--heading-font);
 }
+
+/*----------------------------------
+# Preloader
+----------------------------------*/
 #preloader {
   position: fixed;
   inset: 0;
@@ -151,6 +167,9 @@ h1, h2, h3, h4, h5, h6 {
   animation: animate-preloader 1.5s linear infinite;
 }
 
+/*----------------------------------
+# Scroll Top Button
+----------------------------------*/
 .scroll-top {
   position: fixed;
   visibility: hidden;
