@@ -8,6 +8,11 @@
   --nav-font: "Roboto", "Malgun Gothic", "Nunito", sans-serif;
 }
 
+:root {
+  --bs-primary: #FF6B6B;
+  --bs-primary-rgb: 255, 107, 107;
+}
+
 /* Global Colors - 사이트 전반에 사용 */
 :root { 
   --background-color: #ffffff; /* Background color */
