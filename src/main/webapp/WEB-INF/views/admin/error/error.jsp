@@ -1,4 +1,4 @@
-﻿<%@ page contentType="text/html; charset=UTF-8" %>
+﻿<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
@@ -6,56 +6,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Spring</title>
-<jsp:include page="/WEB-INF/views/admin/layout/headerResources.jsp"/>
+<title>관리자 오류 페이지</title>
+
+<jsp:include page="/WEB-INF/views/admin/include/headerResources.jsp" />
 </head>
-<body>
+<body class="admin-page">
 
-<header>
-	<jsp:include page="/WEB-INF/views/admin/layout/header.jsp"/>
-</header>
+	<div class="admin-layout">
 
-<main class="main-container">
-	<jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
+		<jsp:include page="/WEB-INF/views/admin/include/header.jsp" />
 
-	<div class="right-panel">
-		<div class="section" data-aos="fade-up" data-aos-delay="200">
-			<div class="section-body">
-				
-				<div class="row justify-content-center" data-aos="fade-up" data-aos-delay="200">
-					<div class="col-md-5">
-						<div class="bg-white box-shadow mt-5 mb-5 p-5">
-							<h3 class="text-center pt-3">${title}</h3>
-							<hr class="mt-4">
-							
-							<div class="my-5">
-								<div class="text-center">
-									<p class="text-center">
-										${message}
-									</p>
-								</div>
-							</div>
-		                    
-							<div>
-								<button type="button" class="btn-accent btn-lg w-100" onclick="javascript:history.back();">
-									이전화면으로 이동
-								</button>
-							</div>
-						</div>
+		<div class="admin-body">
+
+			<jsp:include page="/WEB-INF/views/admin/include/left.jsp" />
+
+			<main class="admin-content">
+
+				<div class="dashboard-box"
+					style="max-width: 600px; margin: 80px auto; text-align: center;">
+
+					<h3 style="margin-bottom: 20px;">${title}</h3>
+					<hr>
+
+					<div style="margin: 40px 0;">
+						<p>${message}</p>
 					</div>
+
+					<button type="button" class="btn btn-danger w-100"
+						onclick="history.back();">이전화면으로 이동</button>
+
 				</div>
 
-			</div>
+			</main>
+
 		</div>
-		
+
+		<jsp:include page="/WEB-INF/views/admin/include/footer.jsp" />
+
 	</div>
-</main>
 
-<footer>
-	<jsp:include page="/WEB-INF/views/admin/layout/footer.jsp"/>
-</footer>
-
-<jsp:include page="/WEB-INF/views/admin/layout/footerResources.jsp"/>
+	<jsp:include page="/WEB-INF/views/admin/include/footerResources.jsp" />
 
 </body>
 </html>
