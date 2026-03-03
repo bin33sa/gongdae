@@ -23,53 +23,57 @@ import lombok.extern.slf4j.Slf4j;
 public class LoginFailureHandler implements AuthenticationFailureHandler {
 	@Autowired
 	private MemberService memberService;
-
+	
 	private String defaultFailureUrl;
-
+	
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
 
 		String login_id = request.getParameter("login_id");
-
-		String errorMsg = "아이디 또는 패스워드가 일치하지 않습니다.";
-		try {
-			if (exception instanceof BadCredentialsException) {
 		
+		String loginType = request.getParameter("loginType");
+		
+		String msg = "로그인 실패";
+		try {
+			if(exception instanceof BadCredentialsException) {			
 				int cnt = memberService.checkFailureCount(login_id);
 				if(cnt <= 4) {
 					memberService.updateFailureCount(login_id);
 				}
 				
 				if(cnt >= 4) {
-					MemberDto member = memberService.findById(login_id);
+					MemberDto dto = memberService.findById(login_id);
 					
 					Map<String, Object> map = new HashMap<>();
 					map.put("enabled", 0);
-					map.put("member_id", member.getMember_id());
+					map.put("member_id", dto.getMember_id());
 					memberService.updateMemberEnabled(map);
 					
-					MemberDto dto = new MemberDto();
-					dto.setMember_id(memberService.getMemberId(login_id));
-					dto.setRegister_id(member.getMember_id());
+					dto.setRegister_id(dto.getMember_id());
 					dto.setStatus_code(1);
-					dto.setMemo("패스워드 5회 이상 실패");
+					dto.setMemo("패스워드 5회이상 실패");
 					memberService.insertMemberStatus(dto);
-				}
-
-				errorMsg = "아이디 또는 패스워드가 일치하지 않습니다.";
-			} else if (exception instanceof InternalAuthenticationServiceException) {
-				
-				errorMsg = "아이디 또는 패스워드가 일치하지 않습니다.";
-			} else if (exception instanceof DisabledException) {
-				
-				errorMsg = "계정이 비활성화되었습니다. 관리자에게 문의하세요.";
-			}
+				}				
+				msg = "패스워드 불일치";
+			} else if(exception instanceof InternalAuthenticationServiceException) {
+				msg = "존재하지 않은 아이디";
+			} else if(exception instanceof DisabledException) {
+				msg = "계정 비활성화";
+			}				
 		} catch (Exception e) {
-			log.info("LoginFailureHandler : " + errorMsg, e);
+			log.info("Login Failure : " + msg, e);
 		}
 		
-		response.sendRedirect(defaultFailureUrl);
+		String failUrl = defaultFailureUrl;
+		
+		if ("admin".equals(loginType)) {
+			failUrl = "/admin/login?error";
+		}
+		
+		request.getSession().setAttribute("message", msg);
+		
+		response.sendRedirect(request.getContextPath() + failUrl);
 	}
 
 	public void setDefaultFailureUrl(String defaultFailureUrl) {

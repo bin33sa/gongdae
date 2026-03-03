@@ -25,6 +25,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	private RequestCache requestCache = new HttpSessionRequestCache();
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 	private String defaultUrl;
+	private String defaultAdminUrl = "/admin";
 
 	@Autowired
 	private MemberService memberService;
@@ -58,12 +59,18 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 			Authentication authentication) throws IOException, ServletException {
 
 		SavedRequest savedRequest = requestCache.getRequest(request, response);
-
+		
+		String loginType = request.getParameter("loginType");
+		
 		if (savedRequest != null) {
 			String targetUrl = savedRequest.getRedirectUrl();
 			redirectStrategy.sendRedirect(request, response, targetUrl);
 		} else {
-			redirectStrategy.sendRedirect(request, response, defaultUrl);
+			if ("admin".equals(loginType)) {
+                redirectStrategy.sendRedirect(request, response, request.getContextPath() + defaultAdminUrl);
+            } else {
+                redirectStrategy.sendRedirect(request, response, request.getContextPath() + defaultUrl);
+            }
 		}
 	}
 
