@@ -8,17 +8,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>관리자 오류 페이지</title>
 
-<jsp:include page="/WEB-INF/views/admin/include/headerResources.jsp" />
+<jsp:include page="/WEB-INF/views/admin/layout/headerResources.jsp" />
 </head>
 <body class="admin-page">
 
 	<div class="admin-layout">
 
-		<jsp:include page="/WEB-INF/views/admin/include/header.jsp" />
+		<jsp:include page="/WEB-INF/views/admin/layout/header.jsp" />
 
 		<div class="admin-body">
 
-			<jsp:include page="/WEB-INF/views/admin/include/left.jsp" />
+			<jsp:include page="/WEB-INF/views/admin/layout/left.jsp" />
 
 			<main class="admin-content">
 
@@ -41,11 +41,11 @@
 
 		</div>
 
-		<jsp:include page="/WEB-INF/views/admin/include/footer.jsp" />
+		<jsp:include page="/WEB-INF/views/admin/layout/footer.jsp" />
 
 	</div>
 
-	<jsp:include page="/WEB-INF/views/admin/include/footerResources.jsp" />
+	<jsp:include page="/WEB-INF/views/admin/layout/footerResources.jsp" />
 
 </body>
 </html>
