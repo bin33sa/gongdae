@@ -48,16 +48,16 @@
     <div class="icon-menu py-3">
       <div class="row text-center g-0">
         <div class="col-3">
-          <div><i class="bi bi-megaphone fs-4"></i></div>
-          <div class="small">이벤트</div>
+          <div><i class="bi bi-award fs-4"></i></div>
+          <div class="small">내 등급<br>브론즈</div>
         </div>
         <div class="col-3">
-          <div><i class="bi bi-card-checklist fs-4"></i></div>
-          <div class="small">예약<br>리스트</div>
+          <div><i class="bi bi-cash fs-4"></i></div>
+          <div class="small">마일리지<br>3,500</div>
         </div>
         <div class="col-3">
-          <div><i class="bi bi-chat-dots fs-4"></i></div>
-          <div class="small">이용후기<br>Q&A관리</div>
+          <div><i class="bi bi-ticket-perforated fs-4"></i></div>
+          <div class="small">쿠폰<br>0 장</div>
         </div>
         <div class="col-3">
           <div><i class="bi bi-heart fs-4"></i></div>
@@ -66,20 +66,16 @@
       </div>
     </div>
 
-    <!-- 🟣 섹션 타이틀 -->
-    <div class="section-title px-3 py-2">
-      내 관심정보 설정
-    </div>
-
+   
     <!-- 📋 메뉴 리스트 (스크롤 영역) -->
     <div class="flex-grow-1 overflow-auto">
       <ul class="menu-list list-unstyled m-0">
         <li>관리자 문의(미구현)</li>
         <li>공지사항</li>
-        <li>도시산책</li>
-        <li>도움말</li>
-        <li>1:1문의</li>
-        <li>서비스 정보</li>
+        <li>이벤트</li>
+        <li>예약리스트</li>
+        <li>찜한 공간</li>        
+        <li>후기 작성</li>
       </ul>
 
     </div>

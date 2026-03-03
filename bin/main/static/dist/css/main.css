@@ -540,10 +540,10 @@
 section, .section {
   color: var(--default-color);
   background-color: var(--background-color);
-  padding: 60px 0;
+  padding: 15px 0;
   scroll-margin-top: 100px;
   overflow: clip;
-  min-height: 500px;
+  min-height: 200px;
 }
 
 @media (max-width: 1199px) {
@@ -578,12 +578,6 @@ section, .section {
   background: #eee;
 }
 
-.section-title {
-  background: #FF6B6B;
-  color: white;
-  font-weight: 600;
-}
-
 .menu-list li {
   padding: 16px;
   border-bottom: 1px solid #eee;
@@ -602,3 +596,98 @@ section, .section {
 }
 
 
+/*-----------------------
+# main
+-----------------------*/
+.carousel-inner {
+
+	height: 200px;
+}
+
+
+/*-----------------------
+# Category
+-----------------------*/
+.category-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.category-btn {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* hover 효과 */
+.category-btn:hover {
+  background: #f3f3f3;
+}
+
+/* 선택된 상태 */
+.category-btn.active {
+  background: #FF6B6B;
+  color: white;
+  border-color: #FF6B6B;
+}
+
+/*-----------------------
+# Card
+-----------------------*/
+/* 카드 hover 효과 */
+.product-card {
+  transition: all 0.25s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  
+}
+
+/* 이미지 비율 유지 */
+.product-img {
+  height: 220px;
+  object-fit: cover;
+}
+
+/* ❤️ 찜 버튼 */
+.wishlist-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.wishlist-btn i {
+  font-size: 18px;
+  color: #ff6b6b;
+}
+
+.wishlist-btn:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+/* 평점 정렬 */
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
