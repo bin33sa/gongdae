@@ -5,62 +5,87 @@
 
 
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-  	<div class="offcanvas-header bs-primary">
-		<!-- 로그인 상태일때 표시할 섹션 -->
-	  	<sec:authorize access="isAuthenticated()">
-			<div class="header-avatar">
-				<sec:authentication property="principal.member.avatar" var="avatar"/>
-				<c:choose>
-					<c:when test="${not empty avatar}">
-						<img src="${pageContext.request.contextPath}/uploads/member/${avatar}" 
-							onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/dist/images/avatar.png';"
-							class="avatar-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-					</c:when>
-					<c:otherwise>
-						<img src="${pageContext.request.contextPath}/dist/images/avatar.png" class="avatar-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-					</c:otherwise>
-				</c:choose>
-				<ul class="dropdown-menu">
-					<li><a href="${pageContext.request.contextPath}/" class="dropdown-item">사진첩</a></li>
-					<li><a href="${pageContext.request.contextPath}/" class="dropdown-item">일정관리</a></li>
-					<li><a href="${pageContext.request.contextPath}/" class="dropdown-item">쪽지함</a></li>
-					<li><a href="${pageContext.request.contextPath}/" class="dropdown-item">메일</a></li>
-					<li><hr class="dropdown-divider"></li>
-					<li><a href="${pageContext.request.contextPath}/" class="dropdown-item">정보수정</a></li>
-				</ul>
-			</div>
-		</sec:authorize>
-  	
-	  	<!-- 비로그인시 표시할 섹션 -->
-	  	<sec:authorize access="isAnonymous()">
-	  	
-			<a href="${pageContext.request.contextPath}/member/login" title="로그인" title="로그인">로그인</a>
-		</sec:authorize>
-		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  	</div>
-  <div class="offcanvas-body">
-  	
-	
-	
-	<sec:authorize access="isAuthenticated()">
-		<a href="${pageContext.request.contextPath}/member/logout" title="로그아웃"><i class="bi bi-unlock"></i></a>
-		<sec:authorize access="hasAnyRole('ADMIN','EMP')">
-			<a href="${pageContext.request.contextPath}/admin" title="관리자"><i class="bi bi-gear"></i></a>
-		</sec:authorize>
-	</sec:authorize>
+  	<div class="offcanvas-body p-0 d-flex flex-column h-100">
 
-		<ul>
-			<li><span>회원 등급 표시</span></li>
-			<li><a href="${pageContext.request.contextPath}/member/edit">회원 정보 수정</a></li>
-			<li><a href="${pageContext.request.contextPath}">관리자 문의(미구현)</a></li>
-			<li><a href="${pageContext.request.contextPath}">예약 리스트</a></li>
-			<li><a href="${pageContext.request.contextPath}">이용 후기 작성</a></li>
-			<li><a href="${pageContext.request.contextPath}">공지사항</a></li>
-			<li><a href="${pageContext.request.contextPath}">찜 리스트</a></li>
-			<li><a href="${pageContext.request.contextPath}/host/prelogin">호스트 전환</a></li>
-		</ul>
-		
+	    <!-- 🔶 상단 프로필 영역 -->
+	    <div class="menu-header p-4">
+			<div class="d-flex align-items-center">
+	      		<!-- 비로그인시 표시할 섹션 -->
+	  			<sec:authorize access="isAnonymous()">
+	  				<div class="profile-img me-3">
+	          			<img src="${pageContext.request.contextPath}/dist/images/avatar.png">
+	       			</div>
+	  				<div>
+	        			<a href="${pageContext.request.contextPath}/member/login" title="로그인" class="fw-bold fs-5">로그인/회원가입</a>
+	        		</div>
+				</sec:authorize>
+				<!-- 로그인 상태일때 표시할 섹션 -->
+			  	<sec:authorize access="isAuthenticated()">
+					<sec:authentication property="principal.member" var="member"/>
+					<div class="profile-img me-3">
+						<c:choose>
+							<c:when test="${not empty member.avatar}">
+								<img src="${pageContext.request.contextPath}/uploads/member/${member.avatar}" 
+									onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/dist/images/avatar.png';">
+							</c:when>
+							<c:otherwise>
+								<img src="${pageContext.request.contextPath}/dist/images/avatar.png">
+							</c:otherwise>
+						</c:choose>
+					</div>
+					<div>
+						<div class="fw-bold fs-5">${member.name}</div>
+						<a href="${pageContext.request.contextPath}/member/edit" class="small">정보수정</a>/
+						<a href="${pageContext.request.contextPath}/member/logout" class="small" title="로그아웃">로그아웃</a>
+						
+					</div>
+				</sec:authorize>
+				
+	      	</div>
+		</div>
+
+    <!-- 🔘 아이콘 메뉴 -->
+    <div class="icon-menu py-3">
+      <div class="row text-center g-0">
+        <div class="col-3">
+          <div><i class="bi bi-award fs-4"></i></div>
+          <div class="small">내 등급<br>브론즈</div>
+        </div>
+        <div class="col-3">
+          <div><i class="bi bi-cash fs-4"></i></div>
+          <div class="small">마일리지<br>3,500</div>
+        </div>
+        <div class="col-3">
+          <div><i class="bi bi-ticket-perforated fs-4"></i></div>
+          <div class="small">쿠폰<br>0 장</div>
+        </div>
+        <div class="col-3">
+          <div><i class="bi bi-heart fs-4"></i></div>
+          <div class="small">찜한 공간</div>
+        </div>
+      </div>
+    </div>
+
    
-   
+    <!-- 📋 메뉴 리스트 (스크롤 영역) -->
+    <div class="flex-grow-1 overflow-auto">
+      <ul class="menu-list list-unstyled m-0">
+        <li>관리자 문의(미구현)</li>
+        <li>공지사항</li>
+        <li>이벤트</li>
+        <li>예약리스트</li>
+        <li>찜한 공간</li>        
+        <li>후기 작성</li>
+      </ul>
+
+    </div>
+
+    <!-- 🔵 하단 고정 버튼 -->
+    <div class="bottom-fixed text-center">
+      <a href="${pageContext.request.contextPath}/host/main/prelogin">호스트 전환</a>
+    </div>
+
   </div>
+
+  	
 </div>

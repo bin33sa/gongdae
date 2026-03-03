@@ -8,10 +8,31 @@
   --nav-font: "Roboto", "Malgun Gothic", "Nunito", sans-serif;
 }
 
+/* bootstrap primary 색 변경 */
 :root {
   --bs-primary: #FF6B6B;
   --bs-primary-rgb: 255, 107, 107;
 }
+
+.btn-primary {
+  --bs-btn-bg: var(--bs-primary);
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-hover-bg: #e65b5b;
+  --bs-btn-hover-border-color: #e65b5b;
+  --bs-btn-active-bg: #cc4c4c;
+  --bs-btn-active-border-color: #cc4c4c;
+  --bs-btn-disabled-bg: var(--bs-primary);
+  --bs-btn-disabled-border-color: var(--bs-primary);
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--bs-primary);
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--bs-primary);
+  --bs-btn-hover-border-color: var(--bs-primary);
+}
+
 
 /* Global Colors - 사이트 전반에 사용 */
 :root { 

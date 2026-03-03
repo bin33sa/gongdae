@@ -37,8 +37,10 @@ public class SpringSecurityConfig {
 		http.authorizeHttpRequests(authorize -> authorize
 			.requestMatchers(excludeUri).permitAll()
 			.anyRequest().permitAll()
-			//.requestMatchers("/admin/**").hasAnyRole("ADMIN", "HOST")
-			//.requestMatchers("/**").hasAnyRole("USER", "HOST", "ADMIN") 
+			//.requestMatchers("/host/**").hasAnyRole("HOST", "ADMIN")
+			//.requestMatchers("/admin/**").hasAnyRole("ADMIN")
+			//.requestMatchers("//**").hasAnyRole("USER", "ADMIN")
+			//.requestMatchers("/**").hasAnyRole("USER", "GUEST", "ADMIN") 
 			//.anyRequest().authenticated()
 		)
 		.formLogin(login -> login
