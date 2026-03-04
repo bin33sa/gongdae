@@ -17,7 +17,6 @@ bin/
 /build/
 **/WEB-INF/views/api/**
 
-footer.jsp
 application.yml
 KakaoAuthService.java
 MailSender.java
