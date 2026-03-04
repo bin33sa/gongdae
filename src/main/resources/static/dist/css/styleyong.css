@@ -1,0 +1,12 @@
+﻿@charset "UTF-8";
+
+
+.notice-card {
+	border-radius: 14px;
+	transition: all 0.2s ease;
+}
+
+.notice-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+}

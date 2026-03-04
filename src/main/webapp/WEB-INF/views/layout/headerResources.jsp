@@ -15,6 +15,9 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
+<!-- 임시 추가 스타일css들 -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/styleyong.css" type="text/css">
+
 <!-- Core CSS Files -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/core.css" type="text/css">
 <!-- Main CSS Files -->
