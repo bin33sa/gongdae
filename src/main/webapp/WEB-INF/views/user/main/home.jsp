@@ -7,12 +7,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>공대생 - 공간 대여 생각날 때</title>
-<jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
+<jsp:include page="/WEB-INF/views/user/layout/headerResources.jsp"/>
 </head>
 <body>
 
 
-<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
+<jsp:include page="/WEB-INF/views/user/layout/header.jsp"/>
 
 
 <main>
@@ -69,24 +69,24 @@
 	</div>
 	
 	<!-- 공간 리스트 -->
-	 <jsp:include page="/WEB-INF/views/main/homeList.jsp"/>
+	 <jsp:include page="/WEB-INF/views/user/main/homeList.jsp"/>
 	
 	
 	<!-- 리뷰 -->
-	 <jsp:include page="/WEB-INF/views/main/homeReview.jsp"/>
+	 <jsp:include page="/WEB-INF/views/user/main/homeReview.jsp"/>
 	
 	<!-- 홈화면 공지사항 -->
-	 <jsp:include page="/WEB-INF/views/main/homeBoard.jsp"/>
+	 <jsp:include page="/WEB-INF/views/user/main/homeBoard.jsp"/>
 	 
 	 
 		
 </main>
 
 <footer>
-	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
+	<jsp:include page="/WEB-INF/views/user/layout/footer.jsp"/>
 </footer>
 
-<jsp:include page="/WEB-INF/views/layout/footerResources.jsp"/>
+<jsp:include page="/WEB-INF/views/user/layout/footerResources.jsp"/>
 
 </body>
 </html>

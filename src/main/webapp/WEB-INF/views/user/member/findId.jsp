@@ -8,12 +8,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Spring</title>
-<jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
+<jsp:include page="/WEB-INF/views/user/layout/headerResources.jsp"/>
 </head>
 <body>
 
 <header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
+	<jsp:include page="/WEB-INF/views/user/layout/header.jsp"/>
 </header>
 
 <main>
@@ -23,35 +23,28 @@
 			<div class="row justify-content-center" data-aos="fade-up" data-aos-delay="200">
 				<div class="col-md-5">
 					<div class="bg-white box-shadow my-5 p-5">
-						<h3 class="text-center pt-3">패스워드 재확인</h3>
+	                    <h3 class="text-center pt-3">아이디 찾기</h3>
 	                    
-						<form name="pwdForm" action="" method="post" class="row g-3 mb-2">
+	                    <form name="idForm" action="" method="post" class="row g-3 mb-2">
 							<div class="col-12">
 								<p class="form-control-plaintext text-center">
-									정보보호를 위해 패스워드를 다시 한 번 입력해주세요.
+									메일 인증을 하고 메일에 아이디롤 보낼지, 마스킹된 아이디를 보여줄지 모르겠다 
 								</p>
-							</div>
+	                        </div>
 	                        	                    
 							<div class="col-12">
-								<input type="text" name="login_id" class="form-control form-control-lg" placeholder="아이디"
-									value=""  readonly>
-
-							</div>
-							<div class="col-12">
-								<input type="password" name="password" class="form-control form-control-lg" 
-									autocomplete="off" placeholder="패스워드">
+								<input type="text" name="email" class="form-control form-control-lg" placeholder="메일">
 							</div>
 							<div class="col-12 text-center">
-								<input type="hidden" name="mode" value="${mode}">
 								<button type="button" class="btn-accent btn-lg w-100" onclick="sendOk();">확인 <i class="bi bi-check2"></i></button>
 							</div>
-						</form>
+	                    </form>
 	                    
 						<div>
 							<p class="form-control-plaintext text-center text-danger">${message}</p>
 						</div>
 
-					</div>
+	                </div>
 	
 				</div>
 			</div>
@@ -62,24 +55,24 @@
 
 <script type="text/javascript">
 function sendOk() {
-	const f = document.pwdForm;
+	const f = document.idForm;
 
-	if(! f.password.value.trim()) {
-		alert('패스워드를 입력하세요. ');
-		f.password.focus();
+	if(! f.email.value.trim()) {
+		alert('이메일을 입력하세요. ');
+		f.login_id.focus();
 		return;
 	}
 
-	f.action = '${pageContext.request.contextPath}/';
+	f.action = '${pageContext.request.contextPath}/member/findId';
 	f.submit();
 }
 </script>
 
 <footer>
-	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
+	<jsp:include page="/WEB-INF/views/user/layout/footer.jsp"/>
 </footer>
 
-<jsp:include page="/WEB-INF/views/layout/footerResources.jsp"/>
+<jsp:include page="/WEB-INF/views/user/layout/footerResources.jsp"/>
 
 </body>
 </html>

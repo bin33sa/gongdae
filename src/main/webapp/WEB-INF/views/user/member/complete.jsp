@@ -7,12 +7,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Spring</title>
-<jsp:include page="/WEB-INF/views/layout/headerResources.jsp"/>
+<jsp:include page="/WEB-INF/views/user/layout/headerResources.jsp"/>
 </head>
 <body>
 
 <header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
+	<jsp:include page="/WEB-INF/views/user/layout/header.jsp"/>
 </header>
 
 <main>
@@ -22,18 +22,18 @@
 			<div class="row justify-content-center" data-aos="fade-up" data-aos-delay="200">
 				<div class="col-md-5">
 					<div class="bg-white box-shadow mt-5 mb-5 p-5">
-						<h3 class="text-center pt-3 text-danger"><i class="bi bi-exclamation-triangle"></i> 경고 !</h3>
-
+						<h3 class="text-center pt-3">${title}</h3>
+						<hr class="mt-4">
+						
 						<div class="my-5">
 							<div class="text-center">
-								<p class="mb-1"><strong>해당 정보를 접근 할 수 있는 권한 이 없습니다.</strong></p>
-								<p>메인화면으로 이동하시기 바랍니다.</p>
+								<p class="text-center">${message}</p>
 							</div>
 						</div>
 	                    
 						<div>
 							<button type="button" class="btn-accent btn-lg w-100" onclick="location.href='${pageContext.request.contextPath}/';">
-								메인화면으로 이동 <i class="bi bi-arrow-counterclockwise"></i>
+								메인화면 <i class="bi bi-check2"></i>
 							</button>	                    
 						</div>
 					</div>
@@ -45,10 +45,10 @@
 </main>
 
 <footer>
-	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
+	<jsp:include page="/WEB-INF/views/user/layout/footer.jsp"/>
 </footer>
 
-<jsp:include page="/WEB-INF/views/layout/footerResources.jsp"/>
+<jsp:include page="/WEB-INF/views/user/layout/footerResources.jsp"/>
 
 </body>
 </html>

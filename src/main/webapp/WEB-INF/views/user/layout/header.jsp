@@ -118,4 +118,4 @@
     </div>
 </div>
 
-<jsp:include page="/WEB-INF/views/layout/left.jsp"/>
+<jsp:include page="/WEB-INF/views/user/layout/left.jsp"/>
