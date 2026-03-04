@@ -15,6 +15,6 @@ public class HomeController {
 	@GetMapping("/")
 	public String handleHome(Model model) {
 		
-		return "main/home";
+		return "user/main/home";
 	}
 }
