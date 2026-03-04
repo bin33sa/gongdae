@@ -22,7 +22,7 @@
         <c:set var="bottomBg" value="#E53935" /> 
         <c:set var="bottomHover" value="#c62828" />
         <c:set var="bottomText" value="호스트 센터로 이동" />
-        <c:set var="bottomLink" value="${pageContext.request.contextPath}/host/" />
+        <c:set var="bottomLink" value="${pageContext.request.contextPath}/host/main/prelogin" />
     </c:otherwise>
 </c:choose>
 

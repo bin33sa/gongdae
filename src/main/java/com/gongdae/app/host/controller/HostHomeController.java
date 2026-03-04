@@ -23,5 +23,10 @@ public class HostHomeController {
 		return "host/main/home";
 	}
 	
+	@GetMapping("dashboard")
+	public String dashboard() {
+		return "host/main/dashboard";
+	}
+	
 	
 }

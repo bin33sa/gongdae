@@ -140,8 +140,8 @@
             </div>
             
             <div class="text-center mt-4">
-                <a href="<c:url value='/'/>" class="text-muted small text-decoration-none">
-                    <i class="bi bi-house-door"></i> 공대생 홈으로 돌아가기
+                <a href="<c:url value='${pageContext.request.contextPath}/host/dashboard'/>" class="text-muted small text-decoration-none">
+                    <i class="bi bi-house-door"></i> 로그인 테스트
                 </a>
             </div>
         </div>

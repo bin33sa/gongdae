@@ -82,7 +82,7 @@
 </head>
 <body>
 
-    <jsp:include page="/WEB-INF/views/guest/layout/header.jsp"/>
+    <jsp:include page="/WEB-INF/views/host/layout/header.jsp"/>
 
     <section class="hero-section">
         <div class="container">
@@ -90,7 +90,7 @@
             <p class="hero-subtitle">파티룸, 연습실, 스터디룸 등 어떤 공간이든 쉽게 등록하고 관리할 수 있습니다.</p>
             
             <sec:authorize access="isAnonymous()">
-                <a href="${pageContext.request.contextPath}/host/prelogin" class="btn btn-register text-decoration-none">호스트 가입하고 공간 등록하기</a>
+                <a href="${pageContext.request.contextPath}/host/" class="btn btn-register text-decoration-none">호스트 가입하고 공간 등록하기</a>
             </sec:authorize>
             <sec:authorize access="isAuthenticated()">
                 <a href="<c:url value='/host/space/register'/>" class="btn btn-register text-decoration-none">내 공간 등록하기</a>
@@ -156,7 +156,7 @@
         </div>
     </section>
 
-    <jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
+    <jsp:include page="/WEB-INF/views/host/layout/footer.jsp"/>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
