@@ -15,7 +15,7 @@ public class TestController {
 	@GetMapping("/test")
 	public String handleHome(Model model) {
 		
-		return "test/test";
+		return "test/test2";
 	}
 	
 }
