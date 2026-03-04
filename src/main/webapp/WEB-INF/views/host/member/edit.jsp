@@ -8,12 +8,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>회원 정보 수정</title>
-<jsp:include page="/WEB-INF/views/user/layout/headerResources.jsp"/>
+<jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
 </head>
 <body>
 
 <header>
-	<jsp:include page="/WEB-INF/views/user/layout/header.jsp"/>
+	<jsp:include page="/WEB-INF/views/guest/layout/header.jsp"/>
 </header>
 
 <main>
@@ -56,10 +56,10 @@ function sendOk() {
 </script>
 
 <footer>
-	<jsp:include page="/WEB-INF/views/user/layout/footer.jsp"/>
+	<jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
 </footer>
 
-<jsp:include page="/WEB-INF/views/user/layout/footerResources.jsp"/>
+<jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
 
 </body>
 </html>

@@ -1,4 +1,4 @@
-﻿<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
@@ -7,12 +7,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Spring</title>
-<jsp:include page="/WEB-INF/views/user/layout/headerResources.jsp"/>
+<jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
 </head>
 <body>
 
 <header>
-	<jsp:include page="/WEB-INF/views/user/layout/header.jsp"/>
+	<jsp:include page="/WEB-INF/views/guest/layout/header.jsp"/>
 </header>
 
 <main>
@@ -27,16 +27,14 @@
 						
 						<div class="my-5">
 							<div class="text-center">
-								<p class="text-center">
-									${message}
-								</p>
+								<p class="text-center">${message}</p>
 							</div>
 						</div>
 	                    
 						<div>
 							<button type="button" class="btn-accent btn-lg w-100" onclick="location.href='${pageContext.request.contextPath}/';">
-								메인화면으로 이동 <i class="bi bi-arrow-counterclockwise"></i>
-							</button>
+								메인화면 <i class="bi bi-check2"></i>
+							</button>	                    
 						</div>
 					</div>
 				</div>
@@ -47,10 +45,10 @@
 </main>
 
 <footer>
-	<jsp:include page="/WEB-INF/views/user/layout/footer.jsp"/>
+	<jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
 </footer>
 
-<jsp:include page="/WEB-INF/views/user/layout/footerResources.jsp"/>
+<jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
 
 </body>
 </html>

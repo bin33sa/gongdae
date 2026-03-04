@@ -7,12 +7,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Spring</title>
-<jsp:include page="/WEB-INF/views/user/layout/headerResources.jsp"/>
+<jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
 </head>
 <body>
 
 <header>
-	<jsp:include page="/WEB-INF/views/user/layout/header.jsp"/>
+	<jsp:include page="/WEB-INF/views/guest/layout/header.jsp"/>
 </header>
 
 <main>
@@ -22,22 +22,21 @@
 			<div class="row justify-content-center" data-aos="fade-up" data-aos-delay="200">
 				<div class="col-md-5">
 					<div class="bg-white box-shadow mt-5 mb-5 p-5">
-						<h3 class="text-center pt-3">파일 다운로드 실패</h3>
+						<h3 class="text-center pt-3">${title}</h3>
 						<hr class="mt-4">
 						
 						<div class="my-5">
 							<div class="text-center">
 								<p class="text-center">
-									<strong>파일을 다운로드할 수 없습니다.</strong><br>
-									파일이 존재하지 않거나 권한이 불충분합니다.
+									${message}
 								</p>
 							</div>
 						</div>
 	                    
 						<div>
-							<button type="button" class="btn-accent btn-lg w-100" onclick="javascript:history.back();">
-								이전화면으로 이동
-							</button>	                    
+							<button type="button" class="btn-accent btn-lg w-100" onclick="location.href='${pageContext.request.contextPath}/';">
+								메인화면으로 이동 <i class="bi bi-arrow-counterclockwise"></i>
+							</button>
 						</div>
 					</div>
 				</div>
@@ -48,10 +47,10 @@
 </main>
 
 <footer>
-	<jsp:include page="/WEB-INF/views/user/layout/footer.jsp"/>
+	<jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
 </footer>
 
-<jsp:include page="/WEB-INF/views/user/layout/footerResources.jsp"/>
+<jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
 
 </body>
 </html>

@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Spring</title>
-<jsp:include page="/WEB-INF/views/user/layout/headerResources.jsp"/>
+<jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/login-full.css" type="text/css">
 </head>
 <body>
