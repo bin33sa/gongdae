@@ -28,5 +28,9 @@ public class HostHomeController {
 		return "host/main/dashboard";
 	}
 	
+	@GetMapping("spaceForm")
+	public String spaceForm() {
+		return "host/space/spaceForm";
+	}
 	
 }

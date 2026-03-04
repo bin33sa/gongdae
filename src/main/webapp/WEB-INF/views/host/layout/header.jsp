@@ -84,7 +84,7 @@
         <div class="user-menu">
             <sec:authorize access="isAnonymous()">
                 <a href="<c:url value='${pageContext.request.contextPath}/host/prelogin'/>">로그인</a>
-                <a href="<c:url value='/'/>">회원가입</a>
+                <a href="<c:url value='/host/signup'/>">회원가입</a>
                 <a href="<c:url value='/'/>" class="host-btn">공간 등록하기</a>
             </sec:authorize>
 

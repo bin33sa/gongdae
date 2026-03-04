@@ -134,8 +134,8 @@
             </form>
             
             <div class="login-footer">
-                <a href="<c:url value='/host/find-id'/>">아이디 찾기</a> | 
-                <a href="<c:url value='/host/find-pw'/>">비밀번호 찾기</a> | 
+                <a href="<c:url value='/host/findId'/>">아이디 찾기</a> | 
+                <a href="<c:url value='/host/findPwd'/>">비밀번호 찾기</a> | 
                 <a href="<c:url value='/host/signup'/>" class="fw-bold" style="color: var(--main-color);">호스트 가입</a>
             </div>
             
