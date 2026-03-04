@@ -25,12 +25,12 @@ public class MemberController {
 			model.addAttribute("message", "아이디 또는 패스워드가 일치하지 않습니다.");
 		}
 		
-		return "user/member/login";
+		return "guest/member/login";
 	}
 	
 	@GetMapping("findId")
 	public String findIdForm() throws Exception {
-		return "user/member/findId";
+		return "guest/member/findId";
 	}
 	
 	@PostMapping("findId")
@@ -40,7 +40,7 @@ public class MemberController {
 	
 	@GetMapping("findPwd")
 	public String findPwdForm() throws Exception {
-		return "user/member/findPwd";
+		return "guest/member/findPwd";
 	}
 	
 	@PostMapping("findPwd")
@@ -52,7 +52,7 @@ public class MemberController {
 	
 	@GetMapping("signup")
 	public String signupForm() throws Exception {
-		return "user/member/signup";
+		return "guest/member/signup";
 	}
 	
 	@PostMapping("signup")
@@ -64,20 +64,20 @@ public class MemberController {
 
 	@GetMapping("edit")
 	public String editForm() throws Exception {
-		return "user/member/edit";
+		return "guest/member/edit";
 	}
 
 	@PostMapping("edit")
 	public String editSubmit() throws Exception {
 		// 수정 완료 메세지 표시
-		return "user/member/complete";
+		return "guest/member/complete";
 	}
 	
 
 	//////////////////////////////////////////////////////////////////////////////////////// 
 	@GetMapping("updatePwd")
 	public String updatePwdForm() throws Exception{
-		return "user/member/updatePwd";
+		return "guest/member/updatePwd";
 	}
 
 
@@ -86,12 +86,12 @@ public class MemberController {
 	@GetMapping("noAuthorized")
 	public String noAuthorized(Model model) {
 		
-		return "user/error/noAuthorized";
+		return "guest/error/noAuthorized";
 	}
 
 	@GetMapping("expired")
 	public String expired() throws Exception {
 		
-		return "user/error/expired";
+		return "guest/error/expired";
 	}	
 }
