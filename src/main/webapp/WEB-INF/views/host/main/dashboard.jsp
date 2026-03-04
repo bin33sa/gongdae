@@ -161,7 +161,7 @@
                     </div>
                     
                     <div class="d-grid gap-3">
-                        <a href="<c:url value='/host/space/spaceForm'/>" class="btn btn-primary py-2 fw-bold" style="background-color: var(--host-primary); border: none;">
+                        <a href="<c:url value='/host/spaceForm'/>" class="btn btn-primary py-2 fw-bold" style="background-color: var(--host-primary); border: none;">
                             <i class="bi bi-plus-circle me-1"></i> 새 공간 등록하기
                         </a>
                         
