@@ -5,6 +5,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.gongdae.app.domain.dto.SessionInfo;
+import com.gongdae.app.security.LoginMemberUtil;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,4 +32,21 @@ public class HomeManageController {
 	    return "admin/layout";
 
 	}
+	
+	@GetMapping("/login")
+	public String handleLogin() {
+		SessionInfo info = LoginMemberUtil.getSessionInfo();
+	    
+	    if (info != null) {
+	        if (info.getUserLevel() >= 50) { 
+	            return "redirect:/admin";
+	        } else {
+	            return "redirect:/";
+	        }
+	    }
+		return "admin/login";
+	}
+	
+	
+	
 }
