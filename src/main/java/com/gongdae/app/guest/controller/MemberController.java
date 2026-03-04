@@ -46,7 +46,6 @@ public class MemberController {
 	@PostMapping("findPwd")
 	public String findPwdSubmit() throws Exception {
 		
-		// 패스워드를 메일로 보내거나, 추가 인증 작업을 하고 로그인 창으로 리다이렉트
 		return "redirect:/member/login";
 	}
 	
@@ -57,8 +56,7 @@ public class MemberController {
 	
 	@PostMapping("signup")
 	public String signupSubmit() throws Exception {
-		
-		// 로그인을 시켜주고 메인으로 가야할지, 로그인 페이지로 가야할지 모르겠음
+		 
 		return "redirect:/member/login";
 	}
 
@@ -69,7 +67,6 @@ public class MemberController {
 
 	@PostMapping("edit")
 	public String editSubmit() throws Exception {
-		// 수정 완료 메세지 표시
 		return "guest/member/complete";
 	}
 	
