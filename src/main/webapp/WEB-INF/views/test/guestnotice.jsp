@@ -139,7 +139,19 @@
 <div class="container">
 
 
+<!-- 검색 -->
+<div class="notice-search text-center">
 
+<div class="input-group">
+<input type="text" class="form-control" placeholder="공지 검색">
+<button class="btn btn-light">
+<i class="bi bi-x-lg"></i>
+</button>
+</div>
+
+<button class="btn btn-warning w-100 mt-2">검색</button>
+
+</div>
 
 <!-- 열린 공지 -->
 <div class="notice-row d-flex justify-content-between align-items-center">
