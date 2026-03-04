@@ -8,9 +8,8 @@
 
 <%-- 권한에 따른 테마 색상 및 텍스트 동적 설정 --%>
 <c:choose>
-<!--  -->
     <c:when test="${isHost}">
-        <%-- 호스트 모드: 상단 빨간색, 하단 파란색(게스트로 이동) --%>
+       
         <c:set var="headerBg" value="#E53935" /> 
         <c:set var="bottomBg" value="#1C6296" /> 
         <c:set var="bottomHover" value="#154c75" />
