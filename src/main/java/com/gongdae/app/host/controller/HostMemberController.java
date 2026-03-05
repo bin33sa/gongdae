@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/host/*")
 public class HostMemberController {
 	
-	@RequestMapping(value = "login", method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "member/login", method = {RequestMethod.GET, RequestMethod.POST})
 	public String loginForm(@RequestParam(name = "error", required = false) String error, 
 			Model model) {
 		
