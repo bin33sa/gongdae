@@ -10,7 +10,7 @@
 	</insert>
 
     <update id="updateMemberEnabled" parameterType="map">
-		UPDATE member1 SET enabled = #{enabled}
+		UPDATE member SET enabled = #{enabled}
 		<where>
 			<choose>
 				<when test="login_id != null">
@@ -24,58 +24,87 @@
     </update>
 
 	<update id="updateLastLogin" parameterType="Long">
-		UPDATE member1 SET last_login = SYSDATE, failure_cnt = 0
+		UPDATE member SET last_login = SYSDATE, failure_cnt = 0
 		WHERE member_id = #{member_id}
 	</update>
 
 	<update id="updateLastLoginId" parameterType="String">
-		UPDATE member1 SET last_login = SYSDATE, failure_cnt = 0
+		UPDATE member SET last_login = SYSDATE, failure_cnt = 0
 		WHERE login_id = #{login_id}
 	</update>
 
 	<select id="findById" parameterType="Long" resultType="com.gongdae.app.domain.dto.MemberDto">
-		SELECT m1.member_id, m1.login_id, password, sns_provider, sns_id, email,
-			enabled, created_at, update_at, last_login,
-			name, TO_CHAR(birth, 'YYYY-MM-DD') birth, email, tel, 
-			profile_photo, zip, addr1, addr2, receive_email,
-			authority
-		FROM member1 m1
-		LEFT OUTER JOIN member2 m2 ON m1.member_id = m2.member_id
-		LEFT OUTER JOIN memberAuthority m3 ON m1.login_id = m3.login_id
-		WHERE m1.member_id = #{member_id}
+	    SELECT 
+	        m1.member_id, 
+	        m1.login_id, 
+	        m1.password, 
+	        m1.enabled, 
+	        m1.created_at, 
+	        m1.update_at, 
+	        m1.last_login,
+	        m3.authority,
+	        COALESCE(g.name, h.name, a.name) as name,
+	        COALESCE(g.email, h.email) as email,
+	        COALESCE(g.phone, h.phone) as tel,
+	        NULL as sns_provider,
+	        NULL as sns_id,
+	        NULL as birth,
+	        NULL as profile_photo,
+	        NULL as zip,
+	        NULL as addr1,
+	        NULL as addr2,
+	        NULL as receive_email
+	    FROM member m1
+	    LEFT OUTER JOIN memberAuthority m3 ON m1.login_id = m3.login_id
+	    LEFT OUTER JOIN guest_detail g ON m1.member_id = g.member_id
+	    LEFT OUTER JOIN host_detail h ON m1.member_id = h.member_id
+	    LEFT OUTER JOIN admin_detail a ON m1.member_id = a.member_id
+	    WHERE m1.member_id = #{member_id}
 	</select>
 
 	<select id="findByLoginId" parameterType="String" resultType="com.gongdae.app.domain.dto.MemberDto">
-		SELECT m1.member_id, m1.login_id, password, sns_provider, sns_id, email,
-			enabled, created_at, update_at, last_login,
-			name, TO_CHAR(birth, 'YYYY-MM-DD') birth, email, tel, 
-			profile_photo, zip, addr1, addr2, receive_email,
-			authority
-		FROM member1 m1
-		LEFT OUTER JOIN member2 m2 ON m1.member_id = m2.member_id
-		LEFT OUTER JOIN memberAuthority m3 ON m1.login_id = m3.login_id
-		WHERE m1.login_id = #{login_id}
+	    SELECT 
+	        m1.member_id, 
+	        m1.login_id, 
+	        m1.password, 
+	        m1.enabled, 
+	        m1.created_at, 
+	        m1.update_at, 
+	        m1.last_login,
+	        m3.authority,
+	        COALESCE(g.name, h.name, a.name) as name,
+	        COALESCE(g.email, h.email) as email,
+	        COALESCE(g.phone, h.phone) as tel,
+	        NULL as sns_provider,
+	        NULL as sns_id,
+	        NULL as profile_photo
+	    FROM member m1
+	    LEFT OUTER JOIN memberAuthority m3 ON m1.login_id = m3.login_id
+	    LEFT OUTER JOIN guest_detail g ON m1.member_id = g.member_id
+	    LEFT OUTER JOIN host_detail h ON m1.member_id = h.member_id
+	    LEFT OUTER JOIN admin_detail a ON m1.member_id = a.member_id
+	    WHERE m1.login_id = #{login_id}
 	</select>
 
 	<select id="getMemberId" parameterType="String" resultType="Long">
 		SELECT member_id
-		FROM member1
+		FROM member
 		WHERE login_id = #{login_id}
 	</select>
 
 	<select id="checkFailureCount" parameterType="String" resultType="Integer">
 		SELECT NVL(failure_cnt, 0) failure_cnt
-		FROM member1
+		FROM member
 		WHERE login_id = #{login_id}
 	</select>
 	
 	<update id="updateFailureCountReset" parameterType="String">
-		UPDATE member1 SET failure_cnt = 0
+		UPDATE member SET failure_cnt = 0
 		WHERE login_id = #{login_id}
 	</update>
 	
 	<update id="updateFailureCount" parameterType="String">
-		UPDATE member1 SET failure_cnt = failure_cnt + 1
+		UPDATE member SET failure_cnt = failure_cnt + 1
 		WHERE login_id = #{login_id}
 	</update>
 
