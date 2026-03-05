@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/host/*")
 public class HostHomeController {
 	
-	@GetMapping("prelogin")
+	@GetMapping("main/prelogin")
 	public String prelogin() {
 		return "host/main/prelogin";
 	}

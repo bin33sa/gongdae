@@ -25,6 +25,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	private RequestCache requestCache = new HttpSessionRequestCache();
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 	private String defaultUrl;
+	private String defaultHostUrl = "/host/main/home";
 	private String defaultAdminUrl = "/admin";
 
 	@Autowired
@@ -62,18 +63,39 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		
 		String loginType = request.getParameter("loginType");
 		
+		String contextPath = request.getContextPath();
+		
 		if (savedRequest != null) {
 			String targetUrl = savedRequest.getRedirectUrl();
-			redirectStrategy.sendRedirect(request, response, targetUrl);
-		} else {
-			if ("admin".equals(loginType)) {
-                redirectStrategy.sendRedirect(request, response, request.getContextPath() + defaultAdminUrl);
-            } else {
-                redirectStrategy.sendRedirect(request, response, request.getContextPath() + defaultUrl);
+			if ("host".equals(loginType) && targetUrl.contains("/host/")) {
+                redirectStrategy.sendRedirect(request, response, targetUrl);
+                return;
+            } else if ("admin".equals(loginType) && targetUrl.contains("/admin")) {
+                redirectStrategy.sendRedirect(request, response, targetUrl);
+                return;
+            } else if (!"host".equals(loginType) && !"admin".equals(loginType) && !targetUrl.contains("/host/")) {
+                redirectStrategy.sendRedirect(request, response, targetUrl);
+                return;
             }
-		}
+		}	
+			
+		if ("host".equals(loginType)) {
+            redirectStrategy.sendRedirect(request, response, contextPath + defaultHostUrl);
+        } else if ("admin".equals(loginType)) {
+            redirectStrategy.sendRedirect(request, response, contextPath + defaultAdminUrl);
+        } else {
+            redirectStrategy.sendRedirect(request, response, contextPath + defaultUrl);
+        }
 	}
-
+	
+	public void setDefaultAdminUrl(String defaultAdminUrl) {
+        this.defaultAdminUrl = defaultAdminUrl;
+    }
+	
+	public void setDefaultHostUrl(String defaultHostUrl) {
+        this.defaultHostUrl = defaultHostUrl;
+    }
+	
 	public void setDefaultUrl(String defaultUrl) {
 		this.defaultUrl = defaultUrl;
 	}

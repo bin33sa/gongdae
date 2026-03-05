@@ -136,7 +136,8 @@
                 f.password.focus();
                 return;
             }
-
+            f.action = '${pageContext.request.contextPath}/member/login';
+            
             f.submit();
         }
         

@@ -26,22 +26,21 @@ public class SpringSecurityConfig {
 		requestCache.setMatchingRequestParameterName(null);
 
 		String[] excludeUri = { "/", "/index.jsp", "/member/login", "/member/account", "/member/logout",
-				"/member/userIdCheck", "/member/complete", "/member/findPwd", "/member/expired", "/dist/**",
-				"/guest/main", "/guest/list", "/uploads/photo/**", "/favicon.ico", "/WEB-INF/views/**",
-				"/oauth/kakao/callback" };
+	            "/member/userIdCheck", "/member/complete", "/member/findPwd", "/member/expired", "/dist/**",
+	            "/guest/main", "/guest/list", "/uploads/photo/**", "/favicon.ico", "/WEB-INF/views/**",
+	            "/oauth/kakao/callback", "/host/main/prelogin", "/host/member/login", "/admin/login"};
 
 		http.cors(Customizer.withDefaults()) 
 			.csrf(AbstractHttpConfigurer::disable) 
 			.requestCache(request -> request.requestCache(requestCache)); 
 
 		http.authorizeHttpRequests(authorize -> authorize
-			.requestMatchers(excludeUri).permitAll()
-			.anyRequest().permitAll()
-			//.requestMatchers("/host/**").hasAnyRole("HOST", "ADMIN")
-			//.requestMatchers("/admin/**").hasAnyRole("ADMIN")
-			//.requestMatchers("//**").hasAnyRole("USER", "ADMIN")
-			//.requestMatchers("/**").hasAnyRole("USER", "GUEST", "ADMIN") 
-			//.anyRequest().authenticated()
+				.requestMatchers(excludeUri).permitAll()
+		        .requestMatchers("/space/list", "/space/detail/**").hasAnyRole("ANONYMOUS", "GUEST", "ADMIN")
+		        .requestMatchers("/host/**").hasAnyRole("HOST", "ADMIN")
+		        .requestMatchers("/admin/**").hasRole("ADMIN")	      
+		        .requestMatchers("/booking/**", "/mypage/**", "/cart/**", "/community/write").hasAnyRole("GUEST", "ADMIN")
+		        .anyRequest().authenticated()
 		)
 		.formLogin(login -> login
 			.loginPage("/member/login")
@@ -77,6 +76,8 @@ public class SpringSecurityConfig {
 	LoginSuccessHandler loginSuccessHandler() {
 		LoginSuccessHandler handler = new LoginSuccessHandler();
 		handler.setDefaultUrl("/");
+		handler.setDefaultAdminUrl("/admin/main");
+	    handler.setDefaultHostUrl("/host/main/home");
 		return handler;
 	}
 

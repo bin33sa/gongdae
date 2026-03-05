@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gongdae.app.domain.dto.SessionInfo;
 import com.gongdae.app.security.LoginMemberUtil;
@@ -13,39 +14,39 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/admin")
+@RequestMapping("/admin/*")
 @Slf4j
 public class HomeManageController {
 	 
+	@GetMapping("login")
+    public String handleLogin(@RequestParam(name = "error", required = false) String error,
+            Model model) {
+        
+        SessionInfo info = LoginMemberUtil.getSessionInfo();
+        
+        if (info != null) {
+            if (info.getUserLevel() >= 50) {
+                return "redirect:/admin/main";
+            } else {
+                return "redirect:/";
+            }
+        }
+        if (error != null) {
+            model.addAttribute("message", "관리자 인증에 실패하였습니다.");
+        }
+        
+        return "admin/login";
+    }
 
-	@GetMapping("/admin")
-	public String handleHome(Model model) {
-		 model.addAttribute("pageTitle", "관리자 메인");
-		 model.addAttribute("contentPage", "/WEB-INF/views/admin/main/home.jsp");
-		 return "admin/layout";
-	}
-	
-	@GetMapping("/admin/sales/daily")
-	public String userList(Model model) {
-	    model.addAttribute("pageTitle", "사이트 매출");
-	    model.addAttribute("contentPage", "/WEB-INF/views/admin/menu/list.jsp");
-	    return "admin/layout";
+	@GetMapping("main")
+    public String handleHome() {
+        return "admin/main/home"; 
+    }
 
-	}
-	
-	@GetMapping("/login")
-	public String handleLogin() {
-		SessionInfo info = LoginMemberUtil.getSessionInfo();
-	    
-	    if (info != null) {
-	        if (info.getUserLevel() >= 50) { 
-	            return "redirect:/admin";
-	        } else {
-	            return "redirect:/";
-	        }
-	    }
-		return "admin/login";
-	}
+    @GetMapping("sales/daily")
+    public String userList() {
+        return "admin/menu/list";
+    }
 	
 	
 	
