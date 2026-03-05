@@ -194,7 +194,7 @@ color:#ff6b8a;
 </td>
 
 <td>
-<button class="btn-detail">상세</button>
+<button class="btn-detail" onclick="location.href='${pageContext.request.contextPath}/review/write'">후기 작성</button>
 </td>
 
 </tr>
@@ -235,6 +235,8 @@ color:#ff6b8a;
 
 </div>
 </div>
+
+<jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
 
 </body>
 

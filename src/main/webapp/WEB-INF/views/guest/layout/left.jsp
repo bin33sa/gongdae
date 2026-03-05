@@ -149,7 +149,7 @@
                     <div class="mb-1"><i class="bi bi-ticket-perforated fs-4"></i></div>
                     <div class="small text-muted">쿠폰<br><span class="text-dark fw-bold">0 장</span></div>
                 </div>
-                <div class="col-3">
+                <div class="col-3" onclick="location.href='${pageContext.request.contextPath}/wish/list'">
                     <div class="mb-1"><i class="bi bi-heart fs-4"></i></div>
                     <div class="small text-muted">찜한 공간<br><span class="text-dark fw-bold">0</span></div>
                 </div>
@@ -163,8 +163,8 @@
                 <li onclick="location.href='${pageContext.request.contextPath}/notice'">공지사항</li>
                 <li onclick="location.href='${pageContext.request.contextPath}/event'">이벤트</li>
                 <li onclick="location.href='${pageContext.request.contextPath}/faq'">자주 묻는 질문</li>
-                <li>예약리스트</li>
-                <li>후기 작성</li>
+                <li onclick="location.href='${pageContext.request.contextPath}/reservation/list'">예약리스트</li>
+                <li onclick="location.href='${pageContext.request.contextPath}/reservation/list'">후기 작성</li>
             </ul>
         </div>
 
