@@ -25,7 +25,7 @@
 
    				 <!-- 상품 카드 -->
     			<div class="col-12 col-sm-6 col-lg-3">
-      				<div class="card product-card h-100 border-0">
+      				<div class="card product-card h-100 border-0" onclick="location.href='${pageContext.request.contextPath}/space/detail'">
 
        		 		<!-- 이미지 영역 -->
         			<div class="position-relative">

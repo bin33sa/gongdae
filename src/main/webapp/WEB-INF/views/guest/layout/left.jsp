@@ -160,10 +160,10 @@
             <ul class="menu-list list-unstyled m-0">
                 <li onclick="location.href='${pageContext.request.contextPath}/'">공대생 홈</li>
                 <li>관리자 문의(미구현)</li>
-                <li>공지사항</li>
-                <li>이벤트</li>
+                <li onclick="location.href='${pageContext.request.contextPath}/notice'">공지사항</li>
+                <li onclick="location.href='${pageContext.request.contextPath}/event'">이벤트</li>
+                <li onclick="location.href='${pageContext.request.contextPath}/faq'">자주 묻는 질문</li>
                 <li>예약리스트</li>
-                <li>찜한 공간</li>
                 <li>후기 작성</li>
             </ul>
         </div>

@@ -16,22 +16,6 @@
 
 
 <main>
-	<!--
-	<div class="section">
-		<div class="container">
-			<span style="color: #FF6B6B">메인</span><span style="color: #111111; background-color: #FF6B6B">메인</span>
-		</div>
-		<div class="container">
-			<span style="color: #FFA07A">서브</span><span style="color: #111111; background-color: #FFA07A">서브</span>
-		</div>
-		<div class="container">
-			<span style="color: #FFF8F5">배경</span><span style="color: #111111; background-color: #FFF8F5">배경</span>
-		</div>
-		<div class="container">
-			<span style="color: #FF8C42">포인트</span><span style="color: #111111; background-color: #FF8C42">포인트</span>
-		</div>
-	</div>
-	  -->
 	
 	<div class="section">
 		<div class="container">

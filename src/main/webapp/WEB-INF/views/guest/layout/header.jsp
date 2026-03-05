@@ -71,7 +71,7 @@
                 <i class="bi bi-list fs-3"></i>
             </a>
             <a href="<c:url value='/' />" class="logo d-flex align-items-center text-decoration-none">
-               <img src="<c:url value='/dist/images/gds.PNG' />" alt="HaruClass 로고" style="max-height: 40px; width: auto;">
+               <img src="<c:url value='/dist/images/gds.PNG' />" alt="공대생 로고" style="max-height: 40px; width: auto;">
             </a>
         </div>
 
@@ -81,40 +81,11 @@
             </form>
         </div>
 
-        <div class="user-menu">
-            <sec:authorize access="isAnonymous()">
-                <a href="<c:url value='/'/>">로그인</a>
-                <a href="<c:url value='/'/>">회원가입</a>
-                <a href="<c:url value='/'/>" class="host-btn">공간 등록하기</a>
-            </sec:authorize>
-
-            <sec:authorize access="hasRole('ROLE_GUEST')">
-                <a href="<c:url value='/mypage'/>">마이페이지</a>
-                <form action="<c:url value='/logout'/>" method="post" class="d-inline m-0">
-                    <button type="submit" class="btn btn-link p-0 text-decoration-none text-dark" style="font-size:14px; font-weight:500;">로그아웃</button>
-                    <sec:csrfInput/>
-                </form>
-            </sec:authorize>
-
-            <sec:authorize access="hasRole('ROLE_HOST')">
-                <a href="<c:url value='/host/center'/>" class="host-btn">호스트 센터</a>
-                <a href="<c:url value='/mypage'/>">마이페이지</a>
-                <form action="<c:url value='/logout'/>" method="post" class="d-inline m-0">
-                    <button type="submit" class="btn btn-link p-0 text-decoration-none text-dark" style="font-size:14px; font-weight:500;">로그아웃</button>
-                    <sec:csrfInput/>
-                </form>
-            </sec:authorize>
-            
-            <sec:authorize access="hasRole('ROLE_ADMIN')">
-                <a href="<c:url value='/admin/dashboard'/>">관리자 페이지</a>
-                <form action="<c:url value='/logout'/>" method="post" class="d-inline m-0">
-                    <button type="submit" class="btn btn-link p-0 text-decoration-none text-dark" style="font-size:14px; font-weight:500;">로그아웃</button>
-                    <sec:csrfInput/>
-                </form>
-            </sec:authorize>
-        </div>
+       <div>
+       <button onclick="location.href='${pageContext.request.contextPath}/space/search'">검색</button>
+       </div>
         
-        <i class="mobile-nav-toggle d-xl-none bi bi-list" style="display:none"></i>
+        
     </div>
 </div>
 

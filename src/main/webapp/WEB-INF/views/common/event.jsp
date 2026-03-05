@@ -220,6 +220,8 @@ color:#ff6b8a;
 
 </div>
 
+<jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
+
 </body>
 
 

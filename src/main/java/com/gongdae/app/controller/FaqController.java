@@ -17,25 +17,13 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping(value = "/space/*")
-public class SpaceController {
+public class FaqController {
 
-	@GetMapping("search")
-	public String searchPage() throws Exception {
-		SessionInfo info = LoginMemberUtil.getSessionInfo();
+	@GetMapping("/faq")
+	public String faq() throws Exception {
 		
-		
-		
-		return "common/space/search";
+		return "common/faq";
 	}
 	
-	@GetMapping("detail")
-	public String detailPage() throws Exception {
-		return "common/space/detail";
-	}
 	
-	@GetMapping("payment")
-	public String paymentForm() throws Exception {
-		return "common/space/payment";
-	}
 }

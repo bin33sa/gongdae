@@ -22,8 +22,6 @@ public class NoticeController {
 	@GetMapping("/notice")
 	public String noticeList() throws Exception {
 		
-		
-		System.out.println("notice");
 		return "common/notice";
 	}
 	
