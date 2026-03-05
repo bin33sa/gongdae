@@ -15,7 +15,7 @@ public class HostHomeController {
 	
 	@GetMapping("prelogin")
 	public String prelogin() {
-		return "host/prelogin";
+		return "host/main/prelogin";
 	}
 
 	@GetMapping("")
@@ -23,10 +23,7 @@ public class HostHomeController {
 		return "host/main/home";
 	}
 	
-	@GetMapping("dashboard")
-	public String dashboard() {
-		return "host/main/dashboard";
-	}
+	
 	
 	@GetMapping("spaceForm")
 	public String spaceForm() {

@@ -1,163 +1,192 @@
 ﻿<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>공대생 호스트 센터 - 공간을 공유하고 수익을 창출하세요</title>
+    <title>호스트 대시보드 - 공대생</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     
     <style>
-        :root {
-            --main-color: #1C6296; 
-            --point-color: #F8D153; 
-        }
+        body { background-color: #f4f6f9; font-family: 'Pretendard', sans-serif; }
         
-        body { font-family: 'Pretendard', 'Noto Sans KR', sans-serif; background-color: #f8f9fa; }
-
-        /* 1. 최상단 히어로 배너 영역 */
-        .hero-section {
-            background: linear-gradient(135deg, var(--main-color) 0%, #154c75 100%);
-            color: white;
-            padding: 100px 0;
-            text-align: center;
+        /* 호스트 전용 포인트 컬러 (사이드바와 맞춘 붉은색 톤) */
+        :root {
+            --host-primary: #E53935;
         }
-        .hero-title { font-size: 2.5rem; font-weight: bold; margin-bottom: 20px; line-height: 1.4; }
-        .hero-subtitle { font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9; }
-        .btn-register {
-            background-color: var(--point-color);
-            color: #333;
-            font-size: 1.2rem;
-            font-weight: bold;
-            padding: 15px 40px;
-            border-radius: 50px;
+
+        .dashboard-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .page-title { font-size: 1.5rem; font-weight: bold; color: #333; margin-bottom: 24px; }
+        
+        /* 요약 카드 스타일 */
+        .stat-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             border: none;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .btn-register:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(248, 209, 83, 0.4);
-            color: #000;
-        }
-
-        /* 2. 호스트 혜택 소개 영역 */
-        .benefit-section { padding: 80px 0; background-color: #fff; }
-        .section-title { text-align: center; font-size: 2rem; font-weight: bold; margin-bottom: 50px; color: #333; }
-        .benefit-card { text-align: center; padding: 20px; }
-        .benefit-icon {
-            font-size: 3rem;
-            color: var(--main-color);
-            margin-bottom: 20px;
-        }
-        .benefit-title { font-size: 1.25rem; font-weight: bold; margin-bottom: 15px; }
-        .benefit-text { color: #666; line-height: 1.6; }
-
-        /* 3. 이용 순서 안내 영역 */
-        .step-section { padding: 80px 0; }
-        .step-box {
-            background-color: #fff;
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             height: 100%;
+            transition: transform 0.2s;
         }
-        .step-number {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
-            background-color: var(--main-color);
-            color: white;
-            border-radius: 50%;
-            font-weight: bold;
-            font-size: 1.2rem;
+        .stat-card:hover { transform: translateY(-3px); }
+        .stat-icon {
+            width: 48px; height: 48px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+        .icon-blue { background-color: #e3f2fd; color: #1976d2; }
+        .icon-red { background-color: #ffebee; color: #d32f2f; }
+        .icon-yellow { background-color: #fff8e1; color: #fbc02d; }
+        .icon-green { background-color: #e8f5e9; color: #388e3c; }
+        
+        .stat-title { font-size: 0.9rem; color: #666; margin-bottom: 8px; }
+        .stat-value { font-size: 1.8rem; font-weight: bold; color: #222; margin-bottom: 0; }
+        
+        /* 테이블/리스트 영역 카드 */
+        .content-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            margin-bottom: 24px;
+        }
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
         }
+        .content-title { font-size: 1.1rem; font-weight: bold; margin: 0; }
+        .btn-more { font-size: 0.85rem; color: #666; text-decoration: none; }
+        .btn-more:hover { color: var(--host-primary); }
+        
+        /* 배지 스타일 */
+        .badge-pending { background-color: #ffebee; color: #d32f2f; padding: 6px 10px; font-weight: normal; }
+        .badge-approved { background-color: #e8f5e9; color: #388e3c; padding: 6px 10px; font-weight: normal; }
     </style>
 </head>
 <body>
 
     <jsp:include page="/WEB-INF/views/host/layout/header.jsp"/>
 
-    <section class="hero-section">
-        <div class="container">
-            <h1 class="hero-title">남는 공간이 있다면?<br>지금 바로 수익을 만들어보세요</h1>
-            <p class="hero-subtitle">파티룸, 연습실, 스터디룸 등 어떤 공간이든 쉽게 등록하고 관리할 수 있습니다.</p>
-            
-            <sec:authorize access="isAnonymous()">
-                <a href="${pageContext.request.contextPath}/host/" class="btn btn-register text-decoration-none">호스트 가입하고 공간 등록하기</a>
-            </sec:authorize>
-            <sec:authorize access="isAuthenticated()">
-                <a href="<c:url value='/host/space/register'/>" class="btn btn-register text-decoration-none">내 공간 등록하기</a>
-            </sec:authorize>
-        </div>
-    </section>
+    <main class="dashboard-container">
+        <%-- <sec:authentication property="principal.member" var="hostInfo"/> --%>
 
-    <section class="benefit-section">
-        <div class="container">
-            <h2 class="section-title">공대생 호스트가 되어야 하는 이유</h2>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="benefit-card">
-                        <i class="bi bi-people-fill benefit-icon"></i>
-                        <h3 class="benefit-title">압도적인 게스트 수</h3>
-                        <p class="benefit-text">수많은 대학생과 직장인들이 매일 새로운 공간을 찾고 있습니다. 비어있는 시간을 가득 채워보세요.</p>
+<h2 class="page-title">안녕하세요, 테스트 호스트님! (UI 확인용) <i class="bi bi-emoji-smile text-warning"></i></h2>
+        <div class="row g-4 mb-4">
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-card">
+                    <div class="stat-icon icon-red"><i class="bi bi-bell-fill"></i></div>
+                    <div class="stat-title">승인 대기 예약</div>
+                    <div class="stat-value">3<span style="font-size:1rem; color:#888; font-weight:normal;"> 건</span></div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-card">
+                    <div class="stat-icon icon-blue"><i class="bi bi-calendar-check-fill"></i></div>
+                    <div class="stat-title">오늘 이용 공간</div>
+                    <div class="stat-value">2<span style="font-size:1rem; color:#888; font-weight:normal;"> 건</span></div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-card">
+                    <div class="stat-icon icon-yellow"><i class="bi bi-chat-dots-fill"></i></div>
+                    <div class="stat-title">미답변 QNA</div>
+                    <div class="stat-value">1<span style="font-size:1rem; color:#888; font-weight:normal;"> 건</span></div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-card">
+                    <div class="stat-icon icon-green"><i class="bi bi-cash-stack"></i></div>
+                    <div class="stat-title">이번 달 정산 예정액</div>
+                    <div class="stat-value">450,000<span style="font-size:1rem; color:#888; font-weight:normal;"> 원</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="content-card h-100">
+                    <div class="content-header">
+                        <h3 class="content-title">최근 예약 요청</h3>
+                        <a href="<c:url value='/host/reservation'/>" class="btn-more">전체보기 <i class="bi bi-chevron-right"></i></a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>공간명</th>
+                                    <th>예약자</th>
+                                    <th>이용일정</th>
+                                    <th>상태</th>
+                                    <th>관리</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%-- <c:if test="${empty reservationList}">
+                                    <tr><td colspan="5" class="text-center py-4 text-muted">최근 예약 내역이 없습니다.</td></tr>
+                                </c:if> --%>
+                                
+                                <tr>
+                                    <td class="fw-bold">홍대 루프탑 파티룸</td>
+                                    <td>김게스트</td>
+                                    <td>2026.03.10 14:00~18:00</td>
+                                    <td><span class="badge rounded-pill badge-pending">승인대기</span></td>
+                                    <td><button class="btn btn-sm btn-outline-danger">예약관리</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold">사당역 전면거울 댄스룸</td>
+                                    <td>이회원</td>
+                                    <td>2026.03.05 10:00~12:00</td>
+                                    <td><span class="badge rounded-pill badge-approved">예약확정</span></td>
+                                    <td><button class="btn btn-sm btn-outline-secondary">상세보기</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="benefit-card">
-                        <i class="bi bi-phone benefit-icon"></i>
-                        <h3 class="benefit-title">간편한 예약 관리</h3>
-                        <p class="benefit-text">모바일과 PC 어디서든 직관적인 대시보드를 통해 실시간 예약 현황을 손쉽게 관리할 수 있습니다.</p>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="content-card h-100">
+                    <div class="content-header">
+                        <h3 class="content-title">내 공간 관리</h3>
+                        <a href="<c:url value='/host/space/list'/>" class="btn-more">관리하기 <i class="bi bi-chevron-right"></i></a>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="benefit-card">
-                        <i class="bi bi-cash-coin benefit-icon"></i>
-                        <h3 class="benefit-title">투명하고 빠른 정산</h3>
-                        <p class="benefit-text">복잡한 절차 없이, 이용 완료된 내역에 대해 빠르고 투명하게 수익을 정산해 드립니다.</p>
+                    
+                    <div class="d-grid gap-3">
+                        <a href="<c:url value='/host/spaceForm'/>" class="btn btn-primary py-2 fw-bold" style="background-color: var(--host-primary); border: none;">
+                            <i class="bi bi-plus-circle me-1"></i> 새 공간 등록하기
+                        </a>
+                        
+                        <div class="border rounded p-3 mt-2 d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="text-muted small">운영 중인 공간</div>
+                                <div class="fw-bold fs-5">2 개</div>
+                            </div>
+                            <i class="bi bi-shop text-muted fs-3"></i>
+                        </div>
+                        
+                        <div class="border rounded p-3 d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="text-muted small">검수 대기 중</div>
+                                <div class="fw-bold fs-5 text-danger">1 개</div>
+                            </div>
+                            <i class="bi bi-hourglass-split text-muted fs-3"></i>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-
-    <section class="step-section">
-        <div class="container">
-            <h2 class="section-title">공간 등록, 참 쉽습니다</h2>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="step-box">
-                        <div class="step-number">1</div>
-                        <h4 class="fw-bold mb-3">호스트 가입</h4>
-                        <p class="text-muted">간단한 정보 입력으로<br>호스트 회원이 되어주세요.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="step-box">
-                        <div class="step-number">2</div>
-                        <h4 class="fw-bold mb-3">공간 정보 등록</h4>
-                        <p class="text-muted">사진, 이용 요금, 상세 설명을<br>매력적으로 작성해 주세요.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="step-box">
-                        <div class="step-number">3</div>
-                        <h4 class="fw-bold mb-3">예약 받기 시작</h4>
-                        <p class="text-muted">관리자 승인 후 즉시 노출되며,<br>게스트의 예약을 받을 수 있습니다.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    </main>
 
     <jsp:include page="/WEB-INF/views/host/layout/footer.jsp"/>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

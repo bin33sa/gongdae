@@ -144,7 +144,7 @@
 							
 							<div class="col-md-12 text-center">
 								<button type="button" name="sendButton" class="btn-accent btn-lg" onclick="memberOk();"> ${mode=="update"?"정보수정":"회원가입"} <i class="bi bi-check2"></i></button>
-								<button type="button" class="btn-default btn-lg" onclick="location.href='${pageContext.request.contextPath}/host/';"> ${mode=="update"?"수정취소":"가입취소"} <i class="bi bi-x"></i></button>
+								<button type="button" class="btn-default btn-lg" onclick="location.href='${pageContext.request.contextPath}/host/prelogin';"> ${mode=="update"?"수정취소":"가입취소"} <i class="bi bi-x"></i></button>
 								<input type="hidden" name="loginIdValid" id="loginIdValid" value="false">
 							</div>
 						</div>
