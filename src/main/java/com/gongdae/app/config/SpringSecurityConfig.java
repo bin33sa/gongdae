@@ -27,7 +27,7 @@ public class SpringSecurityConfig {
 
 		String[] excludeUri = { "/", "/index.jsp", "/member/login", "/member/signup", "/member/logout",
 	            "/member/userIdCheck", "/member/complete", "/member/findPwd", "/member/expired", "/dist/**",
-	            "/guest/main", "/guest/list", "/uploads/photo/**", "/favicon.ico", "/WEB-INF/views/**",
+	            "/js/**", "/vendor/**","/favicon.ico","/guest/main", "/guest/list", "/uploads/photo/**", "/favicon.ico", "/WEB-INF/views/**",
 	            "/oauth/kakao/callback", "/host/main/prelogin", "/host/member/login", "/admin/login",
 	            "/wish/*", "/reservation/*", "/review/*", "/terms"};
 				
@@ -96,4 +96,5 @@ public class SpringSecurityConfig {
 		filter.setAjaxHeader("AJAX");
 		return filter;
 	}
+	
 }
