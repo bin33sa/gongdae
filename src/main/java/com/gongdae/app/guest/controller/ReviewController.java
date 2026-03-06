@@ -18,8 +18,13 @@ import lombok.extern.slf4j.Slf4j;
 public class ReviewController {
 
 	@GetMapping("write")
-	public String wishList() throws Exception {
-		return "guest/space/review";
+	public String writeForm() throws Exception {
+		return "guest/space/reviewWrite";
+	}
+	
+	@GetMapping("list")
+	public String list() throws Exception {
+		return "guest/space/reviewList";
 	}
 	
 }

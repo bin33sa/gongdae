@@ -25,11 +25,11 @@ public class SpringSecurityConfig {
 		HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
 		requestCache.setMatchingRequestParameterName(null);
 
-		String[] excludeUri = { "/", "/index.jsp", "/member/login", "/member/account", "/member/logout",
+		String[] excludeUri = { "/", "/index.jsp", "/member/login", "/member/signup", "/member/logout",
 	            "/member/userIdCheck", "/member/complete", "/member/findPwd", "/member/expired", "/dist/**",
 	            "/guest/main", "/guest/list", "/uploads/photo/**", "/favicon.ico", "/WEB-INF/views/**",
 	            "/oauth/kakao/callback", "/host/main/prelogin", "/host/member/login", "/admin/login",
-	            "/wish/*", "/reservation/*", "/review/*"};
+	            "/wish/*", "/reservation/*", "/review/*", "/terms"};
 				
 
 		http.cors(Customizer.withDefaults()) 

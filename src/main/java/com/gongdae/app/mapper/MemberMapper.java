@@ -31,6 +31,7 @@ public interface MemberMapper {
 	
 	public MemberDto findById(Long member_id);
 	public MemberDto findByLoginId(String login_id);
+	public MemberDto findByNickname(String nickname);
 	public Long getMemberId(String login_id);
 	
 	public int checkFailureCount(String login_id);

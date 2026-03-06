@@ -56,12 +56,12 @@
 											${mode=="update" ? "readonly ":""} autofocus>									
 									</div>
 									<div class="col-md-6">
-										<c:if test="${mode=='account'}">
+										<c:if test="${mode=='signup'}">
 											<button type="button" class="btn-default" onclick="userIdCheck();">아이디중복검사</button>
 										</c:if>
 									</div>
 								</div>
-								<c:if test="${mode=='account'}">
+								<c:if test="${mode=='signup'}">
 									<small class="form-control-plaintext help-block">아이디는 5~10자 이내이며, 첫글자는 영문자로 시작해야 합니다.</small>
 								</c:if>
 							</div>
@@ -79,6 +79,24 @@
 										<small class="form-control-plaintext">패스워드를 한번 더 입력해주세요.</small>
 									</div>
 								</div>
+							</div>
+							
+							<div class="col-md-12 wrap-nickname">
+								<label for="nickname" class="form-label font-roboto">닉네임</label>
+								<div class="row g-3">
+									<div class="col-md-6">
+										<input class="form-control" type="text" id="nickname" name="nickname" value="${dto.nickname}"
+											${mode=="update" ? "readonly ":""} autofocus>									
+									</div>
+									<div class="col-md-6">
+										<c:if test="${mode=='signup'}">
+											<button type="button" class="btn-default" onclick="nicknameCheck();">닉네임중복검사</button>
+										</c:if>
+									</div>
+								</div>
+								<c:if test="${mode=='signup'}">
+									<small class="form-control-plaintext help-block">&nbsp;</small>
+								</c:if>
 							</div>	
 		
 							<div class="col-md-6">
@@ -137,7 +155,7 @@
 											checked
 											onchange="form.sendButton.disabled = !checked">
 									<label for="agree" class="form-check-label">
-										<a href="#" class="text-primary border-link-right">이용약관</a>에 동의합니다.
+										<a href="${pageContext.request.contextPath}/terms" class="text-primary border-link-right" target="_blank">이용약관</a>에 동의합니다.
 									</label>
 								</div>
 							</div>
@@ -146,6 +164,10 @@
 								<button type="button" name="sendButton" class="btn-accent btn-lg" onclick="memberOk();"> ${mode=="update"?"정보수정":"회원가입"} <i class="bi bi-check2"></i></button>
 								<button type="button" class="btn-default btn-lg" onclick="location.href='${pageContext.request.contextPath}/';"> ${mode=="update"?"수정취소":"가입취소"} <i class="bi bi-x"></i></button>
 								<input type="hidden" name="loginIdValid" id="loginIdValid" value="false">
+								<input type="hidden" name="nicknameValid" id="nicknameValid" value="false">
+								<c:if test="${mode == 'update'}">
+									<input type="hidden" name="profile_photo" value="${dto.profile_photo}">
+								</c:if>
 							</div>
 						</div>
 						
@@ -234,15 +256,15 @@ function memberOk() {
 		return;
 	}
 
-/*	
+	
 	let mode = '${mode}';
-	if( mode === 'account' && f.loginIdValid.value === 'false' ) {
+	if( mode === 'signup' && f.loginIdValid.value === 'false' ) {
 		str = '아이디 중복 검사가 실행되지 않았습니다.';
 		document.querySelector('.wrap-loginId .help-block').textContent = str;
 		f.login_id.focus();
 		return;
 	}
-*/
+
 
 	p =/^(?=.*[a-z])(?=.*[!@#$%^*+=-]|.*[0-9]).{5,10}$/i;
 	str = f.password.value;
@@ -295,15 +317,101 @@ function memberOk() {
 
 function userIdCheck() {
 	// 아이디 중복 검사
+	let login_id = document.getElementById('login_id').value;
 
+	if(!/^[a-z][a-z0-9_]{4,9}$/i.test(login_id)) { 
+		let str = '아이디는 5~10자 이내이며, 첫글자는 영문자로 시작해야 합니다.';
+		document.getElementById('login_id').closest('.wrap-loginId').querySelector('.help-block').textContent = str;		
+		document.getElementById('login_id').focus();
+		return;
+	}
+	
+	const url = '${pageContext.request.contextPath}/member/userIdCheck';
+	const params = 'login_id=' + login_id;
+	
+	const fn = function(data) {
+		let passed = data.passed;
+
+		const loginIdInput = document.getElementById('login_id');
+		const wrapLoginId = loginIdInput.closest('.wrap-loginId');
+		const helpBlock = wrapLoginId.querySelector('.help-block');
+		const loginIdValid = document.getElementById('loginIdValid');
+
+		if (passed === 'true') {
+			let str = '<span style="color:blue; font-weight: bold;">' + login_id + '</span> 아이디는 사용가능 합니다.';
+			helpBlock.innerHTML = str;
+			loginIdValid.value = 'true';
+		} else {
+			let str = '<span style="color:red; font-weight: bold;">' + login_id + '</span> 아이디는 사용할수 없습니다.';
+			helpBlock.innerHTML = str;
+			loginIdInput.value = '';
+			loginIdValid.value = 'false';
+			loginIdInput.focus();
+		}
+	};
+	
+	const headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+	const options = {
+			method: 'post',
+			headers: headers,
+			body: params,
+	};
+	
+	fetch(url, options)
+		.then(res => res.json())
+		.then(data => fn(data))
+		.catch(err => console.log("error:", err));
 }
 
-/*
-document.addEventListener('DOMContentLoaded', () => {
-	const dateELS = document.querySelectorAll('form input[type=date]');
-	dateELS.forEach( inputEL => inputEL.addEventListener('keydown', e => e.preventDefault()) );
-});
-*/
+function nicknameCheck() {
+	// 닉네임 중복 검사
+	let nickname = document.getElementById('nickname').value;
+
+	if(nickname.length < 2) { 
+		let str = '닉네임은 최소 2자 이상이어야 합니다.';
+		document.getElementById('nickname').closest('.wrap-nickname').querySelector('.help-block').textContent = str;		
+		document.getElementById('nickname').focus();
+		return;
+	}
+	
+	const url = '${pageContext.request.contextPath}/member/nicknameCheck';
+	const params = 'nickname=' + nickname;
+	
+	const fn = function(data) {
+		let passed = data.passed;
+
+		const loginIdInput = document.getElementById('nickname');
+		const wrapLoginId = loginIdInput.closest('.wrap-nickname');
+		const helpBlock = wrapLoginId.querySelector('.help-block');
+		const loginIdValid = document.getElementById('nicknameValid');
+
+		if (passed === 'true') {
+			let str = '<span style="color:blue; font-weight: bold;">' + nickname + '</span> 아이디는 사용가능 합니다.';
+			helpBlock.innerHTML = str;
+			loginIdValid.value = 'true';
+		} else {
+			let str = '<span style="color:red; font-weight: bold;">' + nickname + '</span> 아이디는 사용할수 없습니다.';
+			helpBlock.innerHTML = str;
+			loginIdInput.value = '';
+			loginIdValid.value = 'false';
+			loginIdInput.focus();
+		}
+	};
+	
+	const headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+	const options = {
+			method: 'post',
+			headers: headers,
+			body: params,
+	};
+	
+	fetch(url, options)
+		.then(res => res.json())
+		.then(data => fn(data))
+		.catch(err => console.log("error:", err));
+}
+
+
 </script>
 
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

@@ -103,6 +103,20 @@ public class MemberServiceImpl implements MemberService {
 
 		return dto;
 	}
+	
+	@Override
+	public MemberDto findByNickname(String nickname) {
+		MemberDto dto = null;
+		
+		try {
+			dto = Objects.requireNonNull(mapper.findByNickname(nickname));
+		} catch (NullPointerException e) {
+		} catch (Exception e) {
+			log.info("findByNickname : ", e);
+		}
+		
+		return dto;
+	}
 
 	@Override
 	public Long getMemberId(String login_id) {
