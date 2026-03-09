@@ -40,6 +40,50 @@
         outline: none;
         font-size: 15px;
     }
+	.search-clear-btn {
+		display: flex;
+        position: absolute;
+        right: 50px;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+		font-size: 30px;
+	    border: none;
+	    background: none;
+	}
+	.search-divider {
+		position: absolute;
+	    right: 35px;
+	    top: 50%;
+	    transform: translateY(-50%);
+	    width: 1px;
+	    height: 16px;
+	    background: #ebebeb;
+	    margin: 0 8px;
+	}
+	.search-btn {
+		display: flex;
+	    position: absolute;
+		right: 12px;
+		top: 50%;
+		transform: translateY(-50%);
+		padding: 0;
+		width: 28px;
+		height: 28px;
+		cursor: pointer;
+		align-items: center;
+		justify-content: center;
+		font-size: 18px;
+	    border: none;
+	    background: none;
+	    color: #1C6296;
+	}
+    
 
     /* 우측 유저 메뉴 스타일 */
     .user-menu {
@@ -76,15 +120,20 @@
         </div>
 
         <div class="search-bar d-none d-md-block mx-4">
-            <form action="<c:url value='/search'/>" method="GET">
-                <input type="text" name="keyword" placeholder="지역, 공간 유형, 공간명 검색">
+            <form action="<c:url value='/space/search'/>" method="GET">
+                <input type="text" id="searchInput" name="kwd" placeholder="어떤 공간을 찾으시나요?">
+                <!-- X 버튼 -->
+	            <button type="button" class="search-clear-btn" onclick="clearSearch()">
+	                <i class="bi bi-x"></i>
+	            </button>
+	            <span class="search-divider"></span>
+	            <!-- 검색 버튼 -->
+	            <button type="submit" class="search-btn">
+	                <i class="bi bi-search"></i>
+	            </button>
             </form>
         </div>
 
-       <div>
-       <button onclick="location.href='${pageContext.request.contextPath}/space/search'">검색</button>
-       </div>
-        
         
     </div>
 </div>

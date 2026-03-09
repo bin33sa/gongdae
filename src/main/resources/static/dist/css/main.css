@@ -607,32 +607,109 @@ section, .section {
 /*-----------------------
 # Category
 -----------------------*/
+.category-slider{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* 흐림 마스크 영역 */
+.category-mask {
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+}
+
 .category-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+	display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 10px;
+    padding: 10px 40px;
+}
+
+.category-mask::before,
+.category-mask::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 60px;
+    z-index: 1;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.category-mask::before {
+    left: 0;
+    background: linear-gradient(to right, white, rgba(255,255,255,0));
+    opacity: 1;
+}
+
+.category-mask::after {
+    right: 0;
+    background: linear-gradient(to left, white, rgba(255,255,255,0));
+    opacity: 1;
+}
+
+/* 흐림 제거 클래스 */
+.no-left-fade::before {
+    opacity: 0;
+}
+
+.no-right-fade::after {
+    opacity: 0;
+}
+
+/* 스크롤바 숨기기 */
+.category-wrap::-webkit-scrollbar{
+    display: none;
 }
 
 .category-btn {
-  padding: 8px 16px;
-  border-radius: 999px;
-  border: 1px solid #ddd;
-  background: white;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
+	flex: 0 0 auto;
+	padding: 8px 16px;
+	border-radius: 999px;
+	border: 1px solid #ddd;
+	background: white;
+	font-size: 14px;
+	cursor: pointer;
+	transition: all 0.2s ease;
 }
 
 /* hover 효과 */
 .category-btn:hover {
-  background: #f3f3f3;
+	background: #f3f3f3;
 }
 
 /* 선택된 상태 */
 .category-btn.active {
-  background: var(--bs-primary);
-  color: white;
-  border-color: var(--bs-primary);
+	background: var(--bs-primary);
+	color: white;
+	border-color: var(--bs-primary);
+}
+
+/* 좌우 버튼 */
+.slide-btn{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    border: none;
+    background: white;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.slide-btn.left{
+    left: -15px;
+}
+
+.slide-btn.right{
+    right: -15px;
 }
 
 /*-----------------------

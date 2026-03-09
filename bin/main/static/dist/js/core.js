@@ -67,5 +67,43 @@
     });
   }
   window.addEventListener('load', aosInit);
+  
+  
+  
+  
 })();
 
+function clearSearch() {
+	document.getElementById("searchInput").value = "";
+}
+
+const wrap = document.querySelector('.category-wrap');
+const mask = document.querySelector('.category-mask');
+
+function updateFade() {
+    // 왼쪽 끝
+    if (wrap.scrollLeft <= 0) {
+        mask.classList.add('no-left-fade');
+    } else {
+        mask.classList.remove('no-left-fade');
+    }
+
+    // 오른쪽 끝
+    if (wrap.scrollLeft + wrap.clientWidth >= wrap.scrollWidth - 1) {
+        mask.classList.add('no-right-fade');
+    } else {
+        mask.classList.remove('no-right-fade');
+    }
+}
+
+// 초기 체크
+updateFade();
+
+// 스크롤 이벤트
+wrap.addEventListener('scroll', updateFade);
+
+// 좌우 버튼 클릭 시에도 체크
+function scrollCategory(amount) {
+    wrap.scrollBy({ left: amount, behavior: 'smooth' });
+    setTimeout(updateFade, 200); // smooth scroll 후 업데이트
+}
