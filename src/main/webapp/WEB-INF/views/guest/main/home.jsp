@@ -90,7 +90,7 @@
 		<div class="container">
 			<div class="row g-4 mb-3">
 
-   				 <!-- 상품 카드 -->
+   				<!-- 상품 카드 -->
     			<div class="col-12 col-sm-6 col-lg-3">
       				<div class="card product-card h-100 border-0" onclick="location.href='${pageContext.request.contextPath}/space/detail'">
 

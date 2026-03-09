@@ -16,12 +16,7 @@
 
 
 <main>
-	
-	<!-- 공간 리스트 -->
-	 <jsp:include page="/WEB-INF/views/guest/main/homeList.jsp"/>
-	
-	
-	 
+
 		
 </main>
 
