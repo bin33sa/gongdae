@@ -4,7 +4,7 @@
 <aside class="admin-sidebar d-flex flex-column">
 
     <div class="px-4 py-4 fw-bold fs-4 text-white">
-        <a href="/admin/main">관리자 메뉴</a>
+        <a href="${pageContext.request.contextPath}/admin/main">관리자 메뉴</a>
     </div>
 
     <div class="sidebar-nav flex-grow-1 overflow-auto mt-2">
@@ -14,8 +14,8 @@
                 <i class="bi bi-graph-up-arrow me-3"></i> 사이트 매출 <i class="bi bi-chevron-down ms-auto small"></i>
             </div>
             <div class="submenu nav flex-column">
-                <a href="/admin/sales/daily" class="nav-link sub-menu-item">일별 매출</a>
-                <a href="/admin/sales/monthly" class="nav-link sub-menu-item">월별 매출</a>
+                <a href="${pageContext.request.contextPath}/admin/sales/daily" class="nav-link sub-menu-item">일별 매출</a>
+                <a href="${pageContext.request.contextPath}/admin/sales/monthly" class="nav-link sub-menu-item">월별 매출</a>
             </div>
         </div>
 
@@ -24,7 +24,7 @@
                 <i class="bi bi-chat-dots me-3"></i> 문의 채팅 <i class="bi bi-chevron-down ms-auto small"></i>
             </div>
             <div class="submenu nav flex-column">
-                <a href="/admin/chat/room" class="nav-link sub-menu-item">채팅 목록</a>
+                <a href="${pageContext.request.contextPath}/admin/chat/room" class="nav-link sub-menu-item">채팅 목록</a>
             </div>
         </div>
 
@@ -33,7 +33,7 @@
                 <i class="bi bi-people me-3"></i> 게스트 회원 관리 <i class="bi bi-chevron-down ms-auto small"></i>
             </div>
             <div class="submenu nav flex-column">
-                <a href="/admin/guests/list" class="nav-link sub-menu-item">게스트 목록</a>
+                <a href="${pageContext.request.contextPath}/admin/guests/list" class="nav-link sub-menu-item">게스트 목록</a>
             </div>
         </div>
 
@@ -42,7 +42,7 @@
                 <i class="bi bi-person-badge me-3"></i> 호스트 회원 관리 <i class="bi bi-chevron-down ms-auto small"></i>
             </div>
             <div class="submenu nav flex-column">
-                <a href="/admin/hosts/list" class="nav-link sub-menu-item">호스트 목록</a>
+                <a href="${pageContext.request.contextPath}/admin/hosts/list" class="nav-link sub-menu-item">호스트 목록</a>
             </div>
         </div>
 
@@ -51,7 +51,7 @@
                 <i class="bi bi-shop me-3"></i> 매장 관리 <i class="bi bi-chevron-down ms-auto small"></i>
             </div>
             <div class="submenu nav flex-column">
-                <a href="/admin/spaces/list" class="nav-link sub-menu-item">매장 목록</a>
+                <a href="${pageContext.request.contextPath}/admin/spaces/list" class="nav-link sub-menu-item">매장 목록</a>
             </div>
         </div>
 
@@ -60,18 +60,23 @@
                 <i class="bi bi-pencil-square me-3"></i> 게시글 관리 <i class="bi bi-chevron-down ms-auto small"></i>
             </div>
             <div class="submenu nav flex-column">
-                <a href="/admin/notices" class="nav-link sub-menu-item">공지사항</a>
+                <a href="${pageContext.request.contextPath}/admin/bbs/notice" class="nav-link sub-menu-item">공지사항</a>
+                <a href="${pageContext.request.contextPath}/admin/bbs/list" class="nav-link sub-menu-item">게시글 목록</a>
             </div>
         </div>
 
-        <div class="menu-group mb-4">
-            <div class="menu-title menu-item d-flex align-items-center px-4" style="cursor:pointer;">
-                <i class="bi bi-shield-exclamation me-3"></i> 신고내역관리 <i class="bi bi-chevron-down ms-auto small"></i>
-            </div>
-            <div class="submenu nav flex-column">
-                <a href="/admin/reports/list" class="nav-link sub-menu-item">신고 목록</a>
-            </div>
-        </div>
+        <div class="menu-group mb-4" data-index="6">
+		    <div class="menu-title menu-item d-flex align-items-center px-4" style="cursor:pointer;">
+		        <i class="bi bi-gear-wide-connected me-3"></i> 
+		        <span>사이트 관리</span> 
+		        <i class="bi bi-chevron-down ms-auto small"></i>
+		    </div>
+		    <div class="submenu nav flex-column">
+		        <a href="${pageContext.request.contextPath}/admin/site/report" class="nav-link sub-menu-item">신고 내역 관리</a>
+		        <a href="${pageContext.request.contextPath}/admin/site/banner" class="nav-link sub-menu-item">배너/팝업 관리</a>
+		        <a href="${pageContext.request.contextPath}/admin/site/component" class="nav-link sub-menu-item">UI 구성요소 관리</a>
+		    </div>
+		</div>
 
     </div>
 

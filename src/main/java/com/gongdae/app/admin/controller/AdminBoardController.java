@@ -9,12 +9,17 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/admin/chat/*")
+@RequestMapping("/admin/bbs/*")
 @Slf4j
-public class AdminChatController {
+public class AdminBoardController {
 	
-	@GetMapping("room")
-    public String handleChat() {
-        return "admin/chat/room"; 
+	@GetMapping("list")
+    public String handleList() {
+        return "admin/bbs/list"; 
+    }
+	
+	@GetMapping("notice")
+    public String handleNotice() {
+        return "admin/bbs/notice"; 
     }
 }
