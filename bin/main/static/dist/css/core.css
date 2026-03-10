@@ -92,6 +92,14 @@
   --surface-color: #ffffff;
 }
 
+.gray-background {
+  --background-color: #FAFAFA;
+  --default-color: #060606;
+  --heading-color: #060606;
+  --surface-color: #FAFAFA;
+  --contrast-color: #060606;
+}
+
 /* Smooth scroll */
 :root {
   scroll-behavior: smooth;

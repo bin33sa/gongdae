@@ -30,18 +30,70 @@
 <!-- 확장 검색 조건 섹션 -->
 <div class="search-advanced bg-white shadow">
   	<div class="container py-3">
-      	<form action="<c:url value='/space/search'/>" method="GET" class="row g-3 align-items-end">
-
-
-			<!-- 검색 버튼 -->
-			<div class="col-12 col-md-1 d-grid">
-				<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-					상세 검색
-				</button>
+  		<div class="d-flex flex-wrap align-items-end gap-3">
+			<!-- 정렬기준 -->
+			<div>
+				<label class="form-label">정렬 기준</label>
+				<select name="orderType" class="form-control">
+					<option value="" selected>별점높은순</option>
+					<option value="studio">후기많은순</option>
+					<option value="meeting">가격높은순</option>
+					<option value="party">가격낮은순</option>
+				</select>
+			</div>
+			<!-- 공간 종류 -->
+			<div>
+				<label class="form-label">공간 종류</label>
+				<select name="spaceType" class="form-control">
+					<option value="">전체</option>
+					<option value="studio">스튜디오</option>
+					<option value="meeting">회의실</option>
+					<option value="party">파티룸</option>
+					<option value="office">공유오피스</option>
+				</select>
 			</div>
 			
-
-      	</form>
+			<!-- 지역 -->
+			<div>
+			  	<label class="form-label">지역</label>
+			  	<select name="region" class="form-control">
+					<option value="">전체</option>
+					<option value="studio">서울</option>
+					<option value="meeting">경기</option>
+					<option value="party">파티룸</option>
+					<option value="office">공유오피스</option>
+				</select>
+			</div>
+			
+			<!-- 날짜 -->
+			<div>
+			  	<label class="form-label">날짜</label>
+			  	<input type="date" name="date" class="form-control">
+			</div>
+			
+			<!-- 시간 -->
+			<div>
+			  	<label class="form-label">시간</label>
+			  	<div class="d-flex gap-1">
+			    	<input type="time" name="startTime" class="form-control">
+			    	<span class="align-self-center">~</span>
+			    	<input type="time" name="endTime" class="form-control">
+			  	</div>
+			</div>
+			
+			<!-- 인원 -->
+			<div>
+			  	<label class="form-label">인원</label>
+			  	<input type="number" name="capacity" class="form-control" min="1">
+			</div>
+			
+			<!-- 가격 -->
+			<div>
+			  	<label class="form-label">가격</label>
+			  	<input type="number" name="priceMax" class="form-control" placeholder="최대">
+			</div>
+		</div>
+	
   	</div>
 </div>
 
@@ -52,7 +104,7 @@
 	
 	<!-- 프리미엄존 -->
 	<div class="section">
-		<div class="container">
+		<div class="container mt-5">
 	
 			<!-- 제목 -->
 			<div class="d-flex justify-content-between align-items-center mb-3">

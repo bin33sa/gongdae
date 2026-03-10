@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 
-<div id="footer" class="footer dark-background">
+<div id="footer" class="footer gray-background">
 	<div class="container footer-top">
 		<div class="row gy-4">
 			<div class="col-lg-4 col-md-6 footer-about">
@@ -46,14 +46,14 @@
 			</div>
 			
 			<div class="col-lg-4 col-md-12 footer-guide">
-				<h4>Our Newsletter</h4>
-				<p>SPRING 회원이 되시면 최신 정보 및 서비스 소식을 받아볼수 있습니다.</p>
+				<p>다양한 공간을 쉽고 빠르게 예약할 수 있는 공간 대여 플랫폼입니다.
+          		스튜디오, 회의실, 파티룸 등 원하는 공간을 검색하고 예약해보세요.</p>
 			</div>
 		</div>
 	</div>
 	
 	<div class="container copyright text-center mt-4">
-		<p><a href="${pageContext.request.contextPath}/admin/login"> © </a><span>Copyright</span> <strong class="px-1 sitename">SPRING</strong> <span>All Rights Reserved</span></p>
+		<p><a href="${pageContext.request.contextPath}/admin/login"> © </a><span>Copyright</span> <strong class="px-1 sitename">GongDaeSaeng</strong> <span>All Rights Reserved</span></p>
 	</div>
 </div>
 
