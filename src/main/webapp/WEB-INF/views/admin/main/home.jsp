@@ -5,7 +5,6 @@
 <html lang="ko">
 <head>
     <jsp:include page="/WEB-INF/views/admin/layout/headerResources.jsp"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/admin.css" type="text/css">
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
     <title>공대생 Admin - Dashboard</title>
 </head>
@@ -150,7 +149,7 @@
 
 <jsp:include page="/WEB-INF/views/admin/layout/footerResources.jsp"/>
 
-<script>
+<script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function() {
         
         var mainChart = echarts.init(document.getElementById('mainRevenueChart'));

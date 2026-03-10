@@ -4,7 +4,7 @@
 <aside class="admin-sidebar d-flex flex-column">
 
     <div class="px-4 py-4 fw-bold fs-4 text-white">
-        관리자 메뉴
+        <a href="/admin/main">관리자 메뉴</a>
     </div>
 
     <div class="sidebar-nav flex-grow-1 overflow-auto mt-2">
@@ -24,16 +24,16 @@
                 <i class="bi bi-chat-dots me-3"></i> 문의 채팅 <i class="bi bi-chevron-down ms-auto small"></i>
             </div>
             <div class="submenu nav flex-column">
-                <a href="/admin/chat/list" class="nav-link sub-menu-item">채팅 목록</a>
+                <a href="/admin/chat/room" class="nav-link sub-menu-item">채팅 목록</a>
             </div>
         </div>
 
         <div class="menu-group">
             <div class="menu-title menu-item d-flex align-items-center px-4" style="cursor:pointer;">
-                <i class="bi bi-people me-3"></i> 유저 회원 관리 <i class="bi bi-chevron-down ms-auto small"></i>
+                <i class="bi bi-people me-3"></i> 게스트 회원 관리 <i class="bi bi-chevron-down ms-auto small"></i>
             </div>
             <div class="submenu nav flex-column">
-                <a href="/admin/users/list" class="nav-link sub-menu-item">회원 목록</a>
+                <a href="/admin/guests/list" class="nav-link sub-menu-item">게스트 목록</a>
             </div>
         </div>
 

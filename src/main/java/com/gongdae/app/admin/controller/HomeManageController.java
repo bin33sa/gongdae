@@ -42,12 +42,5 @@ public class HomeManageController {
     public String handleHome() {
         return "admin/main/home"; 
     }
-
-    @GetMapping("sales/daily")
-    public String userList() {
-        return "admin/menu/list";
-    }
-	
-	
 	
 }
