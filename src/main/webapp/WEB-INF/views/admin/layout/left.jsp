@@ -89,3 +89,53 @@
     </div>
 
 </aside>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const groups = document.querySelectorAll('.menu-group');
+        const currentPath = window.location.pathname;
+        const STORAGE_KEY = 'admin_sidebar_state_v1';
+        let openIndices = [];
+        try {
+            openIndices = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            if (!Array.isArray(openIndices)) openIndices = [];
+        } catch(e) {
+            openIndices = [];
+        }
+
+        groups.forEach((group, index) => {
+            const title = group.querySelector('.menu-title');
+            const submenu = group.querySelector('.submenu');      
+            let isCurrentPage = false;
+            const links = group.querySelectorAll('.sub-menu-item');
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                if (currentPath.includes(href) && href !== "/" && href !== "") {
+                    link.classList.add('active');
+                    isCurrentPage = true;
+                }
+            });
+            let isOpen = isCurrentPage || openIndices.includes(index);
+            const render = () => {
+                if (isOpen) {
+                    group.classList.add('active');
+                    if (submenu) submenu.style.display = 'flex';
+                    if (!openIndices.includes(index)) openIndices.push(index);
+                } else {
+                    group.classList.remove('active');
+                    if (submenu) submenu.style.display = 'none';
+                    openIndices = openIndices.filter(i => i !== index);
+                }
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(openIndices));
+            };
+            render();
+            title.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation(); 
+                
+                isOpen = !isOpen; 
+                render();         
+            };
+        });
+    });
+</script>
