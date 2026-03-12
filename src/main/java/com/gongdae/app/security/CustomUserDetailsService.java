@@ -8,20 +8,20 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.gongdae.app.domain.dto.GuestDto;
+import com.gongdae.app.domain.dto.MemberDto;
 import com.gongdae.app.domain.dto.SessionInfo;
-import com.gongdae.app.service.GuestService;
+import com.gongdae.app.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-	private final GuestService memberService;
+	private final MemberService memberService;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		GuestDto member = memberService.findById(username);
+		MemberDto member = memberService.findById(username);
 		
 		if (member == null) {
 			throw new UsernameNotFoundException("아이디가 존재하지 않습니다.");
@@ -34,7 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		return toUserDetails(member, authorities);
 	}
 
-	private UserDetails toUserDetails(GuestDto member, List<String> authorities) {
+	private UserDetails toUserDetails(MemberDto member, List<String> authorities) {
 		SessionInfo info = SessionInfo.builder()
 				.member_id(member.getMember_id())
 				.login_id(member.getLogin_id())

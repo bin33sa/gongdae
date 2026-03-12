@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gongdae.app.common.RequestUtils;
-import com.gongdae.app.domain.dto.GuestDto;
+import com.gongdae.app.domain.dto.MemberDto;
 import com.gongdae.app.domain.dto.SessionInfo;
 import com.gongdae.app.security.LoginMemberUtil;
-import com.gongdae.app.service.GuestService;
+import com.gongdae.app.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +28,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping(value = "/member/*")
-public class GuestController {
-	private final GuestService service;
+public class MemberController {
+	private final MemberService service;
 	
 	@Value("${file.upload-root}/member")
 	private String uploadPath;
@@ -53,7 +53,7 @@ public class GuestController {
 	}
 	
 	@PostMapping("signup")
-	public String signupSubmit(GuestDto dto,
+	public String signupSubmit(MemberDto dto,
 			final RedirectAttributes rAttr,
 			Model model) {
 		 
@@ -93,7 +93,7 @@ public class GuestController {
 		// ID 중복 검사
 		String p = "false";
 		try {
-			GuestDto dto = service.findById(login_id);
+			MemberDto dto = service.findById(login_id);
 			if (dto == null) {
 				p = "true";
 			}
@@ -110,7 +110,7 @@ public class GuestController {
 		// 닉네임 중복 검사
 		String p = "false";
 		try {
-			GuestDto dto = service.findByNickname(nickname);
+			MemberDto dto = service.findByNickname(nickname);
 			if (dto == null) {
 				p = "true";
 			}
@@ -141,7 +141,7 @@ public class GuestController {
 			Model model) throws Exception {
 		
 		try {
-			GuestDto dto = service.findByNameAndEmail(name, email);
+			MemberDto dto = service.findByNameAndEmail(name, email);
 			
 			if(dto == null || dto.getEnabled() == 0) {
 				model.addAttribute("message", "등록된 아이디가 없습니다.");
@@ -193,7 +193,7 @@ public class GuestController {
 		
 		
 		try {
-			GuestDto dto = service.findByIdAndNameAndEmail(login_id, name, email);
+			MemberDto dto = service.findByIdAndNameAndEmail(login_id, name, email);
 			
 			if(dto == null || dto.getEnabled() == 0) {
 				model.addAttribute("message", "등록된 아이디가 없습니다.");

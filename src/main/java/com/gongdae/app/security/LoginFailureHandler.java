@@ -11,8 +11,8 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
-import com.gongdae.app.domain.dto.GuestDto;
-import com.gongdae.app.service.GuestService;
+import com.gongdae.app.domain.dto.MemberDto;
+import com.gongdae.app.service.MemberService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoginFailureHandler implements AuthenticationFailureHandler {
 	@Autowired
-	private GuestService memberService;
+	private MemberService memberService;
 	
 	private String defaultFailureUrl;
 	
@@ -43,7 +43,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 				}
 				
 				if(cnt >= 4) {
-					GuestDto dto = memberService.findById(login_id);
+					MemberDto dto = memberService.findById(login_id);
 					
 					Map<String, Object> map = new HashMap<>();
 					map.put("enabled", 0);

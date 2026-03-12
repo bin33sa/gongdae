@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class GuestDto {
+public class MemberDto {
 	private Long member_id;
 	private String login_id;
 	private String password;

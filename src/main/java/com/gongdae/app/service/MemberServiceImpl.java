@@ -8,10 +8,10 @@ import java.util.Objects;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.gongdae.app.domain.dto.GuestDto;
+import com.gongdae.app.domain.dto.MemberDto;
 import com.gongdae.app.mail.Mail;
 import com.gongdae.app.mail.MailService;
-import com.gongdae.app.mapper.GuestMapper;
+import com.gongdae.app.mapper.MemberMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,19 +19,19 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class GuestServiceImpl implements GuestService {
-	private final GuestMapper mapper;
+public class MemberServiceImpl implements MemberService {
+	private final MemberMapper mapper;
 	private final MailService mailService;
 	private final PasswordEncoder bcryptEncoder;
 	
 
 	@Override
-	public void insertMember(GuestDto dto, String uploadPath) throws Exception {
+	public void insertMember(MemberDto dto, String uploadPath) throws Exception {
 
 	}
 
 	@Override
-	public void insertMemberStatus(GuestDto dto) throws Exception {
+	public void insertMemberStatus(MemberDto dto) throws Exception {
 		try {
 			mapper.insertMemberStatus(dto);
 		} catch (Exception e) {
@@ -42,7 +42,7 @@ public class GuestServiceImpl implements GuestService {
 	}
 
 	@Override
-	public void updatePassword(GuestDto dto) throws Exception {
+	public void updatePassword(MemberDto dto) throws Exception {
 
 	}
 
@@ -58,7 +58,7 @@ public class GuestServiceImpl implements GuestService {
 	}
 
 	@Override
-	public void updateMember(GuestDto dto, String uploadPath) throws Exception {
+	public void updateMember(MemberDto dto, String uploadPath) throws Exception {
 
 	}
 
@@ -79,14 +79,14 @@ public class GuestServiceImpl implements GuestService {
 	}
 
 	@Override
-	public GuestDto findById(Long member_id) {
+	public MemberDto findById(Long member_id) {
 		
 		return null;
 	}
 
 	@Override
-	public GuestDto findById(String login_id) {
-		GuestDto dto = null;
+	public MemberDto findById(String login_id) {
+		MemberDto dto = null;
 
 		try {
 			dto = Objects.requireNonNull(mapper.findByLoginId(login_id));
@@ -99,8 +99,8 @@ public class GuestServiceImpl implements GuestService {
 	}
 	
 	@Override
-	public GuestDto findByNickname(String nickname) {
-		GuestDto dto = null;
+	public MemberDto findByNickname(String nickname) {
+		MemberDto dto = null;
 		
 		try {
 			dto = Objects.requireNonNull(mapper.findByNickname(nickname));
@@ -113,8 +113,8 @@ public class GuestServiceImpl implements GuestService {
 	}
 	
 	@Override
-	public GuestDto findByNameAndEmail(String name, String email) {
-		GuestDto dto = null;
+	public MemberDto findByNameAndEmail(String name, String email) {
+		MemberDto dto = null;
 		
 		try {
 			dto = Objects.requireNonNull(mapper.findByNameAndEmail(name, email));
@@ -127,8 +127,8 @@ public class GuestServiceImpl implements GuestService {
 	}
 
 	@Override
-	public GuestDto findByIdAndNameAndEmail(String login_id, String name, String email) {
-		GuestDto dto = null;
+	public MemberDto findByIdAndNameAndEmail(String login_id, String name, String email) {
+		MemberDto dto = null;
 		
 		try {
 			dto = Objects.requireNonNull(mapper.findByLoginIdAndNameAndEmail(login_id, name, email));
@@ -192,7 +192,7 @@ public class GuestServiceImpl implements GuestService {
 	}
 
 	@Override
-	public void findId(GuestDto dto) throws Exception {
+	public void findId(MemberDto dto) throws Exception {
 		try {
 	        
 			String result;
@@ -221,7 +221,7 @@ public class GuestServiceImpl implements GuestService {
 	}
 	
 	@Override
-	public void findPwd(GuestDto dto) throws Exception {
+	public void findPwd(MemberDto dto) throws Exception {
 		// 10 자리 임시 패스워드 생성
 		String lowercase = "abcdefghijklmnopqrstuvwxyz";
 		String uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -289,12 +289,12 @@ public class GuestServiceImpl implements GuestService {
 	}
 	
 	@Override
-	public void generatePwd(GuestDto dto) throws Exception {
+	public void generatePwd(MemberDto dto) throws Exception {
 
 	}
 
 	@Override
-	public List<GuestDto> listFindMember(Map<String, Object> map) {
+	public List<MemberDto> listFindMember(Map<String, Object> map) {
 		
 		return null;
 	}
@@ -313,17 +313,17 @@ public class GuestServiceImpl implements GuestService {
 	}
 
 	@Override
-	public void insertRefreshToken(GuestDto dto) throws Exception {
+	public void insertRefreshToken(MemberDto dto) throws Exception {
 
 	}
 
 	@Override
-	public void updateRefreshToken(GuestDto dto) throws Exception {
+	public void updateRefreshToken(MemberDto dto) throws Exception {
 
 	}
 
 	@Override
-	public GuestDto findByToken(String login_id) {
+	public MemberDto findByToken(String login_id) {
 
 		return null;
 	}
@@ -331,7 +331,7 @@ public class GuestServiceImpl implements GuestService {
 	@Override
 	public boolean isPasswordCheck(String login_id, String password) {
 		try {
-			GuestDto dto = Objects.requireNonNull(findById(login_id));
+			MemberDto dto = Objects.requireNonNull(findById(login_id));
 			
 			return bcryptEncoder.matches(password, dto.getPassword());
 		} catch (NullPointerException e) {

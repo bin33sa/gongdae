@@ -7,36 +7,36 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.gongdae.app.domain.dto.GuestDto;
+import com.gongdae.app.domain.dto.MemberDto;
 
 @Mapper
-public interface GuestMapper {
-	public GuestDto loginSnsMember(Map<String, Object> map);
+public interface MemberMapper {
+	public MemberDto loginSnsMember(Map<String, Object> map);
 
 	public Long memberSeq();	
-	public void insertMember1(GuestDto dto) throws SQLException;
-	public void insertMember2(GuestDto dto) throws SQLException;
-	public void insertMember12(GuestDto dto) throws SQLException;
-	public void insertSnsMember(GuestDto dto) throws SQLException;
-	public void insertMemberStatus(GuestDto dto) throws SQLException;
+	public void insertMember1(MemberDto dto) throws SQLException;
+	public void insertMember2(MemberDto dto) throws SQLException;
+	public void insertMember12(MemberDto dto) throws SQLException;
+	public void insertSnsMember(MemberDto dto) throws SQLException;
+	public void insertMemberStatus(MemberDto dto) throws SQLException;
 	
 	public void updateMemberEnabled(Map<String, Object> map) throws SQLException;
-	public void updateMemberPassword(GuestDto dto) throws SQLException;
+	public void updateMemberPassword(MemberDto dto) throws SQLException;
 	
-	public void updateMember1(GuestDto dto) throws SQLException;
-	public void updateMember2(GuestDto dto) throws SQLException;
+	public void updateMember1(MemberDto dto) throws SQLException;
+	public void updateMember2(MemberDto dto) throws SQLException;
 	public void deleteProfilePhoto(Map<String, Object> map) throws SQLException;
 
 	public void updateLastLogin(Long member_id) throws SQLException;
 	public void updateLastLoginId(String login_id) throws SQLException;
 	
-	public GuestDto findById(Long member_id);
-	public GuestDto findByLoginId(String login_id);
-	public GuestDto findByNickname(String nickname);
-	public GuestDto findByNameAndEmail(
+	public MemberDto findById(Long member_id);
+	public MemberDto findByLoginId(String login_id);
+	public MemberDto findByNickname(String nickname);
+	public MemberDto findByNameAndEmail(
 			@Param("name") String name, 
 			@Param("email") String email);
-	public GuestDto findByLoginIdAndNameAndEmail(
+	public MemberDto findByLoginIdAndNameAndEmail(
 			@Param("login_id") String login_id,
 			@Param("name") String name,
 			@Param("email") String email);
@@ -49,14 +49,14 @@ public interface GuestMapper {
 	public void deleteMember1(Map<String, Object> map) throws SQLException;
 	public void deleteMember2(Map<String, Object> map) throws SQLException;
 	
-	public List<GuestDto> listFindMember(Map<String, Object> map);
+	public List<MemberDto> listFindMember(Map<String, Object> map);
 	
-	public void insertAuthority(GuestDto dto) throws SQLException;
+	public void insertAuthority(MemberDto dto) throws SQLException;
 	public void deleteAuthority(Map<String, Object> map) throws SQLException;
 	public String findByAuthority(String login_id);
 	
-	public void insertRefreshToken(GuestDto dto) throws SQLException;
-	public void updateRefreshToken(GuestDto dto) throws SQLException;
+	public void insertRefreshToken(MemberDto dto) throws SQLException;
+	public void updateRefreshToken(MemberDto dto) throws SQLException;
 	public void deleteRefreshToken(String login_id) throws SQLException;
-	public GuestDto findByToken(String login_id);	
+	public MemberDto findByToken(String login_id);	
 }
