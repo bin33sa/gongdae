@@ -29,7 +29,8 @@ public class SpringSecurityConfig {
 	            "/member/userIdCheck", "/complete", "/member/findId", "/member/findPwd", "/member/expired", "/dist/**",
 	            "/js/**", "/vendor/**","/favicon.ico","/guest/main", "/guest/list", "/uploads/photo/**", "/favicon.ico", "/WEB-INF/views/**",
 	            "/oauth/kakao/callback", "/host/main/prelogin", "/host/member/login", "/admin/login",
-	            "/wish/*", "/reservation/*", "/review/*", "/terms"};
+	            "/wish/*", "/reservation/*", "/review/*", "/terms", 
+	            "/dist/docs/*"};
 				
 
 		http.cors(Customizer.withDefaults()) 

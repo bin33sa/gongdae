@@ -1,152 +1,333 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>새 공간 등록 - 공대생 호스트 센터</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <title>공간 등록 관리 - 공대생 호스트</title>
+    
+    <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
     
     <style>
-        body { background-color: #f4f6f9; font-family: 'Pretendard', sans-serif; }
         :root {
-            --host-primary: #E53935; /* 호스트 전용 붉은색 */
-            --host-hover: #c62828;
+            --host-primary: #E53935;
+            --host-bg: #f4f6f9;
+        }
+        
+        body { 
+            background-color: var(--host-bg); 
+            font-family: 'Pretendard', sans-serif; 
         }
 
-        .form-container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
-        .page-title { font-size: 1.5rem; font-weight: bold; color: #333; margin-bottom: 24px; }
-        
-        /* 섹션 카드 스타일 */
-        .section-card {
-            background: #fff;
-            border-radius: 12px;
+        /* 공통 플랫 박스 (그림자 제거, 상단 적색 엣지) */
+        .host-flat-box {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-top: 4px solid var(--host-primary);
+            border-radius: 6px;
             padding: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            border: none;
-            margin-bottom: 24px;
+            height: 100%;
         }
-        .section-title {
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 12px;
-            margin-bottom: 20px;
-            color: #222;
+
+        /* 좌측: 신청 현황 리스트 스타일 */
+        .status-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .status-item {
+            border: 1px solid #eee;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #fafafa;
+        }
+        .status-item.active {
+            background-color: #fffafa; /* 활성화된 항목은 옅은 붉은색 */
+            border-color: var(--host-primary);
         }
         
-        /* 폼 요소 스타일 */
-        .form-label { font-weight: 500; font-size: 0.95rem; color: #444; }
-        .form-control, .form-select { border-radius: 8px; padding: 10px 15px; }
+        /* 뱃지 커스텀 */
+        .badge-pending { background-color: #ffebee; color: #d32f2f; font-weight: normal; border: 1px solid #ffcdd2;}
+        .badge-approved { background-color: #e8f5e9; color: #388e3c; font-weight: normal; border: 1px solid #c8e6c9;}
+        .badge-rejected { background-color: #f5f5f5; color: #616161; font-weight: normal; border: 1px solid #e0e0e0;}
+
+        /* 폼 입력 컨트롤 엣지 스타일 */
+        .form-control, .form-select {
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            padding: 10px 15px;
+        }
         .form-control:focus, .form-select:focus {
             border-color: var(--host-primary);
-            box-shadow: 0 0 0 0.2rem rgba(229, 57, 53, 0.25);
+            box-shadow: none;
         }
-        .required::after { content: ' *'; color: var(--host-primary); }
+        
+        .form-label {
+            font-weight: 600;
+            color: #444;
+            font-size: 0.95rem;
+        }
 
-        /* 하단 고정 버튼 영역 */
-        .bottom-bar {
-            background-color: #fff;
-            padding: 15px 0;
-            border-top: 1px solid #ddd;
-            position: sticky;
-            bottom: 0;
-            z-index: 100;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-        }
-        .btn-submit {
+        /* 등록 신청 버튼 */
+        .btn-host-submit {
             background-color: var(--host-primary);
-            color: #fff;
+            color: white;
             font-weight: bold;
-            padding: 12px 40px;
-            border-radius: 8px;
+            padding: 12px 30px;
+            border-radius: 4px;
             border: none;
+            transition: background-color 0.2s;
         }
-        .btn-submit:hover { background-color: var(--host-hover); color: #fff; }
+        .btn-host-submit:hover {
+            background-color: #c62828;
+            color: white;
+        }
     </style>
 </head>
 <body>
 
+<header>
     <jsp:include page="/WEB-INF/views/host/layout/header.jsp"/>
+</header>
 
-    <main class="form-container">
-        <h2 class="page-title"><i class="bi bi-shop"></i> 새 공간 등록 (디자인 확인용)</h2>
+<main class="container mt-5 mb-5">
+    
+    <div class="mb-4">
+        <h3 class="fw-bold" style="color: #333;">공간 등록 및 관리</h3>
+        <p class="text-muted">새로운 공간을 등록하고, 검수 진행 상황을 확인할 수 있습니다.</p>
+    </div>
 
-        <form action="#" method="post" enctype="multipart/form-data">
-            
-            <div class="section-card">
-                <h3 class="section-title">1. 공간 기본 정보</h3>
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <form action="<c:url value='/host/space/write'/>" method="post" enctype="multipart/form-data">
                 
-                <div class="mb-3">
-                    <label for="spaceName" class="form-label required">공간명</label>
-                    <input type="text" class="form-control" id="spaceName" name="spaceName" placeholder="예) 홍대 루프탑 감성 파티룸" required>
+                <div class="host-flat-box mb-4">
+                    <h5 class="fw-bold mb-4 border-bottom pb-2" style="color: var(--host-primary);">1. 공간 기본 정보 및 정산</h5>
+                    
+                    <div class="row mb-3 g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">카테고리 <span class="text-danger">*</span></label>
+                            <select name="categoryNo" class="form-select" required>
+                                <option value="" selected disabled>선택</option>
+                                <option value="1">파티룸</option>
+                                <option value="2">스터디룸</option>
+                                <option value="3">연습실</option>
+                            </select>
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-label">공간명 <span class="text-danger">*</span></label>
+                            <input type="text" name="spaceName" class="form-control" placeholder="예) 하루클래스 강남점" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">사업자 등록번호 <span class="text-danger">*</span></label>
+                            <input type="text" name="bizRegNum" class="form-control" placeholder="000-00-00000" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">지역 분류 <span class="text-danger">*</span></label>
+                            <input type="text" name="region" class="form-control" placeholder="예) 강남구" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">주소 <span class="text-danger">*</span></label>
+                        <div class="d-flex gap-2 mb-2">
+                            <input type="text" name="address" class="form-control" placeholder="도로명/지번 주소" required >
+                            <button type="button" class="btn btn-outline-secondary" style="white-space: nowrap;">주소 검색</button>
+                        </div>
+                        <input type="text" name="detailAddr" class="form-control" placeholder="상세 주소 (예: 2층 201호)">
+                    </div>
+
+                    <div class="p-3 bg-light border rounded">
+                        <h6 class="fw-bold mb-3"><i class="bi bi-wallet2 me-1"></i> 정산 계좌 정보</h6>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label small">은행명</label>
+                                <input type="text" name="bankName" class="form-control" required placeholder="예) 신한은행">
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label small">계좌번호</label>
+                                <input type="text" name="accountNo" class="form-control" required placeholder="'-' 제외 입력">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label small">예금주</label>
+                                <input type="text" name="accountHolder" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="category" class="form-label required">공간 유형 (카테고리)</label>
-                    <select class="form-select" id="category" name="category" required>
-                        <option value="" selected disabled>카테고리를 선택해주세요</option>
-                        <option value="PARTY">파티룸</option>
-                        <option value="STUDY">스터디룸</option>
-                        <option value="PRACTICE">연습실</option>
-                        <option value="STUDIO">촬영스튜디오</option>
-                    </select>
+                <div class="host-flat-box mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+                        <h5 class="fw-bold m-0" style="color: var(--host-primary);">2. 세부 룸(Room) 정보</h5>
+                        <button type="button" class="btn btn-sm btn-outline-host" onclick="addUnit()">
+                            <i class="bi bi-plus-circle me-1"></i> 룸 추가하기
+                        </button>
+                    </div>
+                    
+                    <div id="unitContainer">
+                        <div class="unit-box border rounded p-4 mb-3 position-relative" style="background-color: #fcfcfc;">
+                            <h6 class="fw-bold mb-3" style="color: #333;">룸 #1</h6>
+                            
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small">룸 이름 <span class="text-danger">*</span></label>
+                                    <input type="text" name="unitTitles" class="form-control" placeholder="예) A룸 (최대 4인)" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label small">시간당 가격 <span class="text-danger">*</span></label>
+                                    <input type="number" name="pricePerHours" class="form-control" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label small">최대 인원 <span class="text-danger">*</span></label>
+                                    <input type="number" name="maxCapacities" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label small">최소 이용시간 <span class="text-danger">*</span></label>
+                                    <input type="number" name="minHours" class="form-control" placeholder="예) 2" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small">취소 기준(시간) <span class="text-danger">*</span></label>
+                                    <input type="number" name="cancelLimitHrs" class="form-control" placeholder="예) 24" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small">청소 보증금 <span class="text-danger">*</span></label>
+                                    <input type="number" name="cleaningFees" class="form-control" placeholder="예) 5000" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label small">룸 썸네일 이미지 <span class="text-danger">*</span></label>
+                                <input type="file" name="unitThumbnailFiles" class="form-control" accept="image/*" required>
+                            </div>
+
+                            <div>
+                                <label class="form-label small">룸 상세 설명</label>
+                                <textarea name="descriptions" class="form-control" rows="3" placeholder="해당 룸의 특징이나 주의사항을 적어주세요."></textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="oneLineIntro" class="form-label required">한줄 소개</label>
-                    <input type="text" class="form-control" id="oneLineIntro" name="oneLineIntro" placeholder="공간의 매력을 한 줄로 어필해보세요." required>
+                <div class="host-flat-box mb-4">
+                    <h5 class="fw-bold mb-4 border-bottom pb-2" style="color: var(--host-primary);">3. 공간 이미지 및 옵션</h5>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">공간 전체를 보여줄 추가 이미지 (다중 선택 가능)</label>
+                        <input type="file" name="addFiles" class="form-control" multiple accept="image/*">
+                        <div class="form-text">여러 장을 한 번에 드래그하여 선택할 수 있습니다.</div>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label d-block mb-3">제공되는 편의시설 (다중 선택)</label>
+                        <div class="d-flex flex-wrap gap-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="optionNos" value="1" id="opt1">
+                                <label class="form-check-label" for="opt1"><i class="bi bi-wifi me-1"></i> WiFi</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="optionNos" value="2" id="opt2">
+                                <label class="form-check-label" for="opt2"><i class="bi bi-projector me-1"></i> 프로젝터</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="optionNos" value="3" id="opt3">
+                                <label class="form-check-label" for="opt3"><i class="bi bi-easel me-1"></i> 화이트보드</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="optionNos" value="4" id="opt4">
+                                <label class="form-check-label" for="opt4"><i class="bi bi-p-circle me-1"></i> 주차가능</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="description" class="form-label required">상세 설명</label>
-                    <textarea class="form-control" id="description" name="description" rows="6" placeholder="공간에 대한 자세한 설명을 적어주세요." required></textarea>
-                </div>
-            </div>
-
-            <div class="section-card">
-                <h3 class="section-title">2. 이용 및 요금 정보</h3>
+                <sec:csrfInput/>
                 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="maxCapacity" class="form-label required">최대 수용 인원 (명)</label>
-                        <input type="number" class="form-control" id="maxCapacity" name="maxCapacity" min="1" placeholder="예) 6" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="pricePerHour" class="form-label required">시간당 요금 (원)</label>
-                        <input type="number" class="form-control" id="pricePerHour" name="pricePerHour" step="1000" min="0" placeholder="예) 15000" required>
-                    </div>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-lg btn-host-submit w-100 fs-5 py-3 shadow-sm">
+                        <i class="bi bi-check-circle me-2"></i> 공간 등록 신청 완료
+                    </button>
                 </div>
 
-                <div class="mb-3">
-                    <label for="address" class="form-label required">공간 위치 (주소)</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="address" name="address" placeholder="주소를 입력해주세요" required readonly>
-                        <button class="btn btn-outline-secondary" type="button" id="btnSearchAddress">주소 검색</button>
-                    </div>
-                </div>
-            </div>
+            </form>
+        </div>
+</div>
 
-            <div class="section-card">
-                <h3 class="section-title">3. 공간 사진 등록</h3>
-                <p class="text-muted small">공간의 매력을 잘 보여줄 수 있는 밝고 선명한 사진을 올려주세요. (최대 5장)</p>
+</main>
+
+<footer>
+    <jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
+</footer>
+<jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
+<script>
+    let unitCount = 1;
+
+    function addUnit() {
+        unitCount++;
+        const container = document.getElementById('unitContainer');
+        
+       
+        const html = `
+            <div class="unit-box border rounded p-4 mb-3 position-relative mt-3" style="background-color: #fcfcfc;">
+                <button type="button" class="btn btn-sm btn-outline-danger position-absolute" style="top: 15px; right: 15px;" onclick="this.parentElement.remove()">
+                    <i class="bi bi-trash"></i> 삭제
+                </button>
                 
+                <h6 class="fw-bold mb-3" style="color: #333;">룸 #\${unitCount}</h6>
+                
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label small">룸 이름 <span class="text-danger">*</span></label>
+                        <input type="text" name="unitTitles" class="form-control" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small">시간당 가격 <span class="text-danger">*</span></label>
+                        <input type="number" name="pricePerHours" class="form-control" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small">최대 인원 <span class="text-danger">*</span></label>
+                        <input type="number" name="maxCapacities" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label small">최소 이용시간 <span class="text-danger">*</span></label>
+                        <input type="number" name="minHours" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small">취소 기준(시간) <span class="text-danger">*</span></label>
+                        <input type="number" name="cancelLimitHrs" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small">청소 보증금 <span class="text-danger">*</span></label>
+                        <input type="number" name="cleaningFees" class="form-control" required>
+                    </div>
+                </div>
+
                 <div class="mb-3">
-                    <label for="spaceImages" class="form-label required">대표 및 추가 이미지</label>
-                    <input class="form-control" type="file" id="spaceImages" name="spaceImages" accept="image/*" multiple required>
+                    <label class="form-label small">룸 썸네일 이미지 <span class="text-danger">*</span></label>
+                    <input type="file" name="unitThumbnailFiles" class="form-control" accept="image/*" required>
+                </div>
+
+                <div>
+                    <label class="form-label small">룸 상세 설명</label>
+                    <textarea name="descriptions" class="form-control" rows="3"></textarea>
                 </div>
             </div>
+        `;
+        
+        container.insertAdjacentHTML('beforeend', html);
+    }
+</script>
 
-            <div class="bottom-bar text-center mt-4">
-                <button type="button" class="btn btn-light me-2 px-4 border" onclick="history.back()">취소</button>
-                <button type="button" class="btn btn-submit" onclick="alert('디자인 테스트 화면입니다!')">등록 완료하기</button>
-            </div>
-
-        </form>
-    </main>
 
 </body>
 </html>

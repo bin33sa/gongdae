@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gongdae.app.mapper.SpaceManageMapper">
+
+    <select id="spaceSeq" resultType="long">
+        SELECT SEQ_SPACE.NEXTVAL FROM DUAL
+    </select>
+
+    <insert id="insertSpace" parameterType="com.gongdae.app.domain.dto.SpaceManageDTO">
+        INSERT INTO SPACE (
+            SPACE_NO, HOST_ID, CATEGORY_NO, ADMIN_ID, SPACE_NAME, 
+            BIZ_REG_NUM, ADDRESS, DETAIL_ADDR, REGION, 
+            BANK_NAME, ACCOUNT_NO, ACCOUNT_HOLDER, CREATED_AT
+        ) VALUES (
+            #{spaceNo}, 
+            #{hostId}, 
+            #{categoryNo}, 
+            #{adminId, jdbcType=NUMERIC}, 
+            #{spaceName}, 
+            #{bizRegNum}, 
+            #{address}, 
+            #{detailAddr, jdbcType=VARCHAR}, 
+            #{region}, 
+            #{bankName}, 
+            #{accountNo}, 
+            #{accountHolder}, 
+            SYSDATE
+        )
+    </insert>
+
+    <insert id="insertSpaceApproval" parameterType="long">
+        INSERT INTO SPACE_APPROVAL (
+            APPROVAL_NO, SPACE_NO, ADMIN_ID, STATUS, CREATED_AT
+        ) VALUES (
+            SEQ_SPACE_APPROVAL.NEXTVAL, 
+            #{spaceNo}, 
+            1, 
+            'PENDING', 
+            SYSDATE
+        )
+    </insert>
+
+    <insert id="insertSpaceOption" parameterType="com.gongdae.app.domain.dto.SpaceManageDTO">
+        INSERT INTO SPACE_OPTION_MAPPING (
+            SPACE_NO, OPTION_NO
+        ) VALUES (
+            #{spaceNo}, #{optionNo}
+        )
+    </insert>
+
+    <select id="spaceUnitSeq" resultType="long">
+        SELECT SEQ_SPACE_UNIT.NEXTVAL FROM DUAL
+    </select>
+
+    <insert id="insertSpaceUnit" parameterType="com.gongdae.app.domain.dto.SpaceManageDTO">
+        INSERT INTO SPACE_UNIT (
+            UNIT_NO, SPACE_NO, TITLE, PRICE_PER_HOUR, 
+            MAX_CAPACITY, DESCRIPTION, THUMBNAIL_URL, CREATED_AT
+        ) VALUES (
+            #{unitNo}, 
+            #{spaceNo}, 
+            #{unitTitle}, 
+            #{pricePerHour}, 
+            #{maxCapacity}, 
+            #{description}, 
+            #{thumbnailUrl, jdbcType=VARCHAR},
+            SYSDATE
+        )
+    </insert>
+
+    <insert id="insertSpacePolicy" parameterType="com.gongdae.app.domain.dto.SpaceManageDTO">
+        INSERT INTO SPACE_POLICY (
+            POLICY_NO, UNIT_NO, MIN_HOURS, CANCEL_LIMIT_HR, CLEANING_FEE
+        ) VALUES (
+            SEQ_SPACE_POLICY.NEXTVAL, 
+            #{unitNo}, 
+            #{minHour}, 
+            #{cancelLimitHr}, 
+            #{cleaningFee}
+        )
+    </insert>
+
+    <insert id="insertSpaceFile" parameterType="com.gongdae.app.domain.dto.SpaceManageDTO">
+        INSERT INTO SPACE_IMAGE (
+            IMAGE_NO, UNIT_NO, FILE_URL, SORT_ORDER, CREATED_AT
+        ) VALUES (
+            SEQ_SPACE_IMAGE.NEXTVAL, 
+            #{unitNo}, 
+            #{fileUrl}, 
+            #{sortOrder}, 
+            SYSDATE
+        )
+    </insert>
+
+</mapper>

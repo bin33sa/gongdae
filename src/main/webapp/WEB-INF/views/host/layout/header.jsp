@@ -4,109 +4,111 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <style>
-    /* 스페이스클라우드 테마 및 헤더 전용 스타일 */
+    /* 호스트 테마: 붉은색 포인트 컬러 (#E53935), 그림자(Shadow) 제거 */
     :root {
-       /* 로고에서 추출한 메인 파란색 */
-        --main-color: #1C6296; 
-        /* 로고 안의 창문 불빛 노란색 (나중에 버튼이나 호버 효과에 포인트로 쓰기 좋습니다) */
-        --point-color: #F8D153;
+        --host-primary: #E53935; 
     }
     
-    .header {
-        background-color: #fff;
-        border-bottom: 1px solid #eee;
+    .host-header {
+        background-color: #ffffff;
+        border-bottom: 2px solid var(--host-primary); /* 하단 적색 엣지 포인트 */
         height: 80px; 
     }
     
-    .sitename {
-        font-size: 24px;
+    .host-logo-text {
+        color: var(--host-primary);
+        font-size: 1.2rem;
         font-weight: bold;
-        color: var(--main-color);
-        letter-spacing: -1px;
-    }
-    .dot { color: #333; }
-
-    /* 중앙 검색창 스타일 */
-    .search-bar {
-        flex: 1;
-        max-width: 400px;
-        position: relative;
-    }
-    .search-bar input {
-        width: 100%;
-        padding: 10px 20px;
-        border: 2px solid var(--main-color);
-        border-radius: 30px;
-        outline: none;
-        font-size: 15px;
+        letter-spacing: -0.5px;
+        margin-left: 8px;
     }
 
-    /* 우측 유저 메뉴 스타일 */
-    .user-menu {
+    /* 플랫 디자인 네비게이션 */
+    .host-nav-link {
+        color: #555;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 16px;
+        padding: 8px 12px;
+        transition: color 0.2s;
+    }
+    .host-nav-link:hover, .host-nav-link.active {
+        color: var(--host-primary); 
+        border-bottom: 2px solid var(--host-primary); /* 마우스 호버 시 글자 아래 엣지 */
+    }
+    
+    /* 우측 유저 메뉴 */
+    .host-user-menu {
         display: flex;
         gap: 20px;
         font-size: 14px;
         font-weight: 500;
         align-items: center;
     }
-    .user-menu a {
+    .host-user-menu a {
         text-decoration: none;
         color: #333;
         transition: color 0.2s;
     }
-    .user-menu a:hover {
-        color: var(--main-color);
+    .host-user-menu a:hover {
+        color: var(--host-primary);
     }
-    .host-btn {
-        color: var(--main-color) !important;
+    
+    /* 테두리만 있는 플랫 버튼 */
+    .btn-outline-host {
+        background-color: transparent;
+        color: var(--host-primary) !important;
+        border: 1px solid var(--host-primary);
+        border-radius: 4px;
+        padding: 6px 16px;
         font-weight: bold;
+        transition: background-color 0.2s;
+    }
+    .btn-outline-host:hover {
+        background-color: #fff8f8;
     }
 </style>
 
-<div id="header" class="header d-flex align-items-center sticky-top">
+<div id="host-header" class="host-header d-flex align-items-center sticky-top">
     <div class="container position-relative d-flex align-items-center justify-content-between w-100">
         
         <div class="d-flex align-items-center gap-3">
             <a class="btn border-0 p-0 text-dark" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
                 <i class="bi bi-list fs-3"></i>
             </a>
-            <a href="<c:url value='/' />" class="logo d-flex align-items-center text-decoration-none">
-               <img src="<c:url value='/dist/images/gds.PNG' />" alt="HaruClass 로고" style="max-height: 40px; width: auto;">
+            <a href="<c:url value='/host/main'/>" class="d-flex align-items-center text-decoration-none">
+               <img src="<c:url value='/dist/images/gds.PNG' />" alt="로고" style="max-height: 40px; width: auto;">
+               <span class="host-logo-text">| 호스트 센터</span>
             </a>
         </div>
 
-        <div class="search-bar d-none d-md-block mx-4">
-            <form action="<c:url value='/search'/>" method="GET">
-                <input type="text" name="keyword" placeholder="지역, 공간 유형, 공간명 검색">
-            </form>
-        </div>
-
-        <div class="user-menu">
+        <div class="d-none d-md-flex flex-grow-1 justify-content-center">
             <sec:authorize access="isAnonymous()">
-                <a href="<c:url value='${pageContext.request.contextPath}/host/member/login'/>">로그인</a>
-                <a href="<c:url value='/host/signup'/>">회원가입</a>
-                <a href="<c:url value='/'/>" class="host-btn">공간 등록하기</a>
-            </sec:authorize>
-
-            <sec:authorize access="hasRole('ROLE_GUEST')">
-                <a href="<c:url value='/mypage'/>">마이페이지</a>
-                <form action="<c:url value='/logout'/>" method="post" class="d-inline m-0">
-                    <button type="submit" class="btn btn-link p-0 text-decoration-none text-dark" style="font-size:14px; font-weight:500;">로그아웃</button>
-                    <sec:csrfInput/>
-                </form>
-            </sec:authorize>
-
-            <sec:authorize access="hasRole('ROLE_HOST')">
-                <a href="<c:url value='/host/center'/>" class="host-btn">호스트 센터</a>
-                <a href="<c:url value='/mypage'/>">마이페이지</a>
-                <form action="<c:url value='/logout'/>" method="post" class="d-inline m-0">
-                    <button type="submit" class="btn btn-link p-0 text-decoration-none text-dark" style="font-size:14px; font-weight:500;">로그아웃</button>
-                    <sec:csrfInput/>
-                </form>
+                <span class="fs-5 fw-bold" style="color: var(--host-primary);">공대생 <span class="text-dark fw-normal">| 공간 대여가 생각날 때</span></span>
             </sec:authorize>
             
-            <sec:authorize access="hasRole('ROLE_ADMIN')">
-                <a href="<c:url value='/admin/dashboard'/>">관리자 페이지</a>
+            <sec:authorize access="isAuthenticated()">
+                <nav class="d-inline-flex gap-3">
+                    <a href="<c:url value='/host/main'/>" class="host-nav-link active">메인화면</a>
+                    <a href="#" class="host-nav-link">상세매출</a>
+                    <a href="#" class="host-nav-link">예약내역</a>
+                    <a href="#" class="host-nav-link">문의 답변</a>
+                    <a href="#" class="host-nav-link">매장 관리</a>
+                    <a href="<c:url value='/host/space/register'/>" class="host-nav-link">매장등록</a>
+                    <a href="#" class="host-nav-link">공지사항</a>
+                </nav>
+            </sec:authorize>
+        </div>
+
+        <div class="host-user-menu">
+            <sec:authorize access="isAnonymous()">
+                <a href="<c:url value='/'/>" class="text-muted"><i class="bi bi-house-door"></i> 유저홈페이지</a>
+                <a href="<c:url value='/member/login'/>" class="btn-outline-host">로그인</a>
+            </sec:authorize>
+
+            <sec:authorize access="isAuthenticated()">
+                <a href="<c:url value='/'/>" class="text-muted"><i class="bi bi-house-door"></i> 유저홈페이지</a>
+                <a href="#">호스트 정보수정</a>
                 <form action="<c:url value='/logout'/>" method="post" class="d-inline m-0">
                     <button type="submit" class="btn btn-link p-0 text-decoration-none text-dark" style="font-size:14px; font-weight:500;">로그아웃</button>
                     <sec:csrfInput/>
@@ -114,7 +116,6 @@
             </sec:authorize>
         </div>
         
-        <i class="mobile-nav-toggle d-xl-none bi bi-list" style="display:none"></i>
     </div>
 </div>
 
