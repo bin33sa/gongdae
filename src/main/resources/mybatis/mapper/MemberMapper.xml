@@ -134,7 +134,7 @@
 	    WHERE m1.name = #{name}
 	</select>
 
-	<select id="findByLoginId" resultType="com.gongdae.app.domain.dto.MemberDto">
+	<select id="findByLoginIdAndNameAndEmail" resultType="com.gongdae.app.domain.dto.MemberDto">
 	    SELECT 
 	        m1.member_id, 
 	        m1.login_id, 
