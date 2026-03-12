@@ -1,14 +1,16 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<div class="admin-header">
+<header class="admin-header">
     <div class="admin-logo">
-        공간대여 관리자
+        공대생 관리자 
     </div>
 
     <div class="admin-user-area">
-        <span><i class="bi bi-person-circle"></i> 관리자</span>
-        <a href="${pageContext.request.contextPath}/logout" class="admin-logout">
-            로그아웃
+        <span><strong><sec:authentication property="principal.member.name"/></strong> 관리자님</span>
+        
+        <a href="${pageContext.request.contextPath}/member/logout" class="admin-logout">
+            <i class="bi bi-box-arrow-right"></i> 로그아웃
         </a>
     </div>
-</div>
+</header>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gongdae.app.admin.mapper.GuestManageMapper">
+	<sql id="where-list">
+	    <choose>
+	        <when test="schType == 'login_id'">
+	            ( INSTR(m.login_id, #{kwd}) &gt;= 1 )
+	        </when>
+	        <when test="schType == 'member_id'">
+	            m.member_id = #{kwd}
+	        </when>
+	        <otherwise>
+	            INSTR(${schType}, #{kwd}) &gt;= 1
+	        </otherwise>
+	    </choose>
+	</sql>
+	
+	<select id="listMember" parameterType="map" resultType="com.gongdae.app.admin.domain.dto.GuestManageDto">
+	    SELECT m.member_id, m.login_id, m.enabled, 
+	        m.created_at, m.update_at, m.last_login, g.nickname,
+	        g.name, g.email, g.phone, g.point, g.grade,
+	        TO_CHAR(g.birth, 'YYYY-MM-DD') birth,
+	        g.PROFILE_IMAGE_URL as profile_photo
+	    FROM member m
+	    LEFT OUTER JOIN guest_detail g ON m.member_id = g.member_id 
+	    JOIN memberAuthority ma ON m.login_id = ma.login_id 
+	    <where>
+	        AND ma.authority = 'GUEST'
+	        
+	        <if test="kwd != null and kwd !='' ">
+	            AND <include refid="where-list"/>
+	        </if>
+	        <if test="enabled != null and enabled != '' ">
+	            AND m.enabled = #{enabled}
+	        </if>
+	    </where> 
+	    ORDER BY m.created_at DESC
+	    OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+	</select>
+	
+	<select id="dataCount" parameterType="map" resultType="Integer">
+	    SELECT COUNT(*)
+	    FROM member m
+	    JOIN memberAuthority ma ON m.login_id = ma.login_id
+	    <where>
+	        AND ma.authority = 'GUEST'
+	        <if test="kwd != null and kwd != '' ">
+	            AND <include refid="where-list"/>
+	        </if>
+	        <if test="enabled != null and enabled != ''">
+	            AND m.enabled = #{enabled}
+	        </if>
+	    </where> 
+	</select>
+</mapper>
