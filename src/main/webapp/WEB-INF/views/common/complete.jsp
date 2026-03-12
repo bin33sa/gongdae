@@ -32,8 +32,9 @@
 						</div>
 	                    
 						<div>
-							<button type="button" class="btn-accent btn-lg w-100" onclick="location.href='${pageContext.request.contextPath}/';">
-								메인화면 <i class="bi bi-check2"></i>
+							<button type="button" class="btn-accent btn-lg w-100" 
+								onclick="location.href='${pageContext.request.contextPath}/${path == null || path == '' ? '' : path}';">
+								${btnText == null || btnText == '' ? '메인화면' : btnText}<i class="bi bi-check2"></i>
 							</button>	                    
 						</div>
 					</div>

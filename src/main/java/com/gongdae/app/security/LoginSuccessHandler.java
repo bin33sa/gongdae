@@ -14,8 +14,8 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 
-import com.gongdae.app.domain.dto.MemberDto;
-import com.gongdae.app.service.MemberService;
+import com.gongdae.app.domain.dto.GuestDto;
+import com.gongdae.app.service.GuestService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,7 +29,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	private String defaultAdminUrl = "/admin";
 
 	@Autowired
-	private MemberService memberService;
+	private GuestService memberService;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -38,7 +38,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		try {
 			memberService.updateLastLogin(authentication.getName());
 
-			MemberDto dto = memberService.findById(authentication.getName());
+			GuestDto dto = memberService.findById(authentication.getName());
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			LocalDateTime currentDateTime = LocalDateTime.now();

@@ -44,11 +44,7 @@
 							<div class="col-12 text-center">
 								<button type="button" class="btn-accent btn-lg w-100" onclick="sendLogin();">&nbsp;Login&nbsp;<i class="bi bi-check2"></i></button>
 							</div>
-							<div class="col-12 d-flex justify-content-between">
-								<button type="button" class="btn-light flex-fill me-2"><i class="bi bi-chat-fill kakao-icon"></i> 카카오</button>
-								<button type="button" class="btn-light flex-fill me-2"><span class="naver-icon">N</span> 네이버</button>
-								<button type="button" class="btn-light flex-fill"><i class="bi bi-google google-icon"></i> 구 글</button>
-							</div>
+							
 						</form>
 	                    
 						<div>

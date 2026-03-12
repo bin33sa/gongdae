@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gongdae.app.common.RequestUtils;
-import com.gongdae.app.domain.dto.MemberDto;
-import com.gongdae.app.service.MemberService;
+import com.gongdae.app.domain.dto.GuestDto;
+import com.gongdae.app.domain.dto.SessionInfo;
+import com.gongdae.app.security.LoginMemberUtil;
+import com.gongdae.app.service.GuestService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +28,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping(value = "/member/*")
-public class MemberController {
-	private final MemberService service;
+public class GuestController {
+	private final GuestService service;
 	
 	@Value("${file.upload-root}/member")
 	private String uploadPath;
@@ -51,7 +53,7 @@ public class MemberController {
 	}
 	
 	@PostMapping("signup")
-	public String signupSubmit(MemberDto dto,
+	public String signupSubmit(GuestDto dto,
 			final RedirectAttributes rAttr,
 			Model model) {
 		 
@@ -91,7 +93,7 @@ public class MemberController {
 		// ID 중복 검사
 		String p = "false";
 		try {
-			MemberDto dto = service.findById(login_id);
+			GuestDto dto = service.findById(login_id);
 			if (dto == null) {
 				p = "true";
 			}
@@ -108,7 +110,7 @@ public class MemberController {
 		// 닉네임 중복 검사
 		String p = "false";
 		try {
-			MemberDto dto = service.findByNickname(nickname);
+			GuestDto dto = service.findByNickname(nickname);
 			if (dto == null) {
 				p = "true";
 			}
@@ -122,23 +124,103 @@ public class MemberController {
 	
 	@GetMapping("findId")
 	public String findIdForm() throws Exception {
+		SessionInfo info = LoginMemberUtil.getSessionInfo();
+		
+		if(info != null) {
+			return "redirect:/";
+		}
+		
 		return "guest/member/findId";
 	}
 	
 	@PostMapping("findId")
-	public String findIdSubmit() throws Exception {
-		return "redirect:/member/login";
+	public String findIdSubmit(
+			@RequestParam(name = "name") String name,
+			@RequestParam(name = "email") String email,
+			RedirectAttributes reAttr,
+			Model model) throws Exception {
+		
+		try {
+			GuestDto dto = service.findByNameAndEmail(name, email);
+			
+			if(dto == null || dto.getEnabled() == 0) {
+				model.addAttribute("message", "등록된 아이디가 없습니다.");
+				
+				return "guest/member/findId";
+			}
+			
+			// 아이디를 메일로 전송
+			service.findId(dto);
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("회원님의 이메일로 아이디를 전송했습니다.<br>");
+			
+			// 완료 페이지에서 이동할 경로 전달
+			reAttr.addFlashAttribute("title", "아이디 찾기");
+			reAttr.addFlashAttribute("message", sb.toString());
+			reAttr.addFlashAttribute("btnText", "로그인");
+			reAttr.addFlashAttribute("path", "member/login");
+			
+			return "redirect:/complete";
+			
+		} catch(Exception e) {
+			model.addAttribute("message", "이메일 전송에 실패했습니다.");
+		}
+		
+		return "guest/member/findId";
+		
 	}
 	
 	@GetMapping("findPwd")
 	public String findPwdForm() throws Exception {
+		SessionInfo info = LoginMemberUtil.getSessionInfo();
+		
+		if(info != null) {
+			return "redirect:/";
+		}
+		
 		return "guest/member/findPwd";
 	}
 	
 	@PostMapping("findPwd")
-	public String findPwdSubmit() throws Exception {
+	public String findPwdSubmit(
+			@RequestParam(name = "login_id") String login_id,
+			@RequestParam(name = "name") String name,
+			@RequestParam(name = "email") String email,
+			RedirectAttributes reAttr,
+			Model model) throws Exception {
 		
-		return "redirect:/member/login";
+		
+		
+		try {
+			GuestDto dto = service.findByIdAndNameAndEmail(login_id, name, email);
+			
+			if(dto == null || dto.getEnabled() == 0) {
+				model.addAttribute("message", "등록된 아이디가 없습니다.");
+				
+				return "guest/member/findPwd";
+			}
+			
+			// 임시 패스워드를 메일로 전송
+			service.findPwd(dto);
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("회원님의 이메일로 임시패스워드를 전송했습니다.<br>");
+			sb.append("로그인 후 패스워드를 변경하시기 바랍니다.<br>");
+			
+			// 완료 페이지에서 이동할 경로 전달
+			reAttr.addFlashAttribute("title", "패스워드 찾기");
+			reAttr.addFlashAttribute("message", sb.toString());
+			reAttr.addFlashAttribute("btnText", "로그인");
+			reAttr.addFlashAttribute("path", "member/login");
+			
+			return "redirect:/complete";
+			
+		} catch(Exception e) {
+			model.addAttribute("message", "이메일 전송에 실패했습니다.");
+		}
+		
+		return "guest/member/findPwd";
 	}
 	
 	

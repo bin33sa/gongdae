@@ -9,12 +9,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MemberDto {
+public class GuestDto {
 	private Long member_id;
 	private String login_id;
 	private String password;
-	private String sns_provider;
-	private String sns_id;
 	private int enabled;
 	private String created_at;
 	private String update_at;

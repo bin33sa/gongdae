@@ -25,16 +25,21 @@
 					<div class="bg-white box-shadow my-5 p-5">
 	                    <h3 class="text-center pt-3">패스워드 찾기</h3>
 	                    
-	                    <form name="pwdForm" action="" method="post" class="row g-3 mb-2">
+	                    <form name="findPwdForm" action="" method="post" class="row g-3 mb-2">
 							<div class="col-12">
 								<p class="form-control-plaintext text-center">
-									회원 아이디를 입력 하세요.
-									메일 인증을 하고 메일에 임시 비번을 보낼지, 그냥 임시 비번을 보여줄지 모르겠다 
+									아이디와 이름, 이메일을 입력해주세요.  
 								</p>
 	                        </div>
 	                        	                    
 							<div class="col-12">
 								<input type="text" name="login_id" class="form-control form-control-lg" placeholder="아이디">
+							</div>
+							<div class="col-12">
+								<input type="text" name="name" class="form-control form-control-lg" placeholder="이름">
+							</div>
+							<div class="col-12">
+								<input type="text" name="email" class="form-control form-control-lg" placeholder="이메일">
 							</div>
 							<div class="col-12 text-center">
 								<button type="button" class="btn-accent btn-lg w-100" onclick="sendOk();">확인 <i class="bi bi-check2"></i></button>
@@ -56,11 +61,21 @@
 
 <script type="text/javascript">
 function sendOk() {
-	const f = document.pwdForm;
+	const f = document.findPwdForm;
 
 	if(! f.login_id.value.trim()) {
 		alert('아이디를 입력하세요. ');
 		f.login_id.focus();
+		return;
+	}
+	if(! f.name.value.trim()) {
+		alert('이름을 입력하세요. ');
+		f.name.focus();
+		return;
+	}
+	if(! f.email.value.trim()) {
+		alert('이메일를 입력하세요. ');
+		f.email.focus();
 		return;
 	}
 

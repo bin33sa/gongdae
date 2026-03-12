@@ -25,7 +25,7 @@ public class CommonController {
 			return "redirect:/";
 		}
 		
-		return "common/coplete";
+		return "common/complete";
 	}
 	
 	
