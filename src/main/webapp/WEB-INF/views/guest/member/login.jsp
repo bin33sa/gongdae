@@ -2,142 +2,169 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>회원 로그인</title>
+
+<title>로그인</title>
 
 <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
 
 </head>
 
+
 <body>
+
 
 <header>
 	<jsp:include page="/WEB-INF/views/guest/layout/header.jsp"/>
 </header>
 
 
-<main>
 
-	<div class="section login-section">
-		<div class="container">
+<main class="login-wrapper">
 
-			<div class="row justify-content-center">
+<div class="container">
 
-				<div class="col-md-4">
+<div class="row justify-content-center align-items-center">
 
-					<div class="login-card">
+<div class="col-lg-4 col-md-6">
 
-						<h3 class="text-center">
-							<i class="bi bi-lock"></i> 회원 로그인
-						</h3>
+<div class="login-card">
 
-						<form name="loginForm" method="post" class="row g-3">
+<div class="login-title text-center">
 
-							<div class="col-12">
-								<label class="mb-1">아이디</label>
-								<input type="text"
-									name="login_id"
-									class="form-control"
-									placeholder="아이디 입력">
-							</div>
+<h2>로그인</h2>
 
-							<div class="col-12">
-								<label class="mb-1">패스워드</label>
-								<input type="password"
-									name="password"
-									class="form-control"
-									autocomplete="off"
-									placeholder="패스워드 입력">
-							</div>
+<p class="login-sub">
+공대생 공간 예약 서비스
+</p>
 
-							<div class="col-12">
-								<div class="form-check">
-									<input class="form-check-input rememberMe"
-										type="checkbox"
-										id="rememberMe">
-									<label class="form-check-label" for="rememberMe">
-										아이디 저장
-									</label>
-								</div>
-							</div>
+</div>
 
-							<div class="col-12">
-								<button type="button"
-									class="btn-accent btn-lg w-100"
-									onclick="sendLogin();">
-									Login <i class="bi bi-check2"></i>
-								</button>
-							</div>
 
-						</form>
 
-						<c:if test="${not empty message}">
-							<p class="text-danger text-center mt-3">${message}</p>
-						</c:if>
+<form name="loginForm" method="post" class="login-form">
 
-						<div class="login-links mt-4 text-center">
+<div class="form-group">
 
-							<a href="${pageContext.request.contextPath}/member/findId"
-								class="me-2 border-link-right">
-								아이디 찾기
-							</a>
+<input type="text"
+name="login_id"
+class="form-control"
+placeholder="아이디">
 
-							<a href="${pageContext.request.contextPath}/member/findPwd"
-								class="me-2 border-link-right">
-								패스워드 찾기
-							</a>
+</div>
 
-							<a href="${pageContext.request.contextPath}/member/signup"
-								class="border-link-right">
-								회원가입
-							</a>
 
-						</div>
+<div class="form-group">
 
-					</div>
+<input type="password"
+name="password"
+class="form-control"
+placeholder="패스워드"
+autocomplete="off">
 
-				</div>
+</div>
 
-			</div>
 
-		</div>
-	</div>
+<div class="login-option">
+
+<label class="form-check-label">
+
+<input class="form-check-input rememberMe"
+type="checkbox"
+id="rememberMe">
+
+아이디 저장
+
+</label>
+
+</div>
+
+
+<button type="button"
+class="btn-login"
+onclick="sendLogin();">
+
+로그인
+
+</button>
+
+
+</form>
+
+
+
+<c:if test="${not empty message}">
+<p class="login-error">${message}</p>
+</c:if>
+
+
+
+<div class="login-links">
+
+<a href="${pageContext.request.contextPath}/member/findId">아이디 찾기</a>
+
+<span>|</span>
+
+<a href="${pageContext.request.contextPath}/member/findPwd">비밀번호 찾기</a>
+
+<span>|</span>
+
+<a href="${pageContext.request.contextPath}/member/signup">회원가입</a>
+
+</div>
+
+
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 </main>
 
 
-<script type="text/javascript">
 
-function sendLogin() {
+<script>
 
-	const f = document.loginForm;
+function sendLogin(){
 
-	if(!f.login_id.value.trim()){
-		f.login_id.focus();
-		return;
-	}
+const f = document.loginForm;
 
-	if(!f.password.value.trim()){
-		f.password.focus();
-		return;
-	}
+if(!f.login_id.value.trim()){
+f.login_id.focus();
+return;
+}
 
-	f.action='${pageContext.request.contextPath}/member/login';
-	f.submit();
+if(!f.password.value.trim()){
+f.password.focus();
+return;
+}
+
+f.action='${pageContext.request.contextPath}/member/login';
+f.submit();
+
 }
 
 </script>
 
 
+
 <footer>
-	<jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
+<jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
 </footer>
 
 <jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
 
 </body>
+
 </html>

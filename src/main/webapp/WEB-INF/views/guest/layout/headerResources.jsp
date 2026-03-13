@@ -18,3 +18,6 @@
 
 <!-- GEUST CSS Files -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest.css" type="text/css">
+
+<!-- GEUST_layout CSS Files -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest_layout.css" type="text/css">

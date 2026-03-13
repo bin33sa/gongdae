@@ -3,109 +3,6 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
-<style>
-    /* 스페이스클라우드 테마 및 헤더 전용 스타일 */
-    :root {
-       /* 로고에서 추출한 메인 파란색 */
-        --main-color: #1C6296; 
-        /* 로고 안의 창문 불빛 노란색 (나중에 버튼이나 호버 효과에 포인트로 쓰기 좋습니다) */
-        --point-color: #F8D153;
-    }
-    
-    .header {
-        background-color: #fff;
-        border-bottom: 1px solid #eee;
-        height: 80px; 
-    }
-    
-    .sitename {
-        font-size: 24px;
-        font-weight: bold;
-        color: var(--main-color);
-        letter-spacing: -1px;
-    }
-    .dot { color: #333; }
-
-    /* 중앙 검색창 스타일 */
-    .search-bar {
-        flex: 1;
-        max-width: 400px;
-        position: relative;
-    }
-    .search-bar input {
-        width: 100%;
-        padding: 10px 20px;
-        border: 2px solid var(--main-color);
-        border-radius: 30px;
-        outline: none;
-        font-size: 15px;
-    }
-	.search-clear-btn {
-		display: flex;
-        position: absolute;
-        right: 50px;
-        top: 50%;
-        transform: translateY(-50%);
-        padding: 0;
-        width: 24px;
-        height: 24px;
-        cursor: pointer;
-        align-items: center;
-        justify-content: center;
-		font-size: 30px;
-	    border: none;
-	    background: none;
-	}
-	.search-divider {
-		position: absolute;
-	    right: 35px;
-	    top: 50%;
-	    transform: translateY(-50%);
-	    width: 1px;
-	    height: 16px;
-	    background: #ebebeb;
-	    margin: 0 8px;
-	}
-	.search-btn {
-		display: flex;
-	    position: absolute;
-		right: 12px;
-		top: 50%;
-		transform: translateY(-50%);
-		padding: 0;
-		width: 28px;
-		height: 28px;
-		cursor: pointer;
-		align-items: center;
-		justify-content: center;
-		font-size: 18px;
-	    border: none;
-	    background: none;
-	    color: #1C6296;
-	}
-    
-
-    /* 우측 유저 메뉴 스타일 */
-    .user-menu {
-        display: flex;
-        gap: 20px;
-        font-size: 14px;
-        font-weight: 500;
-        align-items: center;
-    }
-    .user-menu a {
-        text-decoration: none;
-        color: #333;
-        transition: color 0.2s;
-    }
-    .user-menu a:hover {
-        color: var(--main-color);
-    }
-    .host-btn {
-        color: var(--main-color) !important;
-        font-weight: bold;
-    }
-</style>
 
 <div id="header" class="header d-flex align-items-center sticky-top">
     <div class="container position-relative d-flex align-items-center justify-content-between w-100">
@@ -115,7 +12,7 @@
                 <i class="bi bi-list fs-3"></i>
             </a>
             <a href="<c:url value='/' />" class="logo d-flex align-items-center text-decoration-none">
-               <img src="<c:url value='/dist/images/gds.PNG' />" alt="공대생 로고" style="max-height: 40px; width: auto;">
+            <img src="<c:url value='/dist/images/gds.PNG' />" alt="공대생 로고" class="logo-img">
             </a>
         </div>
 

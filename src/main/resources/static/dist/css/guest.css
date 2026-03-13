@@ -1,297 +1,62 @@
 @charset "UTF-8";
 
 /* =====================================================
-GLOBAL VARIABLES (NAVY THEME)
+1. RESET
 ===================================================== */
 
-:root {
-
-  /* Fonts */
-  --default-font: "Malgun Gothic","맑은 고딕",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  --heading-font: "Roboto","Raleway",sans-serif;
-  --nav-font: "Roboto","Malgun Gothic","Nunito",sans-serif;
-
-  /* Base Colors */
-  --background-color:#ffffff;
-  --default-color:#334155;
-  --heading-color:#0f172a;
-  --title-color:#1e293b;
-  --surface-color:#f8fafc;
-  --contrast-color:#ffffff;
-
-  /* NAVY BRAND */
-  --accent-color:#1e3a8a;
-  --accent-hover-color:#1e40af;
-  --accent-soft-color:#eff6ff;
-  --accent-soft-border:#c7d2fe;
-
-  /* Bootstrap override */
-  --bs-primary:#1e3a8a;
-  --bs-primary-rgb:30,58,138;
-
-  /* Navigation */
-  --nav-color:#334155;
-  --nav-hover-color:#1e3a8a;
-  --nav-dropdown-background-color:#ffffff;
-  --nav-dropdown-color:#334155;
-  --nav-dropdown-hover-color:#1e3a8a;
-  --nav-mobile-background-color:#ffffff;
-
-  --table-bg:#ffffff;
-
-  scroll-behavior:smooth;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-/* =====================================================
-LOGIN PAGE
-===================================================== */
-
-/* 로그인 섹션 배경 */
-.login-section{
-  background:linear-gradient(180deg,#f8fafc,#eef2ff);
-  min-height:80vh;
-  display:flex;
-  align-items:center;
-}
-
-/* 로그인 카드 */
-.login-card{
-  background:#fff;
-  border-radius:12px;
-  padding:40px 35px;
-  box-shadow:0 12px 35px rgba(30,58,138,.12);
-  border:1px solid var(--accent-soft-border);
-}
-
-/* 로그인 제목 */
-.login-card h3{
-  font-weight:700;
-  color:var(--accent-color);
-  margin-bottom:25px;
-}
-
-/* 입력창 */
-.login-card .form-control{
-  height:45px;
-  border-radius:8px;
-  border:1px solid #dbe3ff;
-  transition:.2s;
-}
-
-.login-card .form-control:focus{
-  border-color:var(--accent-color);
-  box-shadow:0 0 0 3px rgba(30,58,138,.08);
-}
-
-/* 로그인 버튼 */
-.login-card .btn-accent{
-  background:var(--accent-color);
-  border:none;
-  height:45px;
-  border-radius:8px;
-  font-weight:600;
-  transition:.2s;
-}
-
-.login-card .btn-accent:hover{
-  background:var(--accent-hover-color);
-}
-
-/* 로그인 링크 */
-.login-links a{
-  font-size:14px;
-  color:#64748b;
-}
-
-.login-links a:hover{
-  color:var(--accent-color);
-}
-
-
-/* =====================================================
-EVENT PAGE
-===================================================== */
-
-.event-header h2{
-  font-size:32px;
-  font-weight:700;
-  color:var(--accent-color);
-}
-
-.event-grid{
-  margin-top:20px;
-}
-
-.event-card{
-  background:#fff;
-  border-radius:12px;
-  overflow:hidden;
-  box-shadow:0 6px 14px rgba(30,58,138,.12);
-  transition:.25s;
+html{
+  font-size:15px;
   height:100%;
 }
 
-.event-card:hover{
-  transform:translateY(-5px);
-  box-shadow:0 12px 24px rgba(30,58,138,.18);
-}
-
-.event-img img{
-  width:100%;
-  height:180px;
-  object-fit:cover;
-}
-
-.event-body{
-  padding:15px;
-}
-
-.event-body h3{
-  font-size:16px;
-  font-weight:600;
-  margin-bottom:10px;
-}
-
-.event-period{
-  font-size:13px;
-  color:#64748b;
-}
-
-.event-pagination span{
-  display:inline-block;
-  margin:0 5px;
-  padding:8px 14px;
-  border-radius:6px;
-  border:1px solid var(--accent-soft-border);
-  cursor:pointer;
-}
-
-.event-pagination span.active{
-  background:var(--accent-color);
-  color:#fff;
-}
-/* =========================
-COMPACT DARK FOOTER
-========================= */
-
-.footer-gray{
-  background:#1e293b; /* 어두운 슬레이트 */
-  color:#cbd5f1;
-  padding:28px 0 18px 0;
-  border-top:2px solid #1e3a8a;
-}
-
-/* 사이트명 */
-.footer-gray .sitename{
-  font-size:20px;
-  font-weight:700;
-  color:#ffffff;
-}
-
-/* 설명 텍스트 */
-.footer-gray p{
-  font-size:13px;
-  color:#94a3b8;
-  margin-bottom:6px;
-}
-
-/* 섹션 제목 */
-.footer-gray h4{
-  font-size:14px;
-  font-weight:600;
-  margin-bottom:10px;
-  color:#e2e8f0;
-}
-
-/* 링크 */
-.footer-links ul{
-  list-style:none;
-  padding:0;
-}
-
-.footer-links li{
-  margin-bottom:4px;
-}
-
-.footer-links a{
-  font-size:13px;
-  color:#94a3b8;
-  transition:.2s;
-}
-
-.footer-links a:hover{
-  color:#ffffff;
-}
-
-/* SNS 버튼 */
-.footer-gray .social-links a{
-  width:32px;
-  height:32px;
-  border-radius:50%;
-  border:1px solid #334155;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#94a3b8;
-  font-size:14px;
-  transition:.25s;
-}
-
-.footer-gray .social-links a:hover{
-  background:#1e3a8a;
-  border-color:#1e3a8a;
-  color:#fff;
-}
-
-/* 가이드 텍스트 */
-.footer-guide{
-  font-size:13px;
-  line-height:1.5;
-  color:#94a3b8;
-}
-
-/* 하단 카피라이트 */
-.footer .copyright{
-  border-top:1px solid #334155;
-  margin-top:18px;
-  padding-top:12px;
-  font-size:12px;
-  color:#64748b;
-}
-
-/* =====================================================
-MAIN BANNER
-===================================================== */
-
-.carousel-inner{
-  height:400px;
-}
-
-.carousel-inner img{
-  height:400px;
-  width:100%;
-  object-fit:cover;
-}
-
-/* =====================================================
-RESET
-===================================================== */
-
-*{margin:0;padding:0;box-sizing:border-box;}
-
-html{font-size:15px;}
-
 body{
-  color:var(--default-color);
-  background:var(--background-color);
-  font-family:var(--default-font);
-  font-size:15px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+
+  font-family:"Malgun Gothic","맑은 고딕",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+
+  color:#334155;
+
+  background:linear-gradient(180deg,#f8fbff 0%, #eef4ff 42%, #f7f9fc 100%);
 }
+
+main{
+  flex:1;
+}
+
+
+/* =====================================================
+2. GLOBAL VARIABLES
+===================================================== */
+
+:root{
+
+  --accent-color:#1e3a8a;
+  --accent-hover-color:#1e40af;
+
+  --accent-soft-color:#eff6ff;
+  --accent-soft-border:#c7d2fe;
+
+  --heading-color:#0f172a;
+
+}
+
+
+/* =====================================================
+3. GLOBAL ELEMENTS
+===================================================== */
 
 a{
-  color:var(--default-color);
+  color:#334155;
   text-decoration:none;
-  transition:.3s;
+  transition:.25s;
 }
 
 a:hover{
@@ -300,123 +65,152 @@ a:hover{
 
 h1,h2,h3,h4,h5,h6{
   color:var(--heading-color);
-  font-family:var(--heading-font);
+  font-family:"Pretendard","Roboto","Raleway",sans-serif;
+  letter-spacing:-0.02em;
 }
 
+section,.section{
+  padding:42px 0;
+}
+
+
+
 /* =====================================================
-HEADER TOP
+4. HOME COMMON
 ===================================================== */
 
-.header-top{
-  background:var(--accent-color);
-  height:40px;
+.home-page .section{
+  position:relative;
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:16px;
+  margin-bottom:22px;
+}
+
+.section-eyebrow{
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.12em;
+  color:#64748b;
+  margin-bottom:7px;
+}
+
+.section-title{
+  font-size:31px;
+  font-weight:800;
+}
+
+.section-desc{
+  color:#64748b;
   font-size:14px;
 }
 
-.header-top .contact-info i,
-.header-top .contact-info span{
-  color:var(--contrast-color);
+.section-more{
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  min-width:88px;
+  height:40px;
+
+  padding:0 18px;
+
+  border-radius:999px;
+
+  background:rgba(255,255,255,.72);
+
+  border:1px solid rgba(199,210,254,.9);
+
+  color:var(--accent-color);
+
+  font-weight:700;
+
 }
 
-.header-top .header-top-links a{
-  color:color-mix(in srgb,var(--contrast-color),transparent 20%);
-  padding-left:10px;
-  font-size:16px;
-}
-
-.header-top .header-top-links a:hover{
+.section-more:hover{
+  background:var(--accent-color);
   color:#fff;
 }
 
+
+
 /* =====================================================
-HEADER
+5. HERO BANNER
 ===================================================== */
 
-.header{
-  background:var(--background-color);
-  padding:10px 0;
-  z-index:997;
+.home-hero-section{
+  padding-top:28px;
 }
 
-.header .brand-icon{
-  font-size:35px;
-  background:linear-gradient(90deg,#1e3a8a,#3b82f6);
-  background-clip:text;
-  -webkit-text-fill-color:transparent;
+.hero-shell{
+
+  background:rgba(255,255,255,.58);
+
+  border:1px solid rgba(199,210,254,.5);
+
+  border-radius:28px;
+
+  padding:14px;
+
+  box-shadow:0 18px 50px rgba(30,58,138,.08);
+
 }
 
-.header .logo .sitename{
-  font-size:26px;
-  font-weight:700;
-  color:var(--accent-color);
+.home-carousel{
+  border-radius:22px;
+  overflow:hidden;
 }
 
-.header-avatar .avatar-sm{
-  width:2.4rem;
-  height:2.4rem;
-  border-radius:50%;
+.carousel-inner{
+  height:420px;
+}
+
+.carousel-item{
+  height:420px;
+}
+
+.carousel-inner img{
+  width:100%;
+  height:100%;
   object-fit:cover;
-  border:1px solid #e0e7ff;
-  transition:.3s;
 }
 
-.header-avatar .avatar-sm:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 0 4px rgba(30,58,138,0.12);
-}
+
 
 /* =====================================================
-NAV MENU
+6. CATEGORY
 ===================================================== */
 
-@media(min-width:1200px){
+.category-panel{
 
-.navmenu ul{
+  background:rgba(255,255,255,.7);
+
+  border:1px solid rgba(199,210,254,.55);
+
+  border-radius:22px;
+
+  padding:18px 10px;
+
+  box-shadow:0 10px 30px rgba(30,58,138,.05);
+
+}
+
+.category-wrap{
+
   display:flex;
-  list-style:none;
-}
 
-.navmenu a{
-  color:var(--nav-color);
-  padding:18px 15px;
-  font-size:13px;
-  font-weight:600;
-  text-transform:uppercase;
-}
+  gap:12px;
 
-.navmenu li:hover>a{
-  color:var(--accent-color);
-}
+  overflow-x:auto;
 
-.navmenu .dropdown ul{
-  position:absolute;
-  background:#fff;
-  padding:10px 0;
-  border-radius:8px;
-  box-shadow:0 10px 30px rgba(30,58,138,.12);
-  opacity:0;
-  visibility:hidden;
-}
-
-.navmenu .dropdown:hover>ul{
-  opacity:1;
-  visibility:visible;
-}
+  padding:4px 42px;
 
 }
-
-/* =====================================================
-SECTION
-===================================================== */
-
-section,.section{
-  padding:15px 0;
-  min-height:200px;
-}
-
-/* =====================================================
-CATEGORY SLIDER
-===================================================== */
 
 .category-slider{
   position:relative;
@@ -424,12 +218,46 @@ CATEGORY SLIDER
   align-items:center;
 }
 
-.category-wrap{
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
-  padding:10px 40px;
-  scroll-behavior:smooth;
+.category-mask{
+  position:relative;
+  overflow:hidden;
+  flex:1;
+}
+
+.category-mask::before,
+.category-mask::after{
+
+  content:"";
+
+  position:absolute;
+
+  top:0;
+
+  width:60px;
+  height:100%;
+
+  pointer-events:none;
+
+  z-index:1;
+
+}
+
+.category-mask::before{
+  left:0;
+  background:linear-gradient(to right,#f8fbff,transparent);
+}
+
+.category-mask::after{
+  right:0;
+  background:linear-gradient(to left,#f8fbff,transparent);
+}
+
+.no-left-fade::before{
+  opacity:0;
+}
+
+.no-right-fade::after{
+  opacity:0;
 }
 
 .category-wrap::-webkit-scrollbar{
@@ -437,37 +265,61 @@ CATEGORY SLIDER
 }
 
 .category-btn{
-  border:1px solid var(--accent-soft-border);
+
+  border:1px solid rgba(199,210,254,.9);
+
   border-radius:999px;
-  padding:8px 16px;
+
+  padding:11px 18px;
+
   background:#fff;
+
   font-size:14px;
+
+  font-weight:600;
+
   cursor:pointer;
-  transition:.2s;
+
+  transition:.25s;
+
 }
 
-.category-btn:hover{
-  background:var(--accent-soft-color);
-  color:var(--accent-color);
-}
-
-.category-btn.active{
-  background:var(--accent-color);
-  border-color:var(--accent-color);
-  color:#fff;
-}
+/* =====================================================
+CATEGORY SLIDE BUTTON
+===================================================== */
 
 .slide-btn{
+
   position:absolute;
+
   top:50%;
   transform:translateY(-50%);
-  width:35px;
-  height:35px;
+
+  width:38px;
+  height:38px;
+
   border-radius:50%;
+
   border:none;
+
   background:#fff;
-  box-shadow:0 6px 16px rgba(30,58,138,.18);
+
+  box-shadow:0 10px 20px rgba(30,58,138,.12);
+
   color:var(--accent-color);
+
+  z-index:2;
+
+  cursor:pointer;
+
+}
+
+.slide-btn.left{
+  left:0;
+}
+
+.slide-btn.right{
+  right:0;
 }
 
 .slide-btn:hover{
@@ -475,43 +327,109 @@ CATEGORY SLIDER
   color:#fff;
 }
 
+.category-btn:hover{
+
+  background:var(--accent-soft-color);
+
+  color:var(--accent-color);
+
+}
+
+.category-btn.active{
+
+  background:linear-gradient(135deg,#1e3a8a,#2563eb);
+
+  color:#fff;
+
+}
+
+
+
 /* =====================================================
-CARD
+7. PRODUCT CARD
 ===================================================== */
 
 .product-card{
-  border-radius:12px;
+
+  border-radius:20px;
+
   overflow:hidden;
-  transition:.25s;
-  box-shadow:0 6px 14px rgba(30,58,138,.12);
+
+  transition:.28s ease;
+
+  box-shadow:0 10px 30px rgba(30,58,138,.08);
+
+  background:#fff;
+
+  border:1px solid rgba(199,210,254,.38);
+
+  cursor:pointer;
+
 }
 
 .product-card:hover{
-  transform:translateY(-5px);
-  box-shadow:0 12px 24px rgba(30,58,138,.18);
+
+  transform:translateY(-7px);
+
+  box-shadow:0 18px 40px rgba(30,58,138,.14);
+
 }
 
 .product-img{
-  height:220px;
+
+  height:240px;
+
   object-fit:cover;
+
 }
 
-/* wishlist */
+.product-body{
+  padding:18px;
+}
+
+.product-price{
+
+  font-size:20px;
+
+  color:var(--accent-color);
+
+}
+
+.product-thumb{
+  overflow:hidden;
+}
+
+/* =====================================================
+WISHLIST BUTTON
+===================================================== */
 
 .wishlist-btn{
+
   position:absolute;
-  top:12px;
-  right:12px;
-  width:36px;
-  height:36px;
+
+  top:14px;
+  right:14px;
+
+  width:40px;
+  height:40px;
+
   border-radius:50%;
+
   border:none;
-  background:#fff;
+
+  background:rgba(255,255,255,.9);
+
   display:flex;
+
   align-items:center;
   justify-content:center;
+
   cursor:pointer;
-  box-shadow:0 4px 10px rgba(30,58,138,.12);
+
+  box-shadow:0 8px 20px rgba(15,23,42,.14);
+
+  transition:.25s;
+
 }
 
 .wishlist-btn i{
@@ -520,44 +438,198 @@ CARD
 }
 
 .wishlist-btn:hover{
-  background:var(--accent-soft-color);
-}
-
-/* rating */
-
-.rating{
-  display:flex;
-  align-items:center;
-  gap:4px;
+  transform:scale(1.08);
+  background:#fff;
 }
 
 
 /* =====================================================
-SCROLL TOP
+8. REVIEW / NOTICE
+===================================================== */
+
+.review-card,
+.notice-card{
+
+  border-radius:20px;
+
+  background:#fff;
+
+  box-shadow:0 10px 28px rgba(30,58,138,.07);
+
+  border:1px solid rgba(199,210,254,.34);
+
+  transition:.25s;
+
+}
+
+.review-card:hover,
+.notice-card:hover{
+
+  transform:translateY(-5px);
+
+  box-shadow:0 18px 38px rgba(30,58,138,.12);
+
+}
+
+.review-card .card-body,
+.notice-card .card-body{
+  padding:22px;
+}
+
+
+
+/* =====================================================
+9. LOGIN PAGE
+===================================================== */
+
+.login-wrapper{
+  min-height:70vh;
+  display:flex;
+  align-items:center;
+}
+
+.login-card{
+
+  background:#fff;
+
+  padding:40px;
+
+  border-radius:14px;
+
+  box-shadow:0 25px 60px rgba(30,58,138,.15);
+
+  border:1px solid var(--accent-soft-border);
+
+}
+
+.btn-login{
+
+  width:100%;
+
+  height:46px;
+
+  border:none;
+
+  border-radius:8px;
+
+  background:var(--accent-color);
+
+  color:#fff;
+
+  font-weight:600;
+
+}
+
+.btn-login:hover{
+  background:var(--accent-hover-color);
+}
+
+
+
+/* =====================================================
+10. EVENT PAGE
+===================================================== */
+
+.event-card{
+
+  background:#fff;
+
+  border-radius:12px;
+
+  overflow:hidden;
+
+  box-shadow:0 6px 14px rgba(30,58,138,.12);
+
+}
+
+.event-img img{
+
+  width:100%;
+
+  height:180px;
+
+  object-fit:cover;
+
+}
+
+.event-body{
+  padding:15px;
+}
+
+
+
+/* =====================================================
+11. SCROLL TOP
 ===================================================== */
 
 .scroll-top{
+
   position:fixed;
+
   right:15px;
+
   bottom:15px;
-  width:40px;
-  height:40px;
-  background:var(--accent-color);
-  border-radius:4px;
+
+  width:42px;
+
+  height:42px;
+
+  background:linear-gradient(135deg,#1e3a8a,#2563eb);
+
+  border-radius:10px;
+
   display:flex;
+
   align-items:center;
+
   justify-content:center;
+
   opacity:0;
+
   visibility:hidden;
-  transition:.3s;
+
 }
 
 .scroll-top.active{
+
   opacity:1;
+
   visibility:visible;
+
 }
 
 .scroll-top i{
   color:#fff;
-  font-size:22px;
+}
+
+
+
+/* =====================================================
+12. RESPONSIVE
+===================================================== */
+
+@media (max-width:991px){
+
+  .section-title{
+    font-size:26px;
+  }
+
+  .carousel-inner,
+  .carousel-item{
+    height:300px;
+  }
+
+}
+
+@media (max-width:767px){
+
+  section,.section{
+    padding:28px 0;
+  }
+
+  .carousel-inner,
+  .carousel-item{
+    height:220px;
+  }
+
 }
