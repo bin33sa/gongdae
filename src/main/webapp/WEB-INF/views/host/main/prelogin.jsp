@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공대생 호스트 센터</title>
     
-    <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
+    <jsp:include page="/WEB-INF/views/host/layout/headerResources.jsp"/>
     
     <style>
         :root {
@@ -126,7 +126,7 @@
 </header>
 
 <main>
-    <section class="hero-section" data-aos="fade-up">
+    <section class="hero-section" >
     
         <div class="container">
             <h1 class="hero-title">공대생과 함께<br>비어있는 공간의 가치를 높여보세요</h1>
@@ -143,7 +143,7 @@
             </div>
         </div>
     </section>
-<section class="process-section" style="padding: 80px 0; background-color: #ffffff;" data-aos="fade-up">
+<section class="process-section" style="padding: 80px 0; background-color: #ffffff;">
         <div class="container">
             <h3 class="fw-bold text-center mb-5" style="color: #333;">쉽고 빠른 호스트 시작하기</h3>
             
@@ -172,7 +172,7 @@
             </div>
         </div>
     </section>
-    <section class="notice-section" data-aos="fade-up" data-aos-delay="100">
+    <section class="notice-section">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
@@ -213,7 +213,7 @@
     <jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
 </footer>
 
-<jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
+<jsp:include page="/WEB-INF/views/host/layout/footerResources.jsp"/>
 
 </body>
 </html>
