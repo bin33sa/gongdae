@@ -108,14 +108,14 @@
                     
                     <div class="row mb-3 g-3">
                         <div class="col-md-4">
-                            <label class="form-label">카테고리 <span class="text-danger">*</span></label>
-                            <select name="categoryNo" class="form-select" required>
-                                <option value="" selected disabled>선택</option>
-                                <option value="1">파티룸</option>
-                                <option value="2">스터디룸</option>
-                                <option value="3">연습실</option>
-                            </select>
-                        </div>
+    <label class="form-label">카테고리 <span class="text-danger">*</span></label>
+    <select name="categoryNo" class="form-select" required>
+        <option value="" selected disabled>선택</option>
+        <c:forEach var="cat" items="${categoryList}">
+            <option value="${cat.categoryNo}">${cat.name}</option>
+        </c:forEach>
+    </select>
+</div>
                         <div class="col-md-8">
                             <label class="form-label">공간명 <span class="text-danger">*</span></label>
                             <input type="text" name="spaceName" class="form-control" placeholder="예) 하루클래스 강남점" required>

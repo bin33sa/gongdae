@@ -65,4 +65,9 @@ public class spaceMangeController {
 
         return "redirect:/space/manage/main"; 
     }
+    @GetMapping("qna")
+    public String qnaForm(Model model) {
+    	
+    	return "host/qna/qna"; 
+    }
 }
