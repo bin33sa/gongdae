@@ -1,6 +1,7 @@
 package com.gongdae.app.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -28,7 +29,17 @@ public class CommonController {
 		return "common/complete";
 	}
 	
+	@GetMapping("/noAuthorized")
+	public String noAuthorized(Model model) {
+		
+		return "common/noAuthorized";
+	}
 	
+	@GetMapping("/expired")
+	public String expired() throws Exception {
+		
+		return "common/expired";
+	}	
 	
 	
 	

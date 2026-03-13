@@ -13,12 +13,19 @@ import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 
 import com.gongdae.app.security.AjaxSessionTimeoutFilter;
+import com.gongdae.app.security.CustomAccessDeniedHandler;
 import com.gongdae.app.security.LoginFailureHandler;
 import com.gongdae.app.security.LoginSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
+
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    SpringSecurityConfig(CustomAccessDeniedHandler customAccessDeniedHandler) {
+        this.customAccessDeniedHandler = customAccessDeniedHandler;
+    }
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -26,7 +33,7 @@ public class SpringSecurityConfig {
 		requestCache.setMatchingRequestParameterName(null);
 
 		String[] excludeUri = { "/", "/index.jsp", "/member/login", "/member/signup", "/member/logout",
-	            "/member/userIdCheck", "/complete", "/member/findId", "/member/findPwd", "/member/expired", "/dist/**",
+	            "/member/userIdCheck", "/complete", "/member/findId", "/member/findPwd", "/expired", "/dist/**",
 	            "/js/**", "/vendor/**","/favicon.ico","/guest/main", "/guest/list", "/uploads/photo/**", "/favicon.ico", "/WEB-INF/views/**",
 	            "/oauth/kakao/callback", "/host/main/prelogin", "/host/member/login", "/admin/login",
 	            "/wish/*", "/reservation/*", "/review/*", "/terms", 
@@ -63,9 +70,9 @@ public class SpringSecurityConfig {
 		.addFilterAfter(ajaxSessionTimeoutFilter(), ExceptionTranslationFilter.class)
 		.sessionManagement(management -> management
 			.maximumSessions(1)
-			.expiredUrl("/member/expired"));
+			.expiredUrl("/expired"));
 
-		http.exceptionHandling((exceptionConfig) -> exceptionConfig.accessDeniedPage("/member/noAuthorized"));
+		http.exceptionHandling(e -> e.accessDeniedHandler(customAccessDeniedHandler));
 
 		return http.build();
 	}

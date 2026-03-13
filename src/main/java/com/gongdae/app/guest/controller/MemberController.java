@@ -238,6 +238,7 @@ public class MemberController {
 	
 	
 
+
 	//////////////////////////////////////////////////////////////////////////////////////// 
 	@GetMapping("updatePwd")
 	public String updatePwdForm() throws Exception{
@@ -245,17 +246,6 @@ public class MemberController {
 	}
 
 
-
 	
-	@GetMapping("noAuthorized")
-	public String noAuthorized(Model model) {
-		
-		return "guest/error/noAuthorized";
-	}
-
-	@GetMapping("expired")
-	public String expired() throws Exception {
-		
-		return "guest/error/expired";
-	}	
+	
 }

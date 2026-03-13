@@ -107,15 +107,16 @@
 	    LEFT OUTER JOIN guest_detail g ON m1.member_id = g.member_id
 	    LEFT OUTER JOIN host_detail h ON m1.member_id = h.member_id
 	    LEFT OUTER JOIN admin_detail a ON m1.member_id = a.member_id
-	    WHERE m1.nickname = #{nickname}
+	    WHERE g.nickname = #{nickname}
 	</select>
 	
 	<select id="findByNameAndEmail" resultType="com.gongdae.app.domain.dto.MemberDto">
 	    SELECT 
-	        m1.member_id, 
+	    	g.email,
+	        m1.member_id,
 	        m1.login_id, 
 	        m1.password, 
-	        m1.enabled, 
+	        m1.enabled,
 	        m1.created_at, 
 	        m1.update_at, 
 	        m1.last_login,
@@ -131,7 +132,7 @@
 	    LEFT OUTER JOIN guest_detail g ON m1.member_id = g.member_id
 	    LEFT OUTER JOIN host_detail h ON m1.member_id = h.member_id
 	    LEFT OUTER JOIN admin_detail a ON m1.member_id = a.member_id
-	    WHERE m1.name = #{name}
+	    WHERE g.name = #{name} AND g.email = #{email}
 	</select>
 
 	<select id="findByLoginIdAndNameAndEmail" resultType="com.gongdae.app.domain.dto.MemberDto">

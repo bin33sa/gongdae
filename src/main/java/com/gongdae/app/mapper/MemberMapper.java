@@ -11,7 +11,6 @@ import com.gongdae.app.domain.dto.MemberDto;
 
 @Mapper
 public interface MemberMapper {
-	public MemberDto loginSnsMember(Map<String, Object> map);
 
 	public Long memberSeq();	
 	public void insertMember1(MemberDto dto) throws SQLException;
