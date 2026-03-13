@@ -1,0 +1,563 @@
+@charset "UTF-8";
+
+/* =====================================================
+GLOBAL VARIABLES (NAVY THEME)
+===================================================== */
+
+:root {
+
+  /* Fonts */
+  --default-font: "Malgun Gothic","맑은 고딕",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --heading-font: "Roboto","Raleway",sans-serif;
+  --nav-font: "Roboto","Malgun Gothic","Nunito",sans-serif;
+
+  /* Base Colors */
+  --background-color:#ffffff;
+  --default-color:#334155;
+  --heading-color:#0f172a;
+  --title-color:#1e293b;
+  --surface-color:#f8fafc;
+  --contrast-color:#ffffff;
+
+  /* NAVY BRAND */
+  --accent-color:#1e3a8a;
+  --accent-hover-color:#1e40af;
+  --accent-soft-color:#eff6ff;
+  --accent-soft-border:#c7d2fe;
+
+  /* Bootstrap override */
+  --bs-primary:#1e3a8a;
+  --bs-primary-rgb:30,58,138;
+
+  /* Navigation */
+  --nav-color:#334155;
+  --nav-hover-color:#1e3a8a;
+  --nav-dropdown-background-color:#ffffff;
+  --nav-dropdown-color:#334155;
+  --nav-dropdown-hover-color:#1e3a8a;
+  --nav-mobile-background-color:#ffffff;
+
+  --table-bg:#ffffff;
+
+  scroll-behavior:smooth;
+}
+
+/* =====================================================
+LOGIN PAGE
+===================================================== */
+
+/* 로그인 섹션 배경 */
+.login-section{
+  background:linear-gradient(180deg,#f8fafc,#eef2ff);
+  min-height:80vh;
+  display:flex;
+  align-items:center;
+}
+
+/* 로그인 카드 */
+.login-card{
+  background:#fff;
+  border-radius:12px;
+  padding:40px 35px;
+  box-shadow:0 12px 35px rgba(30,58,138,.12);
+  border:1px solid var(--accent-soft-border);
+}
+
+/* 로그인 제목 */
+.login-card h3{
+  font-weight:700;
+  color:var(--accent-color);
+  margin-bottom:25px;
+}
+
+/* 입력창 */
+.login-card .form-control{
+  height:45px;
+  border-radius:8px;
+  border:1px solid #dbe3ff;
+  transition:.2s;
+}
+
+.login-card .form-control:focus{
+  border-color:var(--accent-color);
+  box-shadow:0 0 0 3px rgba(30,58,138,.08);
+}
+
+/* 로그인 버튼 */
+.login-card .btn-accent{
+  background:var(--accent-color);
+  border:none;
+  height:45px;
+  border-radius:8px;
+  font-weight:600;
+  transition:.2s;
+}
+
+.login-card .btn-accent:hover{
+  background:var(--accent-hover-color);
+}
+
+/* 로그인 링크 */
+.login-links a{
+  font-size:14px;
+  color:#64748b;
+}
+
+.login-links a:hover{
+  color:var(--accent-color);
+}
+
+
+/* =====================================================
+EVENT PAGE
+===================================================== */
+
+.event-header h2{
+  font-size:32px;
+  font-weight:700;
+  color:var(--accent-color);
+}
+
+.event-grid{
+  margin-top:20px;
+}
+
+.event-card{
+  background:#fff;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 6px 14px rgba(30,58,138,.12);
+  transition:.25s;
+  height:100%;
+}
+
+.event-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 12px 24px rgba(30,58,138,.18);
+}
+
+.event-img img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+}
+
+.event-body{
+  padding:15px;
+}
+
+.event-body h3{
+  font-size:16px;
+  font-weight:600;
+  margin-bottom:10px;
+}
+
+.event-period{
+  font-size:13px;
+  color:#64748b;
+}
+
+.event-pagination span{
+  display:inline-block;
+  margin:0 5px;
+  padding:8px 14px;
+  border-radius:6px;
+  border:1px solid var(--accent-soft-border);
+  cursor:pointer;
+}
+
+.event-pagination span.active{
+  background:var(--accent-color);
+  color:#fff;
+}
+/* =========================
+COMPACT DARK FOOTER
+========================= */
+
+.footer-gray{
+  background:#1e293b; /* 어두운 슬레이트 */
+  color:#cbd5f1;
+  padding:28px 0 18px 0;
+  border-top:2px solid #1e3a8a;
+}
+
+/* 사이트명 */
+.footer-gray .sitename{
+  font-size:20px;
+  font-weight:700;
+  color:#ffffff;
+}
+
+/* 설명 텍스트 */
+.footer-gray p{
+  font-size:13px;
+  color:#94a3b8;
+  margin-bottom:6px;
+}
+
+/* 섹션 제목 */
+.footer-gray h4{
+  font-size:14px;
+  font-weight:600;
+  margin-bottom:10px;
+  color:#e2e8f0;
+}
+
+/* 링크 */
+.footer-links ul{
+  list-style:none;
+  padding:0;
+}
+
+.footer-links li{
+  margin-bottom:4px;
+}
+
+.footer-links a{
+  font-size:13px;
+  color:#94a3b8;
+  transition:.2s;
+}
+
+.footer-links a:hover{
+  color:#ffffff;
+}
+
+/* SNS 버튼 */
+.footer-gray .social-links a{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  border:1px solid #334155;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#94a3b8;
+  font-size:14px;
+  transition:.25s;
+}
+
+.footer-gray .social-links a:hover{
+  background:#1e3a8a;
+  border-color:#1e3a8a;
+  color:#fff;
+}
+
+/* 가이드 텍스트 */
+.footer-guide{
+  font-size:13px;
+  line-height:1.5;
+  color:#94a3b8;
+}
+
+/* 하단 카피라이트 */
+.footer .copyright{
+  border-top:1px solid #334155;
+  margin-top:18px;
+  padding-top:12px;
+  font-size:12px;
+  color:#64748b;
+}
+
+/* =====================================================
+MAIN BANNER
+===================================================== */
+
+.carousel-inner{
+  height:400px;
+}
+
+.carousel-inner img{
+  height:400px;
+  width:100%;
+  object-fit:cover;
+}
+
+/* =====================================================
+RESET
+===================================================== */
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html{font-size:15px;}
+
+body{
+  color:var(--default-color);
+  background:var(--background-color);
+  font-family:var(--default-font);
+  font-size:15px;
+}
+
+a{
+  color:var(--default-color);
+  text-decoration:none;
+  transition:.3s;
+}
+
+a:hover{
+  color:var(--accent-color);
+}
+
+h1,h2,h3,h4,h5,h6{
+  color:var(--heading-color);
+  font-family:var(--heading-font);
+}
+
+/* =====================================================
+HEADER TOP
+===================================================== */
+
+.header-top{
+  background:var(--accent-color);
+  height:40px;
+  font-size:14px;
+}
+
+.header-top .contact-info i,
+.header-top .contact-info span{
+  color:var(--contrast-color);
+}
+
+.header-top .header-top-links a{
+  color:color-mix(in srgb,var(--contrast-color),transparent 20%);
+  padding-left:10px;
+  font-size:16px;
+}
+
+.header-top .header-top-links a:hover{
+  color:#fff;
+}
+
+/* =====================================================
+HEADER
+===================================================== */
+
+.header{
+  background:var(--background-color);
+  padding:10px 0;
+  z-index:997;
+}
+
+.header .brand-icon{
+  font-size:35px;
+  background:linear-gradient(90deg,#1e3a8a,#3b82f6);
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.header .logo .sitename{
+  font-size:26px;
+  font-weight:700;
+  color:var(--accent-color);
+}
+
+.header-avatar .avatar-sm{
+  width:2.4rem;
+  height:2.4rem;
+  border-radius:50%;
+  object-fit:cover;
+  border:1px solid #e0e7ff;
+  transition:.3s;
+}
+
+.header-avatar .avatar-sm:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 0 4px rgba(30,58,138,0.12);
+}
+
+/* =====================================================
+NAV MENU
+===================================================== */
+
+@media(min-width:1200px){
+
+.navmenu ul{
+  display:flex;
+  list-style:none;
+}
+
+.navmenu a{
+  color:var(--nav-color);
+  padding:18px 15px;
+  font-size:13px;
+  font-weight:600;
+  text-transform:uppercase;
+}
+
+.navmenu li:hover>a{
+  color:var(--accent-color);
+}
+
+.navmenu .dropdown ul{
+  position:absolute;
+  background:#fff;
+  padding:10px 0;
+  border-radius:8px;
+  box-shadow:0 10px 30px rgba(30,58,138,.12);
+  opacity:0;
+  visibility:hidden;
+}
+
+.navmenu .dropdown:hover>ul{
+  opacity:1;
+  visibility:visible;
+}
+
+}
+
+/* =====================================================
+SECTION
+===================================================== */
+
+section,.section{
+  padding:15px 0;
+  min-height:200px;
+}
+
+/* =====================================================
+CATEGORY SLIDER
+===================================================== */
+
+.category-slider{
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+
+.category-wrap{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding:10px 40px;
+  scroll-behavior:smooth;
+}
+
+.category-wrap::-webkit-scrollbar{
+  display:none;
+}
+
+.category-btn{
+  border:1px solid var(--accent-soft-border);
+  border-radius:999px;
+  padding:8px 16px;
+  background:#fff;
+  font-size:14px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.category-btn:hover{
+  background:var(--accent-soft-color);
+  color:var(--accent-color);
+}
+
+.category-btn.active{
+  background:var(--accent-color);
+  border-color:var(--accent-color);
+  color:#fff;
+}
+
+.slide-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  border:none;
+  background:#fff;
+  box-shadow:0 6px 16px rgba(30,58,138,.18);
+  color:var(--accent-color);
+}
+
+.slide-btn:hover{
+  background:var(--accent-color);
+  color:#fff;
+}
+
+/* =====================================================
+CARD
+===================================================== */
+
+.product-card{
+  border-radius:12px;
+  overflow:hidden;
+  transition:.25s;
+  box-shadow:0 6px 14px rgba(30,58,138,.12);
+}
+
+.product-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 12px 24px rgba(30,58,138,.18);
+}
+
+.product-img{
+  height:220px;
+  object-fit:cover;
+}
+
+/* wishlist */
+
+.wishlist-btn{
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  border:none;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow:0 4px 10px rgba(30,58,138,.12);
+}
+
+.wishlist-btn i{
+  color:var(--accent-color);
+  font-size:18px;
+}
+
+.wishlist-btn:hover{
+  background:var(--accent-soft-color);
+}
+
+/* rating */
+
+.rating{
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+
+
+/* =====================================================
+SCROLL TOP
+===================================================== */
+
+.scroll-top{
+  position:fixed;
+  right:15px;
+  bottom:15px;
+  width:40px;
+  height:40px;
+  background:var(--accent-color);
+  border-radius:4px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  visibility:hidden;
+  transition:.3s;
+}
+
+.scroll-top.active{
+  opacity:1;
+  visibility:visible;
+}
+
+.scroll-top i{
+  color:#fff;
+  font-size:22px;
+}

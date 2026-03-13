@@ -2,135 +2,65 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
+
 <html>
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>공지사항 목록</title>
+
+<title>이벤트</title>
+
 <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
-</head>
-<jsp:include page="/WEB-INF/views/guest/layout/header.jsp"/>
-
-<style>
-.event-page{
-padding:60px 0;
-background:#fff7f9;
-}
-
-.event-header{
-text-align:center;
-margin-bottom:50px;
-}
-
-.event-header h2{
-font-size:32px;
-font-weight:700;
-margin-bottom:10px;
-}
-
-.event-header p{
-color:#777;
-}
-
-/* 카드 그리드 */
-
-.event-grid{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:28px;
-}
-
-
-/* 카드 */
-
-.event-card{
-background:#fff;
-border-radius:16px;
-overflow:hidden;
-border:1px solid #ffe0e6;
-cursor:pointer;
-transition:all .2s;
-}
-
-.event-card:hover{
-transform:translateY(-6px);
-box-shadow:0 10px 25px rgba(255,107,138,0.18);
-}
-
-
-/* 이미지 */
-
-.event-img{
-height:200px;
-overflow:hidden;
-}
-
-.event-img img{
-width:100%;
-height:100%;
-object-fit:cover;
-}
-
-
-/* 카드 내용 */
-
-.event-body{
-padding:18px;
-}
-
-.event-body h3{
-font-size:16px;
-font-weight:600;
-margin-bottom:8px;
-line-height:1.4;
-}
-
-.event-period{
-font-size:13px;
-color:#888;
-}
-
-
-/* 페이지네이션 */
-
-.event-pagination{
-text-align:center;
-margin-top:60px;
-}
-
-.event-pagination span{
-font-size:20px;
-margin:0 10px;
-cursor:pointer;
-font-weight:600;
-}
-
-.event-pagination span:hover{
-color:#ff6b8a;
-}
-
-</style>
 
 </head>
+
 
 <body>
-<div class="event-page">
+
+
+<header>
+	<jsp:include page="/WEB-INF/views/guest/layout/header.jsp"/>
+</header>
+
+
+
+<main>
+
+<section class="section">
 
 <div class="container">
 
-<div class="event-header">
+<!-- 페이지 헤더 -->
+
+<div class="event-header text-center mb-5">
+
 <h2>이벤트</h2>
-<p>공대생에서 진행 중인 다양한 이벤트를 확인하세요</p>
+
+<p class="text-secondary">
+공대생에서 진행 중인 다양한 이벤트를 확인하세요
+</p>
+
 </div>
 
 
-<div class="event-grid">
+
+<!-- 이벤트 카드 그리드 -->
+
+<div class="event-grid row g-4">
+
+
 
 <!-- 이벤트 카드 -->
+
+<div class="col-md-3">
+
 <div class="event-card">
 
 <div class="event-img">
-<img src="/uploads/sample-event.jpg">
+
+<img src="/uploads/sample-event.jpg" class="img-fluid">
+
 </div>
 
 <div class="event-body">
@@ -145,11 +75,18 @@ color:#ff6b8a;
 
 </div>
 
+</div>
+
+
+
+<div class="col-md-3">
 
 <div class="event-card">
 
 <div class="event-img">
-<img src="/uploads/sample-event.jpg">
+
+<img src="/uploads/sample-event.jpg" class="img-fluid">
+
 </div>
 
 <div class="event-body">
@@ -164,11 +101,18 @@ color:#ff6b8a;
 
 </div>
 
+</div>
+
+
+
+<div class="col-md-3">
 
 <div class="event-card">
 
 <div class="event-img">
-<img src="/uploads/sample-event.jpg">
+
+<img src="/uploads/sample-event.jpg" class="img-fluid">
+
 </div>
 
 <div class="event-body">
@@ -183,11 +127,18 @@ color:#ff6b8a;
 
 </div>
 
+</div>
+
+
+
+<div class="col-md-3">
 
 <div class="event-card">
 
 <div class="event-img">
-<img src="/uploads/sample-event.jpg">
+
+<img src="/uploads/sample-event.jpg" class="img-fluid">
+
 </div>
 
 <div class="event-body">
@@ -205,24 +156,39 @@ color:#ff6b8a;
 </div>
 
 
+
+</div>
+
+
+
 <!-- 페이지네이션 -->
 
-<div class="event-pagination">
+<div class="event-pagination text-center mt-5">
 
-<span>1</span>
-<span>2</span>
-<span>3</span>
-<span>4</span>
-
-</div>
+<span class="page-item active">1</span>
+<span class="page-item">2</span>
+<span class="page-item">3</span>
+<span class="page-item">4</span>
 
 </div>
 
+
 </div>
+
+</section>
+
+</main>
+
+
+
+<footer>
+	<jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
+</footer>
+
 
 <jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
 
-</body>
 
+</body>
 
 </html>
