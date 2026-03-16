@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.gongdae.app.common.RequestUtils;
 import com.gongdae.app.domain.dto.GuestDto;
 import com.gongdae.app.domain.dto.SessionInfo;
 import com.gongdae.app.guest.service.GuestService;
@@ -71,7 +70,7 @@ public class GuestController {
 			model.addAttribute("message", "회원가입이 실패했습니다.");
 		}
 
-		return "member/signup";
+		return "guest/member/signup";
 	}
 
 	@PostMapping("nicknameCheck")
@@ -79,7 +78,7 @@ public class GuestController {
 		// 닉네임 중복 검사
 		String p = "false";
 		try {
-			GuestDto dto = guestService.findByNickname(nickname);
+			GuestDto dto = guestService.findGuestByNickname(nickname);
 			if (dto == null) {
 				p = "true";
 			}
@@ -110,7 +109,7 @@ public class GuestController {
 			Model model) throws Exception {
 		
 		try {
-			GuestDto dto = service.findGuestByNameAndEmail(name, email);
+			GuestDto dto = guestService.findGuestByNameAndEmail(name, email);
 			
 			if(dto == null || dto.getEnabled() == 0) {
 				model.addAttribute("message", "등록된 아이디가 없습니다.");
