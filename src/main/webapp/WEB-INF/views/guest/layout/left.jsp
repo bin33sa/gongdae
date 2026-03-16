@@ -166,10 +166,6 @@
                     예약리스트
                 </li>
 
-                <li onclick="location.href='${pageContext.request.contextPath}/reservation/list'">
-                    후기 작성
-                </li>
-
             </ul>
 
         </div>
