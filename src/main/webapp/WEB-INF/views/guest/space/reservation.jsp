@@ -2,144 +2,57 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
+
 <html>
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>예약목록</title>
+
 <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
-</head>
-<jsp:include page="/WEB-INF/views/guest/layout/header.jsp"/>
 
-<style>
-
-.reservation-page{
-padding:60px 0;
-background:#fff7f9;
-}
-
-.reservation-header{
-text-align:center;
-margin-bottom:40px;
-}
-
-.reservation-header h2{
-font-size:32px;
-font-weight:700;
-margin-bottom:10px;
-}
-
-.reservation-header p{
-color:#777;
-}
-
-/* 테이블 */
-
-.reservation-table{
-width:100%;
-border-collapse:collapse;
-background:#fff;
-border-radius:12px;
-overflow:hidden;
-box-shadow:0 5px 15px rgba(0,0,0,0.05);
-}
-
-.reservation-table thead{
-background:#ffe3ea;
-}
-
-.reservation-table th{
-padding:14px;
-font-weight:600;
-font-size:14px;
-}
-
-.reservation-table td{
-padding:16px;
-border-top:1px solid #f0f0f0;
-font-size:14px;
-text-align:center;
-}
-
-.reservation-table tr:hover{
-background:#fff1f4;
-}
-
-/* 상태 배지 */
-
-.status{
-padding:6px 12px;
-border-radius:20px;
-font-size:12px;
-font-weight:600;
-}
-
-.status.reserved{
-background:#ffe0e6;
-color:#ff3c6f;
-}
-
-.status.done{
-background:#e6f7ff;
-color:#0077cc;
-}
-
-.status.cancel{
-background:#eee;
-color:#777;
-}
-
-/* 버튼 */
-
-.btn-detail{
-background:#ff6b8a;
-color:#fff;
-border:none;
-padding:6px 12px;
-border-radius:20px;
-font-size:12px;
-cursor:pointer;
-}
-
-.btn-detail:hover{
-background:#ff4c70;
-}
-
-/* 페이지네이션 */
-
-.reservation-pagination{
-text-align:center;
-margin-top:40px;
-}
-
-.reservation-pagination span{
-font-size:18px;
-margin:0 10px;
-cursor:pointer;
-font-weight:600;
-}
-
-.reservation-pagination span:hover{
-color:#ff6b8a;
-}
-
-</style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest/reservation.css" type="text/css">
 
 </head>
+
 
 <body>
 
-<%@ page contentType="text/html; charset=UTF-8" %>
 
-<div class="reservation-page">
+<header>
+	<jsp:include page="/WEB-INF/views/guest/layout/header.jsp"/>
+</header>
+
+
+
+<main>
+
+<section class="section reservation-page">
 
 <div class="container">
 
+<!-- 페이지 헤더 -->
+
 <div class="reservation-header">
-<h2>예약 내역</h2>
-<p>내가 예약한 공간을 확인할 수 있습니다</p>
+
+<h2 class="section-title">
+예약 내역
+</h2>
+
+<p class="section-desc">
+내가 예약한 공간을 확인할 수 있습니다
+</p>
+
 </div>
 
+
+
+<!-- 예약 테이블 -->
+
+<div class="reservation-table-wrap">
 
 <table class="reservation-table">
 
@@ -174,7 +87,7 @@ color:#ff6b8a;
 </td>
 
 <td>
-<button class="btn-detail">상세</button>
+<button class="btn-reservation">상세</button>
 </td>
 
 </tr>
@@ -194,7 +107,10 @@ color:#ff6b8a;
 </td>
 
 <td>
-<button class="btn-detail" onclick="location.href='${pageContext.request.contextPath}/review/write'">후기 작성</button>
+<button class="btn-reservation"
+onclick="location.href='${pageContext.request.contextPath}/review/write'">
+후기 작성
+</button>
 </td>
 
 </tr>
@@ -214,7 +130,7 @@ color:#ff6b8a;
 </td>
 
 <td>
-<button class="btn-detail">상세</button>
+<button class="btn-reservation">상세</button>
 </td>
 
 </tr>
@@ -223,22 +139,45 @@ color:#ff6b8a;
 
 </table>
 
+</div>
+
+
+
+<!-- 페이지네이션 -->
 
 <div class="reservation-pagination">
 
-<span>1</span>
-<span>2</span>
-<span>3</span>
+<button class="page-btn prev">
+<i class="bi bi-chevron-left"></i>
+</button>
+
+<button class="page-btn active">1</button>
+<button class="page-btn">2</button>
+<button class="page-btn">3</button>
+
+<button class="page-btn next">
+<i class="bi bi-chevron-right"></i>
+</button>
 
 </div>
 
 
 </div>
-</div>
+
+</section>
+
+</main>
+
+
+
+<footer>
+	<jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
+</footer>
+
 
 <jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
 
-</body>
 
+</body>
 
 </html>

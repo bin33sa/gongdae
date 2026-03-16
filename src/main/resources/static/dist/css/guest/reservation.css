@@ -1,0 +1,229 @@
+@charset "UTF-8";
+
+/* =====================================================
+RESERVATION PAGE
+===================================================== */
+
+.reservation-page{
+padding:60px 0;
+}
+
+
+/* =====================================================
+HEADER
+===================================================== */
+
+.reservation-header{
+text-align:center;
+margin-bottom:40px;
+}
+
+
+/* =====================================================
+TABLE WRAP
+===================================================== */
+
+.reservation-table-wrap{
+
+background:#fff;
+
+border-radius:18px;
+
+overflow:hidden;
+
+border:1px solid rgba(199,210,254,.4);
+
+box-shadow:0 10px 25px rgba(30,58,138,.08);
+
+}
+
+
+/* =====================================================
+TABLE
+===================================================== */
+
+.reservation-table{
+width:100%;
+border-collapse:collapse;
+}
+
+.reservation-table thead{
+
+background:var(--accent-soft-color);
+
+}
+
+.reservation-table th{
+
+padding:16px;
+
+font-weight:700;
+
+font-size:14px;
+
+color:#1e293b;
+
+}
+
+.reservation-table td{
+
+padding:18px;
+
+border-top:1px solid rgba(199,210,254,.35);
+
+font-size:14px;
+
+text-align:center;
+
+}
+
+.reservation-table tr:hover{
+
+background:#f8fbff;
+
+}
+
+
+
+/* =====================================================
+STATUS BADGE
+===================================================== */
+
+.status{
+
+padding:6px 12px;
+
+border-radius:999px;
+
+font-size:12px;
+
+font-weight:700;
+
+}
+
+.status.reserved{
+
+background:#e8f0ff;
+
+color:var(--accent-color);
+
+}
+
+.status.done{
+
+background:#e6f7ff;
+
+color:#0077cc;
+
+}
+
+.status.cancel{
+
+background:#eee;
+
+color:#666;
+
+}
+
+
+
+/* =====================================================
+BUTTON
+===================================================== */
+
+.btn-reservation{
+
+border:none;
+
+padding:7px 14px;
+
+border-radius:999px;
+
+font-size:12px;
+
+font-weight:600;
+
+background:var(--accent-soft-color);
+
+color:var(--accent-color);
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+.btn-reservation:hover{
+
+background:var(--accent-color);
+
+color:#fff;
+
+}
+
+
+
+/* =====================================================
+PAGINATION
+===================================================== */
+
+.reservation-pagination{
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+gap:8px;
+
+margin-top:40px;
+
+}
+
+.page-btn{
+
+width:40px;
+
+height:40px;
+
+border-radius:10px;
+
+border:1px solid var(--accent-soft-border);
+
+background:#fff;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+.page-btn:hover{
+
+background:var(--accent-soft-color);
+
+border-color:var(--accent-color);
+
+color:var(--accent-color);
+
+}
+
+.page-btn.active{
+
+background:linear-gradient(135deg,#1e3a8a,#2563eb);
+
+color:#fff;
+
+border:none;
+
+}
+
+.page-btn.prev,
+.page-btn.next{
+
+font-size:18px;
+
+}

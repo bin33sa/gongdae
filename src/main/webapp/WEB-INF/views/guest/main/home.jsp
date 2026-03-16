@@ -62,6 +62,7 @@
 					<span class="section-eyebrow">CATEGORY</span>
 					<h3 class="section-title">어떤 공간을 찾고 있나요?</h3>
 				</div>
+				<a href="${pageContext.request.contextPath}/space/search" class="section-more">더보기</a>
 			</div>
 
 			<div class="category-panel">
@@ -94,15 +95,6 @@
 	<!-- 공간 리스트 -->
 	<section class="section home-space-section">
 		<div class="container">
-			<div class="section-head">
-				<div>
-					<span class="section-eyebrow">RECOMMENDED SPACES</span>
-					<h3 class="section-title">지금 인기 있는 공간</h3>
-					<p class="section-desc">인기 많은 공간들을 한눈에 둘러보세요.</p>
-				</div>
-				<a href="${pageContext.request.contextPath}/space/search" class="section-more">더보기</a>
-			</div>
-
 			<div class="row g-4">
 
    				<div class="col-12 col-sm-6 col-lg-3">

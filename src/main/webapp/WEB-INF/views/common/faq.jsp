@@ -2,102 +2,61 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
+
 <html>
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>공지사항 목록</title>
+
+<title>FAQ</title>
+
 <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
-</head>
-<jsp:include page="/WEB-INF/views/guest/layout/header.jsp"/>
 
-<style>
-
-.faq-page{
-padding:60px 0;
-background:#fff7f9;
-}
-
-.faq-page .faq-header{
-text-align:center;
-margin-bottom:40px;
-}
-
-.faq-page .faq-header h2{
-font-size:30px;
-font-weight:700;
-margin-bottom:10px;
-}
-
-.faq-page .faq-header p{
-color:#777;
-}
-
-/* 아코디언 카드 */
-
-.faq-page .accordion-item{
-border:1px solid #ffd6de;
-border-radius:14px;
-margin-bottom:12px;
-overflow:hidden;
-background:#fff;
-}
-
-/* 질문 버튼 */
-
-.faq-page .accordion-button{
-background:#fff;
-font-weight:600;
-padding:18px 20px;
-border:none;
-box-shadow:none;
-}
-
-.faq-page .accordion-button:not(.collapsed){
-background:#fff1f4;
-color:#ff6b8a;
-}
-
-/* hover */
-
-.faq-page .accordion-button:hover{
-background:#fff1f4;
-}
-
-/* 답변 */
-
-.faq-page .accordion-body{
-background:#fff7f9;
-padding:20px;
-color:#444;
-line-height:1.6;
-}
-
-/* 화살표 색 */
-
-.faq-page .accordion-button::after{
-filter:hue-rotate(-20deg);
-}
-
-</style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/common/faq.css" type="text/css">
 
 </head>
+
 
 <body>
 
 
-<div class="faq-page">
+<header>
+	<jsp:include page="/WEB-INF/views/guest/layout/header.jsp"/>
+</header>
+
+
+<main>
+
+<section class="section faq-page">
 
 <div class="container">
 
+
+<!-- 페이지 헤더 -->
+
 <div class="faq-header">
-<h2>자주 묻는 질문</h2>
-<p>서비스 이용 중 궁금한 내용을 확인해보세요</p>
+
+<h2 class="section-title">
+자주 묻는 질문
+</h2>
+
+<p class="section-desc">
+서비스 이용 중 궁금한 내용을 확인해보세요
+</p>
+
 </div>
 
-<div class="accordion" id="faqAccordion">
+
+
+<!-- FAQ ACCORDION -->
+
+<div class="accordion faq-accordion" id="faqAccordion">
+
 
 <!-- 질문 1 -->
+
 <div class="accordion-item">
 
 <h2 class="accordion-header">
@@ -127,7 +86,9 @@ filter:hue-rotate(-20deg);
 </div>
 
 
+
 <!-- 질문 2 -->
+
 <div class="accordion-item">
 
 <h2 class="accordion-header">
@@ -157,7 +118,9 @@ filter:hue-rotate(-20deg);
 </div>
 
 
+
 <!-- 질문 3 -->
+
 <div class="accordion-item">
 
 <h2 class="accordion-header">
@@ -186,15 +149,25 @@ filter:hue-rotate(-20deg);
 
 </div>
 
-</div>
+
 
 </div>
 
 </div>
+
+</section>
+
+</main>
+
+
+<footer>
+	<jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
+</footer>
+
 
 <jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
 
-</body>
 
+</body>
 
 </html>
