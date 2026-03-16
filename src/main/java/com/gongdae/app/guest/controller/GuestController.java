@@ -11,15 +11,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gongdae.app.common.RequestUtils;
-import com.gongdae.app.domain.dto.MemberDto;
+import com.gongdae.app.domain.dto.GuestDto;
 import com.gongdae.app.domain.dto.SessionInfo;
+import com.gongdae.app.guest.service.GuestService;
 import com.gongdae.app.security.LoginMemberUtil;
-import com.gongdae.app.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,24 +26,13 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping(value = "/member/*")
-public class MemberController {
-	private final MemberService service;
+@RequestMapping(value = "/guest/*")
+public class GuestController {
+	private final GuestService guestService;
 	
 	@Value("${file.upload-root}/member")
 	private String uploadPath;
 
-	@RequestMapping(value = "login", method = {RequestMethod.GET, RequestMethod.POST})
-	public String loginForm(@RequestParam(name = "error", required = false) String error, 
-			Model model) {
-		
-		if(error != null) {
-			model.addAttribute("message", "아이디 또는 패스워드가 일치하지 않습니다.");
-		}
-		
-		return "guest/member/login";
-	}
-	
 	@GetMapping("signup")
 	public String signupForm(Model model) {
 		model.addAttribute("mode", "signup");
@@ -53,14 +41,12 @@ public class MemberController {
 	}
 	
 	@PostMapping("signup")
-	public String signupSubmit(MemberDto dto,
+	public String signupSubmit(GuestDto dto,
 			final RedirectAttributes rAttr,
 			Model model) {
 		 
 		try {
-			dto.setIpAddr(RequestUtils.getClientIp());
-			
-			service.insertMember(dto, uploadPath);
+			guestService.insertGuest(dto, uploadPath);
 			
 			StringBuilder sb = new StringBuilder();
 			sb.append(dto.getName() + "님의 회원 가입이 정상적으로 처리되었습니다.<br>");
@@ -87,30 +73,13 @@ public class MemberController {
 
 		return "member/signup";
 	}
-	
-	@PostMapping("userIdCheck")
-	public ResponseEntity<?> handleUserIdCheck(@RequestParam(name = "login_id") String login_id) throws Exception {
-		// ID 중복 검사
-		String p = "false";
-		try {
-			MemberDto dto = service.findById(login_id);
-			if (dto == null) {
-				p = "true";
-			}
-		} catch (Exception e) {
-		}
-		
-		return ResponseEntity.ok(Map.of(
-			"passed", p
-		));
-	}
 
 	@PostMapping("nicknameCheck")
 	public ResponseEntity<?> handleNicknameCheck(@RequestParam(name = "nickname") String nickname) throws Exception {
 		// 닉네임 중복 검사
 		String p = "false";
 		try {
-			MemberDto dto = service.findByNickname(nickname);
+			GuestDto dto = guestService.findByNickname(nickname);
 			if (dto == null) {
 				p = "true";
 			}
@@ -141,7 +110,7 @@ public class MemberController {
 			Model model) throws Exception {
 		
 		try {
-			MemberDto dto = service.findByNameAndEmail(name, email);
+			GuestDto dto = service.findGuestByNameAndEmail(name, email);
 			
 			if(dto == null || dto.getEnabled() == 0) {
 				model.addAttribute("message", "등록된 아이디가 없습니다.");
@@ -150,7 +119,7 @@ public class MemberController {
 			}
 			
 			// 아이디를 메일로 전송
-			service.findId(dto);
+			guestService.sendGuestId(dto);
 			
 			StringBuilder sb = new StringBuilder();
 			sb.append("회원님의 이메일로 아이디를 전송했습니다.<br>");
@@ -193,7 +162,7 @@ public class MemberController {
 		
 		
 		try {
-			MemberDto dto = service.findByIdAndNameAndEmail(login_id, name, email);
+			GuestDto dto = guestService.findGuestByIdAndNameAndEmail(login_id, name, email);
 			
 			if(dto == null || dto.getEnabled() == 0) {
 				model.addAttribute("message", "등록된 아이디가 없습니다.");
@@ -202,7 +171,7 @@ public class MemberController {
 			}
 			
 			// 임시 패스워드를 메일로 전송
-			service.findPwd(dto);
+			guestService.sendGuestPwd(dto);
 			
 			StringBuilder sb = new StringBuilder();
 			sb.append("회원님의 이메일로 임시패스워드를 전송했습니다.<br>");

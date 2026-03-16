@@ -311,7 +311,7 @@ function memberOk() {
         return;
     }
 
-    f.action = '${pageContext.request.contextPath}/';
+    f.action = '${pageContext.request.contextPath}/guest/signup';
     f.submit();
 }
 

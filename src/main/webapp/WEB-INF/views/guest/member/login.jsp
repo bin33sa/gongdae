@@ -108,15 +108,15 @@ onclick="sendLogin();">
 
 <div class="login-links">
 
-<a href="${pageContext.request.contextPath}/member/findId">아이디 찾기</a>
+<a href="${pageContext.request.contextPath}/guest/findId">아이디 찾기</a>
 
 <span>|</span>
 
-<a href="${pageContext.request.contextPath}/member/findPwd">비밀번호 찾기</a>
+<a href="${pageContext.request.contextPath}/guest/findPwd">비밀번호 찾기</a>
 
 <span>|</span>
 
-<a href="${pageContext.request.contextPath}/member/signup">회원가입</a>
+<a href="${pageContext.request.contextPath}/guest/signup">회원가입</a>
 
 </div>
 
