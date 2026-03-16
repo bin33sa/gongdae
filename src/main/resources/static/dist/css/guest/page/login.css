@@ -1,0 +1,197 @@
+/* =====================================================
+LOGIN PAGE
+===================================================== */
+
+.login-wrapper{
+  min-height:80vh;
+  display:flex;
+  align-items:center;
+
+  padding:80px 0;
+
+  background:linear-gradient(135deg,#f8fbff,#eef4ff);
+}
+
+
+/* =====================================================
+LOGIN CARD
+===================================================== */
+
+.login-card{
+  background:#ffffff;
+
+  padding:40px 36px;
+
+  border-radius:18px;
+
+  box-shadow:0 20px 40px rgba(15,23,42,.08);
+
+  border:1px solid #e5e7eb;
+
+  transition:.25s;
+}
+
+.login-card:hover{
+  box-shadow:0 24px 50px rgba(15,23,42,.12);
+}
+
+
+/* =====================================================
+TITLE
+===================================================== */
+
+.login-title h2{
+  font-size:28px;
+  font-weight:700;
+
+  margin-bottom:6px;
+
+  color:#1e293b;
+}
+
+.login-sub{
+  font-size:14px;
+  color:#64748b;
+
+  margin-bottom:30px;
+}
+
+
+/* =====================================================
+FORM
+===================================================== */
+
+.login-form .form-group{
+  margin-bottom:16px;
+}
+
+
+/* input */
+
+.login-form .form-control{
+  height:48px;
+
+  border-radius:10px;
+
+  border:1px solid #dbe2ef;
+
+  font-size:14px;
+
+  padding-left:14px;
+
+  transition:.2s;
+}
+
+.login-form .form-control::placeholder{
+  color:#94a3b8;
+}
+
+.login-form .form-control:focus{
+  border-color:var(--accent-color);
+
+  box-shadow:0 0 0 3px rgba(37,99,235,.12);
+
+  outline:none;
+}
+
+
+/* =====================================================
+LOGIN OPTION
+===================================================== */
+
+.login-option{
+  display:flex;
+  justify-content:flex-start;
+
+  font-size:13px;
+
+  color:#64748b;
+
+  margin-bottom:20px;
+}
+
+.login-option input{
+  margin-right:6px;
+}
+
+
+/* =====================================================
+LOGIN BUTTON
+===================================================== */
+
+.btn-login{
+  width:100%;
+
+  height:48px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:linear-gradient(135deg,#2563eb,#1e40af);
+
+  color:#fff;
+
+  font-size:15px;
+  font-weight:600;
+
+  cursor:pointer;
+
+  transition:.2s;
+
+  box-shadow:0 6px 16px rgba(37,99,235,.25);
+}
+
+.btn-login:hover{
+  transform:translateY(-1px);
+
+  box-shadow:0 10px 22px rgba(37,99,235,.35);
+
+  background:linear-gradient(135deg,#1d4ed8,#1e3a8a);
+}
+
+
+/* =====================================================
+ERROR MESSAGE
+===================================================== */
+
+.login-error{
+  text-align:center;
+
+  margin-top:12px;
+
+  font-size:13px;
+
+  color:#ef4444;
+}
+
+
+/* =====================================================
+LINKS
+===================================================== */
+
+.login-links{
+  margin-top:24px;
+
+  display:flex;
+  justify-content:center;
+  gap:10px;
+
+  font-size:13px;
+}
+
+.login-links a{
+  text-decoration:none;
+
+  color:#64748b;
+
+  transition:.2s;
+}
+
+.login-links a:hover{
+  color:var(--accent-color);
+}
+
+.login-links span{
+  color:#cbd5e1;
+}

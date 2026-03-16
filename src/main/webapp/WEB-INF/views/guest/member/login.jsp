@@ -14,6 +14,7 @@
 <title>로그인</title>
 
 <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest/page/login.css" type="text/css">
 
 </head>
 

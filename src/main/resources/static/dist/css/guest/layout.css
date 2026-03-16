@@ -24,7 +24,10 @@ HEADER
   display:flex;
   align-items:center;
   justify-content:space-between;
+  position:relative;
 }
+
+/* 로고 */
 
 .logo{
   display:flex;
@@ -36,12 +39,33 @@ HEADER
   width:auto;
 }
 
-.header .bi-list{
-  font-size:28px;
+
+/* =====================================================
+MENU BUTTON
+===================================================== */
+
+.menu-toggle{
+  width:42px;
+  height:42px;
+
+  border-radius:12px;
+  border:none;
+
+  background:#f1f5f9;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:24px;
   color:#334155;
+
+  cursor:pointer;
+  transition:.2s;
 }
 
-.header .bi-list:hover{
+.menu-toggle:hover{
+  background:#e2e8f0;
   color:var(--accent-color);
 }
 
@@ -51,8 +75,7 @@ SEARCH BAR
 ===================================================== */
 
 .search-bar{
-  flex:1;
-  max-width:440px;
+  width:400px;
 }
 
 .search-bar form{
@@ -73,8 +96,11 @@ SEARCH BAR
 
   background:#fff;
   font-size:14px;
-
   transition:.2s;
+}
+
+.search-bar input::placeholder{
+  color:#94a3b8;
 }
 
 .search-bar input:focus{
@@ -82,6 +108,7 @@ SEARCH BAR
   border-color:var(--accent-color);
   box-shadow:0 0 0 3px rgba(37,99,235,.12);
 }
+
 
 /* X 버튼 */
 
@@ -111,6 +138,7 @@ SEARCH BAR
   color:#ef4444;
 }
 
+
 /* 구분선 */
 
 .search-divider{
@@ -125,7 +153,8 @@ SEARCH BAR
   background:#e2e8f0;
 }
 
-/* 검색 아이콘 */
+
+/* 검색 버튼 */
 
 .search-btn{
   position:absolute;
@@ -252,6 +281,7 @@ MENU LIST
 .menu-list li:hover{
   background:#eef4ff;
   color:var(--accent-color);
+  transform:translateX(3px);
 }
 
 
@@ -279,7 +309,8 @@ BOTTOM BUTTON
   transition:.2s;
 }
 
-/* 게스트 → 호스트 이동 */
+
+/* 게스트 버튼 */
 
 .bottom-fixed-guest a{
   background:#2563eb;
@@ -291,25 +322,18 @@ BOTTOM BUTTON
 }
 
 
-/* =====================================================
-HOST BUTTON (강조)
-===================================================== */
+/* 호스트 버튼 */
 
 .bottom-fixed-host a{
   background:#dc2626;
   color:#ffffff;
-
   font-weight:700;
-
   box-shadow:0 6px 16px rgba(220,38,38,.25);
 }
 
 .bottom-fixed-host a:hover{
   background:#b91c1c;
-  color:#ffffff;
-
   transform:translateY(-1px);
-
   box-shadow:0 8px 18px rgba(220,38,38,.35);
 }
 
@@ -323,8 +347,6 @@ FOOTER
   color:#cbd5f1;
   margin-top:50px;
 }
-
-/* 브랜드 */
 
 .footer-logo{
   font-size:26px;
@@ -340,8 +362,6 @@ FOOTER
   max-width:280px;
 }
 
-/* 소셜 */
-
 .footer-social{
   margin-top:14px;
   display:flex;
@@ -352,16 +372,12 @@ FOOTER
   width:38px;
   height:38px;
   border-radius:50%;
-
   display:flex;
   align-items:center;
   justify-content:center;
-
   background:#1e293b;
   color:#cbd5f1;
-
   font-size:16px;
-
   transition:.2s;
 }
 
@@ -369,8 +385,6 @@ FOOTER
   background:#2563eb;
   color:#fff;
 }
-
-/* 메뉴 */
 
 .footer-menu h4,
 .footer-contact h4{
@@ -401,15 +415,11 @@ FOOTER
   color:#ffffff;
 }
 
-/* 연락처 */
-
 .footer-contact p{
   font-size:14px;
   color:#94a3b8;
   margin-bottom:6px;
 }
-
-/* 하단 */
 
 .footer-bottom{
   border-top:1px solid #1e293b;
