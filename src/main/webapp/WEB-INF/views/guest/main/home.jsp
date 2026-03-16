@@ -8,6 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>공대생 - 공간 대여 생각날 때</title>
 <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest/page/home.css" type="text/css">
 </head>
 <body>
 

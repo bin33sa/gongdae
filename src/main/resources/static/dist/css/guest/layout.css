@@ -1,0 +1,424 @@
+@charset "UTF-8";
+
+/* =====================================================
+HEADER
+===================================================== */
+
+.header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+
+  background:#ffffff;
+  border-bottom:1px solid #e5e7eb;
+
+  height:72px;
+
+  display:flex;
+  align-items:center;
+
+  box-shadow:0 6px 16px rgba(15,23,42,.05);
+}
+
+.header .container{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+}
+
+.logo-img{
+  height:34px;
+  width:auto;
+}
+
+.header .bi-list{
+  font-size:28px;
+  color:#334155;
+}
+
+.header .bi-list:hover{
+  color:var(--accent-color);
+}
+
+
+/* =====================================================
+SEARCH BAR
+===================================================== */
+
+.search-bar{
+  flex:1;
+  max-width:440px;
+}
+
+.search-bar form{
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+
+.search-bar input{
+  width:100%;
+  height:44px;
+
+  padding-left:18px;
+  padding-right:96px;
+
+  border-radius:999px;
+  border:1.5px solid rgba(199,210,254,.9);
+
+  background:#fff;
+  font-size:14px;
+
+  transition:.2s;
+}
+
+.search-bar input:focus{
+  outline:none;
+  border-color:var(--accent-color);
+  box-shadow:0 0 0 3px rgba(37,99,235,.12);
+}
+
+/* X 버튼 */
+
+.search-clear-btn{
+  position:absolute;
+  right:64px;
+  top:50%;
+  transform:translateY(-50%);
+
+  width:28px;
+  height:28px;
+
+  border:none;
+  background:transparent;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:18px;
+  color:#64748b;
+
+  cursor:pointer;
+}
+
+.search-clear-btn:hover{
+  color:#ef4444;
+}
+
+/* 구분선 */
+
+.search-divider{
+  position:absolute;
+  right:50px;
+  top:50%;
+  transform:translateY(-50%);
+
+  width:1px;
+  height:20px;
+
+  background:#e2e8f0;
+}
+
+/* 검색 아이콘 */
+
+.search-btn{
+  position:absolute;
+  right:14px;
+  top:50%;
+  transform:translateY(-50%);
+
+  width:32px;
+  height:32px;
+
+  border-radius:50%;
+  border:none;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:transparent;
+
+  font-size:18px;
+  color:#64748b;
+
+  cursor:pointer;
+}
+
+.search-btn:hover{
+  background:#eef4ff;
+  color:var(--accent-color);
+}
+
+
+/* =====================================================
+SIDEBAR
+===================================================== */
+
+.offcanvas-start{
+  width:320px;
+  background:#f8fbff;
+  border-right:1px solid #e5e7eb;
+}
+
+
+/* =====================================================
+PROFILE HEADER
+===================================================== */
+
+.menu-header{
+  background:linear-gradient(135deg,#1e3a8a,#2563eb);
+  color:#fff;
+  padding:26px 22px;
+}
+
+.profile-img{
+  width:54px;
+  height:54px;
+  border-radius:50%;
+  overflow:hidden;
+  background:#fff;
+}
+
+.profile-img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+
+/* =====================================================
+ICON MENU
+===================================================== */
+
+.icon-menu{
+  background:#ffffff;
+  border-bottom:1px solid #e5e7eb;
+  padding:16px 10px;
+}
+
+.icon-menu .col-3{
+  cursor:pointer;
+  padding:12px 6px;
+  transition:.2s;
+  border-radius:12px;
+}
+
+.icon-menu .col-3:hover{
+  background:#eef4ff;
+}
+
+.icon-menu i{
+  font-size:22px;
+  color:var(--accent-color);
+}
+
+.icon-menu .small{
+  font-size:12px;
+}
+
+
+/* =====================================================
+MENU LIST
+===================================================== */
+
+.menu-list{
+  padding:18px 14px;
+}
+
+.menu-list li{
+  padding:13px 16px;
+  border-radius:12px;
+
+  font-size:15px;
+  font-weight:500;
+
+  color:#334155;
+
+  cursor:pointer;
+  transition:.18s;
+}
+
+.menu-list li + li{
+  margin-top:6px;
+}
+
+.menu-list li:hover{
+  background:#eef4ff;
+  color:var(--accent-color);
+}
+
+
+/* =====================================================
+BOTTOM BUTTON
+===================================================== */
+
+.bottom-fixed{
+  padding:18px;
+  border-top:1px solid #e5e7eb;
+  background:#ffffff;
+}
+
+.bottom-fixed a{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  height:46px;
+  border-radius:12px;
+
+  font-weight:600;
+  text-decoration:none;
+
+  transition:.2s;
+}
+
+/* 게스트 → 호스트 이동 */
+
+.bottom-fixed-guest a{
+  background:#2563eb;
+  color:#fff;
+}
+
+.bottom-fixed-guest a:hover{
+  background:#1e40af;
+}
+
+
+/* =====================================================
+HOST BUTTON (강조)
+===================================================== */
+
+.bottom-fixed-host a{
+  background:#dc2626;
+  color:#ffffff;
+
+  font-weight:700;
+
+  box-shadow:0 6px 16px rgba(220,38,38,.25);
+}
+
+.bottom-fixed-host a:hover{
+  background:#b91c1c;
+  color:#ffffff;
+
+  transform:translateY(-1px);
+
+  box-shadow:0 8px 18px rgba(220,38,38,.35);
+}
+
+
+/* =====================================================
+FOOTER
+===================================================== */
+
+.footer-gray{
+  background:#0f172a;
+  color:#cbd5f1;
+  margin-top:50px;
+}
+
+/* 브랜드 */
+
+.footer-logo{
+  font-size:26px;
+  font-weight:800;
+  color:#ffffff;
+  margin-bottom:12px;
+}
+
+.footer-desc{
+  font-size:14px;
+  line-height:1.6;
+  color:#94a3b8;
+  max-width:280px;
+}
+
+/* 소셜 */
+
+.footer-social{
+  margin-top:14px;
+  display:flex;
+  gap:12px;
+}
+
+.footer-social a{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:#1e293b;
+  color:#cbd5f1;
+
+  font-size:16px;
+
+  transition:.2s;
+}
+
+.footer-social a:hover{
+  background:#2563eb;
+  color:#fff;
+}
+
+/* 메뉴 */
+
+.footer-menu h4,
+.footer-contact h4{
+  font-size:15px;
+  font-weight:700;
+  margin-bottom:14px;
+  color:#ffffff;
+}
+
+.footer-menu ul{
+  padding:0;
+  margin:0;
+  list-style:none;
+}
+
+.footer-menu li{
+  margin-bottom:8px;
+}
+
+.footer-menu a{
+  text-decoration:none;
+  font-size:14px;
+  color:#94a3b8;
+  transition:.2s;
+}
+
+.footer-menu a:hover{
+  color:#ffffff;
+}
+
+/* 연락처 */
+
+.footer-contact p{
+  font-size:14px;
+  color:#94a3b8;
+  margin-bottom:6px;
+}
+
+/* 하단 */
+
+.footer-bottom{
+  border-top:1px solid #1e293b;
+  padding:16px 0;
+  text-align:center;
+  font-size:13px;
+  color:#94a3b8;
+}
+
+.footer-bottom strong{
+  color:#ffffff;
+}

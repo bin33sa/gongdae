@@ -209,11 +209,12 @@
     </section>
 </main>
 
+
 <footer>
-    <jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
+	<jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
 </footer>
 
-<jsp:include page="/WEB-INF/views/host/layout/footerResources.jsp"/>
+<jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
 
 </body>
 </html>

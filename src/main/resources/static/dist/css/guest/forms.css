@@ -1,0 +1,314 @@
+﻿@charset "UTF-8";
+
+/*----------------------------------
+# Form Control
+----------------------------------*/
+
+input.form-control,
+textarea.form-control,
+select.form-select,
+.default-control {
+  font-size: 1rem;
+  width: 100%;
+  color: var(--default-color);
+  padding: .385rem .75rem;
+  border: 1px solid;
+  border-radius: 6px;
+  border-color: color-mix(in srgb, var(--default-color), transparent 80%);
+  background-color: color-mix(in srgb, var(--background-color), transparent 50%);
+  box-shadow: none;
+  vertical-align: middle;
+}
+
+textarea.form-control {
+  resize: none;
+  border-radius: 6px;
+  height: 260px;
+  font-family: var(--default-font);
+}
+
+input.form-control:focus,
+select.form-select:focus,
+textarea.form-control:focus {
+  color: var(--default-color);
+  background-color: var(--surface-color);
+  box-shadow: none;
+  border-color: var(--accent-color);
+}
+
+textarea.default-control {
+  resize: none;
+  height: 260px;
+}
+
+.default-control:focus {
+  color: var(--default-color);
+  background-color: var(--surface-color);
+  box-shadow: none;
+  border-color: color-mix(in srgb, var(--default-color), transparent 80%);
+}
+
+input.form-control[readonly],
+input.form-select[readonly],
+textarea.form-control[readonly] {
+  background-color: #f8f9fa;
+  pointer-events: none;
+}
+
+input.form-control[readonly]:focus,
+input.form-select[readonly]:focus,
+textarea.form-control[readonly]:focus {
+  border-color: color-mix(in srgb, var(--default-color), transparent 80%);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  background-color: #e9ecef;
+  opacity: 1;
+}
+
+input.form-control::placeholder,
+textarea.form-control::placeholder {
+  color: color-mix(in srgb, var(--default-color), transparent 70%);
+}
+
+.form-control-lg {
+  min-height: calc(1.5em + 1rem + 2px) !important;
+  padding: .5rem 1rem !important;
+  font-size: 1.06rem !important;
+}
+
+
+/*----------------------------------
+# Checkbox / Radio
+----------------------------------*/
+
+.form-check-input {
+  width: 1rem;
+  height: 1rem;
+  margin-top: .25rem;
+  vertical-align: top;
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,.25);
+  flex-shrink: 0;
+}
+
+.form-check-input:checked {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+input.form-check-input[type=checkbox] {
+  border-radius: 3px;
+}
+
+input.form-check-input[type=radio] {
+  border-radius: 50%;
+}
+
+input.form-check-input:focus,
+input.form-check-input:active {
+  box-shadow: none;
+}
+
+.form-check-label {
+  color: var(--default-color);
+  margin-left: .2rem;
+  cursor: pointer;
+}
+
+.form-check-input:disabled,
+.form-check-input:disabled ~ .form-check-label {
+  pointer-events: none;
+  opacity: .5;
+}
+
+
+/*----------------------------------
+# Button
+----------------------------------*/
+
+.btn-default {
+  font-size: 1rem;
+  color: var(--default-color);
+  background-color: color-mix(in srgb, var(--background-color), transparent 50%);
+  border: 1px solid;
+  border-color: color-mix(in srgb, var(--default-color), transparent 80%);
+  padding: .385rem .75rem;
+  transition: .3s;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.btn-default:hover,
+.btn-default:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.btn-accent {
+  font-size: 1rem;
+  color: var(--contrast-color);
+  background: var(--accent-color);
+  border: 1px solid var(--accent-color);
+  padding: .385rem .75rem;
+  transition: .3s;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.btn-accent:hover {
+  background: color-mix(in srgb, var(--accent-color) 90%, black 15%);
+}
+
+.btn-accent:focus {
+  outline: none;
+}
+
+.btn-light {
+  font-size: 1rem;
+  color: var(--default-color);
+  background: #f8f9fa;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 80%);
+  padding: .385rem .75rem;
+  transition: .3s;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-light:hover,
+.btn-light:focus {
+  background: color-mix(in srgb, #f8f9fa 97%, black 3%);
+  border-color: #aaaaaa;
+}
+
+.btn-sm {
+  font-size: .9rem;
+  padding: .25rem .5rem !important;
+}
+
+.btn-md {
+  font-size: 1rem;
+  padding: .385rem 1.5rem !important;
+}
+
+.btn-lg {
+  font-size: 1.06rem;
+  padding: .525rem 1.525rem !important;
+}
+
+button[disabled] {
+  pointer-events: none;
+  opacity: .65;
+}
+
+
+/*----------------------------------
+# Quill editor
+----------------------------------*/
+
+#editor,
+.editor {
+  width: 100%;
+  height: 260px;
+}
+
+
+/*----------------------------------
+# Label / Helper
+----------------------------------*/
+
+.form-control-plaintext {
+  display: block;
+  width: 100%;
+  padding: .385rem 0;
+  line-height: 1.5;
+  color: var(--default-color);
+}
+
+label.form-label {
+  color: var(--default-color);
+  display: inline-block;
+  margin-bottom: .5rem;
+}
+
+label.col-form-label {
+  color: var(--default-color);
+  display: inline-block;
+  padding: calc(.385rem + 1px) 0;
+  line-height: 1.5;
+}
+
+.help-block {
+  font-size: 12px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+
+/*----------------------------------
+# File Upload
+----------------------------------*/
+
+.file-upload-session {
+  padding: 38px;
+  min-height: 398px;
+  border: 1px solid #e4e4f4;
+  border-radius: 6px;
+  box-shadow: 0 5px 10px rgba(230,230,243,.88);
+  background-color: #ffffff;
+}
+
+.file-upload-session h3 {
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.file-upload-session .drag-area {
+  background-color: rgb(235,242,245);
+  height: 80px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 17px;
+  border-radius: 8px;
+  border: 1px dashed rgb(195,211,219);
+}
+
+
+/*----------------------------------
+# Search Form
+----------------------------------*/
+
+.form-search input,
+.form-search select {
+  font-size: 1rem;
+  padding: .385rem .75rem;
+  border: 1px solid;
+  border-radius: 6px;
+  transition: .3s;
+  color: var(--default-color);
+  background-color: color-mix(in srgb, var(--background-color), transparent 50%);
+  border-color: color-mix(in srgb, var(--default-color), transparent 80%);
+}
+
+.form-search input {
+  width: 250px;
+}
+
+.form-search input:focus,
+.form-search select:focus {
+  background-color: var(--surface-color);
+  border-color: var(--accent-color);
+}
+
+.form-search button.btn-search {
+  font-size: 1rem;
+  border: 0;
+  padding: 0;
+  margin-left: -33px;
+  margin-right: 5px;
+  background: none;
+}

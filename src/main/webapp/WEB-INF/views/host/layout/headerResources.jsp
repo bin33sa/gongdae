@@ -17,5 +17,6 @@
 
 <!-- HOST CSS Files -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/host.css" type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest_layout.css" type="text/css">
+<!-- 푸터 헤더 사이드바 css -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest/layout.css" type="text/css">
 

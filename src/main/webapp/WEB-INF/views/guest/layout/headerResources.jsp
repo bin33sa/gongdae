@@ -16,15 +16,11 @@
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
 <!-- Core CSS Files -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/core.css" type="text/css">
-<!-- Main CSS Files -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/main.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest/core.css" type="text/css">
 <!-- Form CSS Files -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/forms.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest/forms.css" type="text/css">
+<!-- Main CSS Files -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest/main.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest/layout.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest/components.css" type="text/css">
 
-
-<!-- GEUST CSS Files -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest.css" type="text/css">
-
-<!-- GEUST_layout CSS Files -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest_layout.css" type="text/css">

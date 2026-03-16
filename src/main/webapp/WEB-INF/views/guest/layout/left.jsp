@@ -3,19 +3,6 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
-<sec:authorize access="hasRole('ROLE_HOST')" var="isHost" />
-
-<c:choose>
-    <c:when test="${isHost}">
-        <c:set var="bottomText" value="공대생 홈(게스트)으로 이동" />
-        <c:set var="bottomLink" value="${pageContext.request.contextPath}/" />
-    </c:when>
-    <c:otherwise>
-        <c:set var="bottomText" value="호스트 센터로 이동" />
-        <c:set var="bottomLink" value="${pageContext.request.contextPath}/host/main/prelogin" />
-    </c:otherwise>
-</c:choose>
-
 
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample">
 
@@ -177,10 +164,10 @@
         <!-- ===================== -->
         <!-- BOTTOM BUTTON -->
         <!-- ===================== -->
-        <div class="bottom-fixed ${isHost ? 'bottom-fixed-host' : 'bottom-fixed-guest'} text-center mt-auto">
+        <div class="bottom-fixed bottom-fixed-host text-center mt-auto">
 
-            <a href="${bottomLink}">
-                ${bottomText}
+            <a href="${pageContext.request.contextPath}/host/main/prelogin">
+                호스트 센터로 이동
                 <i class="bi bi-arrow-right-circle ms-1"></i>
             </a>
 
