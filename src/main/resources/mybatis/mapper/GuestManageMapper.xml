@@ -18,10 +18,10 @@
 	
 	<select id="listMember" parameterType="map" resultType="com.gongdae.app.admin.domain.dto.GuestManageDto">
 	    SELECT m.member_id, m.login_id, m.enabled, 
-	        m.created_at, m.update_at, m.last_login, g.nickname,
-	        g.name, g.email, g.phone, g.point, g.grade,
+	        m.created_at, m.update_at, m.last_login, nickname,
+	        name, email, phone, point, grade,
 	        TO_CHAR(g.birth, 'YYYY-MM-DD') birth,
-	        g.PROFILE_IMAGE_URL as profile_photo
+	        PROFILE_IMAGE_URL as profile_photo
 	    FROM member m
 	    LEFT OUTER JOIN guest_detail g ON m.member_id = g.member_id 
 	    JOIN memberAuthority ma ON m.login_id = ma.login_id 
@@ -52,5 +52,60 @@
 	            AND m.enabled = #{enabled}
 	        </if>
 	    </where> 
+	</select>
+	
+	<select id="findById" parameterType="Long" resultType="com.gongdae.app.admin.domain.dto.GuestManageDto">
+		SELECT m.member_id, m.login_id, password, enabled, 
+			created_at, update_at, last_login, failure_cnt,
+			name, TO_CHAR(birth, 'YYYY-MM-DD') birth, 
+			NVL(TRUNC(MONTHS_BETWEEN(SYSDATE, birth)/12), -1) age, 
+			email, phone, PROFILE_IMAGE_URL as profile_photo, point, nickname, grade
+		FROM member m
+		LEFT OUTER JOIN guest_detail g ON m.member_id = g.member_id
+		WHERE m.member_id = #{member_id}
+	</select>
+	
+	<update id="updateFailureCountReset" parameterType="Long">
+		UPDATE member SET failure_cnt = 0
+		WHERE member_id = #{member_id}
+	</update>
+	
+	<update id="updateGuestEnabled" parameterType="map">
+		UPDATE member SET enabled = #{enabled}
+		WHERE member_id = #{member_id}
+    </update>
+    
+    <update id="updateGuest" parameterType="map">
+	    UPDATE member 
+	    SET update_at = SYSDATE 
+	    WHERE member_id = #{member_id}
+	</update>
+
+	<update id="updateGuestDetail" parameterType="map">
+		UPDATE guest_detail
+		SET grade = #{grade}
+		WHERE member_id = #{member_id}
+	</update>
+	
+	<insert id="insertGuestStatus" parameterType="com.gongdae.app.admin.domain.dto.GuestManageDto">
+	    INSERT INTO member_status(num, member_id, status_code, memo, register_id, reg_date)
+	    VALUES (seq_member_status.NEXTVAL, #{member_id}, #{status_code}, #{memo}, #{register_id}, SYSDATE)
+	</insert>
+	
+	<select id="listGuestStatus" parameterType="Long" resultType="com.gongdae.app.admin.domain.dto.GuestManageDto">
+		SELECT num, ms.member_id, status_code, memo, register_id, name registerName, reg_date
+		FROM member_status ms
+		LEFT OUTER JOIN guest_detail g ON ms.register_id = g.member_id		
+		WHERE ms.member_id = #{member_id}
+		ORDER BY num DESC
+	</select>
+
+	<select id="findByStatus" parameterType="Long" resultType="com.gongdae.app.admin.domain.dto.GuestManageDto">
+		SELECT num, ms.member_id, status_code, memo, register_id, name registerName, reg_date
+		FROM member_status ms
+		LEFT OUTER JOIN guest_detail g ON ms.register_id = g.member_id		
+		WHERE ms.member_id = #{member_id}
+		ORDER BY num DESC
+		FETCH FIRST 1 ROWS ONLY
 	</select>
 </mapper>

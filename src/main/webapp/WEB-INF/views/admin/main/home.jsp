@@ -59,7 +59,7 @@
                     <div class="dashboard-box h-100 d-flex flex-column" style="min-height: 550px;">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h5 class="fw-bold text-main m-0">월간 매출 현황</h5>
-                            <div class="text-muted small">
+                            <div class="text-muted small-txt">
                                 <i class="bi bi-circle-fill me-1" style="color: #3B82F6;"></i> 매출 
                                 <i class="bi bi-circle-fill ms-2 me-1" style="color: #8B5CF6;"></i> 지출
                             </div>
@@ -100,35 +100,35 @@
                         <div class="table-responsive">
                             <table class="table text-main mb-0 align-middle">
                                 <thead>
-                                    <tr class="text-muted">
-                                        <th class="fw-normal border-bottom border-secondary pb-3">예약번호</th>
-                                        <th class="fw-normal border-bottom border-secondary pb-3">예약자</th>
-                                        <th class="fw-normal border-bottom border-secondary pb-3">공간명</th>
-                                        <th class="fw-normal border-bottom border-secondary pb-3">예약일시</th>
-                                        <th class="fw-normal border-bottom border-secondary pb-3 text-end">상태</th>
+                                    <tr>
+                                        <th class="admin-th">예약번호</th>
+                                        <th class="admin-th">예약자</th>
+                                        <th class="admin-th">공간명</th>
+                                        <th class="admin-th">예약일시</th>
+                                        <th class="admin-th txt-right">상태</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="py-3 border-bottom border-secondary">#1532</td>
-                                        <td class="py-3 border-bottom border-secondary">김민준</td>
-                                        <td class="py-3 border-bottom border-secondary fw-semibold">홍대 파티룸 A</td>
-                                        <td class="py-3 border-bottom border-secondary text-muted small">2026-03-06 14:30</td>
-                                        <td class="py-3 border-bottom border-secondary text-end"><span class="text-success small fw-bold" style="color: #34E085 !important;">결제완료</span></td>
+                                        <td class="admin-td">#1532</td>
+                                        <td class="admin-td">김민준</td>
+                                        <td class="admin-td fw-bold">홍대 파티룸 A</td>
+                                        <td class="admin-td txt-muted small-txt">2026-03-06 14:30</td>
+                                        <td class="admin-td txt-right"><span class="text-success small-txt fw-bold" style="color: #34E085 !important;">결제완료</span></td>
                                     </tr>
                                     <tr>
-                                        <td class="py-3 border-bottom border-secondary">#1531</td>
-                                        <td class="py-3 border-bottom border-secondary">이지은</td>
-                                        <td class="py-3 border-bottom border-secondary fw-semibold">강남 스터디룸 B</td>
-                                        <td class="py-3 border-bottom border-secondary text-muted small">2026-03-06 11:15</td>
-                                        <td class="py-3 border-bottom border-secondary text-end"><span class="text-success small fw-bold" style="color: #34E085 !important;">결제완료</span></td>
+                                        <td class="admin-td">#1531</td>
+                                        <td class="admin-td">이지은</td>
+                                        <td class="admin-td fw-bold">강남 스터디룸 B</td>
+                                        <td class="admin-td txt-muted small-txt">2026-03-06 11:15</td>
+                                        <td class="admin-td txt-right"><span class="text-success small-txt fw-bold" style="color: #34E085 !important;">결제완료</span></td>
                                     </tr>
                                     <tr>
-                                        <td class="py-3 border-bottom-0">#1530</td>
-                                        <td class="py-3 border-bottom-0">박서준</td>
-                                        <td class="py-3 border-bottom-0 fw-semibold">성수 루프탑 C</td>
-                                        <td class="py-3 border-bottom-0 text-muted small">2026-03-05 20:00</td>
-                                        <td class="py-3 border-bottom-0 text-end"><span class="text-muted small fw-bold">예약대기</span></td>
+                                        <td class="admin-td" style="border-bottom: none;">#1530</td>
+                                        <td class="admin-td" style="border-bottom: none;">박서준</td>
+                                        <td class="admin-td fw-bold" style="border-bottom: none;">성수 루프탑 C</td>
+                                        <td class="admin-td txt-muted small-txt" style="border-bottom: none;">2026-03-05 20:00</td>
+                                        <td class="admin-td txt-right" style="border-bottom: none;"><span class="txt-muted small-txt fw-bold">예약대기</span></td>
                                     </tr>
                                 </tbody>
                             </table>

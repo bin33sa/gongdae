@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 :root {
     --bg-body: #111827;
     --bg-card: #1F2937;
@@ -13,7 +17,7 @@ body.admin-page {
     color: var(--text-main) !important;
     font-family: 'Inter', 'Pretendard', sans-serif;
     margin: 0;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .admin-page h1, 
@@ -45,10 +49,12 @@ body.admin-page {
 .admin-layout {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .admin-header {
+    flex: 0 0 80px;
     height: 80px;
     background-color: var(--bg-card);
     border-bottom: 1px solid var(--border-color);
@@ -56,8 +62,7 @@ body.admin-page {
     align-items: center;
     justify-content: space-between;
     padding: 0 50px;
-    position: sticky;
-    top: 0;
+    position: relative;
     z-index: 1000;
 }
 
@@ -88,28 +93,42 @@ body.admin-page {
 .admin-body {
     display: flex;
     flex: 1;
+    height: calc(100vh - 80px);
+    overflow: hidden;
 }
 
 .admin-sidebar {
+    flex: 0 0 260px;
     width: 260px;
     background-color: var(--bg-card);
     border-right: 1px solid var(--border-color);
     padding: 0;
-    position: sticky;
-    top: 80px;
-    height: calc(100vh - 80px);
-    overflow-y: auto;
+    height: 100% !important;
+    max-height: 100% !important;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden !important;
 }
 
-.admin-sidebar::-webkit-scrollbar {
+.sidebar-nav {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
+}
+
+.sidebar-nav::-webkit-scrollbar,
+.admin-content::-webkit-scrollbar {
     width: 6px;
 }
 
-.admin-sidebar::-webkit-scrollbar-track {
+.sidebar-nav::-webkit-scrollbar-track,
+.admin-content::-webkit-scrollbar-track {
     background: transparent;
 }
 
-.admin-sidebar::-webkit-scrollbar-thumb {
+.sidebar-nav::-webkit-scrollbar-thumb,
+.admin-content::-webkit-scrollbar-thumb {
     background: var(--border-color);
     border-radius: 4px;
 }
@@ -158,8 +177,11 @@ body.admin-page {
 }
 
 .sidebar-user-profile {
-    border-color: var(--border-color) !important;
-    background-color: rgba(0, 0, 0, 0.15);
+    background-color: var(--bg-card) !important;
+    border-top: 1px solid var(--border-color) !important;
+    margin-top: auto;
+    width: 100%;
+    flex-shrink: 0 !important;
 }
 
 .profile-avatar {
@@ -177,8 +199,11 @@ body.admin-page {
 
 .admin-content {
     flex: 1;
+    min-width: 0;
     padding: 60px !important;
     background-color: var(--bg-body);
+    height: 100%;
+    overflow-y: auto;
 }
 
 .dashboard-box {
@@ -186,7 +211,6 @@ body.admin-page {
     border: 1px solid var(--border-color);
     border-radius: 16px;
     padding: 32px;
-    height: 100%;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     transition: transform 0.2s ease, border-color 0.2s ease;
 }
@@ -417,6 +441,7 @@ body.admin-page {
 
 @media (max-width: 1200px) {
     .admin-sidebar {
+        flex: 0 0 220px;
         width: 220px;
     }
     .admin-content {
@@ -426,6 +451,7 @@ body.admin-page {
 
 @media (max-width: 992px) {
     .admin-sidebar {
+        flex: 0 0 200px;
         width: 200px;
     }
     .menu-item {
@@ -444,16 +470,21 @@ body.admin-page {
 @media (max-width: 768px) {
     .admin-body {
         flex-direction: column;
+        overflow-y: auto;
     }
     .admin-sidebar {
+        flex: none;
         width: 100%;
         height: auto;
         border-right: none;
         border-bottom: 1px solid var(--border-color);
-        position: static;
+        overflow-y: visible;
     }
     .admin-content {
+        flex: none;
         padding: 20px !important;
+        height: auto;
+        overflow-y: visible;
     }
     .admin-header {
         padding: 0 20px;
@@ -715,3 +746,32 @@ body.admin-page {
     background: rgba(205, 127, 50, 0.15);
     border-color: rgba(205, 127, 50, 0.4);
 }
+
+.admin-th {
+    font-weight: normal;
+    border-bottom: 1px solid var(--border-color) !important;
+    padding-bottom: 1rem;
+    color: var(--text-muted) !important;
+}
+
+.admin-td {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-color) !important;
+    vertical-align: middle;
+}
+
+.admin-page .table {
+    border-bottom: none !important;
+}
+
+.admin-page .table tbody tr:last-child th,
+.admin-page .table tbody tr:last-child td,
+.admin-page .table tbody tr:last-child .admin-td {
+    border-bottom: none !important;
+}
+
+.txt-center { text-align: center; }
+.txt-right { text-align: right; }
+.txt-muted { color: var(--text-muted) !important; }
+.fw-bold { font-weight: 700; }
+.small-txt { font-size: 0.875em; }

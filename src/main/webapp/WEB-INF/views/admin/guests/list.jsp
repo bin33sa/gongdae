@@ -46,7 +46,7 @@
 
                             <div class="input-group" style="width: 250px;">
                                 <input type="text" name="kwd" value="${kwd}" class="form-control bg-transparent text-main border-secondary" placeholder="검색어 입력">
-                                <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+                                <button class="btn btn-outline-secondary" type="submit" onclick="searchList()"><i class="bi bi-search"></i></button>
                             </div>
                         </form>
                     </div>
@@ -54,78 +54,80 @@
                 </div>
 
                 <div class="table-responsive">
-				    <table class="table text-main mb-0 align-middle">
-				        <thead>
-				            <tr class="text-muted">
-				                <th class="fw-normal border-bottom border-secondary pb-3">회원번호</th>
-				                <th class="fw-normal border-bottom border-secondary pb-3">닉네임</th>
-				                <th class="fw-normal border-bottom border-secondary pb-3">아이디</th>
-				                <th class="fw-normal border-bottom border-secondary pb-3 text-center">포인트</th>
-				                <th class="fw-normal border-bottom border-secondary pb-3 text-center">등급</th> <th class="fw-normal border-bottom border-secondary pb-3 text-center">마지막 로그인</th>
-				                <th class="fw-normal border-bottom border-secondary pb-3 text-center">가입일</th>
-				                <th class="fw-normal border-bottom border-secondary pb-3 text-center">상태</th>
-				                <th class="fw-normal border-bottom border-secondary pb-3" style="text-align: right; padding-right: 28px;">관리</th>
-				            </tr>
-				        </thead>
-				        <tbody>
-				            <c:if test="${empty list}">
-				                <tr>
-				                    <td colspan="9" class="text-center py-5 text-muted">등록된 회원이 없습니다.</td> </tr>
-				            </c:if>
-				            <c:forEach var="dto" items="${list}">
-				                <tr>
-				                    <td class="py-3 border-bottom border-secondary text-muted">#${dto.member_id}</td>
-				                    <td class="py-3 border-bottom border-secondary fw-bold text-info">${dto.nickname != null ? dto.nickname : '-'}</td>
-				                    <td class="py-3 border-bottom border-secondary">${dto.login_id}</td>
-				                    <td class="py-3 border-bottom border-secondary text-center fw-bold">
-				                        <fmt:formatNumber value="${dto.point}" pattern="#,###"/> P
-				                    </td>
-				                    <td class="py-3 border-bottom border-secondary text-center">
-									    <c:choose>
-									        <c:when test="${dto.grade == 'GOLD'}">
-									            <span class="grade-badge grade-gold">GOLD</span>
-									        </c:when>
-									        <c:when test="${dto.grade == 'SILVER'}">
-									            <span class="grade-badge grade-silver">SILVER</span>
-									        </c:when>
-									        <c:when test="${dto.grade == 'BRONZE'}">
-									            <span class="grade-badge grade-bronze">BRONZE</span>
-									        </c:when>
-									        <c:otherwise>
-									            <span class="badge bg-light bg-opacity-10 text-main border border-secondary border-opacity-25 px-2 py-1">
-									                ${dto.grade != null ? dto.grade : 'BRONZE'}
-									            </span>
-									        </c:otherwise>
-									    </c:choose>
-									</td>
-				                    <td class="py-3 border-bottom border-secondary text-center small">${dto.last_login != null ? dto.last_login : '-'}</td>
-				                    <td class="py-3 border-bottom border-secondary text-center text-muted small">${dto.created_at}</td>
-				                    <td class="py-3 border-bottom border-secondary text-center">
-				                        <c:choose>
-				                            <c:when test="${dto.enabled == 1}">
-				                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1">정상</span>
-				                            </c:when>
-				                            <c:otherwise>
-				                                <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-2 py-1">정지</span>
-				                            </c:otherwise>
-				                        </c:choose>
-				                    </td>
-				                    <td class="py-3 border-bottom border-secondary text-end">
-				                        <button class="btn btn-sm btn-outline-secondary" onclick="viewProfile('${dto.member_id}')">상세</button>
-				                    </td>
-				                </tr>
-				            </c:forEach>
-				        </tbody>
-				    </table>
-				</div>
+                    <table class="table text-main mb-0 align-middle">
+                        <thead>
+                            <tr>
+                                <th class="admin-th">회원번호</th>
+                                <th class="admin-th">닉네임</th>
+                                <th class="admin-th">아이디</th>
+                                <th class="admin-th txt-center">포인트</th>
+                                <th class="admin-th txt-center">등급</th> 
+                                <th class="admin-th txt-center">마지막 로그인</th>
+                                <th class="admin-th txt-center">가입일</th>
+                                <th class="admin-th txt-center">상태</th>
+                                <th class="admin-th txt-right" style="padding-right: 28px;">관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:if test="${empty list}">
+                                <tr>
+                                    <td colspan="9" class="admin-td txt-center txt-muted" style="padding: 3rem 0;">등록된 회원이 없습니다.</td> 
+                                </tr>
+                            </c:if>
+                            <c:forEach var="dto" items="${list}">
+                                <tr>
+                                    <td class="admin-td txt-muted">#${dto.member_id}</td>
+                                    <td class="admin-td fw-bold text-info">${dto.nickname != null ? dto.nickname : '-'}</td>
+                                    <td class="admin-td">${dto.login_id}</td>
+                                    <td class="admin-td txt-center fw-bold">
+                                        <fmt:formatNumber value="${dto.point}" pattern="#,###"/> P
+                                    </td>
+                                    <td class="admin-td txt-center">
+                                        <c:choose>
+                                            <c:when test="${dto.grade == 'GOLD'}">
+                                                <span class="grade-badge grade-gold">GOLD</span>
+                                            </c:when>
+                                            <c:when test="${dto.grade == 'SILVER'}">
+                                                <span class="grade-badge grade-silver">SILVER</span>
+                                            </c:when>
+                                            <c:when test="${dto.grade == 'BRONZE'}">
+                                                <span class="grade-badge grade-bronze">BRONZE</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="badge bg-light bg-opacity-10 text-main border border-secondary border-opacity-25 px-2 py-1">
+                                                    ${dto.grade != null ? dto.grade : 'BRONZE'}
+                                                </span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td class="admin-td txt-center small-txt">${dto.last_login != null ? dto.last_login : '-'}</td>
+                                    <td class="admin-td txt-center txt-muted small-txt">${dto.created_at}</td>
+                                    <td class="admin-td txt-center">
+                                        <c:choose>
+                                            <c:when test="${dto.enabled == 1}">
+                                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1">정상</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-2 py-1">정지</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td class="admin-td txt-right">
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="viewProfile('${dto.member_id}')">상세</button>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
                 
-                <div class="d-flex justify-content-center mt-4 pt-3 border-top border-secondary border-opacity-25">
-				    <nav aria-label="Page navigation">
-				        <div class="admin-pagination">
-				            ${paging}
-				        </div>
-				    </nav>
-				</div>
+                <div class="d-flex justify-content-center mt-4">
+                    <nav aria-label="Page navigation">
+                        <div class="admin-pagination">
+                            ${paging}
+                        </div>
+                    </nav>
+                </div>
             </div>
         </main>
     </div>
@@ -144,6 +146,13 @@ function listGuest(page) {
     const f = document.searchForm;
     f.page.value = page; 
     f.submit();         
+}
+
+function viewProfile(memberId) {
+    const f = document.searchForm;
+    const page = f.page.value || "1"; 
+    const url = "${pageContext.request.contextPath}/admin/guests/profile?member_id=" + memberId + "&page=" + page;
+    location.href = url;
 }
 </script>
 </body>

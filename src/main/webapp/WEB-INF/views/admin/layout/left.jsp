@@ -1,10 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<aside class="admin-sidebar d-flex flex-column">
+<aside class="admin-sidebar d-flex flex-column sticky-top" style="height: 100vh; top: 0;">
 
     <div class="px-4 py-4 fw-bold fs-4 text-white">
-        <a href="${pageContext.request.contextPath}/admin/main">관리자 메뉴</a>
+        <a href="${pageContext.request.contextPath}/admin/main" class="text-white text-decoration-none">관리자 메뉴</a>
     </div>
 
     <div class="sidebar-nav flex-grow-1 overflow-auto mt-2">
@@ -66,17 +66,17 @@
         </div>
 
         <div class="menu-group mb-4" data-index="6">
-		    <div class="menu-title menu-item d-flex align-items-center px-4" style="cursor:pointer;">
-		        <i class="bi bi-gear-wide-connected me-3"></i> 
-		        <span>사이트 관리</span> 
-		        <i class="bi bi-chevron-down ms-auto small"></i>
-		    </div>
-		    <div class="submenu nav flex-column">
-		        <a href="${pageContext.request.contextPath}/admin/site/report" class="nav-link sub-menu-item">신고 내역 관리</a>
-		        <a href="${pageContext.request.contextPath}/admin/site/banner" class="nav-link sub-menu-item">배너/팝업 관리</a>
-		        <a href="${pageContext.request.contextPath}/admin/site/component" class="nav-link sub-menu-item">UI 구성요소 관리</a>
-		    </div>
-		</div>
+            <div class="menu-title menu-item d-flex align-items-center px-4" style="cursor:pointer;">
+                <i class="bi bi-gear-wide-connected me-3"></i> 
+                <span>사이트 관리</span> 
+                <i class="bi bi-chevron-down ms-auto small"></i>
+            </div>
+            <div class="submenu nav flex-column">
+                <a href="${pageContext.request.contextPath}/admin/site/report" class="nav-link sub-menu-item">신고 내역 관리</a>
+                <a href="${pageContext.request.contextPath}/admin/site/banner" class="nav-link sub-menu-item">배너/팝업 관리</a>
+                <a href="${pageContext.request.contextPath}/admin/site/component" class="nav-link sub-menu-item">UI 구성요소 관리</a>
+            </div>
+        </div>
 
     </div>
 

@@ -74,7 +74,8 @@
 		<div class="container">
 
 			<p>
-			© 2026 <strong>GongDaeSaeng</strong> All rights reserved
+			<a href="${pageContext.request.contextPath}/admin/login">©</a>
+			  2026 <strong>GongDaeSaeng</strong> All rights reserved
 			</p>
 
 		</div>
