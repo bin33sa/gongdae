@@ -62,7 +62,7 @@
 
                     <div>
                         <div class="fw-bold fs-5 mb-1 text-white">
-                            ${member.name} 님
+                            ${member.nickname != null ? member.nickname : member.name} 님
                         </div>
 
                         <a href="${pageContext.request.contextPath}/member/edit"

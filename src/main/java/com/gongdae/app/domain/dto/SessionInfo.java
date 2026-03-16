@@ -16,6 +16,7 @@ public class SessionInfo {
 	private String login_id;
 	private String password;
 	private String name;
+	private String nickname;
 	private String email;
 	private int userLevel;
 	private String login_type; 

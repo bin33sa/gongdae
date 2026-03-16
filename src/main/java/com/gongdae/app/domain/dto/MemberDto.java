@@ -20,6 +20,7 @@ public class MemberDto {
 	private int failure_cnt;
 
 	private String name;
+	private String nickname;
 	private String birth;
 	private String email;
 	private int receive_email;

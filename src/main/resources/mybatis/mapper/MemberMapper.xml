@@ -73,6 +73,7 @@
 	        m1.last_login,
 	        m3.authority,
 	        COALESCE(g.name, h.name, a.name) as name,
+	        g.nickname,
 	        COALESCE(g.email, h.email) as email,
 	        COALESCE(g.phone, h.phone) as tel,
 	        NULL as sns_provider,
