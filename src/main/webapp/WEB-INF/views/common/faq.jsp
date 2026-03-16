@@ -13,8 +13,10 @@
 <title>FAQ</title>
 
 <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
-
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/common/faq.css" type="text/css">
+<!--faq 페이지 전용 CSS -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/dist/css/guest/common/faq.css"
+	type="text/css">
 
 </head>
 

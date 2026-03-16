@@ -1,0 +1,59 @@
+/* =====================================================
+COMMON PAGINATION
+===================================================== */
+
+.pagination-wrap{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  margin-top:40px;
+}
+
+.pagination{
+  display:flex;
+  gap:6px;
+}
+
+.page-item{
+  list-style:none;
+}
+
+.page-link{
+  width:36px;
+  height:36px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:8px;
+
+  border:1px solid #e5e7eb;
+  background:#fff;
+
+  font-size:14px;
+  font-weight:500;
+
+  color:#334155;
+
+  cursor:pointer;
+
+  transition:.2s;
+}
+
+.page-link:hover{
+  background:#eef4ff;
+  border-color:#c7d2fe;
+}
+
+.page-item.active .page-link{
+  background:var(--accent-color);
+  border-color:var(--accent-color);
+  color:#fff;
+}
+
+.page-item.disabled .page-link{
+  opacity:.4;
+  cursor:default;
+}

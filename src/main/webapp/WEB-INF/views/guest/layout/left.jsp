@@ -53,14 +53,14 @@
                         </div>
 
                         <a href="${pageContext.request.contextPath}/member/edit"
-                           class="small text-secondary text-white">
+                           class="small  text-white">
                            정보수정
                         </a>
 
                         <span class="text-secondary">|</span>
 
                         <a href="${pageContext.request.contextPath}/member/logout"
-                           class="small text-secondary text-white">
+                           class="small  text-white">
                            로그아웃
                         </a>
                     </div>

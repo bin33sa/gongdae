@@ -5,57 +5,63 @@ FAQ PAGE
 ===================================================== */
 
 .faq-page{
-
-  padding:60px 0;
-
+  padding:70px 0;
+  background:#f8fbff;
+  min-height:700px;
 }
 
 
-
 /* =====================================================
-FAQ HEADER
+HEADER
 ===================================================== */
 
 .faq-header{
-
   text-align:center;
-
   margin-bottom:40px;
-
 }
 
+.section-title{
+  font-size:32px;
+  font-weight:800;
+  margin-bottom:8px;
+  color:#1e293b;
+}
+
+.section-desc{
+  font-size:14px;
+  color:#64748b;
+}
 
 
 /* =====================================================
-ACCORDION CARD
+ACCORDION WRAPPER
+===================================================== */
+
+.faq-accordion{
+  max-width:760px;
+  margin:0 auto;
+}
+
+
+/* =====================================================
+ACCORDION ITEM
 ===================================================== */
 
 .faq-accordion .accordion-item{
-
-  border:1px solid rgba(199,210,254,.45);
-
-  border-radius:18px;
-
-  margin-bottom:14px;
-
+  border:none;
+  margin-bottom:10px;
+  border-radius:12px;
   overflow:hidden;
 
-  background:#fff;
+  box-shadow:0 4px 12px rgba(15,23,42,.06);
 
-  box-shadow:0 10px 25px rgba(30,58,138,.06);
-
-  transition:.25s;
-
+  transition:.2s;
 }
 
 .faq-accordion .accordion-item:hover{
-
-  transform:translateY(-3px);
-
-  box-shadow:0 16px 35px rgba(30,58,138,.12);
-
+  transform:translateY(-1px);
+  box-shadow:0 8px 20px rgba(15,23,42,.10);
 }
-
 
 
 /* =====================================================
@@ -63,63 +69,61 @@ QUESTION BUTTON
 ===================================================== */
 
 .faq-accordion .accordion-button{
-
-  background:#fff;
-
+  font-size:15px;
   font-weight:600;
 
-  font-size:15px;
+  padding:16px 18px;
 
-  padding:20px;
+  background:#ffffff;
 
-  border:none;
+  color:#334155;
 
   box-shadow:none;
-
 }
 
 .faq-accordion .accordion-button:hover{
-
-  background:var(--accent-soft-color);
-
+  background:#eef4ff;
 }
+
+.faq-accordion .accordion-button:focus{
+  box-shadow:none;
+  border:none;
+}
+
+
+/* 열린 상태 */
 
 .faq-accordion .accordion-button:not(.collapsed){
-
-  background:var(--accent-soft-color);
-
+  background:#eef4ff;
   color:var(--accent-color);
-
 }
-
 
 
 /* =====================================================
-ANSWER
+ANSWER BODY
 ===================================================== */
 
 .faq-accordion .accordion-body{
-
-  background:#f8fbff;
-
-  padding:22px;
+  font-size:14px;
 
   color:#475569;
 
-  line-height:1.7;
+  line-height:1.6;
 
+  background:#ffffff;
+
+  padding:16px 18px;
 }
 
 
-
 /* =====================================================
-ARROW COLOR
+ARROW ICON
 ===================================================== */
 
 .faq-accordion .accordion-button::after{
+  filter:brightness(.5);
+}
 
-  filter:brightness(0) saturate(100%)
-         invert(21%) sepia(70%)
-         saturate(1200%) hue-rotate(210deg);
-
+.faq-accordion .accordion-button:not(.collapsed)::after{
+  filter:none;
 }

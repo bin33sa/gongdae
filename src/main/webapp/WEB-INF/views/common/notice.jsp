@@ -18,7 +18,11 @@
 
 <!-- 공지 페이지 전용 CSS -->
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/dist/css/common/notice.css"
+	href="${pageContext.request.contextPath}/dist/css/guest/common/notice.css"
+	type="text/css">
+<!-- 페이지네이션 전용 css -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/dist/css/guest/page/pagination.css"
 	type="text/css">
 
 </head>
@@ -154,16 +158,30 @@ SECTION TITLE
 
 				</div>
 
-				<!-- =====================================================
-페이지네이션
-===================================================== -->
+				<!-- 페이지네이션 껍데기 -->
+				<div class="pagination-wrap">
 
-				<div class="pagination-area">
+					<ul class="pagination">
 
-					<span class="active">1</span> <span>2</span> <span>3</span> <span>4</span>
-					<span>5</span>
+						<li class="page-item disabled"><span class="page-link">«</span>
+						</li>
+
+						<li class="page-item active"><span class="page-link">1</span>
+						</li>
+
+						<li class="page-item"><span class="page-link">2</span></li>
+
+						<li class="page-item"><span class="page-link">3</span></li>
+
+						<li class="page-item"><span class="page-link">4</span></li>
+
+						<li class="page-item"><span class="page-link">»</span></li>
+
+					</ul>
 
 				</div>
+
+
 
 			</div>
 		</div>

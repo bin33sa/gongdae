@@ -14,7 +14,8 @@
 
 <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest/reservation.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest/common/reservation.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest/page/pagination.css" type="text/css">
 
 </head>
 
@@ -142,24 +143,28 @@ onclick="location.href='${pageContext.request.contextPath}/review/write'">
 </div>
 
 
+<!-- 페이지네이션 껍데기 -->
+				<div class="pagination-wrap">
 
-<!-- 페이지네이션 -->
+					<ul class="pagination">
 
-<div class="reservation-pagination">
+						<li class="page-item disabled"><span class="page-link">«</span>
+						</li>
 
-<button class="page-btn prev">
-<i class="bi bi-chevron-left"></i>
-</button>
+						<li class="page-item active"><span class="page-link">1</span>
+						</li>
 
-<button class="page-btn active">1</button>
-<button class="page-btn">2</button>
-<button class="page-btn">3</button>
+						<li class="page-item"><span class="page-link">2</span></li>
 
-<button class="page-btn next">
-<i class="bi bi-chevron-right"></i>
-</button>
+						<li class="page-item"><span class="page-link">3</span></li>
 
-</div>
+						<li class="page-item"><span class="page-link">4</span></li>
+
+						<li class="page-item"><span class="page-link">»</span></li>
+
+					</ul>
+
+				</div>
 
 
 </div>

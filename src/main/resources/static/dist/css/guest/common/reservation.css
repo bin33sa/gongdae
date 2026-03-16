@@ -1,0 +1,221 @@
+@charset "UTF-8";
+
+/* =====================================================
+RESERVATION PAGE
+===================================================== */
+
+.reservation-page{
+  padding:70px 0;
+  background:#f8fbff;
+  min-height:700px;
+}
+
+
+/* =====================================================
+HEADER
+===================================================== */
+
+.reservation-header{
+  text-align:center;
+  margin-bottom:40px;
+}
+
+.section-title{
+  font-size:32px;
+  font-weight:800;
+  margin-bottom:8px;
+  color:#1e293b;
+}
+
+.section-desc{
+  font-size:14px;
+  color:#64748b;
+}
+
+
+/* =====================================================
+TABLE WRAP
+===================================================== */
+
+.reservation-table-wrap{
+  background:#fff;
+
+  border-radius:14px;
+
+  overflow:hidden;
+
+  border:1px solid #e5e7eb;
+
+  box-shadow:0 6px 20px rgba(15,23,42,.06);
+}
+
+
+/* =====================================================
+TABLE
+===================================================== */
+
+.reservation-table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+
+/* table head */
+
+.reservation-table thead{
+  background:#f1f5f9;
+}
+
+.reservation-table th{
+  font-size:13px;
+  font-weight:600;
+
+  color:#475569;
+
+  padding:14px;
+
+  text-align:center;
+}
+
+
+/* table body */
+
+.reservation-table td{
+  padding:16px 14px;
+
+  font-size:14px;
+
+  color:#334155;
+
+  text-align:center;
+
+  border-top:1px solid #f1f5f9;
+}
+
+
+/* row hover */
+
+.reservation-table tbody tr{
+  transition:.2s;
+}
+
+.reservation-table tbody tr:hover{
+  background:#f8fafc;
+}
+
+
+/* =====================================================
+STATUS BADGE
+===================================================== */
+
+.status{
+  display:inline-block;
+
+  padding:4px 10px;
+
+  border-radius:6px;
+
+  font-size:12px;
+  font-weight:600;
+}
+
+
+/* 예약 완료 */
+
+.status.reserved{
+  background:#e0f2fe;
+  color:#0284c7;
+}
+
+
+/* 이용 완료 */
+
+.status.done{
+  background:#dcfce7;
+  color:#16a34a;
+}
+
+
+/* 취소 */
+
+.status.cancel{
+  background:#fee2e2;
+  color:#dc2626;
+}
+
+
+/* =====================================================
+BUTTON
+===================================================== */
+
+.btn-reservation{
+  border:none;
+
+  padding:6px 14px;
+
+  border-radius:8px;
+
+  font-size:13px;
+  font-weight:600;
+
+  background:#eef2ff;
+  color:#3730a3;
+
+  cursor:pointer;
+
+  transition:.2s;
+}
+
+.btn-reservation:hover{
+  background:#6366f1;
+  color:#fff;
+}
+
+
+/* =====================================================
+PAGINATION
+===================================================== */
+
+.reservation-pagination{
+  margin-top:30px;
+
+  display:flex;
+  justify-content:center;
+  gap:6px;
+}
+
+.page-btn{
+  width:36px;
+  height:36px;
+
+  border-radius:8px;
+
+  border:1px solid #e5e7eb;
+
+  background:#fff;
+
+  font-size:14px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  cursor:pointer;
+
+  transition:.2s;
+}
+
+.page-btn:hover{
+  background:#eef4ff;
+}
+
+.page-btn.active{
+  background:var(--accent-color);
+  color:#fff;
+  border-color:var(--accent-color);
+}
+
+.page-btn.prev,
+.page-btn.next{
+  font-size:16px;
+}

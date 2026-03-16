@@ -1,4 +1,4 @@
-﻿<%@ page contentType="text/html; charset=UTF-8" %>
+﻿<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
@@ -11,8 +11,17 @@
 
 <title>이벤트</title>
 
-<jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/common/event.css" type="text/css">
+<jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp" />
+
+<!-- 이벤트 페이지 전용 CSS -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/dist/css/guest/common/event.css"
+	type="text/css">
+<!-- 페이지네이션 전용 css -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/dist/css/guest/page/pagination.css"
+	type="text/css">
+
 
 
 </head>
@@ -21,205 +30,181 @@
 <body>
 
 
-<header>
-	<jsp:include page="/WEB-INF/views/guest/layout/header.jsp"/>
-</header>
+	<header>
+		<jsp:include page="/WEB-INF/views/guest/layout/header.jsp" />
+	</header>
 
 
-<main>
+	<main>
 
-<section class="section">
+		<section class="section">
 
-<div class="container">
+			<div class="container">
 
 
-<!-- ===============================
+				<!-- ===============================
 페이지 헤더
 =============================== -->
 
-<div class="event-header text-center mb-5">
+				<div class="event-header text-center mb-5">
 
-<h2 class="section-title">이벤트</h2>
+					<h2 class="section-title">이벤트</h2>
 
-<p class="section-desc">
-공대생에서 진행 중인 다양한 이벤트를 확인하세요
-</p>
+					<p class="section-desc">공대생에서 진행 중인 다양한 이벤트를 확인하세요</p>
 
-</div>
+				</div>
 
 
 
-<!-- ===============================
+				<!-- ===============================
 이벤트 카드 그리드
 =============================== -->
 
-<div class="event-grid row g-4">
+				<div class="event-grid row g-4">
 
 
 
-<!-- 이벤트 카드 -->
+					<!-- 이벤트 카드 -->
 
-<div class="col-md-3">
+					<div class="col-md-3">
 
-<div class="event-card">
+						<div class="event-card">
 
-<div class="event-img">
-<img src="/uploads/sample-event.jpg">
-</div>
+							<div class="event-img">
+								<img src="/uploads/sample-event.jpg">
+							</div>
 
-<div class="event-body">
+							<div class="event-body">
 
-<span class="event-badge active">
-진행중
-</span>
+								<span class="event-badge active"> 진행중 </span>
 
-<h3>
-신규 가입 5000포인트 지급 이벤트
-</h3>
+								<h3>신규 가입 5000포인트 지급 이벤트</h3>
 
-<div class="event-period">
-2026.03.01 ~ 2026.03.31
-</div>
+								<div class="event-period">2026.03.01 ~ 2026.03.31</div>
 
-</div>
+							</div>
 
-</div>
+						</div>
 
-</div>
+					</div>
 
 
 
-<div class="col-md-3">
+					<div class="col-md-3">
 
-<div class="event-card">
+						<div class="event-card">
 
-<div class="event-img">
-<img src="/uploads/sample-event.jpg">
-</div>
+							<div class="event-img">
+								<img src="/uploads/sample-event.jpg">
+							</div>
 
-<div class="event-body">
+							<div class="event-body">
 
-<span class="event-badge active">
-진행중
-</span>
+								<span class="event-badge active"> 진행중 </span>
 
-<h3>
-공간 예약 첫 이용 할인 이벤트
-</h3>
+								<h3>공간 예약 첫 이용 할인 이벤트</h3>
 
-<div class="event-period">
-2026.02.10 ~ 2026.04.10
-</div>
+								<div class="event-period">2026.02.10 ~ 2026.04.10</div>
 
-</div>
+							</div>
 
-</div>
+						</div>
 
-</div>
+					</div>
 
 
 
-<div class="col-md-3">
+					<div class="col-md-3">
 
-<div class="event-card">
+						<div class="event-card">
 
-<div class="event-img">
-<img src="/uploads/sample-event.jpg">
-</div>
+							<div class="event-img">
+								<img src="/uploads/sample-event.jpg">
+							</div>
 
-<div class="event-body">
+							<div class="event-body">
 
-<span class="event-badge active">
-진행중
-</span>
+								<span class="event-badge active"> 진행중 </span>
 
-<h3>
-리뷰 작성 포인트 지급 이벤트
-</h3>
+								<h3>리뷰 작성 포인트 지급 이벤트</h3>
 
-<div class="event-period">
-2026.03.01 ~ 2026.05.01
-</div>
+								<div class="event-period">2026.03.01 ~ 2026.05.01</div>
 
-</div>
+							</div>
 
-</div>
+						</div>
 
-</div>
+					</div>
 
 
 
-<div class="col-md-3">
+					<div class="col-md-3">
 
-<div class="event-card">
+						<div class="event-card">
 
-<div class="event-img">
-<img src="/uploads/sample-event.jpg">
-</div>
+							<div class="event-img">
+								<img src="/uploads/sample-event.jpg">
+							</div>
 
-<div class="event-body">
+							<div class="event-body">
 
-<span class="event-badge">
-종료
-</span>
+								<span class="event-badge"> 종료 </span>
 
-<h3>
-공대생 오픈 기념 이벤트
-</h3>
+								<h3>공대생 오픈 기념 이벤트</h3>
 
-<div class="event-period">
-2026.01.01 ~ 2026.04.01
-</div>
+								<div class="event-period">2026.01.01 ~ 2026.04.01</div>
 
-</div>
+							</div>
 
-</div>
+						</div>
 
-</div>
+					</div>
 
 
 
-</div>
+				</div>
 
 
 
-<!-- ===============================
-페이지네이션
-=============================== -->
 
-<div class="event-pagination">
+				<!-- 페이지네이션 껍데기 -->
+				<div class="pagination-wrap">
 
-<button class="page-btn prev">
-<i class="bi bi-chevron-left"></i>
-</button>
+					<ul class="pagination">
 
-<button class="page-btn active">1</button>
-<button class="page-btn">2</button>
-<button class="page-btn">3</button>
-<button class="page-btn">4</button>
+						<li class="page-item disabled"><span class="page-link">«</span>
+						</li>
 
-<button class="page-btn next">
-<i class="bi bi-chevron-right"></i>
-</button>
+						<li class="page-item active"><span class="page-link">1</span>
+						</li>
 
-</div>
+						<li class="page-item"><span class="page-link">2</span></li>
 
+						<li class="page-item"><span class="page-link">3</span></li>
 
+						<li class="page-item"><span class="page-link">4</span></li>
 
-</div>
+						<li class="page-item"><span class="page-link">»</span></li>
 
-</section>
+					</ul>
 
-</main>
+				</div>
 
 
+			</div>
 
-<footer>
-	<jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
-</footer>
+		</section>
 
+	</main>
 
-<jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
+
+
+	<footer>
+		<jsp:include page="/WEB-INF/views/guest/layout/footer.jsp" />
+	</footer>
+
+
+	<jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp" />
 
 
 </body>
