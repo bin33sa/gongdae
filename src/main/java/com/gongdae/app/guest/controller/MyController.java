@@ -14,12 +14,26 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping(value = "/wish/*")
-public class WishController {
-
-	@GetMapping("list")
+@RequestMapping(value = "/my/*")
+public class MyController {
+	
+	
+	@GetMapping("grade")
+	public String grade() throws Exception {
+		return "guest/my/grade";
+	}
+	@GetMapping("mileage")
+	public String mileage() throws Exception {
+		return "guest/my/mileage";
+	}
+	@GetMapping("coupon")
+	public String coupon() throws Exception {
+		return "guest/my/coupon";
+	}
+	
+	@GetMapping("wishlist")
 	public String wishList() throws Exception {
-		return "guest/space/wishList";
+		return "guest/my/wishlist";
 	}
 	
 }
