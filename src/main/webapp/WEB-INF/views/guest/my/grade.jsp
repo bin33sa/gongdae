@@ -154,15 +154,15 @@ color:#555;
 
 <div class="benefit-list">
 
-<strong>Bronze</strong><br>
+<strong class="grade-bronze">Bronze</strong><br>
 • 기본 공간 예약 서비스 이용 가능<br>
 • 일반 이벤트 참여 가능<br><br>
 
-<strong>Silver</strong><br>
+<strong class="grade-silver">Silver</strong><br>
 • 공간 예약 시 일부 할인 혜택 제공<br>
 • 인기 공간 우선 예약 기회<br><br>
 
-<strong>Gold</strong><br>
+<strong class="grade-gold">Gold</strong><br>
 • 프리미엄 공간 할인 혜택<br>
 • 이벤트 우선 참여<br>
 • 특별 프로모션 제공
