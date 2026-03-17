@@ -189,7 +189,9 @@ SECTION TITLE
 	</main>
 
 	<!-- FOOTER -->
-
+<footer>
+	<jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
+</footer>
 	<jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp" />
 
 </body>

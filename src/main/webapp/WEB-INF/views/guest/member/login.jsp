@@ -1,7 +1,8 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 
 <!DOCTYPE html>
 <html>
@@ -13,8 +14,10 @@
 
 <title>로그인</title>
 
-<jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest/page/login.css" type="text/css">
+<jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/dist/css/guest/page/login.css"
+	type="text/css">
 
 </head>
 
@@ -22,149 +25,128 @@
 <body>
 
 
-<header>
-	<jsp:include page="/WEB-INF/views/guest/layout/header.jsp"/>
-</header>
+	<header>
+		<jsp:include page="/WEB-INF/views/guest/layout/header.jsp" />
+	</header>
 
 
 
-<main class="login-wrapper">
+	<main class="login-wrapper">
 
-<div class="container">
+		<div class="container">
 
-<div class="row justify-content-center align-items-center">
+			<div class="row justify-content-center align-items-center">
 
-<div class="col-lg-4 col-md-6">
+				<div class="col-lg-4 col-md-6">
 
-<div class="login-card">
+					<div class="login-card">
 
-<div class="login-title text-center">
+						<div class="login-title text-center">
 
-<h2>로그인</h2>
+							<h2>로그인</h2>
 
-<p class="login-sub">
-공대생 공간 예약 서비스
-</p>
+							<p class="login-sub">공대생 공간 예약 서비스</p>
 
-</div>
+						</div>
 
 
 
-<form name="loginForm" method="post" class="login-form">
+						<form name="loginForm" method="post" class="login-form">
 
-<div class="form-group">
+							<div class="form-group">
 
-<input type="text"
-name="login_id"
-class="form-control"
-placeholder="아이디">
+								<input type="text" name="login_id" class="form-control"
+									placeholder="아이디">
 
-</div>
+							</div>
 
 
-<div class="form-group">
+							<div class="form-group">
 
-<input type="password"
-name="password"
-class="form-control"
-placeholder="패스워드"
-autocomplete="off">
+								<input type="password" name="password" class="form-control"
+									placeholder="패스워드" autocomplete="off">
 
-</div>
+							</div>
 
 
-<div class="login-option">
+							<div class="login-option">
 
-<label class="form-check-label">
+								<label class="form-check-label"> <input
+									class="form-check-input rememberMe" type="checkbox"
+									id="rememberMe"> 아이디 저장
 
-<input class="form-check-input rememberMe"
-type="checkbox"
-id="rememberMe">
+								</label>
 
-아이디 저장
+							</div>
 
-</label>
 
-</div>
+							<button type="button" class="btn-login" onclick="sendLogin();">
 
+								로그인</button>
 
-<button type="button"
-class="btn-login"
-onclick="sendLogin();">
 
-로그인
+						</form>
 
-</button>
 
 
-</form>
+						<c:if test="${not empty message}">
+							<p class="login-error">${message}</p>
+						</c:if>
 
 
 
-<c:if test="${not empty message}">
-<p class="login-error">${message}</p>
-</c:if>
+						<div class="login-links">
 
+							<a href="${pageContext.request.contextPath}/guest/findId">아이디
+								찾기</a> <span>|</span> <a
+								href="${pageContext.request.contextPath}/guest/findPwd">비밀번호
+								찾기</a> <span>|</span> <a
+								href="${pageContext.request.contextPath}/guest/signup">회원가입</a>
 
+						</div>
 
-<div class="login-links">
 
-<a href="${pageContext.request.contextPath}/guest/findId">아이디 찾기</a>
 
-<span>|</span>
+					</div>
 
-<a href="${pageContext.request.contextPath}/guest/findPwd">비밀번호 찾기</a>
+				</div>
 
-<span>|</span>
+			</div>
 
-<a href="${pageContext.request.contextPath}/guest/signup">회원가입</a>
+		</div>
 
-</div>
+	</main>
 
 
 
-</div>
+	<script>
+		function sendLogin() {
 
-</div>
+			const f = document.loginForm;
 
-</div>
+			if (!f.login_id.value.trim()) {
+				f.login_id.focus();
+				return;
+			}
 
-</div>
+			if (!f.password.value.trim()) {
+				f.password.focus();
+				return;
+			}
 
-</main>
+			f.action = '${pageContext.request.contextPath}/member/login';
+			f.submit();
 
+		}
+	</script>
 
 
-<script>
 
-function sendLogin(){
+	<footer>
+		<jsp:include page="/WEB-INF/views/guest/layout/footer.jsp" />
+	</footer>
 
-const f = document.loginForm;
-
-if(!f.login_id.value.trim()){
-f.login_id.focus();
-return;
-}
-
-if(!f.password.value.trim()){
-f.password.focus();
-return;
-}
-
-f.action='${pageContext.request.contextPath}/member/login';
-f.submit();
-
-}
-
-</script>
-
-
-
-<footer>
-<jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
-</footer>
-
-<jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
+	<jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp" />
 
 </body>
 
