@@ -23,12 +23,8 @@ public interface GuestService {
 	public void updateFailureCountReset(String login_id) throws Exception;
 	public void updateFailureCount(String login_id) throws Exception;
 	
-	public void deleteMember(Map<String, Object> map, String uploadPath) throws Exception;
-	public void deleteProfilePhoto(Map<String, Object> map, String uploadPath) throws Exception;
-	
 	public void sendGuestId(GuestDto dto) throws Exception;//
 	public void sendGuestPwd(GuestDto dto) throws Exception;//
-	public void generatePwd(GuestDto dto) throws Exception;//
 	
 	public List<GuestDto> listFindMember(Map<String, Object> map);	
 	

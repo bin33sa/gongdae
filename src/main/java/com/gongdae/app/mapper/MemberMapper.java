@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import com.gongdae.app.domain.dto.MemberDto;
 
@@ -31,14 +30,6 @@ public interface MemberMapper {
 	
 	public MemberDto findById(Long member_id);
 	public MemberDto findByLoginId(String login_id);
-	public MemberDto findByNickname(String nickname);
-	public MemberDto findByNameAndEmail(
-			@Param("name") String name, 
-			@Param("email") String email);
-	public MemberDto findByLoginIdAndNameAndEmail(
-			@Param("login_id") String login_id,
-			@Param("name") String name,
-			@Param("email") String email);
 	public Long getMemberId(String login_id);
 	
 	public int checkFailureCount(String login_id);
@@ -54,8 +45,4 @@ public interface MemberMapper {
 	public void deleteAuthority(Map<String, Object> map) throws SQLException;
 	public String findByAuthority(String login_id);
 	
-	public void insertRefreshToken(MemberDto dto) throws SQLException;
-	public void updateRefreshToken(MemberDto dto) throws SQLException;
-	public void deleteRefreshToken(String login_id) throws SQLException;
-	public MemberDto findByToken(String login_id);	
 }

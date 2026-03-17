@@ -3,13 +3,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gongdae.app.mapper.GuestMapper">
 
+	<update id="insertGuest" parameterType="com.gongdae.app.domain.dto.GuestDto">
+		INSERT ALL
+		INTO member(member_id, login_id, password, userLevel, enabled, 
+			last_login, failure_cnt, created_at, update_at)
+		VALUES (seq_member.NEXTVAL, #{login_id, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR}, 
+			1, 1, null, 0, SYSDATE, SYSDATE)
+		INTO guest_detail(member_id, name, nickname, birth, email, receive_email, 
+			phone, gender, point, grade, profile_image_url)
+		VALUES (seq_member.CURRVAL, #{name}, #{nickname}, TO_DATE(#{birth}, 'YYYY-MM-DD'),
+			#{email}, #{receive_email}, #{tel}, #{gender, jdbcType=VARCHAR}, 0, 'BRONZE',
+			#{profile_photo, jdbcType=VARCHAR})
+		SELECT * FROM dual
+	</update>
 
-	<insert id="insertMemberStatus" parameterType="com.gongdae.app.domain.dto.GuestDto">
-		INSERT INTO memberStatus(num, member_id, status_code, memo, register_id, reg_date)
-		VALUES (memberStatus_seq.NEXTVAL, #{member_id}, #{status_code}, #{memo}, #{register_id}, SYSDATE)
-	</insert>
+	<update id="updateMemberPassword" parameterType="com.gongdae.app.domain.dto.GuestDto">
+		UPDATE member1 SET password = #{password}, update_at = SYSDATE
+		WHERE login_id = #{login_id}
+    </update>
 
-	<select id="findById" parameterType="Long" resultType="com.gongdae.app.domain.dto.MemberDto">
+	<select id="findById" parameterType="Long" resultType="com.gongdae.app.domain.dto.GuestDto">
 	    SELECT 
 	        m1.member_id, 
 	        m1.login_id, 
@@ -38,7 +51,7 @@
 	    WHERE m1.member_id = #{member_id}
 	</select>
 
-	<select id="findByLoginId" parameterType="String" resultType="com.gongdae.app.domain.dto.MemberDto">
+	<select id="findByLoginId" parameterType="String" resultType="com.gongdae.app.domain.dto.GuestDto">
 	    SELECT 
 	        m1.member_id, 
 	        m1.login_id, 
@@ -62,77 +75,70 @@
 	    WHERE m1.login_id = #{login_id}
 	</select>
 	
-	<select id="findByNickname" parameterType="String" resultType="com.gongdae.app.domain.dto.MemberDto">
+	<select id="findByNickname" parameterType="String" resultType="com.gongdae.app.domain.dto.GuestDto">
 	    SELECT 
-	        m1.member_id, 
-	        m1.login_id, 
-	        m1.password, 
-	        m1.enabled, 
-	        m1.created_at, 
-	        m1.update_at, 
-	        m1.last_login,
-	        m3.authority,
-	        COALESCE(g.name, h.name, a.name) as name,
-	        COALESCE(g.email, h.email) as email,
-	        COALESCE(g.phone, h.phone) as tel,
-	        NULL as sns_provider,
-	        NULL as sns_id,
-	        NULL as profile_photo
-	    FROM member m1
-	    LEFT OUTER JOIN memberAuthority m3 ON m1.login_id = m3.login_id
-	    LEFT OUTER JOIN guest_detail g ON m1.member_id = g.member_id
-	    LEFT OUTER JOIN host_detail h ON m1.member_id = h.member_id
-	    LEFT OUTER JOIN admin_detail a ON m1.member_id = a.member_id
-	    WHERE g.nickname = #{nickname}
-	</select>
-	
-	<select id="findByNameAndEmail" resultType="com.gongdae.app.domain.dto.MemberDto">
-	    SELECT 
-	    	g.email,
 	        m1.member_id,
 	        m1.login_id, 
 	        m1.password, 
-	        m1.enabled,
-	        m1.created_at, 
-	        m1.update_at, 
-	        m1.last_login,
-	        m3.authority,
-	        COALESCE(g.name, h.name, a.name) as name,
-	        COALESCE(g.email, h.email) as email,
-	        COALESCE(g.phone, h.phone) as tel,
-	        NULL as sns_provider,
-	        NULL as sns_id,
-	        NULL as profile_photo
-	    FROM member m1
-	    LEFT OUTER JOIN memberAuthority m3 ON m1.login_id = m3.login_id
-	    LEFT OUTER JOIN guest_detail g ON m1.member_id = g.member_id
-	    LEFT OUTER JOIN host_detail h ON m1.member_id = h.member_id
-	    LEFT OUTER JOIN admin_detail a ON m1.member_id = a.member_id
-	    WHERE g.name = #{name} AND g.email = #{email}
-	</select>
-
-	<select id="findByLoginIdAndNameAndEmail" resultType="com.gongdae.app.domain.dto.MemberDto">
-	    SELECT 
-	        m1.member_id, 
-	        m1.login_id, 
-	        m1.password, 
 	        m1.enabled, 
 	        m1.created_at, 
 	        m1.update_at, 
 	        m1.last_login,
-	        m3.authority,
-	        COALESCE(g.name, h.name, a.name) as name,
-	        COALESCE(g.email, h.email) as email,
-	        COALESCE(g.phone, h.phone) as tel,
-	        NULL as sns_provider,
-	        NULL as sns_id,
+	        g.name,
+	        g.email,
+	        g.phone as tel,
 	        NULL as profile_photo
+	    FROM member m1
+	    LEFT OUTER JOIN guest_detail g ON m1.member_id = g.member_id
+	    WHERE g.nickname = #{nickname}
+	</select>
+	
+	<select id="findByNameAndEmail" resultType="com.gongdae.app.domain.dto.GuestDto">
+	    SELECT 
+	        m1.member_id,
+	        m1.login_id, 
+	        m1.enabled,
+	        m1.created_at, 
+	        m1.update_at, 
+	        m3.authority,
+	        g.name,
+	        g.nickname,
+	        To_CHAR(g.birth, 'YYYY-MM-DD') as birth,
+	        g.email,
+	        g.receive_email,
+	        g.phone as tel,
+	        g.gender,
+	        g.point,
+	        g.grade,
+	        g.profile_image_url as profile_photo
 	    FROM member m1
 	    LEFT OUTER JOIN memberAuthority m3 ON m1.login_id = m3.login_id
 	    LEFT OUTER JOIN guest_detail g ON m1.member_id = g.member_id
-	    LEFT OUTER JOIN host_detail h ON m1.member_id = h.member_id
-	    LEFT OUTER JOIN admin_detail a ON m1.member_id = a.member_id
-	    WHERE m1.name = #{name} AND m1.email = #{email}
+	    WHERE g.name = #{name} AND g.email = #{email}
+	</select>
+
+	<select id="findByLoginIdAndNameAndEmail" resultType="com.gongdae.app.domain.dto.GuestDto">
+	    SELECT 
+	        m1.member_id,
+	        m1.login_id, 
+	        m1.enabled,
+	        m1.created_at, 
+	        m1.update_at, 
+	        m3.authority,
+	        g.name,
+	        g.nickname,
+	        To_CHAR(g.birth, 'YYYY-MM-DD') as birth,
+	        g.email,
+	        g.receive_email,
+	        g.phone as tel,
+	        g.gender,
+	        g.point,
+	        g.grade,
+	        g.profile_image_url as profile_photo
+	    FROM member m1
+	    LEFT OUTER JOIN memberAuthority m3 ON m1.login_id = m3.login_id
+	    LEFT OUTER JOIN guest_detail g ON m1.member_id = g.member_id
+	    WHERE m1.login_id = #{login_id} AND g.name = #{name} AND g.email = #{email}
 	</select>
 
 	<select id="getMemberId" parameterType="String" resultType="Long">
@@ -156,7 +162,13 @@
 		UPDATE member SET failure_cnt = failure_cnt + 1
 		WHERE login_id = #{login_id}
 	</update>
-
+	
+	<!-- 어쏘러티(권한) 테이블 --> 
+	<insert id="insertAuthority" parameterType="com.gongdae.app.domain.dto.GuestDto">
+		INSERT INTO memberAuthority(login_id, authority)
+		VALUES (#{login_id}, #{authority})
+	</insert>
+	
 	<select id="findByAuthority" parameterType="String" resultType="String">
 		SELECT authority
 		FROM memberAuthority

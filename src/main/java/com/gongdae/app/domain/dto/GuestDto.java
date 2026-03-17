@@ -1,5 +1,7 @@
 package com.gongdae.app.domain.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,10 +23,14 @@ public class GuestDto {
 	private String nickname;
 	private String birth;
 	private String email;
-	private int receive_email;
-	private String phone;
-	private String profile_image;
+	private int receive_email; // 메일 수신 동의
+	private String tel;
+	private String profile_photo;
 	private String gender;
 	private String point; // 포인트
 	private String grade; // 회원 등급
+	
+	private MultipartFile selectFile;
+	
+	private String authority;
 }

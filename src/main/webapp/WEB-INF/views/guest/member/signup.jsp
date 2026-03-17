@@ -95,7 +95,7 @@
 									</div>
 								</div>
 								<c:if test="${mode=='signup'}">
-									<small class="form-control-plaintext help-block">&nbsp;</small>
+									<small class="form-control-plaintext help-block">닉네임은 2~10자 이내이며, 한글, 영어, 숫자로만 이루어져야 합니다.</small>
 								</c:if>
 							</div>	
 		
@@ -128,25 +128,20 @@
 								<input class="form-control" type="text" id="tel" name="tel" value="${dto.tel}">
 							</div>
 							<div class="col-md-6">
-								<label for="btn-zip" class="form-label font-roboto">우편번호</label>
-								<div class="row g-3">
-									<div class="col-8">
-										<input class="form-control" type="text" name="zip" id="zip" value="${dto.zip}" readonly tabindex="-1">
-									</div>
-									<div class="col-4">
-										<button type="button" class="btn-default" id="btn-zip" onclick="daumPostcode();">우편번호찾기</button>
-									</div>
+								<label for="tel" class="form-label font-roboto">성별</label>
+								
+								<div class="btn-group w-100" role="group">
+								    <input type="radio" class="btn-check" name="gender" id="male" value="M" autocomplete="off">
+								    <label class="btn btn-outline-primary" for="male">남성</label>
+								
+								    <input type="radio" class="btn-check" name="gender" id="female" value="F" autocomplete="off">
+								    <label class="btn btn-outline-primary" for="female">여성</label>
+
+								    <input type="radio" class="btn-check" name="gender" id="none" value="X" autocomplete="off" checked>
+								    <label class="btn btn-outline-primary" for="none">미선택</label>
 								</div>
 							</div>
 							
-							<div class="col-md-6">
-								<label class="form-label font-roboto">기본주소</label>
-								<input class="form-control" type="text" name="addr1" id="addr1" value="${dto.addr1}" readonly tabindex="-1">
-							</div>
-							<div class="col-md-6">
-								<label for="addr2" class="form-label font-roboto">상세주소</label>
-								<input class="form-control" type="text" name="addr2" id="addr2" value="${dto.addr2}">
-							</div>
 							
 							<div class="col-md-12">
 								<label for="agree" class="form-label font-roboto">약관 동의</label>
@@ -221,9 +216,39 @@ document.addEventListener('DOMContentLoaded', ev => {
 	
 	btnEL.addEventListener('click', ev => {
 		if( img ) {
+			if(! confirm('등록된 이미지를 삭제하시겠습니까 ? ')) {
+				return false;
+			}
+			
 			avatar = '${pageContext.request.contextPath}/uploads/member/' + img;
+			
+			// 등록 이미지 삭제
+			const url = '${pageContext.request.contextPath}/member/deleteProfile';
+			const headers = {'Content-Type': 'application/x-www-form-urlencoded', 'AJAX': true};
+			const params = 'profile_photo=' + img;
+			
+			const options = {
+				method: 'delete',
+				headers: headers,
+				body: params,
+			};
+				
+			fetch(url, options)
+				.then(res => res.json())
+				.then(data => {
+					let state = data.state;
 
-			avatarEL.src = avatar;
+					if(state === 'true') {
+						img = '';
+						avatar = '${pageContext.request.contextPath}/dist/images/user.png';
+						
+						document.querySelector('form input[name=profile_photo').value = '';
+					}
+					
+					inputEL.value = '';
+					avatarEL.src = avatar;
+				})
+				.catch(err => console.log("error:", err));
 		} else {
 			avatar = '${pageContext.request.contextPath}/dist/images/user.png';
 			inputEL.value = '';
@@ -256,12 +281,26 @@ function memberOk() {
 		return;
 	}
 
-	
 	let mode = '${mode}';
 	if( mode === 'signup' && f.loginIdValid.value === 'false' ) {
 		str = '아이디 중복 검사가 실행되지 않았습니다.';
 		document.querySelector('.wrap-loginId .help-block').textContent = str;
 		f.login_id.focus();
+		return;
+	}
+	
+	p = /^[a-z0-9가-힣ㄱ-ㅎㅏ-ㅣ]{2,10}$/i;
+	str = f.nickname.value;
+	if( ! p.test(str) ) { 
+		alert('닉네임을 다시 입력 하세요. ');
+		f.nickname.focus();
+		return;
+	}
+	
+	if( mode === 'signup' && f.nicknameValid.value === 'false' ) {
+		str = '닉네임 중복 검사가 실행되지 않았습니다.';
+		document.querySelector('.wrap-nickname .help-block').textContent = str;
+		f.nickname.focus();
 		return;
 	}
 
@@ -367,34 +406,34 @@ function nicknameCheck() {
 	// 닉네임 중복 검사
 	let nickname = document.getElementById('nickname').value;
 
-	if(nickname.length < 2) { 
-		let str = '닉네임은 최소 2자 이상이어야 합니다.';
+	if(!/^[a-z0-9가-힣ㄱ-ㅎㅏ-ㅣ]{2,10}$/i.test(nickname)) { 
+		let str = '닉네임은 2~10자 이내이며, 한글, 영어, 숫자로만 이루어져야 합니다.';
 		document.getElementById('nickname').closest('.wrap-nickname').querySelector('.help-block').textContent = str;		
 		document.getElementById('nickname').focus();
 		return;
 	}
 	
-	const url = '${pageContext.request.contextPath}/member/nicknameCheck';
+	const url = '${pageContext.request.contextPath}/guest/nicknameCheck';
 	const params = 'nickname=' + nickname;
 	
 	const fn = function(data) {
 		let passed = data.passed;
 
-		const loginIdInput = document.getElementById('nickname');
-		const wrapLoginId = loginIdInput.closest('.wrap-nickname');
-		const helpBlock = wrapLoginId.querySelector('.help-block');
-		const loginIdValid = document.getElementById('nicknameValid');
+		const nicknameInput = document.getElementById('nickname');
+		const wrapNickname = nicknameInput.closest('.wrap-nickname');
+		const helpBlock = wrapNickname.querySelector('.help-block');
+		const nicknameValid = document.getElementById('nicknameValid');
 
 		if (passed === 'true') {
-			let str = '<span style="color:blue; font-weight: bold;">' + nickname + '</span> 아이디는 사용가능 합니다.';
+			let str = '<span style="color:blue; font-weight: bold;">' + nickname + '</span> 닉네임은 사용가능 합니다.';
 			helpBlock.innerHTML = str;
-			loginIdValid.value = 'true';
+			nicknameValid.value = 'true';
 		} else {
-			let str = '<span style="color:red; font-weight: bold;">' + nickname + '</span> 아이디는 사용할수 없습니다.';
+			let str = '<span style="color:red; font-weight: bold;">' + nickname + '</span> 닉네임은 사용할수 없습니다.';
 			helpBlock.innerHTML = str;
-			loginIdInput.value = '';
-			loginIdValid.value = 'false';
-			loginIdInput.focus();
+			nicknameInput.value = '';
+			nicknameValid.value = 'false';
+			nicknameInput.focus();
 		}
 	};
 	
@@ -414,45 +453,7 @@ function nicknameCheck() {
 
 </script>
 
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
-    function daumPostcode() {
-        new daum.Postcode({
-            oncomplete: function(data) {
-                let fullAddr = ''; // 최종 주소 변수
-                let extraAddr = ''; // 조합형 주소 변수
 
-                // 사용자가 선택한 주소 타입에 따라 해당 주소 값 가져오기
-                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택한 경우
-                    fullAddr = data.roadAddress;
-
-                } else { // 사용자가 지번 주소를 선택한 경우(J)
-                    fullAddr = data.jibunAddress;
-                }
-
-                // 주소가 도로명 타입인 경우 조합
-                if(data.userSelectedType === 'R'){
-                    // 법정동명이 있을 경우 추가
-                    if(data.bname !== ''){
-                        extraAddr += data.bname;
-                    }
-                    // 건물명이 있을 경우 추가
-                    if(data.buildingName !== ''){
-                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                    }
-                    // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소 작성
-                    fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
-                }
-
-                // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                document.getElementById('zip').value = data.zonecode;
-                document.getElementById('addr1').value = fullAddr;
-
-                document.getElementById('addr2').focus();
-            }
-        }).open();
-    }
-</script>
 
 <footer>
 	<jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>

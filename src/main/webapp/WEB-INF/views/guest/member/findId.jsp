@@ -72,7 +72,7 @@ function sendOk() {
 		return;
 	}
 
-	f.action = '${pageContext.request.contextPath}/member/findId';
+	f.action = '${pageContext.request.contextPath}/guest/findId';
 	f.submit();
 }
 </script>

@@ -79,7 +79,7 @@ function sendOk() {
 		return;
 	}
 
-	f.action = '${pageContext.request.contextPath}/member/findPwd';
+	f.action = '${pageContext.request.contextPath}/guest/findPwd';
 	f.submit();
 }
 </script>

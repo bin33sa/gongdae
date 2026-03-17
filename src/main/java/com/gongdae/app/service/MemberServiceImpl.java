@@ -7,6 +7,7 @@ import java.util.Objects;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.gongdae.app.common.StorageService;
 import com.gongdae.app.domain.dto.MemberDto;
 import com.gongdae.app.mapper.MemberMapper;
 
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MemberServiceImpl implements MemberService {
 	private final MemberMapper mapper;
+	private final StorageService storageService;
 	private final PasswordEncoder bcryptEncoder;
 	
 
@@ -142,7 +144,19 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void deleteProfilePhoto(Map<String, Object> map, String uploadPath) throws Exception {
-
+		// 프로파일 포토 삭제
+		try {
+			String filename = (String)map.get("filename");
+			if(filename!= null && ! filename.isBlank()) {
+				storageService.deleteFile(uploadPath, filename);
+			}
+			
+			mapper.deleteProfilePhoto(map);
+		} catch (Exception e) {
+			log.info("deleteProfilePhoto : ", e);
+			
+			throw e;
+		}
 	}
 	
 	@Override

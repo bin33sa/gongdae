@@ -7,7 +7,9 @@ import java.util.Objects;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.gongdae.app.common.StorageService;
 import com.gongdae.app.domain.dto.GuestDto;
 import com.gongdae.app.mail.Mail;
 import com.gongdae.app.mail.MailService;
@@ -21,13 +23,33 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GuestServiceImpl implements GuestService {
 	private final GuestMapper mapper;
+	private final StorageService storageService;
 	private final MailService mailService;
 	private final PasswordEncoder bcryptEncoder;
 	
-
+	@Transactional(rollbackFor = {Exception.class})
 	@Override
 	public void insertGuest(GuestDto dto, String uploadPath) throws Exception {
-
+		try {
+			if(! dto.getSelectFile().isEmpty()) {
+				String saveFilename = storageService.uploadFileToServer(dto.getSelectFile(), uploadPath);
+				dto.setProfile_photo(saveFilename);
+			}
+			
+			String encPassword = bcryptEncoder.encode(dto.getPassword());
+			dto.setPassword(encPassword);
+			
+			mapper.insertGuest(dto);
+			
+			// 권한저장
+			dto.setAuthority("GUEST");
+			mapper.insertAuthority(dto);
+			
+		} catch (Exception e) {
+			log.info("insertGuest: ", e);
+			
+			throw e;
+		}
 	}
 
 	@Override
@@ -143,15 +165,6 @@ public class GuestServiceImpl implements GuestService {
 		}
 	}
 
-	@Override
-	public void deleteMember(Map<String, Object> map, String uploadPath) throws Exception {
-
-	}
-
-	@Override
-	public void deleteProfilePhoto(Map<String, Object> map, String uploadPath) throws Exception {
-
-	}
 
 	@Override
 	public void sendGuestId(GuestDto dto) throws Exception {
@@ -250,10 +263,6 @@ public class GuestServiceImpl implements GuestService {
 		}
 	}
 	
-	@Override
-	public void generatePwd(GuestDto dto) throws Exception {
-
-	}
 
 	@Override
 	public List<GuestDto> listFindMember(Map<String, Object> map) {
