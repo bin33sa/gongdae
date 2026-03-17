@@ -775,3 +775,34 @@ body.admin-page {
 .txt-muted { color: var(--text-muted) !important; }
 .fw-bold { font-weight: 700; }
 .small-txt { font-size: 0.875em; }
+
+.host-table tbody tr:last-child td {
+            border-bottom: 0 !important;
+}
+.paginate-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+.paginate-wrapper a, .paginate-wrapper span, .paginate-wrapper b {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+    text-decoration: none;
+    border-radius: 0.25rem;
+    border: 1px solid #495057; 
+    background-color: transparent;
+    color: #6c757d; 
+    transition: all 0.2s;
+}
+.paginate-wrapper a:hover {
+    background-color: #343a40;
+    color: #fff;
+}
+.paginate-wrapper span, .paginate-wrapper b, .paginate-wrapper .current {
+    background-color: #5b62f4 !important; 
+    border-color: #5b62f4 !important;
+    color: #fff !important;
+    font-weight: bold;
+}

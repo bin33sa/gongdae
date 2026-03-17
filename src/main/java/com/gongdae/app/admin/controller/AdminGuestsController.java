@@ -37,8 +37,6 @@ public class AdminGuestsController {
     public String listGuest(@RequestParam(name = "page", defaultValue = "1")int current_page,
     		@RequestParam(name = "schType", defaultValue = "login_id") String schType,
 			@RequestParam(name = "kwd", defaultValue = "") String kwd,
-			@RequestParam(name = "role", defaultValue = "1") int  role,
-			@RequestParam(name = "non", defaultValue = "0") int  non,
 			@RequestParam(name = "enabled", defaultValue = "") String enabled,
 			HttpServletResponse resp,
 			Model model) throws Exception {

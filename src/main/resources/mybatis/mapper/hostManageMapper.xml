@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gongdae.app.admin.mapper.HostManageMapper">
+
+	<sql id="where-list">
+	    <choose>
+	        <when test="schType == 'login_id'">
+	            ( INSTR(m.login_id, #{kwd}) &gt;= 1 )
+	        </when>
+	        <when test="schType == 'member_id'">
+	            m.member_id = #{kwd}
+	        </when>
+	        <when test="schType == 'nickname'">
+	            ( INSTR(h.nickname, #{kwd}) &gt;= 1 )
+	        </when>
+	        <when test="schType == 'name'">
+	            ( INSTR(h.name, #{kwd}) &gt;= 1 )
+	        </when>
+	        <otherwise>
+	            ( INSTR(${schType}, #{kwd}) &gt;= 1 )
+	        </otherwise>
+	    </choose>
+	</sql>
+	
+	<select id="listHost" parameterType="map" resultType="com.gongdae.app.admin.domain.dto.HostManageDto">
+	    SELECT m.member_id, m.login_id, m.enabled, 
+	        m.created_at, m.update_at, m.last_login, h.nickname,
+	        h.name, h.email, h.phone, h.content,
+	        h.PROFILE_IMAGE_URL as profile_photo
+	    FROM member m
+	    LEFT OUTER JOIN host_detail h ON m.member_id = h.member_id 
+	    JOIN memberAuthority ma ON m.login_id = ma.login_id 
+	    <where>
+	        AND UPPER(ma.authority) = 'HOST'
+	        
+	        <if test="kwd != null and kwd !='' ">
+	            AND <include refid="where-list"/>
+	        </if>
+	        <if test="enabled != null and enabled != '' ">
+	            AND m.enabled = #{enabled}
+	        </if>
+	    </where> 
+	    ORDER BY m.created_at DESC
+	    OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+	</select>
+	
+	<select id="dataCountHost" parameterType="map" resultType="Integer">
+	    SELECT COUNT(*)
+	    FROM member m
+	    LEFT OUTER JOIN host_detail h ON m.member_id = h.member_id 
+	    JOIN memberAuthority ma ON m.login_id = ma.login_id
+	    <where>
+	        AND UPPER(ma.authority) = 'HOST'
+	        <if test="kwd != null and kwd != '' ">
+	            AND <include refid="where-list"/>
+	        </if>
+	        <if test="enabled != null and enabled != ''">
+	            AND m.enabled = #{enabled}
+	        </if>
+	    </where> 
+	</select>
+	
+	<select id="findById" parameterType="Long" resultType="com.gongdae.app.admin.domain.dto.HostManageDto">
+		SELECT m.member_id, m.login_id, password, enabled, 
+			created_at, update_at, last_login, failure_cnt,
+			name, email, phone, PROFILE_IMAGE_URL as profile_photo, nickname, content
+		FROM member m
+		LEFT OUTER JOIN host_detail h ON m.member_id = h.member_id
+		WHERE m.member_id = #{member_id}
+	</select>
+	
+	<update id="updateFailureCountReset" parameterType="Long">
+		UPDATE member SET failure_cnt = 0
+		WHERE member_id = #{member_id}
+	</update>
+	
+	<update id="updateHostEnabled" parameterType="map">
+		UPDATE member SET enabled = #{enabled}
+		WHERE member_id = #{member_id}
+    </update>
+	
+	<update id="updateHostDetail" parameterType="map">
+		UPDATE host_detail
+		SET content = #{content}
+		WHERE member_id = #{member_id}
+	</update>
+	
+	<insert id="insertHostStatus" parameterType="com.gongdae.app.admin.domain.dto.HostManageDto">
+	    INSERT INTO member_status(num, member_id, status_code, memo, register_id, reg_date)
+	    VALUES (seq_member_status.NEXTVAL, #{member_id}, #{status_code}, #{memo}, #{register_id}, SYSDATE)
+	</insert>
+	
+	<select id="listHostStatus" parameterType="Long" resultType="com.gongdae.app.admin.domain.dto.HostManageDto">
+		SELECT num, ms.member_id, status_code, memo, register_id, a.name as registerName, reg_date
+		FROM member_status ms
+		LEFT OUTER JOIN admin_detail a ON ms.register_id = a.member_id		
+		WHERE ms.member_id = #{member_id}
+		ORDER BY num DESC
+	</select>
+
+	<select id="findByStatus" parameterType="Long" resultType="com.gongdae.app.admin.domain.dto.HostManageDto">
+		SELECT num, ms.member_id, status_code, memo, register_id, a.name as registerName, reg_date
+		FROM member_status ms
+		LEFT OUTER JOIN admin_detail a ON ms.register_id = a.member_id		
+		WHERE ms.member_id = #{member_id}
+		ORDER BY num DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	
+</mapper>

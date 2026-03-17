@@ -16,7 +16,15 @@
 <sec:authentication property="principal.member" var="adminMember" />
 
 <div class="admin-layout d-flex flex-column min-vh-100">
-    <jsp:include page="/WEB-INF/views/admin/layout/header.jsp"/>
+    <header class="admin-header">
+        <div class="admin-logo">공대생</div>
+        <div class="admin-user-area">
+            <span><strong><sec:authentication property="principal.member.name"/></strong> 관리자님</span>
+            <a href="${pageContext.request.contextPath}/member/logout" class="admin-logout">
+                <i class="bi bi-box-arrow-right"></i> 로그아웃
+            </a>
+        </div>
+    </header>
 
     <div class="admin-body d-flex flex-grow-1">
         <jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
@@ -34,82 +42,114 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-xxl-9 col-xl-10 col-lg-12">
-                    <div class="dashboard-box mb-4 shadow-sm border border-secondary border-opacity-25 rounded p-4">
-                        <h5 class="fw-bold text-main mb-4"><i class="bi bi-person-lines-fill me-2"></i> 기본 정보</h5>
-                        <div class="table-responsive">
-                            <table class="table text-main mb-0">
-                                <tr>
-                                    <th class="admin-th" style="width: 15%;">회원번호</th>
-                                    <td class="admin-td text-muted" style="width: 35%;">#${dto.member_id}</td>
-                                    <th class="admin-th" style="width: 15%;">회원 등급</th>
-                                    <td class="admin-td" style="width: 35%;">
-                                        <c:choose>
-                                            <c:when test="${dto.grade == 'GOLD'}"><span class="badge bg-warning text-dark fw-bold">GOLD</span></c:when>
-                                            <c:when test="${dto.grade == 'SILVER'}"><span class="badge bg-secondary fw-bold">SILVER</span></c:when>
-                                            <c:otherwise><span class="badge fw-bold" style="background-color: #cd7f32;">BRONZE</span></c:otherwise>
-                                        </c:choose>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th class="admin-th">이름</th>
-                                    <td class="admin-td fw-bold">${dto.name}</td>
-                                    <th class="admin-th">닉네임</th>
-                                    <td class="admin-td text-info fw-bold">${empty dto.nickname ? '-' : dto.nickname}</td>
-                                </tr>
-                                <tr>
-                                    <th class="admin-th">로그인 아이디</th>
-                                    <td class="admin-td">${dto.login_id}</td>
-                                    <th class="admin-th">이메일</th>
-                                    <td class="admin-td">${empty dto.email ? '-' : dto.email}</td>
-                                </tr>
-                                <tr>
-                                    <th class="admin-th">전화번호</th>
-                                    <td class="admin-td">${empty dto.phone ? '-' : dto.phone}</td>
-                                    <th class="admin-th">생년월일</th>
-                                    <td class="admin-td">${empty dto.birth ? '-' : dto.birth} <span class="small-txt text-muted ms-2">(만 ${dto.age}세)</span></td>
-                                </tr>
-                                <tr>
-                                    <th class="admin-th">포인트</th>
-                                    <td class="admin-td fw-bold"><fmt:formatNumber value="${dto.point}" pattern="#,###"/> P</td>
-                                    <th class="admin-th">가입일</th>
-                                    <td class="admin-td">${dto.created_at}</td>
-                                </tr>
-                                <tr>
-                                    <th class="admin-th">계정상태</th>
-                                    <td class="admin-td">
-                                        <c:choose>
-                                            <c:when test="${dto.enabled == 1}"><span class="badge bg-success bg-opacity-10 text-success border border-success px-2 py-1">정상</span></c:when>
-                                            <c:otherwise><span class="badge bg-danger bg-opacity-10 text-danger border border-danger px-2 py-1">정지 잠금</span></c:otherwise>
-                                        </c:choose>
-                                    </td>
-                                    <th class="admin-th">최근수정일</th>
-                                    <td class="admin-td text-muted">${dto.update_at}</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="mt-5 pt-4 d-flex justify-content-end gap-3 border-top border-secondary border-opacity-25">
-                        <button type="button" class="btn btn-dark px-4 py-2 border border-secondary" onclick="statusDetailesMember();">
-                            <i class="bi bi-shield-exclamation me-2 text-danger"></i>상태변경
-                        </button>
-                        <c:if test="${dto.userLevel < 50 || adminMember.userLevel > 90}">
-                            <button type="button" class="btn btn-primary px-4 py-2" style="background-color: #5b62f4; border-color: #5b62f4;" onclick="updateMember();">
-                                <i class="bi bi-award-fill me-2"></i>등급변경
-                            </button>
-                        </c:if>
-                    </div>
+            <div class="dashboard-box mb-5">
+                <h5 class="fw-bold text-main mb-4"><i class="bi bi-person-lines-fill me-2"></i> 기본 정보</h5>
+                <div class="table-responsive">
+                    <table class="table text-main mb-0 align-middle">
+                        <tr>
+                            <th class="admin-th" style="width: 15%;">회원번호</th>
+                            <td class="admin-td text-muted" style="width: 35%;">#${dto.member_id}</td>
+                            <th class="admin-th" style="width: 15%;">회원 등급</th>
+                            <td class="admin-td" style="width: 35%;">
+                                <c:choose>
+                                    <c:when test="${dto.grade == 'GOLD'}"><span class="grade-badge grade-gold">GOLD</span></c:when>
+                                    <c:when test="${dto.grade == 'SILVER'}"><span class="grade-badge grade-silver">SILVER</span></c:when>
+                                    <c:otherwise><span class="grade-badge grade-bronze">BRONZE</span></c:otherwise>
+                                </c:choose>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="admin-th">이름</th>
+                            <td class="admin-td fw-bold">${dto.name}</td>
+                            <th class="admin-th">닉네임</th>
+                            <td class="admin-td text-info fw-bold">${empty dto.nickname ? '-' : dto.nickname}</td>
+                        </tr>
+                        <tr>
+                            <th class="admin-th">로그인 아이디</th>
+                            <td class="admin-td">${dto.login_id}</td>
+                            <th class="admin-th">이메일</th>
+                            <td class="admin-td">${empty dto.email ? '-' : dto.email}</td>
+                        </tr>
+                        <tr>
+                            <th class="admin-th">전화번호</th>
+                            <td class="admin-td">${empty dto.phone ? '-' : dto.phone}</td>
+                            <th class="admin-th">생년월일</th>
+                            <td class="admin-td">${empty dto.birth ? '-' : dto.birth} <span class="small-txt text-muted ms-2">(만 ${dto.age}세)</span></td>
+                        </tr>
+                        <tr>
+                            <th class="admin-th border-0">포인트</th>
+                            <td class="admin-td fw-bold border-0"><fmt:formatNumber value="${dto.point}" pattern="#,###"/> P</td>
+                            <th class="admin-th border-0">계정상태</th>
+                            <td class="admin-td border-0">
+                                <c:choose>
+                                    <c:when test="${dto.enabled == 1}"><span class="status-normal">정상</span></c:when>
+                                    <c:otherwise><span class="status-banned">정지 잠금</span></c:otherwise>
+                                </c:choose>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-            </div> 
+
+                <div class="mt-4 pt-4 d-flex justify-content-end gap-3 border-top border-secondary border-opacity-25">
+                    <button type="button" class="btn btn-dark px-4 py-2 border border-secondary" onclick="statusDetailesMember();">
+                        <i class="bi bi-shield-exclamation me-2 text-danger"></i>상태변경
+                    </button>
+                    <c:if test="${dto.userLevel < 50 || adminMember.userLevel > 90}">
+                        <button type="button" class="btn-purple" onclick="updateMember();">
+                            <i class="bi bi-award-fill me-2"></i>등급변경
+                        </button>
+                    </c:if>
+                </div>
+            </div>
+
+            <div class="dashboard-box">
+                <h5 class="fw-bold text-main mb-4"><i class="bi bi-clock-history me-2"></i> 계정 상태 변경 이력</h5>
+                <div class="table-responsive">
+                    <table class="table text-main mb-0 align-middle">
+                        <thead>
+                            <tr>
+                                <th class="admin-th text-center">번호</th>
+                                <th class="admin-th text-center">상태 코드</th>
+                                <th class="admin-th">변경 사유 (메모)</th>
+                                <th class="admin-th text-center">처리 관리자</th>
+                                <th class="admin-th text-center">처리 일시</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="vo" items="${listStatus}" varStatus="status">
+                                <tr>
+                                    <c:set var="lastLine" value="${status.last ? 'border-0' : ''}" />
+                                    <td class="admin-td text-center text-muted ${lastLine}">${vo.num}</td>
+                                    <td class="admin-td text-center ${lastLine}">
+                                        <c:choose>
+                                            <c:when test="${vo.status_code == 0}"><span class="status-normal">정상화 (0)</span></c:when>
+                                            <c:otherwise><span class="status-banned">정지 (${vo.status_code})</span></c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td class="admin-td text-muted ${lastLine}">${vo.memo}</td>
+                                    <td class="admin-td text-center ${lastLine}">${vo.registerName}</td>
+                                    <td class="admin-td text-center text-muted small-txt ${lastLine}">${vo.reg_date}</td>
+                                </tr>
+                            </c:forEach>
+                            <c:if test="${empty listStatus}">
+                                <tr>
+                                    <td colspan="5" class="admin-td text-center py-5 border-0">
+                                        <i class="bi bi-info-circle me-2"></i>상태 변경 이력이 없습니다.
+                                    </td>
+                                </tr>
+                            </c:if>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
        </main>
     </div>
 </div>
 
 <div class="modal fade" id="memberUpdateDialogModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content bg-dark text-white border-secondary shadow-lg">
+        <div class="modal-content bg-dark text-white border-secondary">
             <div class="modal-header border-secondary">
                 <h5 class="modal-title fw-bold"><i class="bi bi-award me-2"></i>등급 변경</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -119,13 +159,13 @@
                     <input type="hidden" name="member_id" value="${dto.member_id}">
                     <div class="mb-4">
                         <label class="form-label small-txt text-muted mb-2">변경할 등급 선택</label>
-                        <select name="grade" class="form-select bg-dark text-white border-secondary">
+                        <select name="grade" class="form-select">
                             <option value="BRONZE" ${dto.grade == 'BRONZE' ? 'selected' : ''}>BRONZE</option>
                             <option value="SILVER" ${dto.grade == 'SILVER' ? 'selected' : ''}>SILVER</option>
                             <option value="GOLD" ${dto.grade == 'GOLD' ? 'selected' : ''}>GOLD</option>
                         </select>
                     </div>
-                    <button type="button" class="btn btn-primary w-100 fw-bold py-2" onclick="updateMemberOk();">변경 적용하기</button>
+                    <button type="button" class="btn-purple w-100" onclick="updateMemberOk();">변경 적용하기</button>
                 </form>
             </div>
         </div>
@@ -134,7 +174,7 @@
 
 <div class="modal fade" id="statusModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-dark text-white border-secondary shadow-lg">
+        <div class="modal-content bg-dark text-white border-secondary">
             <div class="modal-header border-secondary">
                 <h5 class="modal-title fw-bold"><i class="bi bi-shield-lock me-2"></i>계정 상태 관리</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -146,11 +186,11 @@
                     
                     <div class="mb-3">
                         <label class="form-label small-txt text-muted">대상 회원</label>
-                        <input type="text" class="form-control bg-transparent text-white border-secondary" value="${dto.name} (${dto.login_id})" readonly>
+                        <input type="text" class="form-control" value="${dto.name} (${dto.login_id})" readonly>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small-txt text-muted">상태 코드 지정</label>
-                        <select name="status_code" id="statusCode" class="form-select bg-dark text-white border-secondary" onchange="selectStatusChange(this)">
+                        <select name="status_code" id="statusCode" class="form-select" onchange="selectStatusChange(this)">
                             <option value="">:: 상태 선택 ::</option>
                             <c:if test="${dto.enabled==0}"><option value="0">잠금 해제 (정상화)</option></c:if>
                             <option value="1">이용 정지 (일반)</option>
@@ -165,7 +205,7 @@
                     </div>
                     <div class="mb-4">
                         <label class="form-label small-txt text-muted">사유 (메모)</label>
-                        <input type="text" name="memo" id="memo" class="form-control bg-dark text-white border-secondary" placeholder="변경 사유를 입력하세요">
+                        <input type="text" name="memo" id="memo" class="form-control" placeholder="변경 사유를 입력하세요">
                     </div>
                     <button type="button" class="btn btn-danger w-100 fw-bold py-2" onclick="updateStatusOk();">상태 적용하기</button>
                 </form>
@@ -181,17 +221,12 @@ function forceCloseModal() {
     const modals = document.querySelectorAll('.modal.show');
     modals.forEach(modalEl => {
         const instance = bootstrap.Modal.getInstance(modalEl);
-        if (instance) {
-            instance.hide();
-        }
+        if (instance) instance.hide();
     });
-    
     const backdrops = document.querySelectorAll('.modal-backdrop');
     backdrops.forEach(b => b.remove());
-    
     document.body.classList.remove('modal-open');
     document.body.style.overflow = '';
-    document.body.style.paddingRight = '';
 }
 
 function updateMember() {
@@ -219,11 +254,9 @@ async function updateMemberOk() {
     try {
         await fetchRequest(url, "PUT", query, "form", "text");
         forceCloseModal(); 
-        alert("✅ 정보가 수정되었습니다.");
+        alert("✅ 등급이 변경되었습니다.");
         location.reload();
-    } catch (e) { 
-        console.error(e); 
-    }
+    } catch (e) { console.error(e); }
 }
 
 async function updateStatusOk() {
@@ -231,17 +264,14 @@ async function updateStatusOk() {
     if(!f.status_code.value) { alert("상태를 선택하세요."); f.status_code.focus(); return; }
     if(!f.memo.value.trim()) { alert("사유를 입력하세요."); f.memo.focus(); return; }
     if(!confirm("상태를 변경하시겠습니까?")) return;
-    
     const url = "${pageContext.request.contextPath}/admin/guests/GuestStatus";
     const query = new URLSearchParams(new FormData(f)).toString();
     try {
         await fetchRequest(url, "POST", query, "form", "text");
         forceCloseModal();
-        alert("✅ 상태 변경 완료.");
+        alert("✅ 계정 상태가 변경되었습니다.");
         location.reload();
-    } catch (e) { 
-        console.error("통신 오류:", e);
-    }
+    } catch (e) { console.error("통신 오류:", e); }
 }
 </script>
 </body>
