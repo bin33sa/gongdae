@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequestMapping(value = "/guest/*")
 public class GuestController {
-	private final GuestService guestService;
+	private final GuestService service;
 	
 	@Value("${file.upload-root}/member")
 	private String uploadPath;
@@ -45,7 +45,7 @@ public class GuestController {
 			Model model) {
 		 
 		try {
-			guestService.insertGuest(dto, uploadPath);
+			service.insertGuest(dto, uploadPath);
 			
 			StringBuilder sb = new StringBuilder();
 			sb.append(dto.getName() + "님의 회원 가입이 정상적으로 처리되었습니다.<br>");
@@ -78,7 +78,7 @@ public class GuestController {
 		// 닉네임 중복 검사
 		String p = "false";
 		try {
-			GuestDto dto = guestService.findGuestByNickname(nickname);
+			GuestDto dto = service.findGuestByNickname(nickname);
 			if (dto == null) {
 				p = "true";
 			}
@@ -109,7 +109,7 @@ public class GuestController {
 			Model model) throws Exception {
 		
 		try {
-			GuestDto dto = guestService.findGuestByNameAndEmail(name, email);
+			GuestDto dto = service.findGuestByNameAndEmail(name, email);
 			
 			if(dto == null || dto.getEnabled() == 0) {
 				model.addAttribute("message", "등록된 아이디가 없습니다.");
@@ -118,7 +118,7 @@ public class GuestController {
 			}
 			
 			// 아이디를 메일로 전송
-			guestService.sendGuestId(dto);
+			service.sendGuestId(dto);
 			
 			StringBuilder sb = new StringBuilder();
 			sb.append("회원님의 이메일로 아이디를 전송했습니다.<br>");
@@ -161,7 +161,7 @@ public class GuestController {
 		
 		
 		try {
-			GuestDto dto = guestService.findGuestByIdAndNameAndEmail(login_id, name, email);
+			GuestDto dto = service.findGuestByIdAndNameAndEmail(login_id, name, email);
 			
 			if(dto == null || dto.getEnabled() == 0) {
 				model.addAttribute("message", "등록된 아이디가 없습니다.");
@@ -170,7 +170,7 @@ public class GuestController {
 			}
 			
 			// 임시 패스워드를 메일로 전송
-			guestService.sendGuestPwd(dto);
+			service.sendGuestPwd(dto);
 			
 			StringBuilder sb = new StringBuilder();
 			sb.append("회원님의 이메일로 임시패스워드를 전송했습니다.<br>");

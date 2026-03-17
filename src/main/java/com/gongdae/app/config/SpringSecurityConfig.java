@@ -36,7 +36,7 @@ public class SpringSecurityConfig {
 	            "/member/userIdCheck", "/guest/nicknameCheck", "/complete", "/guest/findId", "/guest/findPwd", "/guest/edit", "/expired", "/dist/**",
 	            "/js/**", "/vendor/**","/favicon.ico","/guest/main", "/guest/list", "/uploads/photo/**", "/favicon.ico", "/WEB-INF/views/**",
 	            "/oauth/kakao/callback", "/host/main/prelogin", "/host/member/login", "/admin/login",
-	            "/wish/*", "/reservation/*", "/review/*", "/terms", 
+	            "/wish/*", "/reservation/*", "/review/*", "/terms",
 	            "/dist/docs/*"};
 				
 
@@ -46,7 +46,7 @@ public class SpringSecurityConfig {
 
 		http.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers(excludeUri).permitAll()
-		        .requestMatchers("/space/list", "/space/detail/**").hasAnyRole("ANONYMOUS", "GUEST", "ADMIN")
+		        .requestMatchers("/space/search", "/space/detail/**").hasAnyRole("ANONYMOUS", "GUEST", "ADMIN")
 		        .requestMatchers("/host/**").hasAnyRole("HOST", "ADMIN")
 		        .requestMatchers("/admin/**").hasRole("ADMIN")	      
 		        .requestMatchers("/booking/**", "/mypage/**", "/cart/**", "/community/write").hasAnyRole("GUEST", "ADMIN")

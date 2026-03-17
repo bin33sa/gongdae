@@ -13,8 +13,8 @@
 /* 확장 검색 조건 섹션 그림자 */
 .search-advanced {
 	position: sticky;
-    top: 80px; /* 헤더 높이에 맞게 조정 */
-    z-index: 996; /* 헤더보다 낮게 */
+    top: 72px; /* 헤더 높이에 맞게 조정 */
+    z-index: 1001; /* 헤더보다 높게 */
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 

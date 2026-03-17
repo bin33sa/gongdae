@@ -13,7 +13,6 @@ import com.gongdae.app.domain.dto.MemberDto;
 @Mapper
 public interface GuestMapper {
 
-	public Long memberSeq();	
 	public void insertGuest(GuestDto dto) throws SQLException;
 	
 	public void updateMemberPassword(GuestDto dto) throws SQLException;
@@ -44,8 +43,4 @@ public interface GuestMapper {
 	public void deleteAuthority(Map<String, Object> map) throws SQLException;
 	public String findByAuthority(String login_id);
 	
-	public void insertRefreshToken(GuestDto dto) throws SQLException;
-	public void updateRefreshToken(GuestDto dto) throws SQLException;
-	public void deleteRefreshToken(String login_id) throws SQLException;
-	public GuestDto findByToken(String login_id);	
 }

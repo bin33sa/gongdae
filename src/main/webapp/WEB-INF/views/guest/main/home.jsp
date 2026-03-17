@@ -72,18 +72,10 @@
 
 					<div class="category-mask">
 						<div class="category-wrap">
-						  	<button class="category-btn active">전체</button>
-						  	<button class="category-btn">파티룸</button>
-							<button class="category-btn">댄스연습실</button>
-						  	<button class="category-btn">보컬연습실</button>
-						  	<button class="category-btn">악기 연습실</button>
-						  	<button class="category-btn">촬영 스튜디오</button>
-						  	<button class="category-btn">스터디룸</button>
-						  	<button class="category-btn">공연장</button>
-						  	<button class="category-btn">공유주방</button>
-						  	<button class="category-btn">회의실</button>
-						  	<button class="category-btn">화실</button>
-						  	<button class="category-btn">글램핑</button>
+							<button class="category-btn active">전체</button>
+							<c:forEach var="category" items="${categoryList}">
+			       				<button class="category-btn">${category.name}</button>
+			       			</c:forEach>
 						</div>
 					</div>
 
@@ -319,8 +311,10 @@
 </footer>
 
 <script type="text/javascript">
+// 카테고리 창 관련 js
 const wrap = document.querySelector('.category-wrap');
 const mask = document.querySelector('.category-mask');
+const spaceSection = document.querySelector('.home-space-section .row.g-4')
 
 function updateFade() {
     if (!wrap || !mask) return;
@@ -349,6 +343,42 @@ function scrollCategory(amount) {
     wrap.scrollBy({ left: amount, behavior: 'smooth' });
     setTimeout(updateFade, 220);
 }
+
+mask.addEventListener('click', function(e) {
+	if(e.target.matches('.category-btn')) {
+		const categoryBtns = this.querySelectorAll('.category-btn');
+		categoryBtns.forEach(btn => btn.classList.remove('active'));
+		e.target.classList.add('active');
+		
+		const url = '${pageContext.request.contextPath}/space/list';
+		const params = 'category=';
+		
+		const fn = function(data) {
+
+			
+			for(let space of data.list) {
+				let out = '';
+				
+				out += '';
+				
+		
+			}
+		};
+		
+		const headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+		const options = {
+				method: 'post',
+				headers: headers,
+				body: params,
+		};
+		
+		fetch(url, options)
+			.then(res => res.json())
+			.then(data => fn(data))
+			.catch(err => console.log("error:", err));
+	}
+});
+
 </script>
 
 <jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
