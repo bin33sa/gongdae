@@ -1,0 +1,261 @@
+/* =====================================================
+LAYOUT
+===================================================== */
+
+.review-main{
+  padding:60px 20px;
+  background:#f8fafc;
+}
+
+/* =====================================================
+CARD
+===================================================== */
+
+.review-card{
+  max-width:640px;
+  margin:0 auto;
+  background:#ffffff;
+  border-radius:20px;
+  padding:36px 34px;
+  box-shadow:0 12px 30px rgba(15,23,42,.06);
+}
+
+/* =====================================================
+HEADER
+===================================================== */
+
+.review-header h2{
+  font-size:24px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.review-header p{
+  font-size:14px;
+  color:#64748b;
+}
+
+/* =====================================================
+SPACE INFO
+===================================================== */
+
+.review-space{
+  display:flex;
+  gap:16px;
+  margin-top:28px;
+  margin-bottom:28px;
+  align-items:center;
+}
+
+.review-space img{
+  width:120px;
+  height:90px;
+  object-fit:cover;
+  border-radius:12px;
+  flex-shrink:0;
+}
+
+.space-meta h3{
+  margin:0;
+  font-size:16px;
+  font-weight:600;
+}
+
+.space-date{
+  font-size:13px;
+  color:#94a3b8;
+  margin-top:4px;
+}
+
+.space-badge{
+  display:inline-block;
+  margin-top:6px;
+  padding:4px 10px;
+  font-size:11px;
+  border-radius:999px;
+  background:#eef4ff;
+  color:var(--accent-color);
+  font-weight:600;
+}
+
+/* =====================================================
+BLOCK
+===================================================== */
+
+.review-block{
+  margin-bottom:28px;
+}
+
+/* =====================================================
+LABEL ROW
+===================================================== */
+
+.review-label-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+
+.review-label{
+  font-weight:700;
+  font-size:15px;
+  color:#0f172a;
+}
+
+.rating-text{
+  font-size:14px;
+  font-weight:600;
+  color:var(--accent-color);
+}
+
+/* =====================================================
+RATING BOX
+===================================================== */
+
+.rating-box{
+  padding:20px 22px;
+  border-radius:16px;
+  background:#f8fafc;
+  border:1.5px solid #e2e8f0;
+  display:flex;
+  align-items:center;
+}
+
+/* =====================================================
+STAR RATING (중앙정렬 해결 버전)
+===================================================== */
+
+.star-rating{
+  display:flex;
+  flex-direction:row-reverse; 
+  gap:10px;
+}
+
+/* input 숨김 */
+
+.star-rating input{
+  display:none;
+}
+
+/* label 박스 */
+
+.star-rating label{
+  position:relative;
+  width:40px;
+  height:40px;
+  cursor:pointer;
+}
+
+/* 공통: 완전 중앙 정렬 */
+
+.star-rating label::before,
+.star-rating label::after{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -65%);
+  font-size:32px;
+  line-height:1;
+}
+
+/* 기본 별 */
+
+.star-rating label::before{
+  content:"★";
+  color:#e2e8f0;
+}
+
+/* 채워지는 별 */
+
+.star-rating label::after{
+  content:"★";
+  color:#fbbf24;
+  opacity:0;
+  transform:translate(-50%, -65%) scale(0.8);
+  transition:.2s ease;
+}
+
+/* hover */
+
+.star-rating label:hover::after,
+.star-rating label:hover ~ label::after{
+  opacity:1;
+  transform:translate(-50%, -65%) scale(1.1);
+}
+
+/* 선택 */
+
+.star-rating input:checked + label::after,
+.star-rating input:checked + label ~ label::after{
+  opacity:1;
+  transform:translate(-50%, -65%) scale(1);
+}
+
+/* =====================================================
+TEXTAREA
+===================================================== */
+
+textarea{
+  width:100%;
+  height:150px;
+  padding:14px;
+  border-radius:14px;
+  border:1.5px solid #e2e8f0;
+  font-size:14px;
+  resize:none;
+  transition:.2s;
+}
+
+textarea:focus{
+  outline:none;
+  border-color:var(--accent-color);
+  box-shadow:0 0 0 3px rgba(37,99,235,.12);
+}
+
+.text-count{
+  text-align:right;
+  font-size:12px;
+  color:#64748b;
+  margin-top:6px;
+}
+
+/* =====================================================
+FILE INPUT
+===================================================== */
+
+input[type="file"]{
+  display:block;
+  margin-top:8px;
+  font-size:13px;
+}
+
+/* =====================================================
+BUTTON
+===================================================== */
+
+.review-submit{
+  width:100%;
+  height:54px;
+  border:none;
+  border-radius:16px;
+  font-size:15px;
+  font-weight:600;
+
+  background:var(--accent-color);
+  color:#fff;
+
+  cursor:pointer;
+  transition:.2s;
+  margin-top:10px;
+}
+
+.review-submit:hover{
+  background:#1d4ed8;
+  transform:translateY(-1px);
+  box-shadow:0 10px 22px rgba(37,99,235,.25);
+}
+
+.review-submit:active{
+  transform:scale(.98);
+}
