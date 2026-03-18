@@ -110,7 +110,8 @@
             <sec:authorize access="isAuthenticated()">
                 <a href="<c:url value='/'/>" class="text-muted"><i class="bi bi-house-door"></i> 유저홈페이지</a>
                 <a href="#">호스트 정보수정</a>
-                <form action="<c:url value='/logout'/>" method="post" class="d-inline m-0">
+                
+                <form action="<c:url value='/member/logout'/>" method="post" class="d-inline m-0">
                     <button type="submit" class="btn btn-link p-0 text-decoration-none text-dark" style="font-size:14px; font-weight:500;">로그아웃</button>
                     <sec:csrfInput/>
                 </form>
