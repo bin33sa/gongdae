@@ -8,8 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공대생 호스트 센터</title>
     
-    <jsp:include page="/WEB-INF/views/host/layout/headerResources.jsp"/>
-    <jsp:include page="/WEB-INF/views/host/layout/header.jsp"/>
+    <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
 
     <style>
         :root {
@@ -122,7 +121,11 @@
 </head>
 <body>
 
+<div class="layout-wrap"> 
 
+<header>
+<jsp:include page="/WEB-INF/views/host/layout/header.jsp"/>
+</header>
 <main>
     <section class="hero-section" >
     
@@ -207,12 +210,13 @@
     </section>
 </main>
 
-
 <footer>
-	<jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
+    <jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
 </footer>
-
 <jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
 
+</div>
+
 </body>
+
 </html>

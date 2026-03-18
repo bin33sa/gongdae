@@ -11,6 +11,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     
+    <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
+    
     <style>
         body { background-color: #f4f6f9; font-family: 'Pretendard', sans-serif; }
         
@@ -185,8 +187,9 @@
             </div>
         </div>
     </main>
-
-    <jsp:include page="/WEB-INF/views/host/layout/footer.jsp"/>
-<jsp:include page="/WEB-INF/views/host/layout/footerResources.jsp"/>
+<footer>
+    <jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
+</footer>
+<jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
 </body>
 </html>
