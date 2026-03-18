@@ -17,13 +17,7 @@
 </header>
 
 <main>
-	<!-- Page Title -->
-	<div class="page-title">
-		<div class="container align-items-center" data-aos="fade-up">
-			<h1>회원가입</h1>
-			<div class="page-title-underline-accent"></div>
-		</div>
-	</div>
+	
     
 	<!-- Page Content -->    
 	<div class="section">
@@ -203,6 +197,7 @@ document.addEventListener('DOMContentLoaded', ev => {
 		}
 		
 		if(file.size > maxSize || ! file.type.match('image.*')) {
+			alert("프로필 사진은 800Kb 이하의 확장자가 JPG, GIF, PNG 인 사진만 가능합니다.");
 			inputEL.focus();
 			return;
 		}
@@ -357,11 +352,17 @@ function memberOk() {
 function userIdCheck() {
 	// 아이디 중복 검사
 	let login_id = document.getElementById('login_id').value;
+	
+	const loginIdInput = document.getElementById('login_id');
+	const wrapLoginId = loginIdInput.closest('.wrap-loginId');
+	const helpBlock = wrapLoginId.querySelector('.help-block');
+	const loginIdValid = document.getElementById('loginIdValid');
 
 	if(!/^[a-z][a-z0-9_]{4,9}$/i.test(login_id)) { 
-		let str = '아이디는 5~10자 이내이며, 첫글자는 영문자로 시작해야 합니다.';
-		document.getElementById('login_id').closest('.wrap-loginId').querySelector('.help-block').textContent = str;		
-		document.getElementById('login_id').focus();
+		let str = '아이디는 <span style="color:red; font-weight: bold;">5~10자</span> 이내이며,'
+			+ '첫글자는 <span style="color:red; font-weight: bold;">영문자</span>로 시작해야 합니다.';
+		helpBlock.innerHTML = str;		
+		loginIdInput.focus();
 		return;
 	}
 	
@@ -370,11 +371,6 @@ function userIdCheck() {
 	
 	const fn = function(data) {
 		let passed = data.passed;
-
-		const loginIdInput = document.getElementById('login_id');
-		const wrapLoginId = loginIdInput.closest('.wrap-loginId');
-		const helpBlock = wrapLoginId.querySelector('.help-block');
-		const loginIdValid = document.getElementById('loginIdValid');
 
 		if (passed === 'true') {
 			let str = '<span style="color:blue; font-weight: bold;">' + login_id + '</span> 아이디는 사용가능 합니다.';
@@ -405,11 +401,17 @@ function userIdCheck() {
 function nicknameCheck() {
 	// 닉네임 중복 검사
 	let nickname = document.getElementById('nickname').value;
+	
+	const nicknameInput = document.getElementById('nickname');
+	const wrapNickname = nicknameInput.closest('.wrap-nickname');
+	const helpBlock = wrapNickname.querySelector('.help-block');
+	const nicknameValid = document.getElementById('nicknameValid');
 
 	if(!/^[a-z0-9가-힣ㄱ-ㅎㅏ-ㅣ]{2,10}$/i.test(nickname)) { 
-		let str = '닉네임은 2~10자 이내이며, 한글, 영어, 숫자로만 이루어져야 합니다.';
-		document.getElementById('nickname').closest('.wrap-nickname').querySelector('.help-block').textContent = str;		
-		document.getElementById('nickname').focus();
+		let str = '닉네임은 <span style="color:red; font-weight: bold;">2~10자</span> 이내이며,'
+			+ ' <span style="color:red; font-weight: bold;">한글, 영어, 숫자</span>로만 이루어져야 합니다.';
+		helpBlock.innerHTML = str;		
+		nicknameInput.focus();
 		return;
 	}
 	
@@ -418,11 +420,6 @@ function nicknameCheck() {
 	
 	const fn = function(data) {
 		let passed = data.passed;
-
-		const nicknameInput = document.getElementById('nickname');
-		const wrapNickname = nicknameInput.closest('.wrap-nickname');
-		const helpBlock = wrapNickname.querySelector('.help-block');
-		const nicknameValid = document.getElementById('nicknameValid');
 
 		if (passed === 'true') {
 			let str = '<span style="color:blue; font-weight: bold;">' + nickname + '</span> 닉네임은 사용가능 합니다.';

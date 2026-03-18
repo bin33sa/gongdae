@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class EventController {
+public class BoardController {
 
 	@GetMapping("/event")
 	public String eventList() throws Exception {
@@ -25,5 +25,16 @@ public class EventController {
 		return "common/event";
 	}
 	
+	@GetMapping("/faq")
+	public String faq() throws Exception {
+		
+		return "common/faq";
+	}
+	
+	@GetMapping("/notice")
+	public String noticeList() throws Exception {
+		
+		return "common/notice";
+	}
 	
 }
