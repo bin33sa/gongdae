@@ -10,6 +10,47 @@
 		ORDER BY category_no
 	
 	</select>
+	
+	<select id="spaceList" resultType="com.gongdae.app.domain.dto.SpaceDTO">
+		SELECT 
+			'TestSpace' AS title,
+			'서울 강남' AS region,
+			'8' AS capacity,
+			'120000' AS price
+		FROM dual
+		UNION ALL
+		SELECT 
+			'TestSpace' AS title,
+			'서울 강남' AS region,
+			'8' AS capacity,
+			'120000' AS price
+		FROM dual
+		UNION ALL
+		SELECT 
+			'TestSpace' AS title,
+			'서울 강남' AS region,
+			'8' AS capacity,
+			'120000' AS price
+		FROM dual
+		UNION ALL
+		SELECT 
+			'TestSpace' AS title,
+			'서울 강남' AS region,
+			'8' AS capacity,
+			'120000' AS price
+		FROM dual
+	</select>
+	
+	<select id="findSpaceById" resultType="com.gongdae.app.domain.dto.SpaceDTO">
+		SELECT 
+			'TestSpace' AS title,
+			'서울 강남' AS region,
+			'8' AS capacity,
+			'120000' AS price
+		FROM dual
+		
+	</select>
+	
 
 	<!-- ***************************************************************************** -->
 	<insert id="insertMemberStatus" parameterType="com.gongdae.app.domain.dto.MemberDto">

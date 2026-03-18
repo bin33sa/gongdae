@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gongdae.app.domain.dto.CategoryDTO;
 import com.gongdae.app.domain.dto.SessionInfo;
@@ -33,20 +35,22 @@ public class SpaceController {
 		SessionInfo info = LoginMemberUtil.getSessionInfo();
 		
 		try {
+			model.addAttribute("categoryList", service.categoryList());
 			
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
-		
-		List<CategoryDTO> categoryList = service.categoryList();
-		
-		model.addAttribute("categoryList", categoryList);
 		
 		return "common/space/search";
 	}
 	
-	@GetMapping("detail")
-	public String detailPage() throws Exception {
+	@GetMapping("detail/{id}")
+	public String detailPage(@PathVariable(name = "id") String spaceId, Model model) throws Exception {
+		
+		try {
+			model.addAttribute("space", service.findSpaceById(spaceId));
+			
+		} catch (Exception e) {
+		}
 		return "common/space/detail";
 	}
 	
@@ -58,18 +62,21 @@ public class SpaceController {
 	
 	
 	
-	@GetMapping("list")
-	public ResponseEntity<?> spaceList() throws Exception {
+	@PostMapping("list")
+	public ResponseEntity<?> spaceList(@RequestParam(name = "category") String category) throws Exception {
 		// 넘겨받는 데이터
 		// pageNo, kwd, region, capacity, categoryIdx, date, startTime, endTime, orderType
+		
+		System.out.println("spacelist:controller");
 		
 		Map<String, Object> result = new HashMap<>();
 		
 		try {
 			SessionInfo info = LoginMemberUtil.getSessionInfo();
 			
+			Map<String, Object> params = new HashMap<>();
 			
-			List<SpaceDTO> list = service.spaceList();
+			List<SpaceDTO> list = service.spaceList(params);
 			
 			// 전달해야될 요소: 검색된 클래스 목록, 현재 페이지, 총 페이지 수
 			

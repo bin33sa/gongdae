@@ -46,7 +46,7 @@ public class SpringSecurityConfig {
 
 		http.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers(excludeUri).permitAll()
-		        .requestMatchers("/space/search", "/space/detail/**").hasAnyRole("ANONYMOUS", "GUEST", "ADMIN")
+		        .requestMatchers("/space/search", "/space/list", "/space/detail/**").hasAnyRole("ANONYMOUS", "GUEST", "ADMIN")
 		        .requestMatchers("/host/**").hasAnyRole("HOST", "ADMIN")
 		        .requestMatchers("/admin/**").hasRole("ADMIN")	      
 		        .requestMatchers("/booking/**", "/mypage/**", "/cart/**", "/community/write").hasAnyRole("GUEST", "ADMIN")

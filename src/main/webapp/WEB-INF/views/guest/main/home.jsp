@@ -91,7 +91,7 @@
 			<div class="row g-4">
 
    				<div class="col-12 col-sm-6 col-lg-3">
-      				<div class="card product-card h-100 border-0" onclick="location.href='${pageContext.request.contextPath}/space/detail'">
+      				<div class="card product-card h-100 border-0" onclick="location.href='${pageContext.request.contextPath}/space/detail/1'">
 	        			<div class="position-relative product-thumb">
 	          				<img src="${pageContext.request.contextPath}/dist/images/image.png" class="card-img-top product-img" alt="상품이미지">
 	          				<button class="wishlist-btn">
@@ -344,6 +344,7 @@ function scrollCategory(amount) {
     setTimeout(updateFade, 220);
 }
 
+// 카테고리 별 공간 출력
 mask.addEventListener('click', function(e) {
 	if(e.target.matches('.category-btn')) {
 		const categoryBtns = this.querySelectorAll('.category-btn');
@@ -356,18 +357,47 @@ mask.addEventListener('click', function(e) {
 		const fn = function(data) {
 
 			
+			
+			let out = '';
+			
 			for(let space of data.list) {
-				let out = '';
-				
-				out += '';
+					
+				out += `
+					<div class="col-12 col-sm-6 col-lg-3">
+	      				<div class="card product-card h-100 border-0" onclick="location.href='${pageContext.request.contextPath}/space/detail'">
+		        			<div class="position-relative product-thumb">
+		          				<img src="${pageContext.request.contextPath}/dist/images/image.png" class="card-img-top product-img" alt="상품이미지">
+		          				<button class="wishlist-btn">
+		            				<i class="bi bi-heart"></i>
+		          				</button>
+		        			</div>
+	
+		        			<div class="card-body product-body">
+		          				<h6 class="card-title mb-1">` + space.title +  `</h6>
+	
+		          				<div class="rating mb-2">
+		            				<i class="bi bi-star-fill text-warning"></i>
+		            				<span class="fw-semibold">4.8</span>
+		            				<span class="text-muted small">(128)</span>
+		          				</div>
+	
+		          				<p class="text-muted small mb-2">` + space.region + ` · 최대 ` + space.capacity + `명</p>
+		          				<p class="fw-bold product-price mb-0">₩` + space.price + `</p>
+		        			</div>
+	      				</div>
+	    			</div>
+				`;
 				
 		
 			}
+			
+			
+			spaceSection.insertAdjacentHTML('beforeend', out);
 		};
 		
 		const headers = {'Content-Type': 'application/x-www-form-urlencoded'};
 		const options = {
-				method: 'post',
+				method: 'POST',
 				headers: headers,
 				body: params,
 		};

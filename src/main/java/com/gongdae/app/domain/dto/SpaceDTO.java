@@ -26,6 +26,9 @@ private String	created_at;
 private String	bank_name;
 private String	account_num;
 
+private String price;
+private String capacity;
+
 //공간 디테일 DTO 
 
 //공간 이미지 DTO

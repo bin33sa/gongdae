@@ -24,9 +24,15 @@ public class SpaceServiceImpl implements SpaceService {
 	
 
 	@Override
-	public List<SpaceDTO> spaceList() {
+	public List<SpaceDTO> spaceList(Map<String, Object> params) {
+		List<SpaceDTO> spaceList = null;
+		try {
+			spaceList = mapper.spaceList(params);
+		} catch (Exception e) {
+			log.info("spaceList: ", e);
+		}
 		
-		return mapper.spaceList();
+		return spaceList;
 	}
 	
 	@Override
@@ -40,6 +46,17 @@ public class SpaceServiceImpl implements SpaceService {
 		return categoryList;
 	}
 	
+	@Override
+	public SpaceDTO findSpaceById(String spaceId) {
+		SpaceDTO space = null;
+		try {
+			space = mapper.findSpaceById(spaceId);
+		} catch (Exception e) {
+			log.info("findSpaceById: ", e);
+		}
+		
+		return space;
+	}
 	
 	///////////////////////////////////////////
 	@Override

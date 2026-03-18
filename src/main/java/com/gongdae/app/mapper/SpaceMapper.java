@@ -13,8 +13,9 @@ import com.gongdae.app.domain.dto.SpaceDTO;
 @Mapper
 public interface SpaceMapper {
 
-	public List<SpaceDTO> spaceList();
 	public List<CategoryDTO> categoryList();
+	public List<SpaceDTO> spaceList(Map<String, Object> params);
+	public SpaceDTO findSpaceById(String spaceId);
 	
 	////////////////////////////////////
 	
