@@ -52,7 +52,7 @@
                             ${member.nickname != null ? member.nickname : member.name} 님
                         </div>
 
-                        <a href="${pageContext.request.contextPath}/member/edit"
+                        <a href="${pageContext.request.contextPath}/guest/edit"
                            class="small  text-white">
                            정보수정
                         </a>

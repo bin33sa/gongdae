@@ -9,7 +9,8 @@
     <title>공대생 호스트 센터</title>
     
     <jsp:include page="/WEB-INF/views/host/layout/headerResources.jsp"/>
-    
+    <jsp:include page="/WEB-INF/views/host/layout/header.jsp"/>
+
     <style>
         :root {
             --host-primary: #E53935;
@@ -121,9 +122,6 @@
 </head>
 <body>
 
-<header>
-    <jsp:include page="/WEB-INF/views/host/layout/header.jsp"/>
-</header>
 
 <main>
     <section class="hero-section" >

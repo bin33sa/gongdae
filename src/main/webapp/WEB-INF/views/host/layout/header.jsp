@@ -73,13 +73,14 @@
     <div class="container position-relative d-flex align-items-center justify-content-between w-100">
         
         <div class="d-flex align-items-center gap-3">
-            <a class="btn border-0 p-0 text-dark" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-                <i class="bi bi-list fs-3"></i>
-            </a>
-            <a href="<c:url value='/host/main'/>" class="d-flex align-items-center text-decoration-none">
+          
+            <a href="<c:url value='/'/>" class="d-flex align-items-center text-decoration-none">
                <img src="<c:url value='/dist/images/gds.PNG' />" alt="로고" style="max-height: 40px; width: auto;">
-               <span class="host-logo-text">| 호스트 센터</span>
             </a>
+            <a href="<c:url value='/host/main/prelogin'/>" class="d-flex align-items-center text-decoration-none">
+               <span class="host-logo-text" style="max-height: 40px; width: auto;">| 호스트 센터</span>
+            </a>
+            
         </div>
 
         <div class="d-none d-md-flex flex-grow-1 justify-content-center">
@@ -89,7 +90,7 @@
             
             <sec:authorize access="isAuthenticated()">
                 <nav class="d-inline-flex gap-3">
-                    <a href="<c:url value='/host/main'/>" class="host-nav-link active">메인화면</a>
+                    <a href="<c:url value='/host/main/home'/>" class="host-nav-link active">메인화면</a>
                     <a href="#" class="host-nav-link">상세매출</a>
                     <a href="#" class="host-nav-link">예약내역</a>
                     <a href="${pageContext.request.contextPath}/host/space/qna" class="host-nav-link">문의 답변</a>
@@ -103,7 +104,7 @@
         <div class="host-user-menu">
             <sec:authorize access="isAnonymous()">
                 <a href="<c:url value='/'/>" class="text-muted"><i class="bi bi-house-door"></i> 유저홈페이지</a>
-                <a href="<c:url value='/member/login'/>" class="btn-outline-host">로그인</a>
+                <a href="<c:url value='/host/member/login'/>" class="btn-outline-host">로그인</a>
             </sec:authorize>
 
             <sec:authorize access="isAuthenticated()">
@@ -118,5 +119,3 @@
         
     </div>
 </div>
-
-<jsp:include page="/WEB-INF/views/guest/layout/left.jsp"/>

@@ -2,6 +2,104 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 
+<style>
+
+/* =====================================================
+FOOTER
+===================================================== */
+
+.footer-gray{
+  background:#0f172a;
+  color:#cbd5f1;
+  margin-top:0;
+}
+
+.footer-logo{
+  font-size:26px;
+  font-weight:800;
+  color:#ffffff;
+  margin-bottom:12px;
+}
+
+.footer-desc{
+  font-size:14px;
+  line-height:1.6;
+  color:#94a3b8;
+  max-width:280px;
+}
+
+.footer-social{
+  margin-top:14px;
+  display:flex;
+  gap:12px;
+}
+
+.footer-social a{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#1e293b;
+  color:#cbd5f1;
+  font-size:16px;
+  transition:.2s;
+}
+
+.footer-social a:hover{
+  background:#2563eb;
+  color:#fff;
+}
+
+.footer-menu h4,
+.footer-contact h4{
+  font-size:15px;
+  font-weight:700;
+  margin-bottom:14px;
+  color:#ffffff;
+}
+
+.footer-menu ul{
+  padding:0;
+  margin:0;
+  list-style:none;
+}
+
+.footer-menu li{
+  margin-bottom:8px;
+}
+
+.footer-menu a{
+  text-decoration:none;
+  font-size:14px;
+  color:#94a3b8;
+  transition:.2s;
+}
+
+.footer-menu a:hover{
+  color:#ffffff;
+}
+
+.footer-contact p{
+  font-size:14px;
+  color:#94a3b8;
+  margin-bottom:6px;
+}
+
+.footer-bottom{
+  border-top:1px solid #1e293b;
+  padding:16px 0;
+  text-align:center;
+  font-size:13px;
+  color:#94a3b8;
+}
+
+.footer-bottom strong{
+  color:#ffffff;
+}
+</style>
+
 <div id="footer" class="footer footer-gray">
 
 	<div class="container footer-main">

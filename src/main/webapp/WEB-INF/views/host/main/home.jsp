@@ -187,6 +187,6 @@
     </main>
 
     <jsp:include page="/WEB-INF/views/host/layout/footer.jsp"/>
-
+<jsp:include page="/WEB-INF/views/host/layout/footerResources.jsp"/>
 </body>
 </html>
