@@ -91,12 +91,12 @@
             <sec:authorize access="isAuthenticated()">
                 <nav class="d-inline-flex gap-3">
                     <a href="<c:url value='/host/main/home'/>" class="host-nav-link active">메인화면</a>
-                    <a href="#" class="host-nav-link">상세매출</a>
-                    <a href="#" class="host-nav-link">예약내역</a>
-                    <a href="${pageContext.request.contextPath}/host/space/qna" class="host-nav-link">문의 답변</a>
-                    <a href="#" class="host-nav-link">매장 관리</a>
-                    <a href="<c:url value='/host/space/register'/>" class="host-nav-link">매장등록</a>
-                    <a href="#" class="host-nav-link">공지사항</a>
+                    <a href="${pageContext.request.contextPath}/host/menu/sales" class="host-nav-link">상세매출</a>
+                    <a href="${pageContext.request.contextPath}/host/menu/reservation" class="host-nav-link">예약내역</a>
+                    <a href="${pageContext.request.contextPath}/host/menu/qna" class="host-nav-link">문의 답변</a>
+                    <a href="${pageContext.request.contextPath}/host/menu/store" class="host-nav-link">매장 관리</a>
+                    <a href="<c:url value='/host/menu/space'/>" class="host-nav-link">매장등록</a>
+                    
                 </nav>
             </sec:authorize>
         </div>

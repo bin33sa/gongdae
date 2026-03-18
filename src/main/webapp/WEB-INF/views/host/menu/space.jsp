@@ -5,86 +5,12 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>공간 등록 관리 - 공대생 호스트</title>
-    
+    <title>예약 내역 - 공대생 호스트 센터</title>
+
     <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
-    
-    <style>
-        :root {
-            --host-primary: #E53935;
-            --host-bg: #f4f6f9;
-        }
-        
-        body { 
-            background-color: var(--host-bg); 
-            font-family: 'Pretendard', sans-serif; 
-        }
 
-        /* 공통 플랫 박스 (그림자 제거, 상단 적색 엣지) */
-        .host-flat-box {
-            background-color: #ffffff;
-            border: 1px solid #dee2e6;
-            border-top: 4px solid var(--host-primary);
-            border-radius: 6px;
-            padding: 30px;
-            height: 100%;
-        }
-
-        /* 좌측: 신청 현황 리스트 스타일 */
-        .status-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .status-item {
-            border: 1px solid #eee;
-            border-radius: 6px;
-            padding: 15px;
-            margin-bottom: 15px;
-            background-color: #fafafa;
-        }
-        .status-item.active {
-            background-color: #fffafa; /* 활성화된 항목은 옅은 붉은색 */
-            border-color: var(--host-primary);
-        }
-        
-        /* 뱃지 커스텀 */
-        .badge-pending { background-color: #ffebee; color: #d32f2f; font-weight: normal; border: 1px solid #ffcdd2;}
-        .badge-approved { background-color: #e8f5e9; color: #388e3c; font-weight: normal; border: 1px solid #c8e6c9;}
-        .badge-rejected { background-color: #f5f5f5; color: #616161; font-weight: normal; border: 1px solid #e0e0e0;}
-
-        /* 폼 입력 컨트롤 엣지 스타일 */
-        .form-control, .form-select {
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            padding: 10px 15px;
-        }
-        .form-control:focus, .form-select:focus {
-            border-color: var(--host-primary);
-            box-shadow: none;
-        }
-        
-        .form-label {
-            font-weight: 600;
-            color: #444;
-            font-size: 0.95rem;
-        }
-
-        /* 등록 신청 버튼 */
-        .btn-host-submit {
-            background-color: var(--host-primary);
-            color: white;
-            font-weight: bold;
-            padding: 12px 30px;
-            border-radius: 4px;
-            border: none;
-            transition: background-color 0.2s;
-        }
-        .btn-host-submit:hover {
-            background-color: #c62828;
-            color: white;
-        }
-    </style>
+    <!-- 예약 CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/host/menu/space.css">
 </head>
 <body>
 
@@ -94,13 +20,13 @@
 
 <main class="container mt-5 mb-5">
     
+
+    <div class="row g-4">
+        <div class="col-lg-8">
     <div class="mb-4">
         <h3 class="fw-bold" style="color: #333;">공간 등록 및 관리</h3>
         <p class="text-muted">새로운 공간을 등록하고, 검수 진행 상황을 확인할 수 있습니다.</p>
     </div>
-
-    <div class="row g-4">
-        <div class="col-lg-8">
             <form action="<c:url value='/host/space/write'/>" method="post" enctype="multipart/form-data">
                 
                 <div class="host-flat-box mb-4">
@@ -108,14 +34,14 @@
                     
                     <div class="row mb-3 g-3">
                         <div class="col-md-4">
-                            <label class="form-label">카테고리 <span class="text-danger">*</span></label>
-                            <select name="categoryNo" class="form-select" required>
-                                <option value="" selected disabled>선택</option>
-                                <option value="1">파티룸</option>
-                                <option value="2">스터디룸</option>
-                                <option value="3">연습실</option>
-                            </select>
-                        </div>
+    <label class="form-label">카테고리 <span class="text-danger">*</span></label>
+    <select name="categoryNo" class="form-select" required>
+        <option value="" selected disabled>선택</option>
+        <c:forEach var="cat" items="${categoryList}">
+            <option value="${cat.categoryNo}">${cat.name}</option>
+        </c:forEach>
+    </select>
+</div>
                         <div class="col-md-8">
                             <label class="form-label">공간명 <span class="text-danger">*</span></label>
                             <input type="text" name="spaceName" class="form-control" placeholder="예) 하루클래스 강남점" required>
@@ -265,7 +191,9 @@
 <footer>
     <jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
 </footer>
+
 <jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
+
 <script>
     let unitCount = 1;
 

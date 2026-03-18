@@ -1,0 +1,66 @@
+@charset "UTF-8";
+
+:root {
+    --host-primary: #E53935;
+    --host-bg: #f4f6f9;
+}
+
+body {
+    background-color: var(--host-bg);
+}
+
+/* 필터 박스 */
+.reservation-filter-box {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-top: 4px solid var(--host-primary);
+    border-radius: 6px;
+    padding: 20px;
+}
+
+/* 버튼 */
+.btn-search {
+    background-color: var(--host-primary);
+    color: #fff;
+    font-weight: bold;
+}
+
+.btn-search:hover {
+    background-color: #c62828;
+}
+
+/* 테이블 박스 */
+.reservation-table-box {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-top: 4px solid var(--host-primary);
+    border-radius: 6px;
+    padding: 20px;
+}
+
+/* 테이블 */
+.reservation-table th {
+    background-color: #fafafa;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.reservation-table td {
+    vertical-align: middle;
+}
+
+/* 상태 뱃지 */
+.badge-active {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.badge-done {
+    background-color: #e8f5e9;
+    color: #388e3c;
+}
+
+.badge-cancel {
+    background-color: #ffebee;
+    color: #d32f2f;
+}

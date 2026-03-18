@@ -16,7 +16,5 @@
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
 <!-- HOST CSS Files -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/host.css" type="text/css">
-<!-- 푸터  css -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/hostfooter.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/host/host.css" type="text/css">
 

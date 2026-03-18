@@ -1,0 +1,84 @@
+@charset "UTF-8";
+
+:root {
+    --host-primary: #E53935;
+    --host-bg: #f4f6f9;
+}
+
+body {
+    background-color: var(--host-bg);
+}
+
+/* 필터 박스 */
+.sales-filter-box {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-top: 4px solid var(--host-primary);
+    border-radius: 6px;
+    padding: 20px;
+}
+
+/* 버튼 */
+.btn-search {
+    background-color: var(--host-primary);
+    color: #fff;
+    font-weight: bold;
+}
+
+.btn-search:hover {
+    background-color: #c62828;
+}
+
+/* 카드 */
+.sales-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.card-value {
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+/* 테이블 박스 */
+.sales-table-box {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-top: 4px solid var(--host-primary);
+    border-radius: 6px;
+    padding: 20px;
+}
+
+.table-header {
+    margin-bottom: 15px;
+}
+
+/* 테이블 */
+.sales-table th {
+    background-color: #fafafa;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.sales-table td {
+    vertical-align: middle;
+}
+
+/* 배지 */
+.badge-wait {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+
+.badge-done {
+    background-color: #e8f5e9;
+    color: #388e3c;
+}

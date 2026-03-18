@@ -1,0 +1,84 @@
+@charset "UTF-8";
+
+:root {
+    --host-primary: #E53935;
+    --host-bg: #f4f6f9;
+}
+
+body {
+    background-color: var(--host-bg);
+}
+
+/* 등록 버튼 */
+.btn-register {
+    background-color: var(--host-primary);
+    color: #fff;
+    font-weight: bold;
+}
+
+.btn-register:hover {
+    background-color: #c62828;
+}
+
+/* 카드 */
+.store-card {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-top: 4px solid var(--host-primary);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.store-card:hover {
+    transform: translateY(-4px);
+}
+
+/* 이미지 */
+.store-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+/* 바디 */
+.store-body {
+    padding: 16px;
+}
+
+.store-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.store-desc {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+/* 정보 */
+.store-info {
+    font-size: 0.85rem;
+    color: #888;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+/* 버튼 영역 */
+.store-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* 버튼 스타일 */
+.btn-edit {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.btn-delete {
+    background-color: #ffebee;
+    color: #d32f2f;
+}

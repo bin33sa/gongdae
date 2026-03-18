@@ -25,9 +25,27 @@ public class HostHomeController {
 	
 	
 	
-	@GetMapping("spaceForm")
-	public String spaceForm() {
-		return "host/space/spaceForm";
+	@GetMapping("menu/qna")
+	public String qna() {
+		return "host/menu/qna";
+	}
+	@GetMapping("menu/space")
+	public String space() {
+		return "host/menu/space";
+	}
+	
+	@GetMapping("menu/sales")
+	public String sales() {
+		return "host/menu/sales";
+	}
+	@GetMapping("menu/reservation")
+	public String reservation() {
+		return "host/menu/reservation";
+	}
+	
+	@GetMapping("menu/store")
+	public String store() {
+		return "host/menu/store";
 	}
 	
 }
