@@ -10,7 +10,7 @@
 <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
 
 <style type="text/css">
-body { 
+body {
 	font-family: 'Pretendard', -apple-system, sans-serif; 
 	background-color: #fff; 
 	color: #333; 
@@ -75,7 +75,7 @@ body {
 .btn-qna:hover { background-color: #e9ecef; }
 
 .btn-primary-custom {
-    background-color: var(--primary-color);
+    background-color: var(--accent-color);
     border: none;
     color: white;
     padding: 14px;
@@ -84,7 +84,7 @@ body {
     border-radius: 8px;
     transition: background-color 0.2s;
 }
-.btn-primary-custom:hover { background-color: #c62828; color: white; }
+.btn-primary-custom:hover { background-color: var(--accent-hover-color); color: white; }
 </style>
 
 </head>
