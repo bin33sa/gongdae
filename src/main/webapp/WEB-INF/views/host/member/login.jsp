@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>공대생 호스트 센터 - 로그인</title>
 
-<jsp:include page="/WEB-INF/views/host/layout/headerResources.jsp"/>
+<jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
 <jsp:include page="/WEB-INF/views/host/layout/header.jsp"/>
 
 <style>
@@ -159,11 +159,9 @@
 </div>
 
 <footer>
-    <jsp:include page="/WEB-INF/views/host/layout/footer.jsp"/>
+    <jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
 </footer>
-
-<jsp:include page="/WEB-INF/views/host/layout/footerResources.jsp"/>
-
+<jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
 <script>
 function sendLogin() {
     const f = document.loginForm;

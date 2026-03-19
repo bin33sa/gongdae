@@ -2,6 +2,14 @@
 
 
  body { background-color: #f4f6f9; font-family: 'Pretendard', sans-serif; }
+        a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    text-decoration: none;
+}
         
         /* 호스트 전용 포인트 컬러 (사이드바와 맞춘 붉은색 톤) */
         :root {

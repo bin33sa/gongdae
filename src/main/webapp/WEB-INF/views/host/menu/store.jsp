@@ -25,10 +25,7 @@
         <p class="text-muted">등록된 공간을 관리하고 수정하세요.</p>
     </div>
 
-    <!-- 상단 버튼 -->
-    <div class="d-flex justify-content-end mb-3">
-        <a href="#" class="btn btn-register">+ 매장 등록</a>
-    </div>
+  
 
     <!-- 매장 카드 리스트 -->
     <div class="row g-4">
