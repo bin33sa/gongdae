@@ -42,6 +42,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 				.name(member.getName())
 				.nickname(member.getNickname())
 				.email(member.getEmail())
+				.grade(member.getGrade())
+				.point(member.getPoint())
 				.userLevel(NumericRoleGranted.getUserLevel(member.getAuthority()))
 				.avatar(member.getProfile_photo())
 				.login_type("local")

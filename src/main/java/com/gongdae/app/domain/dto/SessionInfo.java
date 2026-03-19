@@ -20,5 +20,9 @@ public class SessionInfo {
 	private String email;
 	private int userLevel;
 	private String login_type; 
-	private String avatar; 
+	private String avatar;
+	
+	//guest_detail
+	private String grade;
+	private String point;
 }

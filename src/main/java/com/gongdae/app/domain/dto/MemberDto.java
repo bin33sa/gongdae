@@ -42,4 +42,8 @@ public class MemberDto {
 	private int status_code;
 	private String memo;
 	private long register_id;		
+	
+	//guest_detail
+	private String grade;
+	private String point;
 }

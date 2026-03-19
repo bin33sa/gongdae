@@ -71,62 +71,66 @@
         </div>
 
 
-        <!-- ===================== -->
-        <!-- ICON MENU -->
-        <!-- ===================== -->
-        <div class="icon-menu py-4">
-
-            <div class="row text-center g-0">
-
-                <div class="col-3"
-                		onclick="location.href='${pageContext.request.contextPath}/my/grade'">
-                    <div class="mb-1">
-                        <i class="bi bi-award fs-4"></i>
-                    </div>
-                    <div class="small text-muted">
-                        내 등급<br>
-                        <span class="text-dark fw-bold">브론즈</span>
-                    </div>
-                </div>
-
-                <div class="col-3"
-                		onclick="location.href='${pageContext.request.contextPath}/my/mileage'">
-                    <div class="mb-1">
-                        <i class="bi bi-cash-coin fs-4"></i>
-                    </div>
-                    <div class="small text-muted">
-                        마일리지<br>
-                        <span class="text-dark fw-bold">3,500</span>
-                    </div>
-                </div>
-
-                <div class="col-3"
-                		onclick="location.href='${pageContext.request.contextPath}/my/coupon'">
-                    <div class="mb-1">
-                        <i class="bi bi-ticket-perforated fs-4"></i>
-                    </div>
-                    <div class="small text-muted">
-                        쿠폰<br>
-                        <span class="text-dark fw-bold">0 장</span>
-                    </div>
-                </div>
-
-                <div class="col-3"
-                     onclick="location.href='${pageContext.request.contextPath}/my/wishlist'">
-
-                    <div class="mb-1">
-                        <i class="bi bi-heart fs-4"></i>
-                    </div>
-
-                    <div class="small text-muted">
-                        찜한 공간<br>
-                        <span class="text-dark fw-bold">0</span>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
+		<sec:authorize access="hasRole('GUEST')">
+			<sec:authentication property="principal.member" var="member"/>
+			
+	        <!-- ===================== -->
+	        <!-- ICON MENU -->
+	        <!-- ===================== -->
+	        <div class="icon-menu py-4">
+	
+	            <div class="row text-center g-0">
+	
+	                <div class="col-3"
+	                		onclick="location.href='${pageContext.request.contextPath}/my/grade'">
+	                    <div class="mb-1">
+	                        <i class="bi bi-award fs-4"></i>
+	                    </div>
+	                    <div class="small text-muted">
+	                        내 등급<br>
+	                        <span class="text-dark fw-bold">${member.grade}</span>
+	                    </div>
+	                </div>
+	
+	                <div class="col-3"
+	                		onclick="location.href='${pageContext.request.contextPath}/my/mileage'">
+	                    <div class="mb-1">
+	                        <i class="bi bi-cash-coin fs-4"></i>
+	                    </div>
+	                    <div class="small text-muted">
+	                        마일리지<br>
+	                        <span class="text-dark fw-bold">${member.point}</span>
+	                    </div>
+	                </div>
+	
+	                <div class="col-3"
+	                		onclick="location.href='${pageContext.request.contextPath}/my/coupon'">
+	                    <div class="mb-1">
+	                        <i class="bi bi-ticket-perforated fs-4"></i>
+	                    </div>
+	                    <div class="small text-muted">
+	                        쿠폰<br>
+	                        <span class="text-dark fw-bold">0 장</span>
+	                    </div>
+	                </div>
+	
+	                <div class="col-3"
+	                     onclick="location.href='${pageContext.request.contextPath}/my/wishlist'">
+	
+	                    <div class="mb-1">
+	                        <i class="bi bi-heart fs-4"></i>
+	                    </div>
+	
+	                    <div class="small text-muted">
+	                        찜한 공간<br>
+	                        <span class="text-dark fw-bold">0</span>
+	                    </div>
+	
+	                </div>
+	
+	            </div>
+	        </div>
+        </sec:authorize>
 
 
         <!-- ===================== -->
