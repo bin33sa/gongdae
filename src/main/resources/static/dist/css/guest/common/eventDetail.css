@@ -1,0 +1,92 @@
+@charset "UTF-8";
+
+.event-detail-page {
+    padding: 60px 0;
+}
+
+/* =========================
+   상단 헤더
+========================= */
+.event-detail-head {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+/* 제목 */
+.event-detail-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #222;
+}
+
+/* 메타 */
+.event-detail-meta {
+    font-size: 0.9rem;
+    color: #888;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+/* 뱃지 */
+.event-badge {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    border-radius: 20px;
+    background: #eee;
+}
+
+.event-badge.active {
+    background: #E53935;
+    color: #fff;
+}
+
+/* =========================
+   이미지
+========================= */
+.event-detail-image {
+    margin-bottom: 30px;
+}
+
+.event-detail-image img {
+    width: 100%;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+/* =========================
+   내용
+========================= */
+.event-detail-content {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #333;
+    min-height: 300px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #eee;
+}
+
+/* =========================
+   하단
+========================= */
+.event-detail-bottom {
+    margin-top: 30px;
+    text-align: right;
+}
+
+/* 버튼 */
+.btn-back {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+    transition: 0.2s;
+}
+
+.btn-back:hover {
+    background-color: #f5f5f5;
+}

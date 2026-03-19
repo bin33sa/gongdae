@@ -64,30 +64,29 @@
 
 
 
-					<!-- 이벤트 카드 -->
-
 					<div class="col-md-3">
 
 						<div class="event-card">
+							<a href="<c:url value='/event/detail'/>" class="event-link">
 
-							<div class="event-img">
-								<img src="/uploads/sample-event.jpg">
-							</div>
+								<div class="event-img">
+									<img src="/uploads/sample-event.jpg">
+								</div>
 
-							<div class="event-body">
+								<div class="event-body">
 
-								<span class="event-badge active"> 진행중 </span>
+									<span class="event-badge active"> 진행중 </span>
 
-								<h3>신규 가입 5000포인트 지급 이벤트</h3>
+									<h3>신규 가입 5000포인트 지급 이벤트</h3>
 
-								<div class="event-period">2026.03.01 ~ 2026.03.31</div>
+									<div class="event-period">2026.03.01 ~ 2026.03.31</div>
 
-							</div>
+								</div>
+							</a>
 
 						</div>
 
 					</div>
-
 
 
 					<div class="col-md-3">

@@ -24,6 +24,11 @@ public class BoardController {
 	
 		return "common/event";
 	}
+	@GetMapping("/event/detail")
+	public String eventDetail() throws Exception {
+		
+		return "common/eventDetail";
+	}
 	
 	@GetMapping("/faq")
 	public String faq() throws Exception {
@@ -36,5 +41,12 @@ public class BoardController {
 		
 		return "common/notice";
 	}
+	
+	@GetMapping("/notice/detail")
+	public String noticeDetail() throws Exception {
+		
+		return "common/noticeDetail";
+	}
+	
 	
 }
