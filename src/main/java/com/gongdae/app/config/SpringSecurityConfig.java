@@ -65,7 +65,31 @@ public class SpringSecurityConfig {
 			.logoutUrl("/member/logout")
 			.invalidateHttpSession(true)
 			.deleteCookies("JSESSIONID")
-			.logoutSuccessUrl("/")
+			 .logoutSuccessHandler((request, response, authentication) -> {
+
+				 if (authentication != null) {
+
+				        boolean isAdmin = authentication.getAuthorities().stream()
+				                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+				        boolean isHost = authentication.getAuthorities().stream()
+				                .anyMatch(a -> a.getAuthority().equals("ROLE_HOST"));
+
+				        if (isAdmin) {
+				            response.sendRedirect("/admin/login");
+				            return;
+				        }
+
+				        if (isHost) {
+				            response.sendRedirect("/host/main/prelogin");
+				            return;
+				        }
+				    }
+
+				    // 일반 유저 or 비로그인 상태
+				    response.sendRedirect("/");
+
+			    })
 		)
 		.addFilterAfter(ajaxSessionTimeoutFilter(), ExceptionTranslationFilter.class)
 		.sessionManagement(management -> management
