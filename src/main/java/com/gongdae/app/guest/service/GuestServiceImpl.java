@@ -51,21 +51,50 @@ public class GuestServiceImpl implements GuestService {
 			throw e;
 		}
 	}
-
+	
+	@Transactional(rollbackFor = {Exception.class})
 	@Override
-	public void updatePassword(GuestDto dto) throws Exception {
-
-	}
-
-	@Override
-	public void updateMember(GuestDto dto, String uploadPath) throws Exception {
-
+	public void updateGuest(GuestDto dto, String uploadPath) throws Exception {
+		try {
+			// 업로드한 파일이 존재한 경우
+			if(dto.getSelectFile() != null && ! dto.getSelectFile().isEmpty()) {
+				if(! dto.getProfile_photo().isBlank()) {
+					storageService.deleteFile(uploadPath, dto.getProfile_photo());
+				}
+				
+				String saveFilename = storageService.uploadFileToServer(dto.getSelectFile(), uploadPath);
+				dto.setProfile_photo(saveFilename);
+			}			
+			
+			boolean bPwdUpdate = ! isPasswordCheck(dto.getLogin_id(), dto.getPassword());
+			if( bPwdUpdate ) {
+				// 패스워드가 변경된 경우만 member 테이블의 패스워드 변경
+				String encPassword = bcryptEncoder.encode(dto.getPassword());
+				dto.setPassword(encPassword);
+				
+				mapper.updateGuestPassword(dto);
+			}
+			mapper.updateGuestDetail(dto);
+			
+		} catch (Exception e) {
+			log.info("updateGuest : ", e);
+			
+			throw e;
+		}
 	}
 
 	@Override
 	public GuestDto findById(Long member_id) {
-		
-		return null;
+		GuestDto dto = null;
+
+		try {
+			dto = Objects.requireNonNull(mapper.findById(member_id));
+		} catch (NullPointerException e) {
+		} catch (Exception e) {
+			log.info("findById : ", e);
+		}
+
+		return dto;
 	}
 
 	@Override
@@ -164,6 +193,23 @@ public class GuestServiceImpl implements GuestService {
 			throw e;
 		}
 	}
+	
+	@Override
+	public void deleteProfilePhoto(Map<String, Object> map, String uploadPath) throws Exception {
+		// 프로파일 포토 삭제
+		try {
+			String filename = (String)map.get("filename");
+			if(filename!= null && ! filename.isBlank()) {
+				storageService.deleteFile(uploadPath, filename);
+			}
+			
+			mapper.deleteProfilePhoto(map);
+		} catch (Exception e) {
+			log.info("deleteProfilePhoto : ", e);
+			
+			throw e;
+		}
+	}
 
 
 	@Override
@@ -247,7 +293,7 @@ public class GuestServiceImpl implements GuestService {
 			// 테이블의 패스워드 변경
 			String encPassword = bcryptEncoder.encode(password.toString());
 			dto.setPassword(encPassword);
-			mapper.updateMemberPassword(dto);
+			mapper.updateGuestPassword(dto);
 			
 			mapper.updateFailureCountReset(dto.getLogin_id());
 			

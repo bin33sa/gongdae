@@ -15,10 +15,9 @@ public interface GuestMapper {
 
 	public void insertGuest(GuestDto dto) throws SQLException;
 	
-	public void updateMemberPassword(GuestDto dto) throws SQLException;
+	public void updateGuestPassword(GuestDto dto) throws SQLException;
 	
-	public void updateMember1(GuestDto dto) throws SQLException;
-	public void updateMember2(GuestDto dto) throws SQLException;
+	public void updateGuestDetail(GuestDto dto) throws SQLException;
 	public void deleteProfilePhoto(Map<String, Object> map) throws SQLException;
 
 	public GuestDto findById(Long member_id);

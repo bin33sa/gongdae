@@ -9,8 +9,7 @@ public interface GuestService {
 	
 	public void insertGuest(GuestDto dto, String uploadPath) throws Exception;
 	
-	public void updatePassword(GuestDto dto) throws Exception;
-	public void updateMember(GuestDto dto, String uploadPath) throws Exception;
+	public void updateGuest(GuestDto dto, String uploadPath) throws Exception;
 	
 	public GuestDto findById(Long member_id);
 	public GuestDto findById(String login_id);//
@@ -22,6 +21,8 @@ public interface GuestService {
 	public int checkFailureCount(String login_id);
 	public void updateFailureCountReset(String login_id) throws Exception;
 	public void updateFailureCount(String login_id) throws Exception;
+	
+	public void deleteProfilePhoto(Map<String, Object> map, String uploadPath) throws Exception;
 	
 	public void sendGuestId(GuestDto dto) throws Exception;//
 	public void sendGuestPwd(GuestDto dto) throws Exception;//

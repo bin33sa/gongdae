@@ -34,7 +34,7 @@
 	                        	                    
 							<div class="col-12">
 								<input type="text" name="login_id" class="form-control form-control-lg" placeholder="아이디"
-									value=""  readonly>
+									value="<sec:authentication property='principal.username'/>"  readonly>
 
 							</div>
 							<div class="col-12">
@@ -70,7 +70,7 @@ function sendOk() {
 		return;
 	}
 
-	f.action = '${pageContext.request.contextPath}/';
+	f.action = '${pageContext.request.contextPath}/guest/pwd';
 	f.submit();
 }
 </script>

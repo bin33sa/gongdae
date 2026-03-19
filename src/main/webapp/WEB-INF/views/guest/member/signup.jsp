@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Spring</title>
+<title>공대생 - 공간 대여 생각날 때</title>
 <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
 </head>
 <body>
@@ -125,13 +125,13 @@
 								<label for="tel" class="form-label font-roboto">성별</label>
 								
 								<div class="btn-group w-100" role="group">
-								    <input type="radio" class="btn-check" name="gender" id="male" value="M" autocomplete="off">
+								    <input type="radio" class="btn-check" name="gender" id="male" value="M" autocomplete="off" ${mode=="update" ? (dto.gender == "M" ? 'disabled checked' : 'disabled') :''}>
 								    <label class="btn btn-outline-primary" for="male">남성</label>
 								
-								    <input type="radio" class="btn-check" name="gender" id="female" value="F" autocomplete="off">
+								    <input type="radio" class="btn-check" name="gender" id="female" value="F" autocomplete="off" ${mode=="update" ? (dto.gender == "F" ? 'disabled checked' : 'disabled') :''}>
 								    <label class="btn btn-outline-primary" for="female">여성</label>
 
-								    <input type="radio" class="btn-check" name="gender" id="none" value="X" autocomplete="off" checked>
+								    <input type="radio" class="btn-check" name="gender" id="none" value="X" autocomplete="off" ${mode=="update" ? (dto.gender == "X" ? 'disabled checked' : 'disabled') :'checked'}>
 								    <label class="btn btn-outline-primary" for="none">미선택</label>
 								</div>
 							</div>
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', ev => {
 			avatar = '${pageContext.request.contextPath}/uploads/member/' + img;
 			
 			// 등록 이미지 삭제
-			const url = '${pageContext.request.contextPath}/member/deleteProfile';
+			const url = '${pageContext.request.contextPath}/guest/deleteProfile';
 			const headers = {'Content-Type': 'application/x-www-form-urlencoded', 'AJAX': true};
 			const params = 'profile_photo=' + img;
 			
@@ -345,7 +345,7 @@ function memberOk() {
         return;
     }
 
-    f.action = '${pageContext.request.contextPath}/guest/signup';
+    f.action = '${pageContext.request.contextPath}/guest/${mode}';
     f.submit();
 }
 

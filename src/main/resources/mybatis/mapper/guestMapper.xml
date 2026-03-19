@@ -17,61 +17,72 @@
 		SELECT * FROM dual
 	</update>
 
-	<update id="updateMemberPassword" parameterType="com.gongdae.app.domain.dto.GuestDto">
-		UPDATE member1 SET password = #{password}, update_at = SYSDATE
+	<update id="updateGuestPassword" parameterType="com.gongdae.app.domain.dto.GuestDto">
+		UPDATE member SET password = #{password}, update_at = SYSDATE
 		WHERE login_id = #{login_id}
+    </update>
+    
+    <update id="updateGuestDetail" parameterType="com.gongdae.app.domain.dto.GuestDto">
+		UPDATE guest_detail SET 
+			email = #{email}, 
+			receive_email = #{receive_email},
+			phone = #{tel, jdbcType=VARCHAR}, 
+			profile_image_url = #{profile_photo, jdbcType=VARCHAR}
+		WHERE member_id = #{member_id}
+    </update>
+    
+    <update id="deleteProfilePhoto" parameterType="map">
+		UPDATE guest_detail SET profile_photo = ''
+		WHERE member_id = #{member_id}
     </update>
 
 	<select id="findById" parameterType="Long" resultType="com.gongdae.app.domain.dto.GuestDto">
 	    SELECT 
-	        m1.member_id, 
+	        m1.member_id,
 	        m1.login_id, 
-	        m1.password, 
-	        m1.enabled, 
+	        m1.password,
+	        m1.enabled,
 	        m1.created_at, 
 	        m1.update_at, 
-	        m1.last_login,
 	        m3.authority,
-	        COALESCE(g.name, h.name, a.name) as name,
-	        COALESCE(g.email, h.email) as email,
-	        COALESCE(g.phone, h.phone) as tel,
-	        NULL as sns_provider,
-	        NULL as sns_id,
-	        NULL as birth,
-	        NULL as profile_photo,
-	        NULL as zip,
-	        NULL as addr1,
-	        NULL as addr2,
-	        NULL as receive_email
+	        g.name,
+	        g.nickname,
+	        To_CHAR(g.birth, 'YYYY-MM-DD') as birth,
+	        g.email,
+	        g.receive_email,
+	        g.phone as tel,
+	        g.gender,
+	        g.point,
+	        g.grade,
+	        g.profile_image_url as profile_photo
 	    FROM member m1
 	    LEFT OUTER JOIN memberAuthority m3 ON m1.login_id = m3.login_id
 	    LEFT OUTER JOIN guest_detail g ON m1.member_id = g.member_id
-	    LEFT OUTER JOIN host_detail h ON m1.member_id = h.member_id
-	    LEFT OUTER JOIN admin_detail a ON m1.member_id = a.member_id
 	    WHERE m1.member_id = #{member_id}
 	</select>
 
 	<select id="findByLoginId" parameterType="String" resultType="com.gongdae.app.domain.dto.GuestDto">
 	    SELECT 
-	        m1.member_id, 
+	        m1.member_id,
 	        m1.login_id, 
-	        m1.password, 
-	        m1.enabled, 
+	        m1.password,
+	        m1.enabled,
 	        m1.created_at, 
 	        m1.update_at, 
-	        m1.last_login,
 	        m3.authority,
-	        COALESCE(g.name, h.name, a.name) as name,
-	        COALESCE(g.email, h.email) as email,
-	        COALESCE(g.phone, h.phone) as tel,
-	        NULL as sns_provider,
-	        NULL as sns_id,
-	        NULL as profile_photo
+	        g.name,
+	        g.nickname,
+	        To_CHAR(g.birth, 'YYYY-MM-DD') as birth,
+	        g.email,
+	        g.receive_email,
+	        g.phone as tel,
+	        g.gender,
+	        g.point,
+	        g.grade,
+	        g.profile_image_url as profile_photo
 	    FROM member m1
 	    LEFT OUTER JOIN memberAuthority m3 ON m1.login_id = m3.login_id
 	    LEFT OUTER JOIN guest_detail g ON m1.member_id = g.member_id
-	    LEFT OUTER JOIN host_detail h ON m1.member_id = h.member_id
-	    LEFT OUTER JOIN admin_detail a ON m1.member_id = a.member_id
 	    WHERE m1.login_id = #{login_id}
 	</select>
 	
@@ -79,15 +90,20 @@
 	    SELECT 
 	        m1.member_id,
 	        m1.login_id, 
-	        m1.password, 
-	        m1.enabled, 
+	        m1.password,
+	        m1.enabled,
 	        m1.created_at, 
 	        m1.update_at, 
-	        m1.last_login,
 	        g.name,
+	        g.nickname,
+	        To_CHAR(g.birth, 'YYYY-MM-DD') as birth,
 	        g.email,
+	        g.receive_email,
 	        g.phone as tel,
-	        NULL as profile_photo
+	        g.gender,
+	        g.point,
+	        g.grade,
+	        g.profile_image_url as profile_photo
 	    FROM member m1
 	    LEFT OUTER JOIN guest_detail g ON m1.member_id = g.member_id
 	    WHERE g.nickname = #{nickname}
@@ -97,6 +113,7 @@
 	    SELECT 
 	        m1.member_id,
 	        m1.login_id, 
+	        m1.password,
 	        m1.enabled,
 	        m1.created_at, 
 	        m1.update_at, 
@@ -121,6 +138,7 @@
 	    SELECT 
 	        m1.member_id,
 	        m1.login_id, 
+	        m1.password,
 	        m1.enabled,
 	        m1.created_at, 
 	        m1.update_at, 

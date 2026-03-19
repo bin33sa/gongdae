@@ -1,13 +1,17 @@
 package com.gongdae.app.guest.controller;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,8 +56,8 @@ public class GuestController {
 			sb.append("메인화면으로 이동하여 로그인 하시기 바랍니다.<br>");
 
 			// 리다이렉트된 페이지에 값 넘기기
-			rAttr.addFlashAttribute("message", sb.toString());
 			rAttr.addFlashAttribute("title", "회원 가입");
+			rAttr.addFlashAttribute("message", sb.toString());
 
 			return "redirect:/complete";
 			
@@ -71,6 +75,35 @@ public class GuestController {
 		}
 
 		return "guest/member/signup";
+	}
+	
+	@PostMapping("update")
+	public String updateSubmit(GuestDto dto,
+			final RedirectAttributes rAttr,
+			Model model) {
+		
+		StringBuilder sb = new StringBuilder();
+		try {
+			SessionInfo info = LoginMemberUtil.getSessionInfo();
+			dto.setMember_id(info.getMember_id());
+			
+			service.updateGuest(dto, uploadPath);
+			
+			// 세션의 profile_photo 변경
+			info.setAvatar(dto.getProfile_photo());
+			
+			sb.append(dto.getName() + "님의 회원정보가 정상적으로 변경되었습니다.<br>");
+			sb.append("메인화면으로 이동 하시기 바랍니다.<br>");
+				
+		} catch (Exception e) {
+			sb.append(dto.getName() + "님의 회원정보 변경이 실패했습니다.<br>");
+			sb.append("잠시후 다시 변경 하시기 바랍니다.<br>");
+		}
+		
+		// 리다이렉트된 페이지에 값 넘기기
+		rAttr.addFlashAttribute("title", "회원 정보 수정");
+		rAttr.addFlashAttribute("message", sb.toString());
+		return "redirect:/complete";
 	}
 
 	@PostMapping("nicknameCheck")
@@ -158,8 +191,6 @@ public class GuestController {
 			RedirectAttributes reAttr,
 			Model model) throws Exception {
 		
-		
-		
 		try {
 			GuestDto dto = service.findGuestByIdAndNameAndEmail(login_id, name, email);
 			
@@ -190,21 +221,100 @@ public class GuestController {
 		
 		return "guest/member/findPwd";
 	}
-	
-	
 
-	@GetMapping("edit")
-	public String editForm() throws Exception {
-		return "guest/member/edit";
-	}
+	@GetMapping("pwd")
+	public String pwdForm(@RequestParam(name = "dropout", required = false) String dropout, 
+			Model model) {
 
-	@PostMapping("edit")
-	public String editSubmit() throws Exception {
-		return "guest/member/complete";
+		if (dropout == null) {
+			model.addAttribute("mode", "update");
+		} else {
+			model.addAttribute("mode", "dropout");
+		}
+
+		return "guest/member/pwd";
 	}
 	
 	
+	@PostMapping("pwd")
+	public String pwdSubmit(@RequestParam(name = "password") String password,
+			@RequestParam(name = "mode") String mode, 
+			final RedirectAttributes reAttr,
+			Model model) {
+
+		try {
+			SessionInfo info = LoginMemberUtil.getSessionInfo();
+			GuestDto dto = Objects.requireNonNull(service.findById(info.getMember_id()));
+
+			boolean bPwd = service.isPasswordCheck(info.getLogin_id(), password);
+			
+			if (! bPwd) {
+				model.addAttribute("mode", mode);
+				model.addAttribute("message", "패스워드가 일치하지 않습니다.");
+				
+				return "guest/member/pwd";
+			}
+
+			if (mode.equals("dropout")) {
+				// 게시판 테이블등 자료 삭제
+
+				// 회원탈퇴 처리
+				/*
+				  Map<String, Object> map = new HashMap<>();
+				  map.put("member_id", info.getMember_id());
+				  map.put("filename", info.getAvatar());
+				 */
+
+				// 로그아웃
+				LoginMemberUtil.logout();
+				
+				StringBuilder sb = new StringBuilder();
+				sb.append(dto.getName() + "님의 회원 탈퇴 처리가 정상적으로 처리되었습니다.<br>");
+				sb.append("메인화면으로 이동 하시기 바랍니다.<br>");
+
+				reAttr.addFlashAttribute("title", "회원 탈퇴");
+				reAttr.addFlashAttribute("message", sb.toString());
+
+				return "redirect:/member/complete";
+			}
+
+			model.addAttribute("dto", dto);
+			model.addAttribute("mode", "update");
+			
+			// 회원정보수정폼
+			return "guest/member/signup";
+			
+		} catch (NullPointerException e) {
+			LoginMemberUtil.logout();
+		} catch (Exception e) {
+		}
+		
+		return "redirect:/";
+	}
 	
+	
+	@DeleteMapping("deleteProfile")
+	public ResponseEntity<?> deleteProfilePhoto(@RequestParam(name = "profile_photo") String profile_photo) throws Exception {
+		// 프로파일 포토 삭제
+		SessionInfo info = LoginMemberUtil.getSessionInfo();
+		
+		try {
+			if(! profile_photo.isBlank()) {
+				Map<String, Object> map = new HashMap<>();
+				map.put("member_id", info.getMember_id());
+				map.put("filename", info.getAvatar());
+				// map.put("filename", profile_photo);
+				
+				service.deleteProfilePhoto(map, uploadPath);
+				
+				info.setAvatar(null);
+			}
+			
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
+	}
 
 
 	//////////////////////////////////////////////////////////////////////////////////////// 
