@@ -5,12 +5,57 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>예약 내역 - 공대생 호스트 센터</title>
-
+    <title>공간 등록 관리 - 공대생 호스트</title>
+    
     <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
-
-    <!-- 예약 CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/host/menu/space.css">
+    
+    <style>
+        :root {
+            --host-primary: #E53935;
+            --host-bg: #f4f6f9;
+        }
+        body { 
+            background-color: var(--host-bg);
+            font-family: 'Pretendard', sans-serif; 
+        }
+        .host-flat-box {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-top: 4px solid var(--host-primary);
+            border-radius: 6px;
+            padding: 30px;
+            height: 100%;
+        }
+        .form-control, .form-select {
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            padding: 10px 15px;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--host-primary);
+            box-shadow: none;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #444;
+            font-size: 0.95rem;
+        }
+        .btn-host-submit {
+            background-color: var(--host-primary);
+            color: white;
+            font-weight: bold;
+            padding: 12px 30px;
+            border-radius: 4px;
+            border: none;
+            transition: background-color 0.2s;
+        }
+        .btn-host-submit:hover {
+            background-color: #c62828;
+            color: white;
+        }
+        /* 요일 테이블 스타일 */
+        .time-table td { padding: 4px; vertical-align: middle; }
+    </style>
 </head>
 <body>
 
@@ -20,28 +65,28 @@
 
 <main class="container mt-5 mb-5">
     
-
-    <div class="row g-4">
-        <div class="col-lg-8">
     <div class="mb-4">
         <h3 class="fw-bold" style="color: #333;">공간 등록 및 관리</h3>
         <p class="text-muted">새로운 공간을 등록하고, 검수 진행 상황을 확인할 수 있습니다.</p>
     </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
             <form action="<c:url value='/host/space/write'/>" method="post" enctype="multipart/form-data">
-                
+           
                 <div class="host-flat-box mb-4">
                     <h5 class="fw-bold mb-4 border-bottom pb-2" style="color: var(--host-primary);">1. 공간 기본 정보 및 정산</h5>
                     
                     <div class="row mb-3 g-3">
                         <div class="col-md-4">
-    <label class="form-label">카테고리 <span class="text-danger">*</span></label>
-    <select name="categoryNo" class="form-select" required>
-        <option value="" selected disabled>선택</option>
-        <c:forEach var="cat" items="${categoryList}">
-            <option value="${cat.categoryNo}">${cat.name}</option>
-        </c:forEach>
-    </select>
-</div>
+                            <label class="form-label">카테고리 <span class="text-danger">*</span></label>
+                            <select name="categoryNo" class="form-select" required>
+                                <option value="" selected disabled>선택</option>
+                                <c:forEach var="cat" items="${categoryList}">
+                                    <option value="${cat.CATEGORY_NO}">${cat.NAME}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
                         <div class="col-md-8">
                             <label class="form-label">공간명 <span class="text-danger">*</span></label>
                             <input type="text" name="spaceName" class="form-control" placeholder="예) 하루클래스 강남점" required>
@@ -62,7 +107,7 @@
                     <div class="mb-4">
                         <label class="form-label">주소 <span class="text-danger">*</span></label>
                         <div class="d-flex gap-2 mb-2">
-                            <input type="text" name="address" class="form-control" placeholder="도로명/지번 주소" required >
+                            <input type="text" name="address" id="address" class="form-control" placeholder="도로명/지번 주소" >
                             <button type="button" class="btn btn-outline-secondary" style="white-space: nowrap;">주소 검색</button>
                         </div>
                         <input type="text" name="detailAddr" class="form-control" placeholder="상세 주소 (예: 2층 201호)">
@@ -90,7 +135,7 @@
                 <div class="host-flat-box mb-4">
                     <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
                         <h5 class="fw-bold m-0" style="color: var(--host-primary);">2. 세부 룸(Room) 정보</h5>
-                        <button type="button" class="btn btn-sm btn-outline-host" onclick="addUnit()">
+                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="addUnit()">
                             <i class="bi bi-plus-circle me-1"></i> 룸 추가하기
                         </button>
                     </div>
@@ -112,6 +157,23 @@
                                     <label class="form-label small">최대 인원 <span class="text-danger">*</span></label>
                                     <input type="number" name="maxCapacities" class="form-control" required>
                                 </div>
+                            </div>
+
+                            <div class="mb-4 p-3 border rounded bg-white">
+                                <label class="form-label small text-primary fw-bold mb-2"><i class="bi bi-calendar-week me-1"></i>요일별 운영 시간 <span class="text-danger">*</span></label>
+                                <table class="table table-borderless table-sm time-table mb-0 text-center">
+                                    <tbody>
+                                        <c:set var="daysStr" value="월,화,수,목,금,토,일"/>
+                                        <c:forEach var="d" items="${daysStr.split(',')}">
+                                            <tr>
+                                                <td style="width: 15%;"><span class="badge bg-light text-dark border w-100 py-2">${d}</span></td>
+                                                <td style="width: 40%;"><input type="time" name="openTimes" class="form-control form-control-sm" value="10:00" step="3600" required></td>
+                                                <td style="width: 5%;">~</td>
+                                                <td style="width: 40%;"><input type="time" name="closeTimes" class="form-control form-control-sm" value="23:00" step="3600" required></td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
                             </div>
 
                             <div class="row g-3 mb-3">
@@ -154,28 +216,18 @@
                     <div>
                         <label class="form-label d-block mb-3">제공되는 편의시설 (다중 선택)</label>
                         <div class="d-flex flex-wrap gap-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="optionNos" value="1" id="opt1">
-                                <label class="form-check-label" for="opt1"><i class="bi bi-wifi me-1"></i> WiFi</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="optionNos" value="2" id="opt2">
-                                <label class="form-check-label" for="opt2"><i class="bi bi-projector me-1"></i> 프로젝터</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="optionNos" value="3" id="opt3">
-                                <label class="form-check-label" for="opt3"><i class="bi bi-easel me-1"></i> 화이트보드</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="optionNos" value="4" id="opt4">
-                                <label class="form-check-label" for="opt4"><i class="bi bi-p-circle me-1"></i> 주차가능</label>
-                            </div>
+                            <c:forEach var="opt" items="${optionList}">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="optionNos" value="${opt.OPTION_NO}" id="opt${opt.OPTION_NO}">
+                                    <label class="form-check-label" for="opt${opt.OPTION_NO}">
+                                        ${opt.NAME}
+                                    </label>
+                                </div>
+                            </c:forEach>
                         </div>
                     </div>
                 </div>
 
-                <sec:csrfInput/>
-                
                 <div class="text-end">
                     <button type="submit" class="btn btn-lg btn-host-submit w-100 fs-5 py-3 shadow-sm">
                         <i class="bi bi-check-circle me-2"></i> 공간 등록 신청 완료
@@ -184,27 +236,40 @@
 
             </form>
         </div>
-</div>
-
+    </div>
 </main>
 
 <footer>
     <jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
 </footer>
-
 <jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
 
 <script>
     let unitCount = 1;
-
+    
+    // JS에서 반복 생성할 요일 배열
+    const daysArr = ['월', '화', '수', '목', '금', '토', '일'];
+    
     function addUnit() {
         unitCount++;
         const container = document.getElementById('unitContainer');
         
-       
+        let timeRowsHtml = '';
+        daysArr.forEach(day => {
+            timeRowsHtml += `
+                <tr>
+                    <td style="width: 15%;"><span class="badge bg-light text-dark border w-100 py-2">\${day}</span></td>
+                    <td style="width: 40%;"><input type="time" name="openTimes" class="form-control form-control-sm" value="10:00" step="3600" required></td>
+                    <td style="width: 5%;">~</td>
+                    <td style="width: 40%;"><input type="time" name="closeTimes" class="form-control form-control-sm" value="23:00" step="3600" required></td>
+                </tr>
+            `;
+        });
+
         const html = `
             <div class="unit-box border rounded p-4 mb-3 position-relative mt-3" style="background-color: #fcfcfc;">
-                <button type="button" class="btn btn-sm btn-outline-danger position-absolute" style="top: 15px; right: 15px;" onclick="this.parentElement.remove()">
+                <button type="button" class="btn btn-sm btn-outline-danger position-absolute" style="top: 15px; right: 15px;"
+                        onclick="this.parentElement.remove()">
                     <i class="bi bi-trash"></i> 삭제
                 </button>
                 
@@ -223,6 +288,15 @@
                         <label class="form-label small">최대 인원 <span class="text-danger">*</span></label>
                         <input type="number" name="maxCapacities" class="form-control" required>
                     </div>
+                </div>
+
+                <div class="mb-4 p-3 border rounded bg-white">
+                    <label class="form-label small text-primary fw-bold mb-2"><i class="bi bi-calendar-week me-1"></i>요일별 운영 시간 <span class="text-danger">*</span></label>
+                    <table class="table table-borderless table-sm time-table mb-0 text-center">
+                        <tbody>
+                            \${timeRowsHtml}
+                        </tbody>
+                    </table>
                 </div>
 
                 <div class="row g-3 mb-3">
@@ -251,11 +325,9 @@
                 </div>
             </div>
         `;
-        
         container.insertAdjacentHTML('beforeend', html);
     }
 </script>
-
 
 </body>
 </html>

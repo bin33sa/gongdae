@@ -1,5 +1,8 @@
 package com.gongdae.app.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,52 +25,41 @@ import lombok.extern.slf4j.Slf4j;
 public class spaceMangeController {
 	private final SpaceManageService service;
 
-    // application.properties (또는 yml)에 설정된 파일 업로드 기본 경로를 가져옵니다.
-    @Value("${file.upload-root}/space") 
+	@Value("${file.upload-root}/space")
     private String uploadPath;
 
     @GetMapping("write")
-    public String writeForm(Model model) {
-        try {
-            // TODO: 공간 카테고리 리스트나 호스트 정보를 DB에서 불러와서 Model에 담아 JSP로 넘겨줍니다.
-            // List<SpaceCategory> listCategory = service.listCategory();
-            // model.addAttribute("listCategory", listCategory);
-
-            model.addAttribute("mode", "write");
-        } catch (Exception e) {
-            log.info("writeForm : ", e);
-        }
-
-        // 변경된 JSP 경로 반영 (View Resolver가 앞뒤로 /WEB-INF/views/ 와 .jsp를 붙여줍니다)
-        //return "host/space/spaceForm"; 
-        return "host/space/spaceForm"; 
+    public String writeForm(Model model) throws Exception {
+        // DB에서 카테고리와 옵션 태그 목록을 불러와 JSP로 전달
+        List<Map<String, Object>> categoryList = service.listCategory();
+        List<Map<String, Object>> optionList = service.listOption();
+        
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("optionList", optionList);
+        model.addAttribute("mode", "write");
+        
+        return "host/menu/space";
     }
 
     @PostMapping("write")
-    public String writeSubmit(SpaceManageDTO dto, Model model) {
-    	try {
-           
-            SessionInfo info = LoginMemberUtil.getSessionInfo();
-            
-            
+    public String writeSubmit(SpaceManageDTO dto, Model model) throws Exception{
+        try {
+        	SessionInfo info = LoginMemberUtil.getSessionInfo();
             dto.setHostId(info.getMember_id()); 
             
-            
-           
-
-           
             service.insertSpace(dto, uploadPath);
-
+            
         } catch (Exception e) {
-            log.info("writeSubmit : ", e);
-            return "host/space/spaceForm"; 
+            log.info("공간 등록 실패 : ", e);
+            model.addAttribute("message", "공간 등록 중 오류가 발생했습니다.");
+            
+            // 등록 실패 시에도 카테고리/옵션을 다시 불러와야 폼이 깨지지 않음
+            model.addAttribute("categoryList", service.listCategory());
+            model.addAttribute("optionList", service.listOption());
+            
+            return "host/menu/space"; 
         }
-
-        return "redirect:/space/manage/main"; 
-    }
-    @GetMapping("qna")
-    public String qnaForm(Model model) {
-    	
-    	return "host/qna/qna"; 
+        
+        return "redirect:/host/main/home"; 
     }
 }
