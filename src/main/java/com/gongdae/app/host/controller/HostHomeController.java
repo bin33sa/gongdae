@@ -1,6 +1,7 @@
 package com.gongdae.app.host.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,34 +19,40 @@ public class HostHomeController {
 		return "host/main/prelogin";
 	}
 
-	@GetMapping("main/home")
-	public String home() {
-		return "host/main/home";
-	}
-	
-	
-	
-	@GetMapping("menu/qna")
-	public String qna() {
-		return "host/menu/qna";
-	}
-	@GetMapping("menu/space")
-	public String space() {
-		return "host/menu/space";
-	}
-	
-	@GetMapping("menu/sales")
-	public String sales() {
-		return "host/menu/sales";
-	}
-	@GetMapping("menu/reservation")
-	public String reservation() {
-		return "host/menu/reservation";
-	}
-	
 	@GetMapping("menu/store")
-	public String store() {
-		return "host/menu/store";
+	public String store(Model model) {
+	    model.addAttribute("active", "store");
+	    return "host/menu/store";
+	}
+
+	@GetMapping("menu/space")
+	public String space(Model model) {
+	    model.addAttribute("active", "space");
+	    return "host/menu/space";
+	}
+
+	@GetMapping("menu/qna")
+	public String qna(Model model) {
+	    model.addAttribute("active", "qna");
+	    return "host/menu/qna";
+	}
+
+	@GetMapping("menu/reservation")
+	public String reservation(Model model) {
+	    model.addAttribute("active", "reservation");
+	    return "host/menu/reservation";
+	}
+
+	@GetMapping("menu/sales")
+	public String sales(Model model) {
+	    model.addAttribute("active", "sales");
+	    return "host/menu/sales";
+	}
+
+	@GetMapping("main/home")
+	public String home(Model model) {
+	    model.addAttribute("active", "home");
+	    return "host/main/home";
 	}
 	
 }

@@ -9,53 +9,8 @@
     
     <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
     
-    <style>
-        :root {
-            --host-primary: #E53935;
-            --host-bg: #f4f6f9;
-        }
-        body { 
-            background-color: var(--host-bg);
-            font-family: 'Pretendard', sans-serif; 
-        }
-        .host-flat-box {
-            background-color: #ffffff;
-            border: 1px solid #dee2e6;
-            border-top: 4px solid var(--host-primary);
-            border-radius: 6px;
-            padding: 30px;
-            height: 100%;
-        }
-        .form-control, .form-select {
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            padding: 10px 15px;
-        }
-        .form-control:focus, .form-select:focus {
-            border-color: var(--host-primary);
-            box-shadow: none;
-        }
-        .form-label {
-            font-weight: 600;
-            color: #444;
-            font-size: 0.95rem;
-        }
-        .btn-host-submit {
-            background-color: var(--host-primary);
-            color: white;
-            font-weight: bold;
-            padding: 12px 30px;
-            border-radius: 4px;
-            border: none;
-            transition: background-color 0.2s;
-        }
-        .btn-host-submit:hover {
-            background-color: #c62828;
-            color: white;
-        }
-        /* 요일 테이블 스타일 */
-        .time-table td { padding: 4px; vertical-align: middle; }
-    </style>
+   <!-- 예약 CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/host/menu/space.css">
 </head>
 <body>
 
@@ -71,7 +26,7 @@
     </div>
 
     <div class="row g-4">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <form action="<c:url value='/host/space/write'/>" method="post" enctype="multipart/form-data">
            
                 <div class="host-flat-box mb-4">

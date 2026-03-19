@@ -9,163 +9,9 @@
     <title>문의 답변 - 공대생 호스트 센터</title>
     
     <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
-    
-    <style>
-        :root {
-            --host-primary: #E53935;
-            --host-bg: #f4f6f9;
-        }
-        
-        body { 
-            background-color: var(--host-bg); 
-            font-family: 'Pretendard', sans-serif; 
-        }
 
-        /* 메인 컨테이너 (플랫 엣지 박스) */
-        .qna-container {
-            background-color: #ffffff;
-            border: 1px solid #dee2e6;
-            border-top: 4px solid var(--host-primary);
-            border-radius: 6px;
-            height: 75vh; /* 화면 높이에 맞춤 */
-            min-height: 600px;
-            display: flex;
-            overflow: hidden;
-        }
-
-        /* ========================================== */
-        /* 좌측: 문의 리스트 영역 */
-        /* ========================================== */
-        .qna-sidebar {
-            width: 35%;
-            border-right: 1px solid #eee;
-            display: flex;
-            flex-direction: column;
-            background-color: #fff;
-        }
-        .qna-sidebar-header {
-            padding: 20px;
-            border-bottom: 1px solid #eee;
-            background-color: #fafafa;
-        }
-        .qna-list {
-            flex-grow: 1;
-            overflow-y: auto;
-        }
-        .qna-item {
-            padding: 16px 20px;
-            border-bottom: 1px solid #f0f0f0;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .qna-item:hover { background-color: #f9f9f9; }
-        .qna-item.active {
-            background-color: #fffafa;
-            border-left: 4px solid var(--host-primary);
-        }
-        
-        /* 뱃지 커스텀 */
-        .badge-wait { background-color: #ffebee; color: #d32f2f; border: 1px solid #ffcdd2; font-weight: normal;}
-        .badge-done { background-color: #e8f5e9; color: #388e3c; border: 1px solid #c8e6c9; font-weight: normal;}
-
-        /* ========================================== */
-        /* 우측: 채팅(상세) 영역 */
-        /* ========================================== */
-        .qna-chat-area {
-            width: 65%;
-            display: flex;
-            flex-direction: column;
-            background-color: #fff;
-        }
-        .chat-header {
-            padding: 20px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .chat-body {
-            flex-grow: 1;
-            padding: 30px;
-            overflow-y: auto;
-            background-color: #fcfcfc; /* 살짝 어두운 배경으로 말풍선 돋보이게 */
-        }
-
-        /* 말풍선 공통 스타일 */
-        .bubble-wrapper {
-            margin-bottom: 25px;
-            clear: both;
-            display: flex;
-            flex-direction: column;
-        }
-        .bubble {
-            max-width: 70%;
-            padding: 12px 18px;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        }
-        .bubble-time {
-            font-size: 0.75rem;
-            color: #999;
-            margin-top: 6px;
-        }
-
-        /* 게스트(질문자) 말풍선 - 왼쪽 회색 */
-        .guest-wrapper { align-items: flex-start; }
-        .bubble-guest {
-            background-color: #ffffff;
-            border: 1px solid #e0e0e0;
-            border-top-left-radius: 2px;
-            color: #333;
-        }
-        
-        /* 호스트(답변자) 말풍선 - 오른쪽 적색 */
-        .host-wrapper { align-items: flex-end; }
-        .bubble-host {
-            background-color: var(--host-primary);
-            color: #ffffff;
-            border-top-right-radius: 2px;
-        }
-
-        /* 입력창 영역 */
-        .chat-input-wrapper {
-            padding: 20px;
-            background-color: #ffffff;
-            border-top: 1px solid #eee;
-        }
-        .chat-textarea {
-            resize: none;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            padding: 12px;
-            font-size: 0.95rem;
-            height: 100px;
-        }
-        .chat-textarea:focus {
-            outline: none;
-            border-color: var(--host-primary);
-        }
-        .btn-send {
-            background-color: var(--host-primary);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
-            height: 100px;
-            width: 100%;
-            transition: background-color 0.2s;
-        }
-        .btn-send:hover { background-color: #c62828; color: white; }
-
-        /* 스크롤바 디자인 */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #bbb; }
-    </style>
+    <!-- qna CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/host/menu/qna.css">    
 </head>
 <body>
 
@@ -186,15 +32,19 @@
             <div class="qna-sidebar-header">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="fw-bold m-0">문의 내역</h5>
-                    <select class="form-select form-select-sm w-auto">
+                    <select class="form-select form-select-sm qna-filter">
                         <option value="all">전체 보기</option>
                         <option value="wait" selected>답변 대기만</option>
                     </select>
                 </div>
                 <div class="input-group input-group-sm">
-                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-                    <input type="text" class="form-control border-start-0 ps-0" placeholder="게스트명 또는 공간명 검색">
-                </div>
+    <span class="input-group-text bg-white border-end-0">
+        <i class="bi bi-search"></i>
+    </span>
+    <input type="text"
+           class="form-control border-start-0"
+           placeholder="게스트명 또는 공간명 검색"/>
+</div>
             </div>
 
             <div class="qna-list">
@@ -256,17 +106,18 @@
             <form action="<c:url value='/space/inquiry/reply'/>" method="post" class="chat-input-wrapper m-0">
                 <input type="hidden" name="inquiryNo" value="1">
                 
-                <div class="row g-2">
-                    <div class="col-10">
-                        <textarea name="answer" class="form-control chat-textarea" placeholder="게스트에게 친절하게 답변을 남겨주세요." required></textarea>
-                    </div>
-                    <div class="col-2">
-                        <button type="submit" class="btn-send">
-                            <i class="bi bi-send-fill fs-4 d-block mb-1"></i>
-                            답변 전송
-                        </button>
-                    </div>
-                </div>
+              <div class="d-flex gap-2">
+    			<textarea name="answer"
+              	class="form-control chat-textarea"
+              	placeholder="게스트에게 친절하게 답변을 남겨주세요."
+              		required></textarea>
+
+				    <button type="submit" class="btn-send">
+				        <i class="bi bi-send-fill"></i>
+				    </button>
+				</div>
+              
+              
                 <sec:csrfInput/>
             </form>
 

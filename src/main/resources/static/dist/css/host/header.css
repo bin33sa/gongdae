@@ -1,0 +1,111 @@
+/* =========================
+   HOST HEADER
+========================= */
+
+:root {
+    --host-primary: #E53935;
+}
+
+/* 폰트 고정 (충돌 방지 핵심) */
+.host-header,
+.host-header * {
+    font-family: 'Pretendard', sans-serif !important;
+}
+
+/* 헤더 구조 */
+.host-header {
+    background: #fff;
+    border-bottom: 2px solid var(--host-primary);
+}
+
+/* 내부 정렬 */
+.host-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+}
+
+/* 로고 */
+.host-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.host-logo img {
+    height: 40px;
+}
+
+.host-logo-text {
+    color: var(--host-primary);
+    font-weight: 700;
+}
+
+/* 메뉴 */
+.host-nav {
+    display: flex;
+    gap: 20px;
+}
+
+.host-nav-link {
+    color: #555;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 10px;
+    white-space: nowrap;
+    transition: 0.2s;
+}
+
+.host-nav-link:hover {
+    color: var(--host-primary);
+}
+
+.host-nav-link.active {
+    color: var(--host-primary);
+    border-bottom: 2px solid var(--host-primary);
+}
+
+/* 우측 메뉴 */
+.host-user-menu {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    white-space: nowrap;
+}
+
+.host-user-menu a {
+    text-decoration: none;
+    color: #333;
+}
+
+.host-user-menu a:hover {
+    color: var(--host-primary);
+}
+
+/* 로그아웃 버튼 */
+.logout-btn {
+    background: none;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    color: #333;
+}
+
+.logout-btn:hover {
+    color: var(--host-primary);
+}
+
+/* 반응형 최소 방어 */
+@media (max-width: 768px) {
+    .host-header-inner {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 10px 0;
+    }
+
+    .host-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}

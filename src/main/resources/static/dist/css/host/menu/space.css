@@ -1,26 +1,22 @@
 @charset "UTF-8";
 
-/* ===== 기본 ===== */
 :root {
     --host-primary: #E53935;
     --host-bg: #f4f6f9;
 }
 
+/* 전체 배경 */
 body {
     background-color: var(--host-bg);
-    font-family: 'Pretendard', sans-serif;
 }
 
-/* ===== 가운데 정렬 핵심 ===== */
-.container {
-    max-width: 1100px;
+/* 상단 타이틀 영역 */
+.space-header {
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-.row {
-    justify-content: center;
-}
-
-/* ===== 박스 ===== */
+/* 카드 박스 */
 .host-flat-box {
     background: #fff;
     border: 1px solid #dee2e6;
@@ -29,18 +25,12 @@ body {
     padding: 30px;
 }
 
-/* ===== 제목 ===== */
-h5 {
-    letter-spacing: -0.3px;
-}
-
-/* ===== input ===== */
+/* 폼 */
 .form-control,
 .form-select {
     border-radius: 4px;
     border: 1px solid #ccc;
-    padding: 10px 14px;
-    transition: all 0.2s;
+    padding: 10px 15px;
 }
 
 .form-control:focus,
@@ -49,38 +39,19 @@ h5 {
     box-shadow: none;
 }
 
-/* ===== 라벨 ===== */
+/* 라벨 */
 .form-label {
     font-weight: 600;
     color: #444;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
 }
 
-/* ===== 정산 박스 ===== */
-.bg-light {
-    background-color: #fafafa !important;
-    border: 1px solid #eee !important;
-}
-
-/* ===== 룸 박스 ===== */
-.unit-box {
-    background-color: #fcfcfc;
-    border: 1px solid #eee;
-    border-radius: 6px;
-    transition: all 0.2s;
-}
-
-.unit-box:hover {
-    border-color: #ddd;
-}
-
-/* ===== 버튼 ===== */
-
-/* 메인 버튼 */
+/* 버튼 */
 .btn-host-submit {
     background-color: var(--host-primary);
     color: #fff;
     font-weight: bold;
+    padding: 14px;
     border-radius: 4px;
     border: none;
     transition: 0.2s;
@@ -90,39 +61,18 @@ h5 {
     background-color: #c62828;
 }
 
-/* 룸 추가 버튼 */
-.btn-outline-host {
-    border: 1px solid var(--host-primary);
-    color: var(--host-primary);
-    background: transparent;
+/* 룸 박스 */
+.unit-box {
+    background-color: #fcfcfc;
 }
 
-.btn-outline-host:hover {
-    background-color: #fff2f2;
+/* 요일 테이블 */
+.time-table td {
+    padding: 4px;
+    vertical-align: middle;
 }
 
-/* 삭제 버튼 */
-.btn-outline-danger {
-    font-size: 12px;
-}
-
-/* ===== 체크박스 ===== */
-.form-check-input:checked {
-    background-color: var(--host-primary);
-    border-color: var(--host-primary);
-}
-
-/* ===== 파일 input ===== */
-input[type="file"] {
-    padding: 6px;
-}
-
-/* ===== 텍스트 ===== */
-.text-muted {
-    font-size: 0.9rem;
-}
-
-/* ===== 반응형 ===== */
+/* 반응형 */
 @media (max-width: 768px) {
     .host-flat-box {
         padding: 20px;
