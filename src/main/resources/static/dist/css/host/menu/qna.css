@@ -14,25 +14,61 @@ body {
    전체 컨테이너
 ========================= */
 
-.input-group {
+/* 검색 전체 박스 */
+.qna-search-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fff;
     transition: 0.2s;
 }
 
-/* hover 전체 효과 */
-.input-group:hover {
-    box-shadow: 0 0 0 1px var(--host-primary);
+/* hover + focus 통합 */
+.qna-search-box:hover,
+.qna-search-box:focus-within {
+    border-color: var(--host-primary);
+    box-shadow: 0 0 0 1px var(--host-primary); /* 🔥 고급 느낌 */
 }
 
-/* focus 전체 효과 */
-.input-group:focus-within {
-    box-shadow: 0 0 0 1px var(--host-primary);
+/* input */
+.qna-search-input {
+    flex: 1;
+    border: none;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    outline: none;
 }
 
-/* 기본 input 스타일 정리 */
-.input-group .form-control:focus {
-    box-shadow: none;
+/* 버튼 */
+.qna-search-btn {
+    width: 42px;          /* 🔥 textarea 버튼이랑 통일 */
+    height: 42px;
+    border: none;
+    background: #fff;
+    border-left: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
+/* 버튼 hover */
+.qna-search-btn:hover {
+    background: #f5f5f5;
+}
+
+/* 아이콘 */
+.qna-search-btn i {
+    font-size: 14px;
+    color: #666;
+}
+
+/* =========================
+   컨테이너
+========================= */
 .qna-container {
     background: #fff;
     border: 1px solid #dee2e6;
