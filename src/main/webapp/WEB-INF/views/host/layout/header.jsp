@@ -19,7 +19,7 @@
         </div>
 
         <!-- 메뉴 -->
-        <sec:authorize access="isAuthenticated()">
+        <sec:authorize access="hasRole('HOST')">
             <nav class="host-nav">
 
                 <a href="<c:url value='/host/main/home'/>"
@@ -55,14 +55,16 @@
             </nav>
         </sec:authorize>
 
+
+
         <!-- 우측 -->
         <div class="host-user-menu">
 
-            <sec:authorize access="isAnonymous()">
+            <sec:authorize access="!hasRole('HOST')">
                 <a href="/host/member/login">로그인</a>
             </sec:authorize>
 
-            <sec:authorize access="isAuthenticated()">
+            <sec:authorize access="hasRole('HOST')">
                 <a href="#">호스트 정보수정</a>
 
                 <form action="/member/logout" method="post" class="m-0">
