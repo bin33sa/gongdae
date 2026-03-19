@@ -27,7 +27,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 		System.out.println(uri);
 		
 		if(uri.startsWith("/admin")) {
-			if(auth != null) new SecurityContextLogoutHandler().logout(request, response, auth);
 			redirectPath = "/noAuthorized";
 		} else if (uri.startsWith("/host")) {
 			if(auth != null) new SecurityContextLogoutHandler().logout(request, response, auth);

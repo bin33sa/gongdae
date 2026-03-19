@@ -15,7 +15,7 @@
             <div class="d-flex align-items-center">
 
                 <!-- 비로그인 -->
-                <sec:authorize access="isAnonymous()">
+                <sec:authorize access="!hasRole('GUEST')">
                     <div class="profile-img me-3">
                         <img src="${pageContext.request.contextPath}/dist/images/avatar.png">
                     </div>
@@ -30,7 +30,7 @@
 
 
                 <!-- 로그인 -->
-                <sec:authorize access="isAuthenticated()">
+                <sec:authorize access="hasRole('GUEST')">
                     <sec:authentication property="principal.member" var="member"/>
 
                     <div class="profile-img me-3">
