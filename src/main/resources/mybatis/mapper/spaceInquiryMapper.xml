@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gongdae.app.mapper.SpaceInquiryMapper">
+
+    <insert id="insertInquiry" parameterType="com.gongdae.app.domain.dto.SpaceInquiryDTO">
+        INSERT INTO INQUIRY_SPACE (
+            inquiry_no, member_id, space_no, title, content, created_at, is_answered
+        ) VALUES (
+            SEQ_INQUIRY_SPACE.NEXTVAL, #{memberId}, #{spaceNo}, #{title}, #{content}, SYSDATE, 'N'
+        )
+    </insert>
+
+    <select id="listInquiryBySpace" resultType="com.gongdae.app.domain.dto.SpaceInquiryDTO" parameterType="Long">
+        SELECT i.inquiry_no AS inquiryNo, i.member_id AS memberId, m.user_name AS guestName,
+               i.title, i.content, i.answer, i.is_answered AS isAnswered,
+               TO_CHAR(i.created_at, 'YYYY.MM.DD') AS createdAt,
+               TO_CHAR(i.answered_at, 'YYYY.MM.DD') AS answeredAt
+        FROM INQUIRY_SPACE i
+        JOIN MEMBER m ON i.member_id = m.member_id
+        WHERE i.space_no = #{spaceNo}
+        ORDER BY i.inquiry_no DESC
+    </select>
+
+    <select id="listInquiryByHost" resultType="com.gongdae.app.domain.dto.SpaceInquiryDTO" parameterType="Long">
+        SELECT i.inquiry_no AS inquiryNo, 
+               i.space_no AS spaceNo, 
+               i.title,
+               i.content, 
+               i.is_answered AS isAnswered, 
+               TO_CHAR(i.created_at, 'YYYY-MM-DD HH24:MI') AS createdAt,
+               s.space_name AS spaceName,
+               gd.NICKNAME AS guestName FROM INQUIRY_SPACE i
+        JOIN SPACE s ON i.space_no = s.space_no
+        JOIN GUEST_DETAIL gd ON i.member_id = gd.member_id 
+        WHERE s.host_id = #{hostId}
+        ORDER BY i.inquiry_no DESC
+    </select>
+
+   <select id="findInquiryById" resultType="com.gongdae.app.domain.dto.SpaceInquiryDTO" parameterType="Long">
+        SELECT i.inquiry_no AS inquiryNo, 
+               i.space_no AS spaceNo, 
+               i.member_id AS memberId,
+               i.title,
+               i.content, 
+               i.answer,
+               i.is_answered AS isAnswered, 
+               TO_CHAR(i.created_at, 'YYYY.MM.DD HH24:MI') AS createdAt,
+               TO_CHAR(i.answered_at, 'YYYY.MM.DD HH24:MI') AS answeredAt,
+               s.space_name AS spaceName,
+               s.host_id AS hostId,
+               gd.NICKNAME AS guestName FROM INQUIRY_SPACE i
+        JOIN SPACE s ON i.space_no = s.space_no
+        JOIN GUEST_DETAIL gd ON i.member_id = gd.member_id 
+        WHERE i.inquiry_no = #{inquiryNo}
+    </select>
+
+    <update id="updateInquiryReply" parameterType="com.gongdae.app.domain.dto.SpaceInquiryDTO">
+        UPDATE INQUIRY_SPACE
+        SET answer = #{answer}, is_answered = 'Y', answered_at = SYSDATE, host_id = #{hostId}
+        WHERE inquiry_no = #{inquiryNo}
+    </update>
+
+</mapper>
