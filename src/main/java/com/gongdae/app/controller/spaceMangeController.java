@@ -1,14 +1,12 @@
 package com.gongdae.app.controller;
 
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gongdae.app.domain.dto.SessionInfo;
 import com.gongdae.app.domain.dto.SpaceManageDTO;
@@ -30,14 +28,9 @@ public class spaceMangeController {
 
     @GetMapping("write")
     public String writeForm(Model model) throws Exception {
-        // DB에서 카테고리와 옵션 태그 목록을 불러와 JSP로 전달
-        List<Map<String, Object>> categoryList = service.listCategory();
-        List<Map<String, Object>> optionList = service.listOption();
-        
-        model.addAttribute("categoryList", categoryList);
-        model.addAttribute("optionList", optionList);
+        model.addAttribute("categoryList", service.listCategory());
+        model.addAttribute("optionList", service.listOption());
         model.addAttribute("mode", "write");
-        
         return "host/menu/space";
     }
 
@@ -46,20 +39,57 @@ public class spaceMangeController {
         try {
         	SessionInfo info = LoginMemberUtil.getSessionInfo();
             dto.setHostId(info.getMember_id()); 
-            
             service.insertSpace(dto, uploadPath);
-            
         } catch (Exception e) {
             log.info("공간 등록 실패 : ", e);
             model.addAttribute("message", "공간 등록 중 오류가 발생했습니다.");
-            
-            // 등록 실패 시에도 카테고리/옵션을 다시 불러와야 폼이 깨지지 않음
             model.addAttribute("categoryList", service.listCategory());
             model.addAttribute("optionList", service.listOption());
-            
             return "host/menu/space"; 
         }
-        
         return "redirect:/host/main/home"; 
+    }
+    
+    @GetMapping("update")
+    public String updateForm(@RequestParam(name = "spaceNo") long spaceNo, Model model) throws Exception {
+        SpaceManageDTO dto = service.findById(spaceNo);
+        if(dto == null) return "redirect:/host/dashboard"; 
+
+        model.addAttribute("dto", dto);
+        model.addAttribute("listFile", service.listSpaceImage(spaceNo));
+        model.addAttribute("selectedOptions", service.listSpaceOption(spaceNo));
+        model.addAttribute("listUnit", service.listSpaceUnit(spaceNo));
+        
+        model.addAttribute("categoryList", service.listCategory());
+        model.addAttribute("optionList", service.listOption());
+        model.addAttribute("mode", "update");
+
+        return "host/menu/space";
+    }
+
+    @PostMapping("update")
+    public String updateSubmit(SpaceManageDTO dto) throws Exception {
+        try {
+            SessionInfo info = LoginMemberUtil.getSessionInfo();
+            dto.setHostId(info.getMember_id()); 
+            service.updateSpace(dto, uploadPath);
+        } catch (Exception e) {
+            log.info("공간 수정 실패 : ", e);
+            return "redirect:/host/space/update?spaceNo=" + dto.getSpaceNo(); 
+        }
+        return "redirect:/host/main/home"; 
+    }
+
+    // 💡 논리적 삭제
+    @PostMapping("delete")
+    public String deleteSpace(@RequestParam(name = "spaceNo") long spaceNo) {
+        try {
+            SessionInfo info = LoginMemberUtil.getSessionInfo();
+            service.deleteSpace(spaceNo, info.getMember_id());
+        } catch (Exception e) {
+            log.error("공간 삭제 실패", e);
+            return "redirect:/host/space/update?spaceNo=" + spaceNo;
+        }
+        return "redirect:/host/main/home";
     }
 }

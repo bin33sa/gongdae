@@ -1,80 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gongdae.app.mapper.SpaceManageMapper">
 
-    <select id="spaceSeq" resultType="Long">
-        SELECT SEQ_SPACE.NEXTVAL FROM DUAL
+	<select id="spaceSeq" resultType="Long">
+		SELECT SEQ_SPACE.NEXTVAL FROM DUAL
+	</select>
+	<select id="unitSeq" resultType="Long">
+		SELECT SEQ_SPACE_UNIT.NEXTVAL FROM DUAL
+	</select>
+
+	<select id="listCategory" resultType="map">
+		SELECT category_no AS "categoryNo", name AS "name" FROM CATEGORY_SPACE ORDER BY category_no ASC
+	</select>
+	<select id="listOption" resultType="map">
+		SELECT option_no AS "optionNo", type AS "type", name AS "name", icon_url AS "iconUrl" FROM SPACE_OPTION ORDER BY option_no ASC
+	</select>
+
+	<insert id="insertSpace" parameterType="com.gongdae.app.domain.dto.SpaceManageDTO">
+		INSERT INTO SPACE (
+		    space_no, host_id, category_no, space_name, biz_reg_num, address, detail_addr, region,
+		    bank_name, account_no, account_holder, space_intro, space_guide
+		) VALUES (
+		    #{spaceNo}, #{hostId}, #{categoryNo}, #{spaceName}, #{bizRegNum}, #{address}, #{detailAddr}, #{region},
+		    #{bankName}, #{accountNo}, #{accountHolder}, #{spaceIntro}, #{spaceGuide}
+		)
+	</insert>
+
+	<insert id="insertSpaceImage" parameterType="com.gongdae.app.domain.dto.SpaceManageDTO">
+		INSERT INTO SPACE_IMAGE (image_no, space_no, file_url) VALUES (SEQ_SPACE_IMAGE.NEXTVAL, #{spaceNo}, #{fileUrl})
+	</insert>
+
+	<insert id="insertSpaceOption" parameterType="com.gongdae.app.domain.dto.SpaceManageDTO">
+		INSERT INTO SELECTED_SPACE_OPTION (sso_no, option_no, unit_no) VALUES (SEQ_SELECTED_SPACE_OPTION.NEXTVAL, #{optionNo}, #{unitNo})
+	</insert>
+
+	<insert id="insertSpaceUnit" parameterType="com.gongdae.app.domain.dto.SpaceManageDTO">
+		INSERT INTO SPACE_UNIT (unit_no, space_no, title, price_per_hour, max_capacity, description, thumbnail_url) 
+		VALUES (#{unitNo}, #{spaceNo}, #{title}, #{pricePerHour}, #{maxCapacity}, #{description}, #{thumbnailUrl})
+	</insert>
+
+	<insert id="insertSpacePolicy" parameterType="com.gongdae.app.domain.dto.SpaceManageDTO">
+		INSERT INTO SPACE_POLICY (policy_no, unit_no, min_hours, cancel_limit_hr, cleaning_fee) 
+		VALUES (SEQ_SPACE_POLICY.NEXTVAL, #{unitNo}, #{minHour}, #{cancelLimitHr}, #{cleaningFee})
+	</insert>
+
+	<insert id="insertSpaceUnitTime" parameterType="com.gongdae.app.domain.dto.SpaceManageDTO">
+		INSERT INTO SPACE_UNIT_TIME (unit_time_no, unit_no, day_of_week, open_time, close_time) 
+		VALUES (SEQ_SPACE_UNIT_TIME.NEXTVAL, #{unitNo}, #{dayOfWeek}, #{openTime}, #{closeTime})
+	</insert>
+
+	<insert id="insertSpaceApproval" parameterType="Long">
+		INSERT INTO SPACE_APPROVAL (approval_no, space_no, status) VALUES (SEQ_SPACE_APPROVAL.NEXTVAL, #{spaceNo}, 'PENDING')
+	</insert>
+	
+	<update id="updateSpace" parameterType="com.gongdae.app.domain.dto.SpaceManageDTO">
+	    UPDATE SPACE SET
+	        category_no = #{categoryNo}, space_name = #{spaceName}, biz_reg_num = #{bizRegNum}, 
+	        address = #{address}, detail_addr = #{detailAddr}, region = #{region},
+	        bank_name = #{bankName}, account_no = #{accountNo}, account_holder = #{accountHolder},
+	        space_intro = #{spaceIntro}, space_guide = #{spaceGuide}
+	    WHERE space_no = #{spaceNo}
+	</update>
+	
+	<delete id="deleteSpaceOptions" parameterType="Long">
+	    DELETE FROM SELECTED_SPACE_OPTION WHERE unit_no IN (SELECT unit_no FROM SPACE_UNIT WHERE space_no = #{spaceNo})
+	</delete>
+	<delete id="deleteSpaceUnitTimes" parameterType="Long">
+	    DELETE FROM SPACE_UNIT_TIME WHERE unit_no IN (SELECT unit_no FROM SPACE_UNIT WHERE space_no = #{spaceNo})
+	</delete>
+	<delete id="deleteSpacePolicies" parameterType="Long">
+	    DELETE FROM SPACE_POLICY WHERE unit_no IN (SELECT unit_no FROM SPACE_UNIT WHERE space_no = #{spaceNo})
+	</delete>
+	<delete id="deleteSpaceUnits" parameterType="Long">
+	    DELETE FROM SPACE_UNIT WHERE space_no = #{spaceNo}
+	</delete>
+	
+	<delete id="deleteSpaceImage" parameterType="Long">
+        DELETE FROM SPACE_IMAGE WHERE image_no = #{imageNo}
+    </delete>
+    
+    <update id="deleteSpace" parameterType="Long">
+	    UPDATE SPACE SET status = 'DELETED' WHERE space_no = #{spaceNo}
+	</update>
+
+    <select id="findById" resultType="com.gongdae.app.domain.dto.SpaceManageDTO" parameterType="Long">
+        SELECT space_no AS spaceNo, host_id AS hostId, category_no AS categoryNo, space_name AS spaceName, 
+               biz_reg_num AS bizRegNum, address, detail_addr AS detailAddr, region, 
+               bank_name AS bankName, account_no AS accountNo, account_holder AS accountHolder,
+               space_intro AS spaceIntro, space_guide AS spaceGuide, status
+        FROM SPACE 
+        WHERE space_no = #{spaceNo} AND status = 'ACTIVE'
     </select>
 
-    <select id="unitSeq" resultType="Long">
-        SELECT SEQ_SPACE_UNIT.NEXTVAL FROM DUAL
+    <select id="listSpaceImage" resultType="com.gongdae.app.domain.dto.SpaceManageDTO" parameterType="Long">
+        SELECT image_no AS imageNo, space_no AS spaceNo, file_url AS fileUrl 
+        FROM SPACE_IMAGE WHERE space_no = #{spaceNo}
+    </select>
+    
+    <select id="findImageById" resultType="com.gongdae.app.domain.dto.SpaceManageDTO" parameterType="Long">
+	    SELECT image_no AS imageNo, space_no AS spaceNo, file_url AS fileUrl 
+	    FROM SPACE_IMAGE WHERE image_no = #{imageNo}
+	</select>
+
+    <select id="listSpaceOption" resultType="Long" parameterType="Long">
+        SELECT DISTINCT option_no FROM SELECTED_SPACE_OPTION
+        WHERE unit_no IN (SELECT unit_no FROM SPACE_UNIT WHERE space_no = #{spaceNo})
     </select>
 
-    <select id="listCategory" resultType="map">
-        SELECT category_no, name 
-        FROM CATEGORY_SPACE 
-        ORDER BY category_no ASC
+    <select id="listSpaceUnit" resultType="com.gongdae.app.domain.dto.SpaceManageDTO" parameterType="Long">
+        SELECT u.unit_no AS unitNo, u.title, u.price_per_hour AS pricePerHour, 
+               u.max_capacity AS maxCapacity, u.description, u.thumbnail_url AS thumbnailUrl,
+               p.min_hours AS minHour, p.cancel_limit_hr AS cancelLimitHr, p.cleaning_fee AS cleaningFee
+        FROM SPACE_UNIT u
+        LEFT JOIN SPACE_POLICY p ON u.unit_no = p.unit_no
+        WHERE u.space_no = #{spaceNo} ORDER BY u.unit_no ASC
     </select>
-
-    <select id="listOption" resultType="map">
-        SELECT option_no, type, name, icon_url 
-        FROM SPACE_OPTION 
-        ORDER BY option_no ASC
-    </select>
-
-    <insert id="insertSpace" parameterType="com.gongdae.app.domain.dto.SpaceManageDTO">
-        INSERT INTO SPACE (
-            space_no, host_id, category_no, space_name, 
-            biz_reg_num, address, detail_addr, region, 
-            bank_name, account_no, account_holder
-        ) VALUES (
-            #{spaceNo}, #{hostId}, #{categoryNo}, #{spaceName}, 
-            #{bizRegNum}, #{address}, #{detailAddr}, #{region}, 
-            #{bankName}, #{accountNo}, #{accountHolder}
-        )
-    </insert>
-
-    <insert id="insertSpaceImage" parameterType="com.gongdae.app.domain.dto.SpaceManageDTO">
-        INSERT INTO SPACE_IMAGE (
-            image_no, space_no, file_url
-        ) VALUES (
-            SEQ_SPACE_IMAGE.NEXTVAL, #{spaceNo}, #{fileUrl}
-        )
-    </insert>
-
-    <insert id="insertSpaceOption" parameterType="com.gongdae.app.domain.dto.SpaceManageDTO">
-        INSERT INTO SELECTED_SPACE_OPTION (
-            sso_no, option_no, unit_no
-        ) VALUES (
-            SEQ_SELECTED_SPACE_OPTION.NEXTVAL, #{optionNo}, #{unitNo}
-        )
-    </insert>
-
-    <insert id="insertSpaceUnit" parameterType="com.gongdae.app.domain.dto.SpaceManageDTO">
-        INSERT INTO SPACE_UNIT (
-            unit_no, space_no, title, price_per_hour, 
-            max_capacity, description, thumbnail_url
-        ) VALUES (
-            #{unitNo}, #{spaceNo}, #{title}, #{pricePerHour}, 
-            #{maxCapacity}, #{description}, #{thumbnailUrl}
-        )
-    </insert>
-
-    <insert id="insertSpacePolicy" parameterType="com.gongdae.app.domain.dto.SpaceManageDTO">
-        INSERT INTO SPACE_POLICY (
-            policy_no, unit_no, min_hours, cancel_limit_hr, cleaning_fee
-        ) VALUES (
-            SEQ_SPACE_POLICY.NEXTVAL, #{unitNo}, #{minHour}, #{cancelLimitHr}, #{cleaningFee}
-        )
-    </insert>
-
-    <insert id="insertSpaceUnitTime" parameterType="com.gongdae.app.domain.dto.SpaceManageDTO">
-        INSERT INTO SPACE_UNIT_TIME (
-            unit_time_no, unit_no, day_of_week, open_time, close_time
-        ) VALUES (
-            SEQ_SPACE_UNIT_TIME.NEXTVAL, #{unitNo}, #{dayOfWeek}, #{openTime}, #{closeTime}
-        )
-    </insert>
-
 </mapper>

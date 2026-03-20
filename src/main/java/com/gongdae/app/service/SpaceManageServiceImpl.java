@@ -26,12 +26,10 @@ public class SpaceManageServiceImpl implements SpaceManageService {
 	@Override
 	public void insertSpace(SpaceManageDTO dto, String uploadPath) throws Exception {
 		try {
-			// 1. 공간 정보 저장 (admin_id 없이 인서트)
 			long spaceNo = mapper.spaceSeq();
 			dto.setSpaceNo(spaceNo);
 			mapper.insertSpace(dto);
 
-			// 2. 공간 전체 다중 이미지 저장
 			if (dto.getAddFiles() != null) {
 				for (MultipartFile mf : dto.getAddFiles()) {
 					if (!mf.isEmpty()) {
@@ -42,7 +40,6 @@ public class SpaceManageServiceImpl implements SpaceManageService {
 				}
 			}
 
-			// 3. 유닛(룸) 배열 데이터 저장
 			if (dto.getUnitTitles() != null) {
 				long firstUnitNo = -1;
 
@@ -57,34 +54,118 @@ public class SpaceManageServiceImpl implements SpaceManageService {
 					dto.setMaxCapacity(dto.getMaxCapacities().get(i));
 					dto.setDescription(dto.getDescriptions() != null ? dto.getDescriptions().get(i) : "");
 
-					// 유닛 썸네일 업로드
 					String unitThumb = "";
 					if (dto.getUnitThumbnailFiles() != null && dto.getUnitThumbnailFiles().size() > i) {
 						MultipartFile mf = dto.getUnitThumbnailFiles().get(i);
-						if (!mf.isEmpty()) {
+						if (!mf.isEmpty())
 							unitThumb = storageService.uploadFileToServer(mf, uploadPath);
-						}
 					}
 					dto.setThumbnailUrl(unitThumb);
 
-					// 유닛 관련 데이터 일괄 Insert
 					mapper.insertSpaceUnit(dto);
-
 					dto.setMinHour(dto.getMinHours().get(i));
 					dto.setCancelLimitHr(dto.getCancelLimitHrs().get(i));
 					dto.setCleaningFee(dto.getCleaningFees().get(i));
 					mapper.insertSpacePolicy(dto);
 
-					String[] days = {"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
-                    int timeOffset = i * 7; // 유닛(룸) 1개당 7개의 데이터가 배열에 쌓이므로 오프셋 계산
-                    
-                    for(int j = 0; j < 7; j++) {
-                        dto.setDayOfWeek(days[j]);
-                        dto.setOpenTime(dto.getOpenTimes().get(timeOffset + j));
-                        dto.setCloseTime(dto.getCloseTimes().get(timeOffset + j));
-                        mapper.insertSpaceUnitTime(dto); 
-                    }
-                
+					String[] days = { "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN" };
+					int timeOffset = i * 7;
+					for (int j = 0; j < 7; j++) {
+						dto.setDayOfWeek(days[j]);
+						dto.setOpenTime(dto.getOpenTimes().get(timeOffset + j));
+						dto.setCloseTime(dto.getCloseTimes().get(timeOffset + j));
+						mapper.insertSpaceUnitTime(dto);
+					}
+				}
+
+				if (dto.getOptionNos() != null && firstUnitNo != -1) {
+					dto.setUnitNo(firstUnitNo);
+					for (Long optNo : dto.getOptionNos()) {
+						dto.setOptionNo(optNo);
+						mapper.insertSpaceOption(dto);
+					}
+				}
+				mapper.insertSpaceApproval(spaceNo);
+			}
+		} catch (Exception e) {
+			log.error("insertSpace 에러 : ", e);
+			throw e;
+		}
+	}
+
+	@Transactional(rollbackFor = { Exception.class })
+	@Override
+	public void updateSpace(SpaceManageDTO dto, String uploadPath) throws Exception {
+		try {
+			mapper.updateSpace(dto);
+
+			if (dto.getDeleteImageNos() != null) {
+				for (Long imgNo : dto.getDeleteImageNos()) {
+					SpaceManageDTO imgDto = mapper.findImageById(imgNo);
+					if (imgDto != null) {
+						storageService.deleteFile(uploadPath, imgDto.getFileUrl());
+						mapper.deleteSpaceImage(imgNo);
+					}
+				}
+			}
+
+			if (dto.getAddFiles() != null) {
+				for (MultipartFile mf : dto.getAddFiles()) {
+					if (!mf.isEmpty()) {
+						String saveFilename = storageService.uploadFileToServer(mf, uploadPath);
+						dto.setFileUrl(saveFilename);
+						mapper.insertSpaceImage(dto);
+					}
+				}
+			}
+
+			mapper.deleteSpaceOptions(dto.getSpaceNo());
+			mapper.deleteSpaceUnitTimes(dto.getSpaceNo());
+			mapper.deleteSpacePolicies(dto.getSpaceNo());
+			mapper.deleteSpaceUnits(dto.getSpaceNo());
+
+			if (dto.getUnitTitles() != null) {
+				long firstUnitNo = -1;
+
+				for (int i = 0; i < dto.getUnitTitles().size(); i++) {
+					long unitNo = mapper.unitSeq();
+					if (i == 0)
+						firstUnitNo = unitNo;
+
+					dto.setUnitNo(unitNo);
+					dto.setTitle(dto.getUnitTitles().get(i));
+					dto.setPricePerHour(dto.getPricePerHours().get(i));
+					dto.setMaxCapacity(dto.getMaxCapacities().get(i));
+					dto.setDescription(dto.getDescriptions() != null ? dto.getDescriptions().get(i) : "");
+
+					String unitThumb = "";
+					boolean hasNewFile = false;
+					if (dto.getUnitThumbnailFiles() != null && dto.getUnitThumbnailFiles().size() > i) {
+						MultipartFile mf = dto.getUnitThumbnailFiles().get(i);
+						if (!mf.isEmpty()) {
+							unitThumb = storageService.uploadFileToServer(mf, uploadPath);
+							hasNewFile = true;
+						}
+					}
+					if (!hasNewFile && dto.getExistThumbnailUrls() != null && dto.getExistThumbnailUrls().size() > i) {
+						unitThumb = dto.getExistThumbnailUrls().get(i);
+					}
+					dto.setThumbnailUrl(unitThumb);
+
+					mapper.insertSpaceUnit(dto);
+					dto.setMinHour(dto.getMinHours().get(i));
+					dto.setCancelLimitHr(dto.getCancelLimitHrs().get(i));
+					dto.setCleaningFee(dto.getCleaningFees().get(i));
+					mapper.insertSpacePolicy(dto);
+
+					String[] days = { "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN" };
+					int timeOffset = i * 7;
+					for (int j = 0; j < 7; j++) {
+						dto.setDayOfWeek(days[j]);
+						dto.setOpenTime(dto.getOpenTimes().get(timeOffset + j));
+						dto.setCloseTime(dto.getCloseTimes().get(timeOffset + j));
+						mapper.insertSpaceUnitTime(dto);
+					}
 				}
 
 				if (dto.getOptionNos() != null && firstUnitNo != -1) {
@@ -96,7 +177,23 @@ public class SpaceManageServiceImpl implements SpaceManageService {
 				}
 			}
 		} catch (Exception e) {
-			log.error("insertSpace 에러 : ", e);
+			log.error("updateSpace 에러 : ", e);
+			throw e;
+		}
+	}
+
+	// 💡 논리적 삭제
+	@Transactional(rollbackFor = { Exception.class })
+	@Override
+	public void deleteSpace(long spaceNo, long hostId) throws Exception {
+		try {
+			SpaceManageDTO dto = mapper.findById(spaceNo);
+			if (dto == null || dto.getHostId() != hostId) {
+				throw new Exception("삭제 권한이 없거나 이미 삭제 처리된 공간입니다.");
+			}
+			mapper.deleteSpace(spaceNo);
+		} catch (Exception e) {
+			log.error("deleteSpace 에러 : ", e);
 			throw e;
 		}
 	}
@@ -109,5 +206,25 @@ public class SpaceManageServiceImpl implements SpaceManageService {
 	@Override
 	public List<Map<String, Object>> listOption() {
 		return mapper.listOption();
+	}
+
+	@Override
+	public SpaceManageDTO findById(long spaceNo) throws Exception {
+		return mapper.findById(spaceNo);
+	}
+
+	@Override
+	public List<SpaceManageDTO> listSpaceImage(long spaceNo) throws Exception {
+		return mapper.listSpaceImage(spaceNo);
+	}
+
+	@Override
+	public List<Long> listSpaceOption(long spaceNo) throws Exception {
+		return mapper.listSpaceOption(spaceNo);
+	}
+
+	@Override
+	public List<SpaceManageDTO> listSpaceUnit(long spaceNo) throws Exception {
+		return mapper.listSpaceUnit(spaceNo);
 	}
 }
