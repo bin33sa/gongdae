@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gongdae.app.admin.mapper.BoardManageMapper">
+
+    <sql id="where-list">
+        <choose>
+            <when test="schType == 'all'">
+                (INSTR(b.title, #{kwd}) &gt; 0 OR DBMS_LOB.INSTR(b.content, #{kwd}) &gt; 0)
+            </when>
+            <when test="schType == 'title'">
+                INSTR(b.title, #{kwd}) &gt; 0
+            </when>
+            <when test="schType == 'content'">
+                DBMS_LOB.INSTR(b.content, #{kwd}) &gt; 0
+            </when>
+            <when test="schType == 'admin_id'">
+                INSTR(m.login_id, #{kwd}) &gt; 0
+            </when>
+            <otherwise>
+                INSTR(${schType}, #{kwd}) &gt; 0
+            </otherwise>
+        </choose>
+    </sql>
+
+    <select id="dataCount" parameterType="map" resultType="Integer">
+        SELECT NVL(COUNT(*), 0)
+        FROM board b
+        LEFT JOIN member m ON b.member_id = m.member_id
+        <where>
+            <if test="type != null and type != ''">
+                AND b.type = #{type}
+            </if>
+            <if test="kwd != null and kwd != ''">
+                AND <include refid="where-list"/>
+            </if>
+            <if test="block != null">
+                AND b.block = #{block}
+            </if>
+        </where>
+    </select>
+
+    <select id="listBoard" parameterType="map" resultType="com.gongdae.app.admin.domain.entity.Board">
+        SELECT b.board_no AS boardNo,
+               b.member_id AS memberId,
+               a.name AS adminName,
+               m.login_id AS adminLoginId,
+               b.type,
+               b.title,
+               b.view_count AS viewCount,
+               b.block,
+               b.savefilename AS saveFilename,
+               b.start_date AS startDate,
+               b.end_date AS endDate,
+               b.created_at AS createdAt
+        FROM board b
+        LEFT JOIN member m ON b.member_id = m.member_id
+        LEFT JOIN admin_detail a ON m.member_id = a.member_id
+        <where>
+            <if test="type != null and type != ''">
+                AND b.type = #{type}
+            </if>
+            <if test="kwd != null and kwd != ''">
+                AND <include refid="where-list"/>
+            </if>
+            <if test="block != null">
+                AND b.block = #{block}
+            </if>
+        </where>
+        ORDER BY b.board_no DESC
+        OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+    </select>
+
+    <select id="findById" parameterType="Long" resultType="com.gongdae.app.admin.domain.entity.Board">
+        SELECT b.board_no AS boardNo,
+               b.member_id AS memberId,
+               a.name AS adminName,
+               m.login_id AS adminLoginId,
+               b.type,
+               b.title,
+               b.content,
+               b.view_count AS viewCount,
+               b.block,
+               b.savefilename AS saveFilename,
+               b.originalfilename AS originalFilename,
+               b.start_date AS startDate,
+               b.end_date AS endDate,
+               b.created_at AS createdAt,
+               b.updated_at AS updatedAt
+        FROM board b
+        LEFT JOIN member m ON b.member_id = m.member_id
+        LEFT JOIN admin_detail a ON m.member_id = a.member_id
+        WHERE b.board_no = #{boardNo}
+    </select>
+    
+    <select id="findByPrev" parameterType="map" resultType="com.gongdae.app.admin.domain.entity.Board">
+        SELECT b.board_no AS boardNo, 
+               b.title
+        FROM board b
+        LEFT JOIN member m ON b.member_id = m.member_id
+        <where>
+            <if test="type != null and type != ''">
+                AND b.type = #{type}
+            </if>
+            <if test="kwd != null and kwd != ''">
+                AND <include refid="where-list"/>
+            </if>
+            AND b.board_no &gt; #{boardNo}
+            AND b.block = 0
+        </where>
+        ORDER BY b.board_no ASC
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+
+    <select id="findByNext" parameterType="map" resultType="com.gongdae.app.admin.domain.entity.Board">
+        SELECT b.board_no AS boardNo, 
+               b.title
+        FROM board b
+        LEFT JOIN member m ON b.member_id = m.member_id
+        <where>
+            <if test="type != null and type != ''">
+                AND b.type = #{type}
+            </if>
+            <if test="kwd != null and kwd != ''">
+                AND <include refid="where-list"/>
+            </if>
+            AND b.board_no &lt; #{boardNo}
+            AND b.block = 0
+        </where>
+        ORDER BY b.board_no DESC
+        FETCH FIRST 1 ROWS ONLY
+    </select>
+
+</mapper>

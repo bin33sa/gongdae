@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -10,127 +11,157 @@
 <body class="admin-page">
 
 <div class="admin-layout">
-    <header class="admin-header">
-        <div class="admin-logo">공대생</div>
-        <div class="admin-user-area">
-            <span><strong><sec:authentication property="principal.member.name"/></strong> 관리자님</span>
-            <a href="${pageContext.request.contextPath}/member/logout" class="admin-logout">
-                <i class="bi bi-box-arrow-right"></i> 로그아웃
-            </a>
-        </div>
-    </header>
+
+    <jsp:include page="/WEB-INF/views/admin/layout/header.jsp"/>
 
     <div class="admin-body">
-        
         <jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
 
         <main class="admin-content">
-            <div class="d-flex justify-content-between align-items-center mb-5">
+            <div class="page-title-wrap">
                 <div>
-                    <h3 class="fw-bold mb-2">전체 게시글 관리</h3>
-                    <p class="mb-0 text-muted">사용자들이 작성한 커뮤니티 및 후기 게시글을 관리합니다.</p>
+                    <h3 class="fw-bold mb-2">
+                        <c:choose>
+                            <c:when test="${type == 'NOTICE'}">공지사항 관리</c:when>
+                            <c:when test="${type == 'EVENT'}">이벤트 관리</c:when>
+                            <c:when test="${type == 'FAQ'}">FAQ 관리</c:when>
+                            <c:otherwise>게시글 관리</c:otherwise>
+                        </c:choose>
+                    </h3>
+                    <p class="mb-0 txt-muted">등록된 게시글을 조회하고 관리합니다.</p>
                 </div>
-                <button class="btn btn-purple">전체 게시글 다운로드</button>
+                <button class="btn btn-purple btn-rounded px-4 py-2" onclick="location.href='${pageContext.request.contextPath}/admin/bbs/${pathType}/write';">
+                    <i class="bi bi-pencil-square me-2"></i>글쓰기
+                </button>
             </div>
 
-            <div class="row g-4 mb-4">
-                <div class="col-md-3">
-                    <div class="dashboard-box">
-                        <div class="stat-label">오늘 등록된 글</div>
-                        <div class="stat-value">42개 <span class="trend-badge">12.4% ↑</span></div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="dashboard-box">
-                        <div class="stat-label">이번 주 누적</div>
-                        <div class="stat-value">285개 <span class="trend-badge">3.1% ↑</span></div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="dashboard-box">
-                        <div class="stat-label">신고된 게시글</div>
-                        <div class="stat-value text-danger">5개 <span class="trend-badge" style="color:#F87171; background:rgba(239,68,68,0.1);">위험</span></div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="dashboard-box">
-                        <div class="stat-label">전체 게시글 수</div>
-                        <div class="stat-value">12,402개 <span class="trend-badge">0.8% ↑</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dashboard-box">
+            <div class="content-box">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h5 class="fw-bold text-main m-0">게시글 상세 목록</h5>
                     <div class="d-flex gap-2">
-                        <select class="form-select form-select-sm bg-dark text-white border-secondary" style="width: 120px;">
-                            <option>전체보기</option>
-                            <option>파티룸후기</option>
-                            <option>자유게시판</option>
-                        </select>
+                        <form name="searchForm" class="d-flex gap-2 form-search">
+                            
+                            <select name="schType" class="form-select admin-input" style="width: 130px;">
+                                <option value="all" ${schType == 'all' ? 'selected' : ''}>제목+내용</option>
+                                <option value="title" ${schType == 'title' ? 'selected' : ''}>제목</option>
+                                <option value="content" ${schType == 'content' ? 'selected' : ''}>내용</option>
+                                <option value="admin_id" ${schType == 'admin_id' ? 'selected' : ''}>작성자ID</option>
+                            </select>
+
+                            <div class="input-group" style="width: 250px;">
+                                <input type="text" name="kwd" value="${kwd}" class="form-control admin-input" placeholder="검색어 입력">
+                                <button class="btn btn-outline-secondary" type="button" onclick="searchList()"><i class="bi bi-search"></i></button>
+                            </div>
+                        </form>
                     </div>
+                    <div class="txt-muted small-txt">총 <strong class="text-main">${dataCount}</strong>건의 게시글</div>
                 </div>
+
                 <div class="table-responsive">
                     <table class="table text-main mb-0 align-middle">
                         <thead>
-                            <tr class="text-muted">
-                                <th class="fw-normal border-bottom border-secondary pb-3">번호</th>
-                                <th class="fw-normal border-bottom border-secondary pb-3">카테고리</th>
-                                <th class="fw-normal border-bottom border-secondary pb-3">제목</th>
-                                <th class="fw-normal border-bottom border-secondary pb-3">작성자</th>
-                                <th class="fw-normal border-bottom border-secondary pb-3">작성일</th>
-                                <th class="fw-normal border-bottom border-secondary pb-3 text-end">관리</th>
+                            <tr>
+                                <th class="admin-th txt-center" width="8%">번호</th>
+                                <th class="admin-th text-start" width="*">제목</th>
+                                <th class="admin-th txt-center" width="12%">작성자</th>
+                                <th class="admin-th txt-center" width="15%">작성일</th>
+                                <th class="admin-th txt-center" width="8%">조회수</th>
+                                <th class="admin-th txt-center" width="8%">파일</th>
+                                <th class="admin-th txt-center" width="8%">상태</th>
+                                <th class="admin-th txt-center" width="10%">관리</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="py-3 border-bottom border-secondary">#882</td>
-                                <td class="py-3 border-bottom border-secondary text-muted small">파티룸 후기</td>
-                                <td class="py-3 border-bottom border-secondary fw-semibold">성수동 루프탑 파티 너무 즐거웠어요!</td>
-                                <td class="py-3 border-bottom border-secondary">이대생</td>
-                                <td class="py-3 border-bottom border-secondary text-muted small">2026-03-10</td>
-                                <td class="py-3 border-bottom border-secondary text-end">
-                                    <button class="btn btn-outline btn-sm">상세</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 border-bottom border-secondary">#881</td>
-                                <td class="py-3 border-bottom border-secondary text-muted small">자유게시판</td>
-                                <td class="py-3 border-bottom border-secondary fw-semibold">홍대 근처 파티룸 추천해주실 분?</td>
-                                <td class="py-3 border-bottom border-secondary">김철수</td>
-                                <td class="py-3 border-bottom border-secondary text-muted small">2026-03-09</td>
-                                <td class="py-3 border-bottom border-secondary text-end">
-                                    <button class="btn btn-outline btn-sm">상세</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="py-3 border-bottom-0">#880</td>
-                                <td class="py-3 border-bottom-0 text-muted small">문의사항</td>
-                                <td class="py-3 border-bottom-0 fw-semibold text-danger"><i class="bi bi-exclamation-triangle me-1"></i>부적절한 홍보글입니다.</td>
-                                <td class="py-3 border-bottom-0">광고봇01</td>
-                                <td class="py-3 border-bottom-0 text-muted small">2026-03-09</td>
-                                <td class="py-3 border-bottom-0 text-end">
-                                    <button class="btn btn-outline btn-sm text-danger border-danger">삭제</button>
-                                </td>
-                            </tr>
+                            <c:if test="${empty list}">
+                                <tr>
+                                    <td colspan="8" class="admin-td txt-center txt-muted" style="padding: 3rem 0;">등록된 게시글이 없습니다.</td> 
+                                </tr>
+                            </c:if>
+                            <c:forEach var="dto" items="${list}">
+                                <tr class="board-row">
+                                    <td class="admin-td txt-muted txt-center">${dto.boardNo}</td>
+                                    <td class="admin-td text-start fw-bold">
+                                        <c:url var="url" value="/admin/bbs/${pathType}/article/${dto.boardNo}">
+                                            <c:param name="page" value="${page}"/>
+                                            <c:if test="${not empty kwd}">
+                                                <c:param name="schType" value="${schType}"/>
+                                                <c:param name="kwd" value="${kwd}"/>
+                                            </c:if>									
+                                        </c:url>
+
+                                        <div class="text-wrap">
+                                            <a href="${url}" class="text-main text-decoration-none hover-accent">
+                                                <c:out value="${dto.title}"/>
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td class="admin-td txt-center">${dto.adminName}</td>
+                                    <td class="admin-td txt-center txt-muted small-txt">
+                                        ${dto.createdAt.toString().substring(0, 10)}
+                                    </td>
+                                    <td class="admin-td txt-center fw-bold">${dto.viewCount}</td>
+                                    <td class="admin-td txt-center">
+                                        <c:if test="${not empty dto.saveFilename}">
+                                            <a href="${pageContext.request.contextPath}/admin/bbs/${pathType}/download?boardNo=${dto.boardNo}" class="text-info"><i class="bi bi-paperclip fs-5"></i></a>
+                                        </c:if>
+                                    </td>
+                                    <td class="admin-td txt-center">
+                                        <c:choose>
+                                            <c:when test="${dto.block == 1}">
+                                                <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-2 py-1">숨김</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1">정상</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td class="admin-td txt-center">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary btn-rounded px-3" onclick="location.href='${url}'">상세</button>
+                                    </td>
+                                </tr>
+                            </c:forEach>
                         </tbody>
                     </table>
                 </div>
-
-                <nav class="mt-4">
-                    <ul class="pagination">
-                        <li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">다음</a></li>
-                    </ul>
-                </nav>
+                
+                <div class="d-flex justify-content-center mt-4 pt-2">
+                    <nav aria-label="Page navigation">
+                        <div class="admin-pagination page-navigation">
+                            ${dataCount == 0 ? "" : paging}
+                        </div>
+                    </nav>
+                </div>
             </div>
         </main>
     </div>
 </div>
 
 <jsp:include page="/WEB-INF/views/admin/layout/footerResources.jsp"/>
+
+<script type="text/javascript">
+// ✨ 힌트 적용: 검색어 입력 후 엔터 누를 때 꼬이지 않게 방어
+document.addEventListener('DOMContentLoaded', () => {
+    const inputEL = document.querySelector('form[name=searchForm] input[name=kwd]');
+    
+    inputEL.addEventListener('keydown', ev => {
+        if(ev.key === 'Enter') {
+            ev.preventDefault();
+            searchList();
+        }
+    });
+});
+
+// ✨ 힌트 적용: URLSearchParams로 안전하게 인코딩하여 GET 요청 전송
+function searchList() {
+    const f = document.searchForm;
+    // (선택) 검색어가 비어있어도 어드민은 전체 목록을 봐야 할 수 있으므로 trim 검사는 뺐습니다.
+    
+    // form 요소는 FormData를 이용하여 URLSearchParams 으로 변환
+    const formData = new FormData(f);
+    const params = new URLSearchParams(formData).toString();
+    
+    const url = '${pageContext.request.contextPath}/admin/bbs/${pathType}/list?' + params;
+    location.href = url;
+}
+</script>
 </body>
 </html>

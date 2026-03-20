@@ -60,8 +60,9 @@
                 <i class="bi bi-pencil-square me-3"></i> 게시글 관리 <i class="bi bi-chevron-down ms-auto small"></i>
             </div>
             <div class="submenu nav flex-column">
-                <a href="${pageContext.request.contextPath}/admin/bbs/notice" class="nav-link sub-menu-item">공지사항</a>
-                <a href="${pageContext.request.contextPath}/admin/bbs/list" class="nav-link sub-menu-item">게시글 목록</a>
+                <a href="${pageContext.request.contextPath}/admin/bbs/notice/list" class="nav-link sub-menu-item">공지사항 관리</a>
+                <a href="${pageContext.request.contextPath}/admin/bbs/event/list" class="nav-link sub-menu-item">이벤트 관리</a>
+                <a href="${pageContext.request.contextPath}/admin/bbs/faq/list" class="nav-link sub-menu-item">FAQ 관리</a>
             </div>
         </div>
 
