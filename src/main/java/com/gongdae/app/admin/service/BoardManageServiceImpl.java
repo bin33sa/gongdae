@@ -97,42 +97,38 @@ public class BoardManageServiceImpl implements BoardManageService {
     @Override
     public void updateHitCount(long boardNo) throws Exception {
         try {
-            Board dto = boardRepository.findById(boardNo).orElseThrow();
-            dto.setViewCount(dto.getViewCount() + 1);
+            boardRepository.updateHitCount(boardNo);
         } catch (Exception e) {
             log.info("updateHitCount : ", e);
-            
             throw e;
         }
     }
     
     @Override
-	public Board findByPrev(Map<String, Object> map) {
-		Board dto = null;
+    public Board findByPrev(Map<String, Object> map) {
+        Board dto = null;
 
-		try {
-			dto = mapper.findByPrev(map);
-		} catch (Exception e) {
-			log.info("findByPrev : ", e);
-			
-			throw e;
-		}
+        try {
+            dto = mapper.findByPrev(map);
+        } catch (Exception e) {
+            log.info("findByPrev : ", e);
+            throw e;
+        }
 
-		return dto;
-	}
+        return dto;
+    }
 
-	@Override
-	public Board findByNext(Map<String, Object> map) {
-		Board dto = null;
+    @Override
+    public Board findByNext(Map<String, Object> map) {
+        Board dto = null;
 
-		try {
-			dto = mapper.findByNext(map);
-		} catch (Exception e) {
-			log.info("findByNext : ", e);
-			
-			throw e;
-		}
+        try {
+            dto = mapper.findByNext(map);
+        } catch (Exception e) {
+            log.info("findByNext : ", e);
+            throw e;
+        }
 
-		return dto;
-	}
+        return dto;
+    }
 }

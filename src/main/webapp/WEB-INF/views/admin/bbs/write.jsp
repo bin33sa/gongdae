@@ -67,25 +67,27 @@
                         <textarea name="content" id="hiddenContent" class="d-none">${dto.content}</textarea>
                     </div>
 
-                    <div class="mb-4 mt-3">
-                        <label class="form-label txt-muted fw-bold">
-                            <c:choose>
-                                <c:when test="${type == 'EVENT'}">
-                                    목록 썸네일 이미지 <span class="required-mark">*</span>
-                                    <small class="d-block text-primary fw-normal mt-1">※ 이벤트 목록에 보여질 대표 이미지를 등록해주세요.</small>
-                                </c:when>
-                                <c:otherwise>일반 첨부 파일</c:otherwise>
-                            </c:choose>
-                        </label>
-                        <input type="file" name="selectFile" class="admin-input form-control" ${type == 'EVENT' ? 'accept="image/*"' : ''}>
-                        
-                        <c:if test="${mode == 'update' && not empty dto.saveFilename}">
-                            <div class="mt-2 txt-muted small-txt d-flex align-items-center">
-                                <i class="bi bi-paperclip me-1"></i> 현재 첨부된 파일: ${dto.originalFilename}
-                                <button type="button" class="btn btn-sm btn-outline-danger ms-3 py-0 px-2" onclick="deleteFile();">삭제</button>
-                            </div>
-                        </c:if>
-                    </div>
+                    <c:if test="${type != 'FAQ'}">
+                        <div class="mb-4 mt-3">
+                            <label class="form-label txt-muted fw-bold">
+                                <c:choose>
+                                    <c:when test="${type == 'EVENT'}">
+                                        목록 썸네일 이미지 <span class="required-mark">*</span>
+                                        <small class="d-block text-primary fw-normal mt-1">※ 이벤트 목록에 보여질 대표 이미지를 등록해주세요.</small>
+                                    </c:when>
+                                    <c:otherwise>일반 첨부 파일</c:otherwise>
+                                </c:choose>
+                            </label>
+                            <input type="file" name="selectFile" class="admin-input form-control" ${type == 'EVENT' ? 'accept="image/*"' : ''}>
+                            
+                            <c:if test="${mode == 'update' && not empty dto.saveFilename}">
+                                <div class="mt-2 txt-muted small-txt d-flex align-items-center">
+                                    <i class="bi bi-paperclip me-1"></i> 현재 첨부된 파일: ${dto.originalFilename}
+                                    <button type="button" class="btn btn-sm btn-outline-danger ms-3 py-0 px-2" onclick="deleteFile();">삭제</button>
+                                </div>
+                            </c:if>
+                        </div>
+                    </c:if>
 
                     <div class="mb-5">
                         <label class="form-label txt-muted fw-bold">게시글 상태</label>
@@ -181,7 +183,6 @@
 
     function submitForm() {
         const f = document.boardForm;
-
         if(!f.title.value.trim()) {
             alert("제목을 입력하세요.");
             f.title.focus();
@@ -196,9 +197,10 @@
         }
 
         if ('${type}' === 'EVENT' && '${mode}' === 'write') {
-            if (!f.selectFile.value) {
+            const fileInput = f.selectFile;
+            if (fileInput && !fileInput.value) {
                 alert("이벤트 썸네일 이미지를 반드시 첨부해 주세요.");
-                f.selectFile.focus();
+                fileInput.focus();
                 return;
             }
         }

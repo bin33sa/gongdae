@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -33,7 +34,18 @@
                     
                     <div class="article-meta">
                         <div class="me-4"><i class="bi bi-person-circle me-1"></i> ${dto.adminName} (${dto.adminLoginId})</div>
-                        <div><i class="bi bi-clock me-1"></i> ${dto.createdAt}</div>
+                        
+                        <div>
+                            <i class="bi bi-clock me-1"></i> 
+                            <c:choose>
+                                <c:when test="${not empty dto.updatedAt}">
+                                    ${fn:substring(fn:replace(dto.updatedAt, 'T', ' '), 0, 19)} <span class="text-muted" style="font-size: 0.85em;"></span>
+                                </c:when>
+                                <c:otherwise>
+                                    ${fn:substring(fn:replace(dto.createdAt, 'T', ' '), 0, 19)}
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                         
                         <c:if test="${type == 'EVENT' && not empty dto.startDate}">
                             <div class="ms-4 text-warning">
@@ -52,7 +64,12 @@
                     <div class="attachment-box">
                         <i class="bi bi-paperclip fs-4 text-info me-3"></i>
                         <div>
-                            <div class="txt-muted small-txt mb-1">첨부파일</div>
+                            <div class="txt-muted small-txt mb-1">
+                                <c:choose>
+                                    <c:when test="${type == 'EVENT'}">썸네일 이미지</c:when>
+                                    <c:otherwise>첨부파일</c:otherwise>
+                                </c:choose>
+                            </div>
                             <a href="${pageContext.request.contextPath}/admin/bbs/${pathType}/download?boardNo=${dto.boardNo}" class="fw-bold text-decoration-none text-main">
                                 ${dto.originalFilename}
                             </a>
