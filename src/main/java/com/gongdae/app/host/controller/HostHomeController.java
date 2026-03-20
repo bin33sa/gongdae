@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/host/*")
 public class HostHomeController {
 	
-    
+   
     private final SpaceManageService spaceService;
     private final SpaceInquiryService inquiryService;
 	
@@ -33,8 +33,17 @@ public class HostHomeController {
     public String prelogin() {
         return "host/main/prelogin";
     }
+    
+    // 💡 복구된 메인 홈 (대시보드 메인)
+    @GetMapping("main/home")
+    public String home(Model model) {
+        model.addAttribute("active", "home");
+        return "host/main/home";
+    }
 
-   
+    // ==========================================
+    // 1. 매장 관리 (DB 연동 완료)
+    // ==========================================
     @GetMapping("menu/store")
     public String store(Model model) throws Exception {
         SessionInfo info = LoginMemberUtil.getSessionInfo();
@@ -45,7 +54,9 @@ public class HostHomeController {
         return "host/menu/store";
     }
 
-    
+    // ==========================================
+    // 2. 1:1 문의 관리 (DB 연동 완료)
+    // ==========================================
     @GetMapping("menu/qna")
     public String qna(@RequestParam(name = "inquiryNo", required = false, defaultValue = "0") long inquiryNo, Model model) throws Exception {
         SessionInfo info = LoginMemberUtil.getSessionInfo();
@@ -68,7 +79,7 @@ public class HostHomeController {
         return "host/menu/qna";
     }
 
-    // 💡 1:1 문의 답변 등록 (POST)
+   
     @PostMapping("inquiry/reply")
     public String replySubmit(SpaceInquiryDTO dto) throws Exception {
         SessionInfo info = LoginMemberUtil.getSessionInfo();
@@ -86,7 +97,9 @@ public class HostHomeController {
     }
 
 
-   
+    // ==========================================
+    // 3. 아직 DB 연동 안 된 빈 페이지들 
+    // ==========================================
     @GetMapping("menu/space")
     public String space(Model model) {
         model.addAttribute("active", "space");
