@@ -34,7 +34,7 @@ public class HostHomeController {
         return "host/main/prelogin";
     }
     
-    // 💡 복구된 메인 홈 (대시보드 메인)
+  
     @GetMapping("main/home")
     public String home(Model model) {
         model.addAttribute("active", "home");
