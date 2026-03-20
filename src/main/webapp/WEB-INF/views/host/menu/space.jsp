@@ -165,15 +165,21 @@
 
                                         <div class="mb-4 p-3 border rounded bg-white">
                                             <label class="form-label small text-primary fw-bold mb-2"><i class="bi bi-calendar-week me-1"></i>요일별 운영 시간 <span class="text-danger">*</span></label>
-                                            <table class="table table-borderless table-sm time-table mb-0 text-center">
+                                            <table class="table table-borderless table-sm time-table mb-0 text-center align-middle">
                                                 <tbody>
                                                     <c:set var="daysStr" value="월,화,수,목,금,토,일"/>
                                                     <c:forEach var="d" items="${daysStr.split(',')}">
                                                         <tr>
                                                             <td style="width: 15%;"><span class="badge bg-light text-dark border w-100 py-2">${d}</span></td>
-                                                            <td style="width: 40%;"><input type="time" name="openTimes" class="form-control form-control-sm" value="10:00" step="3600" required></td>
-                                                            <td style="width: 5%;">~</td>
-                                                            <td style="width: 40%;"><input type="time" name="closeTimes" class="form-control form-control-sm" value="23:00" step="3600" required></td>
+                                                            <td style="width: 15%;">
+                                                                <div class="form-check form-switch d-flex justify-content-center m-0">
+                                                                    <input class="form-check-input closed-checkbox" type="checkbox" onchange="toggleTime(this)">
+                                                                    <label class="form-check-label small ms-1">휴무</label>
+                                                                </div>
+                                                            </td>
+                                                            <td style="width: 32%;"><input type="time" name="openTimes" class="form-control form-control-sm time-input" value="10:00" step="3600" required></td>
+                                                            <td style="width: 6%;">~</td>
+                                                            <td style="width: 32%;"><input type="time" name="closeTimes" class="form-control form-control-sm time-input" value="23:00" step="3600" required></td>
                                                         </tr>
                                                     </c:forEach>
                                                 </tbody>
@@ -233,15 +239,21 @@
 
                                     <div class="mb-4 p-3 border rounded bg-white">
                                         <label class="form-label small text-primary fw-bold mb-2"><i class="bi bi-calendar-week me-1"></i>요일별 운영 시간 <span class="text-danger">*</span></label>
-                                        <table class="table table-borderless table-sm time-table mb-0 text-center">
+                                        <table class="table table-borderless table-sm time-table mb-0 text-center align-middle">
                                             <tbody>
                                                 <c:set var="daysStr" value="월,화,수,목,금,토,일"/>
                                                 <c:forEach var="d" items="${daysStr.split(',')}">
                                                     <tr>
                                                         <td style="width: 15%;"><span class="badge bg-light text-dark border w-100 py-2">${d}</span></td>
-                                                        <td style="width: 40%;"><input type="time" name="openTimes" class="form-control form-control-sm" value="10:00" step="3600" required></td>
-                                                        <td style="width: 5%;">~</td>
-                                                        <td style="width: 40%;"><input type="time" name="closeTimes" class="form-control form-control-sm" value="23:00" step="3600" required></td>
+                                                        <td style="width: 15%;">
+                                                            <div class="form-check form-switch d-flex justify-content-center m-0">
+                                                                <input class="form-check-input closed-checkbox" type="checkbox" onchange="toggleTime(this)">
+                                                                <label class="form-check-label small ms-1">휴무</label>
+                                                            </div>
+                                                        </td>
+                                                        <td style="width: 32%;"><input type="time" name="openTimes" class="form-control form-control-sm time-input" value="10:00" step="3600" required></td>
+                                                        <td style="width: 6%;">~</td>
+                                                        <td style="width: 32%;"><input type="time" name="closeTimes" class="form-control form-control-sm time-input" value="23:00" step="3600" required></td>
                                                     </tr>
                                                 </c:forEach>
                                             </tbody>
@@ -297,7 +309,7 @@
                                          onclick="deleteSpaceImage('${vo.imageNo}', this)"
                                          onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
                                         
-                                        <img src="${pageContext.request.contextPath}/uploads/space/${vo.fileUrl}" class="rounded border shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
+                                        <img src="${pageContext.request.contextPath}/dist/images/${vo.fileUrl}" class="rounded border shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
                                         
                                         <div class="position-absolute top-0 end-0 bg-danger text-white rounded-circle d-flex justify-content-center align-items-center shadow" style="width: 24px; height: 24px; transform: translate(30%, -30%);">
                                             <i class="bi bi-x fw-bold"></i>
@@ -360,9 +372,15 @@
             timeRowsHtml += `
                 <tr>
                     <td style="width: 15%;"><span class="badge bg-light text-dark border w-100 py-2">\${day}</span></td>
-                    <td style="width: 40%;"><input type="time" name="openTimes" class="form-control form-control-sm" value="10:00" step="3600" required></td>
-                    <td style="width: 5%;">~</td>
-                    <td style="width: 40%;"><input type="time" name="closeTimes" class="form-control form-control-sm" value="23:00" step="3600" required></td>
+                    <td style="width: 15%;">
+                        <div class="form-check form-switch d-flex justify-content-center m-0">
+                            <input class="form-check-input closed-checkbox" type="checkbox" onchange="toggleTime(this)">
+                            <label class="form-check-label small ms-1">휴무</label>
+                        </div>
+                    </td>
+                    <td style="width: 32%;"><input type="time" name="openTimes" class="form-control form-control-sm time-input" value="10:00" step="3600" required></td>
+                    <td style="width: 6%;">~</td>
+                    <td style="width: 32%;"><input type="time" name="closeTimes" class="form-control form-control-sm time-input" value="23:00" step="3600" required></td>
                 </tr>
             `;
         });
@@ -393,7 +411,7 @@
 
                 <div class="mb-4 p-3 border rounded bg-white">
                     <label class="form-label small text-primary fw-bold mb-2"><i class="bi bi-calendar-week me-1"></i>요일별 운영 시간 <span class="text-danger">*</span></label>
-                    <table class="table table-borderless table-sm time-table mb-0 text-center">
+                    <table class="table table-borderless table-sm time-table mb-0 text-center align-middle">
                         <tbody>
                             \${timeRowsHtml}
                         </tbody>
@@ -430,9 +448,33 @@
         container.insertAdjacentHTML('beforeend', html);
     }
     
-    // 💡 Submit 시 일괄 삭제 처리용 함수 (지연 삭제)
+    // 💡 휴무 체크박스 토글 함수 (시간 조절 및 읽기 전용 처리)
+    function toggleTime(checkbox) {
+        const row = checkbox.closest('tr');
+        const timeInputs = row.querySelectorAll('.time-input');
+        
+        if (checkbox.checked) {
+            // 휴무 체크 시
+            timeInputs[0].value = "00:00";
+            timeInputs[1].value = "00:00";
+            timeInputs[0].setAttribute('readonly', true);
+            timeInputs[1].setAttribute('readonly', true);
+            timeInputs[0].classList.add('bg-light');
+            timeInputs[1].classList.add('bg-light');
+        } else {
+            // 휴무 해제 시
+            timeInputs[0].value = "10:00";
+            timeInputs[1].value = "23:00";
+            timeInputs[0].removeAttribute('readonly');
+            timeInputs[1].removeAttribute('readonly');
+            timeInputs[0].classList.remove('bg-light');
+            timeInputs[1].classList.remove('bg-light');
+        }
+    }
+
+    // Submit 시 일괄 삭제 처리용 함수 (지연 삭제)
     function deleteSpaceImage(imageNo, el) {
-        if(!confirm("이 이미지를 삭제하시겠습니까?\\n(수정 완료 버튼을 눌러야 최종 삭제됩니다)")) {
+        if(!confirm("이 이미지를 삭제하시겠습니까?\n(수정 완료 버튼을 눌러야 최종 삭제됩니다)")) {
             return;
         }
 
