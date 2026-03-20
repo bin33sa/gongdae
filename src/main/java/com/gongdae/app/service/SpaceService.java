@@ -47,4 +47,6 @@ public interface SpaceService {
 	public void updateRefreshToken(MemberDto dto) throws Exception;
 	public MemberDto findByToken(String login_id);
 	
+	
+	
 }

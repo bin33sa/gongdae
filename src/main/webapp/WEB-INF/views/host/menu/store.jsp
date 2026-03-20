@@ -27,65 +27,58 @@
 
   
 
-    <!-- 매장 카드 리스트 -->
-    <div class="row g-4">
-
-        <!-- 카드 1 -->
-        <div class="col-md-4">
-            <div class="store-card">
-
-                <img src="https://via.placeholder.com/400x200" class="store-img">
-
-                <div class="store-body">
-                    <h5 class="store-title">홍대 루프탑 파티룸</h5>
-
-                    <p class="store-desc">
-                        최대 10명 수용 / 파티, 모임 가능
-                    </p>
-
-                    <div class="store-info">
-                        <span><i class="bi bi-geo-alt"></i> 홍대입구역 3분</span>
-                        <span><i class="bi bi-people"></i> 10명</span>
-                    </div>
-
-                    <div class="store-actions">
-                        <button class="btn btn-sm btn-edit">수정</button>
-                        <button class="btn btn-sm btn-delete">삭제</button>
-                    </div>
-                </div>
-
+   <div class="row g-4">
+        
+        <c:if test="${empty list}">
+            <div class="col-12 text-center p-5 text-muted border rounded bg-light mt-4">
+                <i class="bi bi-shop fs-1 d-block mb-3"></i>
+                <h5>등록된 매장이 없습니다.</h5>
+                <p>새로운 공간을 등록하고 호스팅을 시작해보세요!</p>
+                <a href="<c:url value='/host/space/write'/>" class="btn btn-primary mt-2">공간 등록하기</a>
             </div>
-        </div>
+        </c:if>
 
-        <!-- 카드 2 -->
-        <div class="col-md-4">
-            <div class="store-card">
+        <c:forEach var="dto" items="${list}">
+            <div class="col-md-4">
+                <div class="store-card">
 
-                <img src="https://via.placeholder.com/400x200" class="store-img">
+                    <c:choose>
+                        <c:when test="${not empty dto.fileUrl}">
+                            <img src="${pageContext.request.contextPath}/uploads/space/${dto.fileUrl}" class="store-img" style="object-fit: cover;">
+                        </c:when>
+                        <c:otherwise>
+                            <img src="https://via.placeholder.com/400x200?text=No+Image" class="store-img">
+                        </c:otherwise>
+                    </c:choose>
 
-                <div class="store-body">
-                    <h5 class="store-title">강남 스터디룸 A호</h5>
+                    <div class="store-body">
+                        <h5 class="store-title">${dto.spaceName}</h5>
 
-                    <p class="store-desc">
-                        조용한 공부 공간 / 와이파이 제공
-                    </p>
+                        <p class="store-desc text-truncate">
+                            ${not empty dto.spaceIntro ? dto.spaceIntro : '등록된 공간 소개글이 없습니다.'}
+                        </p>
 
-                    <div class="store-info">
-                        <span><i class="bi bi-geo-alt"></i> 강남역 5분</span>
-                        <span><i class="bi bi-people"></i> 6명</span>
+                        <div class="store-info">
+                            <span><i class="bi bi-geo-alt"></i> ${dto.region}</span>
+                            <span><i class="bi bi-people"></i> 최대 ${dto.maxCapacity}명</span>
+                        </div>
+
+                        <div class="store-actions">
+                            <button type="button" class="btn btn-sm btn-edit" 
+                                    onclick="location.href='<c:url value="/host/space/update?spaceNo=${dto.spaceNo}"/>'">수정</button>
+                            
+                            <form action="<c:url value='/host/space/delete'/>" method="post" class="m-0" onsubmit="return confirm('정말 [${dto.spaceName}] 매장을 삭제하시겠습니까?');">
+                                <input type="hidden" name="spaceNo" value="${dto.spaceNo}">
+                                <button type="submit" class="btn btn-sm btn-delete">삭제</button>
+                            </form>
+                        </div>
                     </div>
 
-                    <div class="store-actions">
-                        <button class="btn btn-sm btn-edit">수정</button>
-                        <button class="btn btn-sm btn-delete">삭제</button>
-                    </div>
                 </div>
-
             </div>
-        </div>
+        </c:forEach>
 
     </div>
-
 </main>
 
 <footer>

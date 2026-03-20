@@ -227,4 +227,8 @@ public class SpaceManageServiceImpl implements SpaceManageService {
 	public List<SpaceManageDTO> listSpaceUnit(long spaceNo) throws Exception {
 		return mapper.listSpaceUnit(spaceNo);
 	}
+	@Override
+	public List<SpaceManageDTO> listSpace(long hostId) throws Exception {
+		return mapper.listSpace(hostId);
+	}
 }

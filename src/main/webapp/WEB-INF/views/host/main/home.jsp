@@ -159,11 +159,11 @@
                 <div class="content-card h-100">
                     <div class="content-header">
                         <h3 class="content-title">내 공간 관리</h3>
-                        <a href="<c:url value='/host/space/list'/>" class="btn-more">관리하기 <i class="bi bi-chevron-right"></i></a>
+                        <a href="<c:url value='/host/menu/store'/>" class="btn-more">관리하기 <i class="bi bi-chevron-right"></i></a>
                     </div>
                     
                     <div class="d-grid gap-3">
-                        <a href="<c:url value='/host/spaceForm'/>" class="btn btn-primary py-2 fw-bold" style="background-color: var(--host-primary); border: none;">
+                        <a href="<c:url value='/host/space/write'/>" class="btn btn-primary py-2 fw-bold" style="background-color: var(--host-primary); border: none;">
                             <i class="bi bi-plus-circle me-1"></i> 새 공간 등록하기
                         </a>
                         

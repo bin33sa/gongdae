@@ -16,4 +16,5 @@ public interface SpaceManageService {
     List<SpaceManageDTO> listSpaceImage(long spaceNo) throws Exception;
     List<Long> listSpaceOption(long spaceNo) throws Exception;
     List<SpaceManageDTO> listSpaceUnit(long spaceNo) throws Exception;
+    List<SpaceManageDTO> listSpace(long hostId) throws Exception;
 }

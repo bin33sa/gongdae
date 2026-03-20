@@ -297,7 +297,7 @@
                                          onclick="deleteSpaceImage('${vo.imageNo}', this)"
                                          onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
                                         
-                                        <img src="${pageContext.request.contextPath}/dist/images/${vo.fileUrl}" class="rounded border shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
+                                        <img src="${pageContext.request.contextPath}/uploads/space/${vo.fileUrl}" class="rounded border shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
                                         
                                         <div class="position-absolute top-0 end-0 bg-danger text-white rounded-circle d-flex justify-content-center align-items-center shadow" style="width: 24px; height: 24px; transform: translate(30%, -30%);">
                                             <i class="bi bi-x fw-bold"></i>

@@ -34,5 +34,6 @@ public interface SpaceManageMapper {
     List<SpaceManageDTO> listSpaceImage(long spaceNo); 
     SpaceManageDTO findImageById(long imageNo);
     List<Long> listSpaceOption(long spaceNo); 
-    List<SpaceManageDTO> listSpaceUnit(long spaceNo); 
+    List<SpaceManageDTO> listSpaceUnit(long spaceNo);
+    List<SpaceManageDTO> listSpace(long hostId) throws Exception;
 }

@@ -115,4 +115,17 @@
         LEFT JOIN SPACE_POLICY p ON u.unit_no = p.unit_no
         WHERE u.space_no = #{spaceNo} ORDER BY u.unit_no ASC
     </select>
+    
+    <select id="listSpace" resultType="com.gongdae.app.domain.dto.SpaceManageDTO" parameterType="Long">
+        SELECT s.space_no AS spaceNo, 
+               s.space_name AS spaceName, 
+               s.region, 
+               s.space_intro AS spaceIntro,
+               NVL((SELECT MAX(u.max_capacity) FROM SPACE_UNIT u WHERE u.space_no = s.space_no), 0) AS maxCapacity,
+               (SELECT MIN(i.file_url) FROM SPACE_IMAGE i WHERE i.space_no = s.space_no) AS fileUrl
+        FROM SPACE s
+        WHERE s.host_id = #{hostId} AND s.status = 'ACTIVE'
+        ORDER BY s.space_no DESC
+    </select>
+    
 </mapper>
