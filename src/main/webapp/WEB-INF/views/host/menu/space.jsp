@@ -47,7 +47,7 @@
     </div>
 
     <div class="row g-4">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <form action="<c:url value='/host/space/${mode}'/>" method="post" enctype="multipart/form-data">
                 
                 <c:if test="${mode == 'update'}">
