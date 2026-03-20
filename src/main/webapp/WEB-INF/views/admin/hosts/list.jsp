@@ -6,6 +6,7 @@
 <html lang="ko">
 <head>
     <jsp:include page="/WEB-INF/views/admin/layout/headerResources.jsp"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <title>공대생 Admin - 호스트 관리</title>
 </head>
 <body class="admin-page">
@@ -22,16 +23,14 @@
     </header>
 
     <div class="admin-body d-flex flex-grow-1">
-        
         <jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
-
         <main class="admin-content flex-grow-1">
             <div class="d-flex justify-content-between align-items-center mb-5">
                 <div>
                     <h3 class="fw-bold mb-2">호스트 파트너 관리</h3>
                     <p class="mb-0 text-muted">파티룸 공간을 제공하는 사업자(호스트) 승인 및 목록을 관리합니다.</p>
                 </div>
-                <button class="btn-purple"><i class="bi bi-download me-2"></i>엑셀 다운로드</button>
+                <button id="btn-excel-host" class="btn-purple"><i class="bi bi-download me-2"></i>엑셀 다운로드</button>
             </div>
 
             <div class="dashboard-box">
@@ -52,12 +51,11 @@
                             <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
                         </div>
                     </form>
-                    
                     <div class="text-muted small">총 <strong class="text-main">${dataCount}</strong>명의 호스트</div>
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table text-main mb-0 align-middle">
+                    <table id="host-table" class="table text-main mb-0 align-middle">
                         <thead>
                             <tr>
                                 <th class="admin-th">파트너번호</th>
@@ -65,9 +63,8 @@
                                 <th class="admin-th">상호명 (법인명)</th>
                                 <th class="admin-th">대표자</th>
                                 <th class="admin-th">연락처</th>
-                                <th class="admin-th text-center">등록 매장</th>
                                 <th class="admin-th text-center">상태</th>
-                                <th class="admin-th text-end">심사/관리</th>
+                                <th class="admin-th text-end">상세</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -75,42 +72,28 @@
                                 <tr>
                                     <td class="admin-td text-muted">#H-${dto.member_id}</td>
                                     <td class="admin-td">${dto.login_id}</td>
-                                    
                                     <td class="admin-td">
                                         <c:choose>
-                                            <c:when test="${not empty dto.nickname}">
-                                                <span class="fw-bold">${dto.nickname}</span>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <span class="fw-bold" style="margin-left: 40px;">-</span>
-                                            </c:otherwise>
+                                            <c:when test="${not empty dto.nickname}"><span class="fw-bold">${dto.nickname}</span></c:when>
+                                            <c:otherwise><span class="fw-bold">-</span></c:otherwise>
                                         </c:choose>
                                     </td>
-                                    
                                     <td class="admin-td">${dto.name}</td>
                                     <td class="admin-td">${dto.phone}</td>
-                                    <td class="admin-td text-center text-muted fw-bold">-</td>
-                                    
                                     <td class="admin-td text-center">
                                         <c:choose>
-                                            <c:when test="${dto.enabled == 1}">
-                                                <span class="status-normal">정상</span>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <span class="status-banned">잠금 (정지)</span>
-                                            </c:otherwise>
+                                            <c:when test="${dto.enabled == 1}"><span class="status-normal">정상</span></c:when>
+                                            <c:otherwise><span class="status-banned">잠금 (정지)</span></c:otherwise>
                                         </c:choose>
                                     </td>
-                                    
                                     <td class="admin-td text-end">
-                                        <button type="button" onclick="location.href='${pageContext.request.contextPath}/admin/hosts/profile?member_id=${dto.member_id}&page=${page}';">상세</button>
+                                        <button class="btn btn-sm btn-outline-secondary" type="button" onclick="location.href='${pageContext.request.contextPath}/admin/hosts/profile?member_id=${dto.member_id}&page=${page}';">상세</button>
                                     </td>
                                 </tr>
                             </c:forEach>
-
                             <c:if test="${empty list}">
                                 <tr>
-                                    <td colspan="8" class="admin-td text-center py-5">
+                                    <td colspan="7" class="admin-td text-center py-5">
                                         <i class="bi bi-info-circle me-2"></i>등록된 호스트 파트너가 없습니다.
                                     </td>
                                 </tr>
@@ -121,9 +104,7 @@
 
                 <div class="d-flex justify-content-center mt-4">
                     <nav aria-label="Page navigation">
-                        <div class="admin-pagination">
-                            ${paging}
-                        </div>
+                        <div class="admin-pagination">${paging}</div>
                     </nav>
                 </div>
             </div>
@@ -134,27 +115,12 @@
 <jsp:include page="/WEB-INF/views/admin/layout/footerResources.jsp"/>
 
 <script type="text/javascript">
-document.addEventListener("DOMContentLoaded", function() {
-    const schType = "${schType}";
-    const kwd = "${kwd}";
-    const enabled = "${enabled}";
-
-    document.querySelectorAll(".admin-pagination a").forEach(a => {
-        let href = a.getAttribute("href");
-        
-        if (href && href !== "#") {
-            href = href.replace("listGuest", "list");
-            
-            const url = new URL(href, window.location.origin);
-            if(schType) url.searchParams.set("schType", schType);
-            if(kwd) url.searchParams.set("kwd", kwd);
-            if(enabled) url.searchParams.set("enabled", enabled);
-            
-            a.setAttribute("href", url.toString().replace(window.location.origin, ""));
-        }
-    });
+document.getElementById('btn-excel-host').addEventListener('click', function() {
+    const table = document.getElementById('host-table');
+    
+    const wb = XLSX.utils.table_to_book(table, {sheet: "호스트목록"});
+    XLSX.writeFile(wb, "공대생_호스트_파트너_목록.xlsx");
 });
 </script>
-
 </body>
 </html>

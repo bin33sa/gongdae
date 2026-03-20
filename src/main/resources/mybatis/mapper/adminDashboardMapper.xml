@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gongdae.app.admin.mapper.AdminDashboardMapper">
+
+    <select id="countTotalPageViews" resultType="long">
+        SELECT NVL(SUM(view_count), 0) FROM board
+    </select>
+
+    <select id="countMonthlyVisitors" resultType="long">
+        SELECT COUNT(*) FROM member 
+        WHERE TO_CHAR(created_at, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM')
+    </select>
+
+    <select id="countTotalMembers" resultType="long">
+        SELECT COUNT(*) 
+        FROM member 
+        WHERE member_id NOT IN (SELECT member_id FROM admin_detail)
+    </select>
+
+    <select id="countTotalReservations" resultType="long">
+        SELECT COUNT(*) FROM reservation
+    </select>
+
+    <select id="getMonthlyRevenue" resultType="map">
+        SELECT TO_NUMBER(TO_CHAR(pay_date, 'MM')) AS month, 
+               NVL(SUM(pay_amount), 0) AS amount
+        FROM payment
+        WHERE TO_CHAR(pay_date, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')
+          AND pay_status = 'PAID'
+        GROUP BY TO_CHAR(pay_date, 'MM')
+    </select>
+
+    <select id="getMonthlyExpense" resultType="map">
+        SELECT TO_NUMBER(TO_CHAR(refund_at, 'MM')) AS month, 
+               NVL(SUM(refund_amount), 0) AS amount
+        FROM refund
+        WHERE TO_CHAR(refund_at, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')
+        GROUP BY TO_CHAR(refund_at, 'MM')
+    </select>
+
+    <select id="getWeeklyVisitors" resultType="map">
+        SELECT MOD(TO_NUMBER(TO_CHAR(created_at, 'D')) + 5, 7) AS day_index, 
+               COUNT(*) AS cnt
+        FROM reservation
+        WHERE created_at &gt;= TRUNC(SYSDATE) - 7
+        GROUP BY TO_CHAR(created_at, 'D')
+    </select>
+
+    <select id="getHourlyVisitors" resultType="map">
+        SELECT TO_NUMBER(TO_CHAR(last_login, 'HH24')) AS hour, COUNT(*) AS cnt
+        FROM member
+        WHERE last_login IS NOT NULL
+        GROUP BY TO_CHAR(last_login, 'HH24')
+    </select>
+
+    <select id="getRecentReservations" resultType="com.gongdae.app.admin.domain.dto.DashboardDto$RecentReservationDto">
+        SELECT '#' || r.res_no AS resNo,
+               g.name AS guestName,
+               s.space_name AS spaceName,
+               TO_CHAR(r.res_date, 'YYYY-MM-DD') || ' ' || LPAD(r.start_time, 2, '0') || ':00' AS resDate,
+               CASE r.status 
+                    WHEN 'RESERVED' THEN '예약완료'
+                    WHEN 'CANCELLED' THEN '취소됨'
+                    WHEN 'COMPLETED' THEN '이용완료'
+                    WHEN 'NOSHOW' THEN '노쇼'
+                    ELSE r.status END AS status,
+               CASE r.status 
+                    WHEN 'RESERVED' THEN '#34E085'
+                    WHEN 'CANCELLED' THEN '#EF4444'
+                    WHEN 'COMPLETED' THEN '#3B82F6'
+                    ELSE '#6C757D' END AS statusColor
+        FROM reservation r
+        JOIN guest_detail g ON r.guest_id = g.member_id
+        JOIN space_unit su ON r.unit_no = su.unit_no
+        JOIN space s ON su.space_no = s.space_no
+        ORDER BY r.res_no DESC
+        FETCH FIRST 5 ROWS ONLY
+    </select>
+
+</mapper>
