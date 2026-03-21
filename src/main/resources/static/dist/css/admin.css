@@ -1015,24 +1015,25 @@ body.admin-page {
     background-color: #FFFFFF;
 }
 
-input[type="file"].admin-input::file-selector-button {
-    padding: 4px 14px;
-    margin: -4px 12px -4px -8px; 
-    background-color: rgba(255, 255, 255, 0.08); 
-    color: var(--text-muted);
-    border: none;
-    border-right: 1px solid #6c757d; 
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 13px;
-    font-weight: 500;
+.admin-page input[type="file"]::file-selector-button {
+    padding: 4px 14px !important;
+    margin: -10px 12px -10px -16px !important;
+    background-color: rgba(255, 255, 255, 0.08) !important; 
+    color: var(--text-muted) !important;
+    border: none !important;
+    border-right: 1px solid #6c757d !important; 
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
 }
 
-input[type="file"].admin-input::file-selector-button:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-    color: var(--text-main);
+.admin-page input[type="file"]::file-selector-button:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    color: var(--text-main) !important;
 }
+
 .board-row {
     transition: background-color 0.2s ease;
     cursor: pointer;
@@ -1044,4 +1045,27 @@ input[type="file"].admin-input::file-selector-button:hover {
 input[type="date"].admin-input::-webkit-calendar-picker-indicator {
     filter: invert(1);
     cursor: pointer;
+}
+.admin-page .form-switch .form-check-input {
+    background-color: rgba(255, 255, 255, 0.1) !important; 
+    border: 1px solid rgba(255, 255, 255, 0.5) !important; 
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e") !important; 
+    cursor: pointer;
+    width: 2.5em; 
+    height: 1.3em;
+    margin-top: 0.1em;
+}
+
+.admin-page .form-switch .form-check-input:hover {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.admin-page .form-switch .form-check-input:checked {
+    background-color: var(--accent-main) !important; 
+    border-color: var(--accent-main) !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e") !important;
+}
+
+.admin-page .form-switch .form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25) !important;
 }

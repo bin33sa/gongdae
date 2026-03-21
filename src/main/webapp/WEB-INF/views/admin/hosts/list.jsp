@@ -12,15 +12,8 @@
 <body class="admin-page">
 
 <div class="admin-layout d-flex flex-column min-vh-100">
-    <header class="admin-header">
-        <div class="admin-logo">공대생</div>
-        <div class="admin-user-area">
-            <span><strong><sec:authentication property="principal.member.name"/></strong> 관리자님</span>
-            <a href="${pageContext.request.contextPath}/member/logout" class="admin-logout">
-                <i class="bi bi-box-arrow-right"></i> 로그아웃
-            </a>
-        </div>
-    </header>
+    
+    <jsp:include page="/WEB-INF/views/admin/layout/header.jsp"/>
 
     <div class="admin-body d-flex flex-grow-1">
         <jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
@@ -117,7 +110,6 @@
 <script type="text/javascript">
 document.getElementById('btn-excel-host').addEventListener('click', function() {
     const table = document.getElementById('host-table');
-    
     const wb = XLSX.utils.table_to_book(table, {sheet: "호스트목록"});
     XLSX.writeFile(wb, "공대생_호스트_파트너_목록.xlsx");
 });

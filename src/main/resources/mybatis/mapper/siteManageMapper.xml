@@ -1,6 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.gongdae.app.admin.mapper.GuestManageMapper">
+
+<mapper namespace="com.gongdae.app.admin.mapper.SiteManageMapper">
+
+    <sql id="where-list-report">
+        <if test="status != null and status != ''">
+            AND r.status = #{status}
+        </if>
+        <if test="kwd != null and kwd != ''">
+            <choose>
+                <when test="schType == 'reporter'">
+                    AND INSTR(m.login_id, #{kwd}) &gt; 0
+                </when>
+                <when test="schType == 'reason'">
+                    AND INSTR(r.reason, #{kwd}) &gt; 0
+                </when>
+            </choose>
+        </if>
+    </sql>
+
+    <select id="dataCountReport" parameterType="map" resultType="Integer">
+        SELECT NVL(COUNT(*), 0)
+        FROM report r
+        JOIN member m ON r.member_id = m.member_id
+        <where>
+            <include refid="where-list-report"/>
+        </where>
+    </select>
+
+    <select id="listReport" parameterType="map" resultType="com.gongdae.app.admin.domain.dto.ReportManageDto">
+        SELECT r.report_no AS reportNo, r.reason, r.status, 
+               TO_CHAR(r.created_at, 'YYYY-MM-DD') AS createdAt,
+               TO_CHAR(r.updated_at, 'YYYY-MM-DD') AS updatedAt,
+               r.member_id AS memberId, m.login_id AS reporterName,
+               r.target_type AS targetType, r.target_no AS targetNo,
+               r.admin_id AS adminId, a.name AS adminName
+        FROM report r
+        JOIN member m ON r.member_id = m.member_id
+        LEFT JOIN admin_detail a ON r.admin_id = a.member_id
+        <where>
+            <include refid="where-list-report"/>
+        </where>
+        ORDER BY r.report_no DESC
+        OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+    </select>
+
+    <select id="findByIdReport" parameterType="Long" resultType="com.gongdae.app.admin.domain.dto.ReportManageDto">
+        SELECT r.report_no AS reportNo, r.reason, r.status, r.admin_memo AS adminMemo,
+               TO_CHAR(r.created_at, 'YYYY-MM-DD HH24:MI') AS createdAt,
+               TO_CHAR(r.updated_at, 'YYYY-MM-DD HH24:MI') AS updatedAt,
+               r.member_id AS memberId, m.login_id AS reporterName,
+               r.target_type AS targetType, r.target_no AS targetNo,
+               r.admin_id AS adminId, a.name AS adminName
+        FROM report r
+        JOIN member m ON r.member_id = m.member_id
+        LEFT JOIN admin_detail a ON r.admin_id = a.member_id
+        WHERE r.report_no = #{reportNo}
+    </select>
+
+    <update id="updateReportStatus" parameterType="map">
+        UPDATE report
+        SET status = #{status},
+            admin_id = #{adminId},
+            admin_memo = #{adminMemo, jdbcType=VARCHAR},
+            updated_at = SYSDATE
+        WHERE report_no = #{reportNo}
+    </update>
+
+
+    <select id="findBanner" parameterType="String" resultType="com.gongdae.app.admin.domain.dto.SiteManageDto">
+        SELECT b.banner_no AS bannerNo, b.type, b.title, b.link_url AS linkUrl, 
+               b.save_filename AS saveFilename, b.original_filename AS originalFilename, 
+               b.is_active AS isActive, 
+               TO_CHAR(b.created_at, 'YYYY-MM-DD') AS createdAt,
+               TO_CHAR(b.updated_at, 'YYYY-MM-DD') AS updatedAt,
+               b.admin_id AS adminId, a.name AS adminName
+        FROM banner b
+        LEFT JOIN admin_detail a ON b.admin_id = a.member_id
+        WHERE b.type = #{type}
+    </select>
+
+    <insert id="insertBanner" parameterType="com.gongdae.app.admin.domain.dto.SiteManageDto">
+        INSERT INTO banner (
+            banner_no, type, title, link_url, save_filename, original_filename, is_active, admin_id, created_at
+        ) VALUES (
+            seq_banner.NEXTVAL, #{type}, #{title}, #{linkUrl}, #{saveFilename}, #{originalFilename}, #{isActive}, #{adminId}, SYSDATE
+        )
+    </insert>
+
+    <update id="updateBanner" parameterType="com.gongdae.app.admin.domain.dto.SiteManageDto">
+        UPDATE banner
+        SET title = #{title},
+            link_url = #{linkUrl},
+            is_active = #{isActive},
+            admin_id = #{adminId},
+            updated_at = SYSDATE
+            <if test="saveFilename != null and saveFilename != ''">
+                , save_filename = #{saveFilename}
+                , original_filename = #{originalFilename}
+            </if>
+        WHERE type = #{type}
+    </update>
+	
+	<delete id="deleteBanner" parameterType="String">
+        DELETE FROM banner WHERE type = #{type}
+    </delete>
+	
+
+    <select id="listComponent" resultType="com.gongdae.app.admin.domain.dto.SiteManageDto">
+        SELECT s.component_key AS componentKey, 
+               s.component_value AS componentValue, 
+               s.description,
+               s.admin_id AS adminId, a.name AS adminName,
+               TO_CHAR(s.updated_at, 'YYYY-MM-DD') AS updatedAt
+        FROM site_component s
+        LEFT JOIN admin_detail a ON s.admin_id = a.member_id
+        ORDER BY s.component_key ASC
+    </select>
+
+    <update id="updateComponent" parameterType="com.gongdae.app.admin.domain.dto.SiteManageDto">
+        UPDATE site_component
+        SET component_value = #{componentValue},
+            admin_id = #{adminId},
+            updated_at = SYSDATE
+        WHERE component_key = #{componentKey}
+    </update>
 
 </mapper>

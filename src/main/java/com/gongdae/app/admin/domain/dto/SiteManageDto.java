@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class SiteManageDto {
-	
     private long bannerNo;           
     private String type;             
     private String title;            
@@ -19,7 +18,13 @@ public class SiteManageDto {
     private String originalFilename;  
     private MultipartFile selectFile; 
     private int isActive;             
+    private String createdAt;
+    private String updatedAt;
 
     private String componentKey;     
     private String componentValue;   
+    private String description;
+
+    private Long adminId;        
+    private String adminName;    
 }

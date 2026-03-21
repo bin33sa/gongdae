@@ -8,18 +8,20 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ReportManageDto {
-   
+	
     private long reportNo;       
     private String reason;       
     private String status;       
     private String createdAt;    
+    private String updatedAt;    
+    private String adminMemo;    
 
     private long memberId;        
     private String reporterName;  
 
     private String targetType;    
     private long targetNo;        
-    private String targetName;    
+    private String targetName;   
 
     private Long adminId;        
     private String adminName;    

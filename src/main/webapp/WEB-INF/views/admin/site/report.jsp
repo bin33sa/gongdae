@@ -9,13 +9,9 @@
 </head>
 <body class="admin-page">
 <div class="admin-layout">
-    <header class="admin-header">
-        <div class="admin-logo">공대생</div>
-        <div class="admin-user-area">
-            <span><strong><sec:authentication property="principal.member.name"/></strong> 관리자님</span>
-            <a href="${pageContext.request.contextPath}/member/logout" class="admin-logout"><i class="bi bi-box-arrow-right"></i> 로그아웃</a>
-        </div>
-    </header>
+    
+    <jsp:include page="/WEB-INF/views/admin/layout/header.jsp"/>
+
     <div class="admin-body">
         <jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
         <main class="admin-content">
@@ -24,48 +20,92 @@
                     <h3 class="fw-bold mb-2">신고 내역 관리</h3>
                     <p class="mb-0 text-muted">서비스 정책 위반 신고 건을 검토하고 처리합니다.</p>
                 </div>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-outline-secondary text-white border-secondary">미처리 건만 보기</button>
-                </div>
             </div>
 
             <div class="dashboard-box">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <form name="searchForm" action="${pageContext.request.contextPath}/admin/site/report" method="get" class="d-flex gap-2">
+                        <input type="hidden" name="page" value="1">
+                        <select name="status" class="form-select bg-transparent text-main border-secondary" style="width: 130px;" onchange="searchList()">
+                            <option value="" ${status == '' ? 'selected' : ''}>전체 상태</option>
+                            <option value="WAITING" ${status == 'WAITING' ? 'selected' : ''}>미처리(대기)</option>
+                            <option value="DONE" ${status == 'DONE' ? 'selected' : ''}>처리 완료</option>
+                        </select>
+                        <select name="schType" class="form-select bg-transparent text-main border-secondary" style="width: 130px;">
+                            <option value="reporter" ${schType == 'reporter' ? 'selected' : ''}>신고자(ID)</option>
+                            <option value="reason" ${schType == 'reason' ? 'selected' : ''}>신고 사유</option>
+                        </select>
+                        <div class="input-group" style="width: 250px;">
+                            <input type="text" name="kwd" value="${kwd}" class="form-control bg-transparent text-main border-secondary" placeholder="검색어 입력">
+                            <button class="btn btn-outline-secondary" type="submit" onclick="searchList()"><i class="bi bi-search"></i></button>
+                        </div>
+                    </form>
+                    <div class="text-muted small">총 <strong class="text-main">${dataCount}</strong>건의 신고</div>
+                </div>
+
                 <div class="table-responsive">
                     <table class="table text-main mb-0 align-middle">
                         <thead>
-                            <tr class="text-muted">
-                                <th>번호</th>
-                                <th>신고유형</th>
-                                <th>피신고자(ID)</th>
-                                <th>신고 사유</th>
-                                <th>신고일</th>
-                                <th class="text-end">처리상태</th>
+                            <tr>
+                                <th class="admin-th text-center">번호</th>
+                                <th class="admin-th">피신고자/대상</th>
+                                <th class="admin-th">신고자</th>
+                                <th class="admin-th">신고 사유</th>
+                                <th class="admin-th text-center">신고일</th>
+                                <th class="admin-th text-center">상태</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>#R-102</td>
-                                <td><span class="badge bg-secondary">허위정보</span></td>
-                                <td class="fw-bold">이대생 (host01)</td>
-                                <td class="text-truncate" style="max-width: 200px;">파티룸 사진과 실물이 너무 다릅니다.</td>
-                                <td class="small text-muted">2026-03-10</td>
-                                <td class="text-end"><span class="badge-success" style="background-color: rgba(59, 130, 246, 0.15); color: #3B82F6 !important;">검토중</span></td>
-                            </tr>
-                            <tr>
-                                <td>#R-101</td>
-                                <td><span class="badge bg-secondary">욕설/비방</span></td>
-                                <td class="fw-bold">김철수 (guest99)</td>
-                                <td class="text-truncate" style="max-width: 200px;">호스트에게 무례한 채팅을 보냈습니다.</td>
-                                <td class="small text-muted">2026-03-09</td>
-                                <td class="text-end"><span class="badge-success">처리완료</span></td>
-                            </tr>
+                            <c:if test="${empty list}">
+                                <tr>
+                                    <td colspan="6" class="admin-td text-center py-5 text-muted">
+                                        <i class="bi bi-info-circle me-2"></i>접수된 신고 내역이 없습니다.
+                                    </td>
+                                </tr>
+                            </c:if>
+                            <c:forEach var="dto" items="${list}">
+                                <tr>
+                                    <td class="admin-td text-center text-muted">#R-${dto.reportNo}</td>
+                                    <td class="admin-td fw-bold">${dto.targetType} (NO. ${dto.targetNo})</td>
+                                    <td class="admin-td">${dto.reporterName}</td>
+                                    <td class="admin-td text-truncate" style="max-width: 250px;" title="${dto.reason}">${dto.reason}</td>
+                                    <td class="admin-td text-center small text-muted">${dto.createdAt}</td>
+                                    <td class="admin-td text-center">
+                                        <c:choose>
+                                            <c:when test="${dto.status == 'WAITING' or empty dto.status}">
+                                                <span class="badge" style="background-color: rgba(245, 158, 11, 0.15); color: #F59E0B !important;">미처리</span>
+                                            </c:when>
+                                            <c:when test="${dto.status == 'DONE'}">
+                                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1">처리완료</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="badge bg-secondary">${dto.status}</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                </tr>
+                            </c:forEach>
                         </tbody>
                     </table>
+                </div>
+
+                <div class="d-flex justify-content-center mt-4">
+                    <nav aria-label="Page navigation">
+                        <div class="admin-pagination">${paging}</div>
+                    </nav>
                 </div>
             </div>
         </main>
     </div>
 </div>
 <jsp:include page="/WEB-INF/views/admin/layout/footerResources.jsp"/>
+
+<script>
+function searchList() {
+    const f = document.searchForm;
+    f.page.value = "1";
+    f.submit();
+}
+</script>
 </body>
 </html>

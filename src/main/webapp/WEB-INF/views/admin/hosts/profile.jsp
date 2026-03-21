@@ -16,15 +16,8 @@
 <sec:authentication property="principal.member" var="adminMember" />
 
 <div class="admin-layout d-flex flex-column min-vh-100">
-    <header class="admin-header">
-        <div class="admin-logo">공대생</div>
-        <div class="admin-user-area">
-            <span><strong><sec:authentication property="principal.member.name"/></strong> 관리자님</span>
-            <a href="${pageContext.request.contextPath}/member/logout" class="admin-logout">
-                <i class="bi bi-box-arrow-right"></i> 로그아웃
-            </a>
-        </div>
-    </header>
+    
+    <jsp:include page="/WEB-INF/views/admin/layout/header.jsp"/>
 
     <div class="admin-body d-flex flex-grow-1">
         <jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
@@ -214,10 +207,8 @@ async function updateStatusOk() {
     if(!f.memo.value.trim()) { alert("사유를 입력하세요."); f.memo.focus(); return; }
     if(!confirm("해당 호스트의 계정 상태를 변경하시겠습니까?")) return;
     
-    // 💡 호스트 API 주소로 변경
     const url = "${pageContext.request.contextPath}/admin/hosts/HostStatus";
     const query = new URLSearchParams(new FormData(f)).toString();
-    
     try {
         await fetchRequest(url, "POST", query, "form", "text");
         forceCloseModal();

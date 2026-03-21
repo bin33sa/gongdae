@@ -16,15 +16,8 @@
 <sec:authentication property="principal.member" var="adminMember" />
 
 <div class="admin-layout d-flex flex-column min-vh-100">
-    <header class="admin-header">
-        <div class="admin-logo">공대생</div>
-        <div class="admin-user-area">
-            <span><strong><sec:authentication property="principal.member.name"/></strong> 관리자님</span>
-            <a href="${pageContext.request.contextPath}/member/logout" class="admin-logout">
-                <i class="bi bi-box-arrow-right"></i> 로그아웃
-            </a>
-        </div>
-    </header>
+    
+    <jsp:include page="/WEB-INF/views/admin/layout/header.jsp"/>
 
     <div class="admin-body d-flex flex-grow-1">
         <jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
@@ -33,7 +26,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h3 class="fw-bold mb-2">게스트 상세 정보</h3>
-                    <p class="mb-0 text-muted">회원의 상세 정보를 확인하고 등급 및 상태를 관리합니다.</p>
+                    <p class="mb-0 text-muted">게스트(일반 회원)의 상세 정보를 확인하고 등급 및 상태를 관리합니다.</p>
                 </div>
                 <div>
                     <button type="button" class="btn btn-outline-secondary" onclick="location.href='${pageContext.request.contextPath}/admin/guests/list?page=${page}';">
@@ -42,63 +35,62 @@
                 </div>
             </div>
 
-            <div class="dashboard-box mb-5">
+            <div class="dashboard-box mb-4">
                 <h5 class="fw-bold text-main mb-4"><i class="bi bi-person-lines-fill me-2"></i> 기본 정보</h5>
                 <div class="table-responsive">
                     <table class="table text-main mb-0 align-middle">
                         <tr>
                             <th class="admin-th" style="width: 15%;">회원번호</th>
                             <td class="admin-td text-muted" style="width: 35%;">#${dto.member_id}</td>
-                            <th class="admin-th" style="width: 15%;">회원 등급</th>
-                            <td class="admin-td" style="width: 35%;">
-                                <c:choose>
-                                    <c:when test="${dto.grade == 'GOLD'}"><span class="grade-badge grade-gold">GOLD</span></c:when>
-                                    <c:when test="${dto.grade == 'SILVER'}"><span class="grade-badge grade-silver">SILVER</span></c:when>
-                                    <c:otherwise><span class="grade-badge grade-bronze">BRONZE</span></c:otherwise>
-                                </c:choose>
-                            </td>
+                            <th class="admin-th" style="width: 15%;">아이디</th>
+                            <td class="admin-td" style="width: 35%;">${dto.login_id}</td>
                         </tr>
                         <tr>
-                            <th class="admin-th">이름</th>
-                            <td class="admin-td fw-bold">${dto.name}</td>
                             <th class="admin-th">닉네임</th>
-                            <td class="admin-td text-info fw-bold">${empty dto.nickname ? '-' : dto.nickname}</td>
+                            <td class="admin-td fw-bold">${dto.nickname}</td>
+                            <th class="admin-th">이름</th>
+                            <td class="admin-td text-muted">${empty dto.name ? '<span class="text-muted" style="opacity:0.5; margin-left:10px;">-</span>' : dto.name}</td>
                         </tr>
                         <tr>
-                            <th class="admin-th">로그인 아이디</th>
-                            <td class="admin-td">${dto.login_id}</td>
                             <th class="admin-th">이메일</th>
-                            <td class="admin-td">${empty dto.email ? '-' : dto.email}</td>
+                            <td class="admin-td">${empty dto.email ? '<span class="text-muted" style="opacity:0.5; margin-left:20px;">-</span>' : dto.email}</td>
+                            <th class="admin-th">연락처</th>
+                            <td class="admin-td">${empty dto.phone ? '<span class="text-muted" style="opacity:0.5; margin-left:20px;">-</span>' : dto.phone}</td>
                         </tr>
                         <tr>
-                            <th class="admin-th">전화번호</th>
-                            <td class="admin-td">${empty dto.phone ? '-' : dto.phone}</td>
-                            <th class="admin-th">생년월일</th>
-                            <td class="admin-td">${empty dto.birth ? '-' : dto.birth} <span class="small-txt text-muted ms-2">(만 ${dto.age}세)</span></td>
+                            <th class="admin-th">가입일</th>
+                            <td class="admin-td text-muted">${dto.created_at}</td>
+                            <th class="admin-th">최근 접속일</th>
+                            <td class="admin-td text-muted">${empty dto.last_login ? '접속 이력 없음' : dto.last_login}</td>
                         </tr>
                         <tr>
-                            <th class="admin-th border-0">포인트</th>
-                            <td class="admin-td fw-bold border-0"><fmt:formatNumber value="${dto.point}" pattern="#,###"/> P</td>
-                            <th class="admin-th border-0">계정상태</th>
+                            <th class="admin-th border-0">보유 포인트</th>
+                            <td class="admin-td fw-bold border-0 text-info"><fmt:formatNumber value="${dto.point}" pattern="#,###"/> P</td>
+                            <th class="admin-th border-0">계정 상태</th>
                             <td class="admin-td border-0">
                                 <c:choose>
-                                    <c:when test="${dto.enabled == 1}"><span class="status-normal">정상</span></c:when>
-                                    <c:otherwise><span class="status-banned">정지 잠금</span></c:otherwise>
+                                    <c:when test="${dto.enabled == 1}"><span class="status-normal">정상 이용</span></c:when>
+                                    <c:otherwise><span class="status-banned">이용 정지</span></c:otherwise>
                                 </c:choose>
                             </td>
                         </tr>
                     </table>
                 </div>
 
-                <div class="mt-4 pt-4 d-flex justify-content-end gap-3 border-top border-secondary border-opacity-25">
+                <div class="mt-4 pt-4 d-flex justify-content-between align-items-center border-top border-secondary border-opacity-25">
+                    <form name="memberUpdateForm" class="d-flex align-items-center gap-2">
+                        <input type="hidden" name="member_id" value="${dto.member_id}">
+                        <label class="fw-bold text-main me-2">등급 관리</label>
+                        <select name="grade" class="form-select bg-transparent text-main border-secondary" style="width: 150px;">
+                            <option value="BRONZE" ${dto.grade == 'BRONZE' ? 'selected' : ''}>BRONZE</option>
+                            <option value="SILVER" ${dto.grade == 'SILVER' ? 'selected' : ''}>SILVER</option>
+                            <option value="GOLD" ${dto.grade == 'GOLD' ? 'selected' : ''}>GOLD</option>
+                        </select>
+                        <button type="button" class="btn btn-purple px-4" onclick="updateMemberOk();">등급 저장</button>
+                    </form>
                     <button type="button" class="btn btn-dark px-4 py-2 border border-secondary" onclick="statusDetailesMember();">
-                        <i class="bi bi-shield-exclamation me-2 text-danger"></i>상태변경
+                        <i class="bi bi-shield-exclamation me-2 text-danger"></i>상태 변경 (제재/해제)
                     </button>
-                    <c:if test="${dto.userLevel < 50 || adminMember.userLevel > 90}">
-                        <button type="button" class="btn-purple" onclick="updateMember();">
-                            <i class="bi bi-award-fill me-2"></i>등급변경
-                        </button>
-                    </c:if>
                 </div>
             </div>
 
@@ -118,17 +110,17 @@
                         <tbody>
                             <c:forEach var="vo" items="${listStatus}" varStatus="status">
                                 <tr>
-                                    <c:set var="lastLine" value="${status.last ? 'border-0' : ''}" />
-                                    <td class="admin-td text-center text-muted ${lastLine}">${vo.num}</td>
-                                    <td class="admin-td text-center ${lastLine}">
+                                    <c:set var="lastClass" value="${status.last ? 'border-0' : ''}" />
+                                    <td class="admin-td text-center text-muted ${lastClass}">${vo.num}</td>
+                                    <td class="admin-td text-center ${lastClass}">
                                         <c:choose>
-                                            <c:when test="${vo.status_code == 0}"><span class="status-normal">정상화 (0)</span></c:when>
-                                            <c:otherwise><span class="status-banned">정지 (${vo.status_code})</span></c:otherwise>
+                                            <c:when test="${vo.status_code == 0}"><span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1">정상화 (0)</span></c:when>
+                                            <c:otherwise><span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-2 py-1">정지 (${vo.status_code})</span></c:otherwise>
                                         </c:choose>
                                     </td>
-                                    <td class="admin-td text-muted ${lastLine}">${vo.memo}</td>
-                                    <td class="admin-td text-center ${lastLine}">${vo.registerName}</td>
-                                    <td class="admin-td text-center text-muted small-txt ${lastLine}">${vo.reg_date}</td>
+                                    <td class="admin-td text-muted ${lastClass}">${vo.memo}</td>
+                                    <td class="admin-td text-center ${lastClass}">${vo.registerName}</td>
+                                    <td class="admin-td text-center text-muted small-txt ${lastClass}">${vo.reg_date}</td>
                                 </tr>
                             </c:forEach>
                             <c:if test="${empty listStatus}">
@@ -143,38 +135,13 @@
                 </div>
             </div>
             
-       </main>
-    </div>
-</div>
-
-<div class="modal fade" id="memberUpdateDialogModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content bg-dark text-white border-secondary">
-            <div class="modal-header border-secondary">
-                <h5 class="modal-title fw-bold"><i class="bi bi-award me-2"></i>등급 변경</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form name="memberUpdateForm" id="memberUpdateForm">
-                    <input type="hidden" name="member_id" value="${dto.member_id}">
-                    <div class="mb-4">
-                        <label class="form-label small-txt text-muted mb-2">변경할 등급 선택</label>
-                        <select name="grade" class="form-select">
-                            <option value="BRONZE" ${dto.grade == 'BRONZE' ? 'selected' : ''}>BRONZE</option>
-                            <option value="SILVER" ${dto.grade == 'SILVER' ? 'selected' : ''}>SILVER</option>
-                            <option value="GOLD" ${dto.grade == 'GOLD' ? 'selected' : ''}>GOLD</option>
-                        </select>
-                    </div>
-                    <button type="button" class="btn-purple w-100" onclick="updateMemberOk();">변경 적용하기</button>
-                </form>
-            </div>
-        </div>
+        </main>
     </div>
 </div>
 
 <div class="modal fade" id="statusModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-dark text-white border-secondary">
+        <div class="modal-content bg-dark text-white border-secondary shadow-lg">
             <div class="modal-header border-secondary">
                 <h5 class="modal-title fw-bold"><i class="bi bi-shield-lock me-2"></i>계정 상태 관리</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -185,52 +152,49 @@
                     <input type="hidden" name="register_id" value="${adminMember.member_id}">
                     
                     <div class="mb-3">
-                        <label class="form-label small-txt text-muted">대상 회원</label>
-                        <input type="text" class="form-control" value="${dto.name} (${dto.login_id})" readonly>
+                        <label class="form-label small-txt text-muted">대상 게스트</label>
+                        <input type="text" class="form-control bg-transparent text-white border-secondary" value="${dto.nickname} (${dto.login_id})" readonly>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small-txt text-muted">상태 코드 지정</label>
-                        <select name="status_code" id="statusCode" class="form-select" onchange="selectStatusChange(this)">
+                        <select name="status_code" id="statusCode" class="form-select" style="background-color:rgba(0,0,0,0.2); border-color:#374151;" onchange="selectStatusChange(this)">
                             <option value="">:: 상태 선택 ::</option>
                             <c:if test="${dto.enabled==0}"><option value="0">잠금 해제 (정상화)</option></c:if>
                             <option value="1">이용 정지 (일반)</option>
-                            <option value="2">불법적인 방법으로 로그인</option>
-                            <option value="3">불건전 게시물 등록</option>
-                            <option value="4">다른 유저 비방</option>
-                            <option value="5">타계정 도용</option>
+                            <option value="2">허위 정보 기재</option>
+                            <option value="3">불법적인 사이트 이용</option>
+                            <option value="4">게시판 도배/욕설</option>
+                            <option value="5">호스트 클레임 누적</option>
                             <option value="6">약관 위반</option>
-                            <option value="7">1년이상 로그인하지 않음</option>
                             <option value="8">기타</option>
                         </select>
                     </div>
                     <div class="mb-4">
                         <label class="form-label small-txt text-muted">사유 (메모)</label>
-                        <input type="text" name="memo" id="memo" class="form-control" placeholder="변경 사유를 입력하세요">
+                        <input type="text" name="memo" id="memo" class="form-control" style="background-color:rgba(0,0,0,0.2); border-color:#374151;" placeholder="변경 사유를 입력하세요">
                     </div>
-                    <button type="button" class="btn btn-danger w-100 fw-bold py-2" onclick="updateStatusOk();">상태 적용하기</button>
+                    <button type="button" class="btn btn-danger w-100 fw-bold py-2 border-0" onclick="updateStatusOk();">상태 적용하기</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-<jsp:include page="/WEB-INF/views/admin/layout/footerResources.jsp"/>
-
 <script type="text/javascript">
 function forceCloseModal() {
     const modals = document.querySelectorAll('.modal.show');
     modals.forEach(modalEl => {
         const instance = bootstrap.Modal.getInstance(modalEl);
-        if (instance) instance.hide();
+        if (instance) {
+            instance.hide();
+        }
     });
     const backdrops = document.querySelectorAll('.modal-backdrop');
     backdrops.forEach(b => b.remove());
+    
     document.body.classList.remove('modal-open');
     document.body.style.overflow = '';
-}
-
-function updateMember() {
-    new bootstrap.Modal(document.getElementById('memberUpdateDialogModal')).show();
+    document.body.style.paddingRight = '';
 }
 
 function statusDetailesMember() {
@@ -268,10 +232,10 @@ async function updateStatusOk() {
     const query = new URLSearchParams(new FormData(f)).toString();
     try {
         await fetchRequest(url, "POST", query, "form", "text");
-        forceCloseModal();
-        alert("✅ 계정 상태가 변경되었습니다.");
+        forceCloseModal(); 
+        alert("✅ 상태 변경이 완료되었습니다.");
         location.reload();
-    } catch (e) { console.error("통신 오류:", e); }
+    } catch (e) { console.error(e); }
 }
 </script>
 </body>
