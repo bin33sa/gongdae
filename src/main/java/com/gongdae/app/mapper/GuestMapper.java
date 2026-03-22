@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import com.gongdae.app.domain.dto.GuestDto;
 import com.gongdae.app.domain.dto.MemberDto;
@@ -23,13 +22,8 @@ public interface GuestMapper {
 	public GuestDto findById(Long member_id);
 	public GuestDto findByLoginId(String login_id);
 	public GuestDto findByNickname(String nickname);
-	public GuestDto findByNameAndEmail(
-			@Param("name") String name, 
-			@Param("email") String email);
-	public GuestDto findByLoginIdAndNameAndEmail(
-			@Param("login_id") String login_id,
-			@Param("name") String name,
-			@Param("email") String email);
+	public GuestDto findByNameAndEmail(Map<String, Object> map);
+	public GuestDto findByLoginIdAndNameAndEmail(Map<String, Object> map);
 	public Long getMemberId(String login_id);
 	
 	public int checkFailureCount(String login_id);

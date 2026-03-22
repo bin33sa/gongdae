@@ -142,7 +142,11 @@ public class GuestController {
 			Model model) throws Exception {
 		
 		try {
-			GuestDto dto = service.findGuestByNameAndEmail(name, email);
+			Map<String, Object> map = new HashMap<>();
+			map.put("name", name);
+			map.put("email", email);
+			
+			GuestDto dto = service.findGuestByNameAndEmail(map);
 			
 			if(dto == null || dto.getEnabled() == 0) {
 				model.addAttribute("message", "등록된 아이디가 없습니다.");
@@ -192,7 +196,12 @@ public class GuestController {
 			Model model) throws Exception {
 		
 		try {
-			GuestDto dto = service.findGuestByIdAndNameAndEmail(login_id, name, email);
+			Map<String, Object> map = new HashMap<>();
+			map.put("login_id", login_id);
+			map.put("name", name);
+			map.put("email", email);
+			
+			GuestDto dto = service.findGuestByIdAndNameAndEmail(map);
 			
 			if(dto == null || dto.getEnabled() == 0) {
 				model.addAttribute("message", "등록된 아이디가 없습니다.");

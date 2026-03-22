@@ -14,8 +14,8 @@ public interface GuestService {
 	public GuestDto findById(Long member_id);
 	public GuestDto findById(String login_id);//
 	public GuestDto findGuestByNickname(String nickname);//
-	public GuestDto findGuestByNameAndEmail(String name, String email); //
-	public GuestDto findGuestByIdAndNameAndEmail(String login_id, String name, String email);//
+	public GuestDto findGuestByNameAndEmail(Map<String, Object> map); //
+	public GuestDto findGuestByIdAndNameAndEmail(Map<String, Object> map);//
 	public Long getMemberId(String login_id);
 	
 	public int checkFailureCount(String login_id);

@@ -41,6 +41,10 @@ public class CommonController {
 		return "common/expired";
 	}	
 	
+	@GetMapping("/error/downloadFailed")
+	public String handleDownloadFailed() {
+		return "error/downloadFailure";
+	}
 	
 	
 }

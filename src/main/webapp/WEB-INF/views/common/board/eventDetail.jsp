@@ -32,40 +32,31 @@
 			<div class="event-detail-head">
 
 				<div class="event-detail-title">
-					신규 가입 5000포인트 지급 이벤트
+					${dto.title }
 				</div>
 
 				<div class="event-detail-meta">
 					<span class="event-badge active">진행중</span>
-					<span>기간 : 2026.03.01 ~ 2026.03.31</span>
+					<span>기간 : ${dto.start_date} ~ ${dto.end_date}</span>
 				</div>
 
 			</div>
 
 			<!-- 대표 이미지 -->
-			<div class="event-detail-image">
-				<img src="/uploads/sample-event.jpg" alt="이벤트 이미지">
-			</div>
+			<c:if test="not empty dto.saveFilename">
+				<div class="event-detail-image">
+					<img src="/uploads/admin/event/${dto.saveFilename}" alt="이벤트 이미지">
+				</div>
+			</c:if>
 
 			<!-- 내용 -->
 			<div class="event-detail-content">
-				안녕하세요 공대생입니다.<br><br>
-
-				신규 가입 회원을 대상으로 특별한 혜택을 준비했습니다! 🎉<br><br>
-
-				■ 이벤트 내용<br>
-				회원가입 시 5000 포인트 즉시 지급<br><br>
-
-				■ 참여 방법<br>
-				1. 회원가입 진행<br>
-				2. 자동 지급된 포인트 확인<br><br>
-
-				지금 바로 가입하고 혜택 받아가세요!
+				${dto.content}
 			</div>
 
 			<!-- 하단 -->
 			<div class="event-detail-bottom">
-				<a href="<c:url value='/event'/>" class="btn-back">
+				<a href="<c:url value='/event?${query}'/>" class="btn-back">
 					목록으로
 				</a>
 			</div>

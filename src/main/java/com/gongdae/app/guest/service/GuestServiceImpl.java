@@ -126,11 +126,11 @@ public class GuestServiceImpl implements GuestService {
 	}
 	
 	@Override
-	public GuestDto findGuestByNameAndEmail(String name, String email) {
+	public GuestDto findGuestByNameAndEmail(Map<String, Object> map) {
 		GuestDto dto = null;
 		
 		try {
-			dto = Objects.requireNonNull(mapper.findByNameAndEmail(name, email));
+			dto = Objects.requireNonNull(mapper.findByNameAndEmail(map));
 		} catch (NullPointerException e) {
 		} catch (Exception e) {
 			log.info("findByNameAndEmail : ", e);
@@ -140,11 +140,11 @@ public class GuestServiceImpl implements GuestService {
 	}
 
 	@Override
-	public GuestDto findGuestByIdAndNameAndEmail(String login_id, String name, String email) {
+	public GuestDto findGuestByIdAndNameAndEmail(Map<String, Object> map) {
 		GuestDto dto = null;
 		
 		try {
-			dto = Objects.requireNonNull(mapper.findByLoginIdAndNameAndEmail(login_id, name, email));
+			dto = Objects.requireNonNull(mapper.findByLoginIdAndNameAndEmail(map));
 		} catch(NullPointerException e) {
 		} catch(Exception e) {
 			log.info("findByIdAndNameAndEmail : ", e);

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gongdae.app.mapper.BoardMapper">
+
+	<select id="findById" resultType="com.gongdae.app.domain.dto.BoardDto">
+    	SELECT 
+    		a.name AS admin_name, board_no AS num, title, content, 
+    		saveFilename, originalFilename, 
+    		TO_CHAR(created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at,
+    		TO_CHAR(updated_at, 'YYYY-MM-DD HH24:MI:SS') AS updated_at,
+    		TO_CHAR(start_date, 'YYYY-MM-DD') AS start_date,
+    		TO_CHAR(end_date, 'YYYY-MM-DD') AS end_date
+    	FROM board
+    	LEFT OUTER JOIN admin_detail a ON a.member_id = board.member_id
+    	WHERE board_no = #{num} AND block = 0
+    </select>
+
+	<update id="updateHitCount" parameterType="Long">
+		UPDATE board SET view_count = view_count + 1
+		WHERE board_no = #{num}
+	</update>
+
+	<select id="noticeCount" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM board
+		<where>
+			<if test="kwd != null and kwd != '' ">
+				INSTR(title, #{kwd}) > 0
+			</if>
+			AND type = 'NOTICE'
+			AND block = 0
+		</where>
+		
+    </select>
+    
+    <select id="noticeList" resultType="com.gongdae.app.domain.dto.BoardDto">
+    	SELECT 
+    		a.name AS admin_name, board_no AS num, title, content, 
+    		TO_CHAR(created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at,
+    		TO_CHAR(updated_at, 'YYYY-MM-DD HH24:MI:SS') AS updated_at
+    	FROM board
+    	LEFT OUTER JOIN admin_detail a ON a.member_id = board.member_id
+    	<where>
+			<if test="kwd != null and kwd != '' ">
+				INSTR(title, #{kwd}) > 0
+			</if>
+			AND type = 'NOTICE'
+			AND block = 0
+		</where>
+		ORDER BY board_no DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+    </select>
+	
+	<select id="eventCount" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM board
+		WHERE type = 'EVENT' AND block = 0
+    </select>
+    
+    <select id="eventList" resultType="com.gongdae.app.domain.dto.BoardDto">
+    	SELECT 
+    		a.name AS admin_name, board_no AS num, title, content,
+    		TO_CHAR(created_at, 'YYYY-MM-DD HH24:MI:SS') AS created_at,
+    		TO_CHAR(updated_at, 'YYYY-MM-DD HH24:MI:SS') AS updated_at,
+    		TO_CHAR(start_date, 'YYYY-MM-DD') AS start_date,
+    		TO_CHAR(end_date, 'YYYY-MM-DD') AS end_date
+    	FROM board
+    	LEFT OUTER JOIN admin_detail a ON a.member_id = board.member_id
+    	WHERE type = 'EVENT' AND block = 0
+		ORDER BY board_no DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+    </select>
+    
+    <select id="faqList" resultType="com.gongdae.app.domain.dto.BoardDto">
+    	SELECT board_no AS num, title, content
+    	FROM board
+    	WHERE type = 'FAQ' AND block = 0
+		ORDER BY board_no DESC
+    </select>
+    
+    
+    
+	
+	
+</mapper>

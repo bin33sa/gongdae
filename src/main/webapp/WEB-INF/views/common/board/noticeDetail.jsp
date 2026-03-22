@@ -9,7 +9,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>공지사항 상세</title>
+<title>공지사항</title>
 
 <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp" />
 
@@ -32,31 +32,33 @@
 			<div class="notice-detail-head">
 
 				<div class="notice-detail-title">
-					[공지] 공대생 커뮤니티 삼일절 휴무 안내
+					<c:out value="${dto.title}"/>
 				</div>
 
 				<div class="notice-detail-meta">
-					<span>작성자 : 관리자</span>
-					<span>작성일 : 2026.03.01 14:30</span>
+					<span>작성자 : ${dto.admin_name}</span>
+					<span>작성일 : ${dto.created_at}</span>
 				</div>
 
 			</div>
 
 			<!-- 내용 -->
 			<div class="notice-detail-content">
-				안녕하세요. 공대생 커뮤니티입니다.<br><br>
-				삼일절을 맞이하여 아래와 같이 서비스가 일시 중단될 예정입니다.<br><br>
-
-				■ 휴무 일정 : 2026년 3월 1일 (월)<br>
-				■ 정상 운영 : 2026년 3월 2일 (화)부터<br><br>
-
-				이용에 불편을 드려 죄송하며, 더 나은 서비스로 보답하겠습니다.<br><br>
-				감사합니다.
+				<c:out value="${dto.content}" escapeXml="false"/>
+			</div>
+			
+			<div>
+				<c:if test="${not empty dto.saveFilename}">
+					<p class="border text-secondary my-1 p-2">
+						<i class="bi bi-folder2-open"></i>
+						<a href="${pageContext.request.contextPath}/notice/download/${dto.num}">${dto.originalFilename}</a>
+					</p>
+				</c:if>
 			</div>
 
 			<!-- 하단 버튼 -->
 			<div class="notice-detail-bottom">
-				<a href="<c:url value='/notice'/>" class="btn-back">
+				<a href="<c:url value='/notice?${query}'/>" class="btn-back">
 					목록으로
 				</a>
 			</div>
