@@ -48,10 +48,19 @@
     </select>
 
     <select id="getHourlyVisitors" resultType="map">
-        SELECT TO_NUMBER(TO_CHAR(last_login, 'HH24')) AS hour, COUNT(*) AS cnt
-        FROM member
-        WHERE last_login IS NOT NULL
-        GROUP BY TO_CHAR(last_login, 'HH24')
+        SELECT h.hour_val AS hour, NVL(m.cnt, 0) AS cnt
+        FROM (
+            SELECT LEVEL - 1 AS hour_val
+            FROM DUAL
+            CONNECT BY LEVEL &lt;= 24
+        ) h
+        LEFT JOIN (
+            SELECT TO_NUMBER(TO_CHAR(last_login, 'HH24')) AS hour_val, COUNT(*) AS cnt
+            FROM member
+            WHERE last_login IS NOT NULL
+            GROUP BY TO_CHAR(last_login, 'HH24')
+        ) m ON h.hour_val = m.hour_val
+        ORDER BY h.hour_val
     </select>
 
     <select id="getRecentReservations" resultType="com.gongdae.app.admin.domain.dto.DashboardDto$RecentReservationDto">
@@ -64,12 +73,14 @@
                     WHEN 'CANCELLED' THEN '취소됨'
                     WHEN 'COMPLETED' THEN '이용완료'
                     WHEN 'NOSHOW' THEN '노쇼'
+                    WHEN 'PENDING' THEN '보류중'
                     ELSE r.status END AS status,
                CASE r.status 
-                    WHEN 'RESERVED' THEN '#34E085'
-                    WHEN 'CANCELLED' THEN '#EF4444'
-                    WHEN 'COMPLETED' THEN '#3B82F6'
-                    ELSE '#6C757D' END AS statusColor
+                    WHEN 'RESERVED' THEN 'status-reserved'
+                    WHEN 'CANCELLED' THEN 'status-cancelled'
+                    WHEN 'COMPLETED' THEN 'status-completed'
+                    WHEN 'PENDING' THEN 'status-pending'
+                    ELSE 'status-default' END AS statusColor
         FROM reservation r
         JOIN guest_detail g ON r.guest_id = g.member_id
         JOIN space_unit su ON r.unit_no = su.unit_no

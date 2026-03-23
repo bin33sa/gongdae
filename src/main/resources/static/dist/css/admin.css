@@ -1118,3 +1118,8 @@ input[type="date"].admin-input::-webkit-calendar-picker-indicator {
     pointer-events: none;
     background-color: rgba(0, 0, 0, 0.2);
 }
+.status-reserved { color: #34E085 !important; }  
+.status-cancelled { color: #EF4444 !important; }  
+.status-completed { color: #3B82F6 !important; }  
+.status-pending { color: #F59E0B !important; }   
+.status-default { color: #6C757D !important; }

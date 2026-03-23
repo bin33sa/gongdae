@@ -9,6 +9,13 @@
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <title>공대생 Admin - Dashboard</title>
+    <style>
+        .status-reserved { color: #34E085 !important; }
+        .status-cancelled { color: #EF4444 !important; }
+        .status-completed { color: #3B82F6 !important; }
+        .status-pending { color: #F59E0B !important; }
+        .status-default { color: #6C757D !important; }
+    </style>
 </head>
 <body class="admin-page">
 
@@ -122,7 +129,7 @@
                                                     <td class="admin-td fw-bold">${res.spaceName}</td>
                                                     <td class="admin-td txt-muted small-txt">${res.resDate}</td>
                                                     <td class="admin-td txt-right">
-                                                        <span class="small-txt fw-bold" style="color: ${res.statusColor} !important;">
+                                                        <span class="small-txt fw-bold ${res.statusColor}">
                                                             ${res.status}
                                                         </span>
                                                     </td>
@@ -150,7 +157,6 @@
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function() {
         
-        // --- ECharts 렌더링 영역 ---
         var mainChart = echarts.init(document.getElementById('mainRevenueChart'));
         var mainOption = {
             tooltip: { trigger: 'axis', backgroundColor: '#1F2937', borderColor: '#374151', textStyle: { color: '#F9FAFB' } },
@@ -219,19 +225,28 @@
         var lineChart = echarts.init(document.getElementById('reservationTrendChart'));
         var lineOption = {
             tooltip: { trigger: 'axis', backgroundColor: '#1F2937', borderColor: '#374151', textStyle: { color: '#F9FAFB' } },
-            grid: { left: '0%', right: '0%', bottom: '0%', top: '10%', containLabel: false },
+            grid: { left: '2%', right: '5%', bottom: '5%', top: '10%', containLabel: true },
             xAxis: { 
                 type: 'category', 
-                data: ['09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00'],
-                show: false 
+                data: ['0시','1시','2시','3시','4시','5시','6시','7시','8시','9시','10시','11시','12시','13시','14시','15시','16시','17시','18시','19시','20시','21시','22시','23시'],
+                show: true,
+                axisLabel: { color: '#9CA3AF', fontSize: 10 },
+                axisLine: { show: false },
+                axisTick: { show: false }
             },
-            yAxis: { type: 'value', show: false },
+            yAxis: { type: 'value', show: false }, 
             series: [{
                 data: ${dto.hourlyVisitors}, 
                 type: 'line',
                 smooth: true,
                 showSymbol: false,
-                lineStyle: { width: 4, color: '#3B82F6' }
+                lineStyle: { width: 4, color: '#3B82F6' },
+                areaStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: 'rgba(59, 130, 246, 0.3)' },
+                        { offset: 1, color: 'rgba(59, 130, 246, 0.0)' }
+                    ])
+                }
             }]
         };
         lineChart.setOption(lineOption);
