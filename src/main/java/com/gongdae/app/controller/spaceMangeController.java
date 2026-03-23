@@ -80,7 +80,7 @@ public class spaceMangeController {
         return "redirect:/host/main/home"; 
     }
 
-    // 💡 논리적 삭제
+ 
     @PostMapping("delete")
     public String deleteSpace(@RequestParam(name = "spaceNo") long spaceNo) {
         try {

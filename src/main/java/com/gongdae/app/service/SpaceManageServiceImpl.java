@@ -1,5 +1,6 @@
 package com.gongdae.app.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -231,4 +232,34 @@ public class SpaceManageServiceImpl implements SpaceManageService {
 	public List<SpaceManageDTO> listSpace(long hostId) throws Exception {
 		return mapper.listSpace(hostId);
 	}
+
+	@Transactional(rollbackFor = Exception.class)
+    @Override
+    public void togglePremium(long spaceNo, long hostId, String currentPremiumStatus) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        map.put("spaceNo", spaceNo);
+        map.put("hostId", hostId);
+
+        if ("N".equals(currentPremiumStatus)) {
+            // 💡 1. [신청] 버튼 클릭 -> 승인 대기(P) 상태로 변경
+            map.put("isPremium", "P");
+            map.put("status", "PENDING");
+            mapper.updateSpacePremiumFlag(map);
+            mapper.insertPremiumHistory(map);
+            
+        } else if ("P".equals(currentPremiumStatus)) {
+            // 💡 2. [승인 대기중] 버튼 클릭 -> 신청 취소(N) 상태로 복귀
+            map.put("isPremium", "N");
+            map.put("status", "CANCELED"); // 이력은 '취소됨'으로 남김
+            mapper.updateSpacePremiumFlag(map);
+            mapper.updatePremiumHistory(map);
+            
+        } else if ("Y".equals(currentPremiumStatus)) {
+            // 💡 3. [적용중] 버튼 클릭 -> 광고 해지(N) 상태로 복귀
+            map.put("isPremium", "N");
+            map.put("status", "INACTIVE"); // 이력은 '해지됨'으로 남김
+            mapper.updateSpacePremiumFlag(map);
+            mapper.updatePremiumHistory(map);
+        }
+    }
 }

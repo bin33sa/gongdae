@@ -8,6 +8,8 @@ public interface SpaceManageService {
 	public void insertSpace(SpaceManageDTO dto, String uploadPath) throws Exception;
 	public void updateSpace(SpaceManageDTO dto, String uploadPath) throws Exception;
     public void deleteSpace(long spaceNo, long hostId) throws Exception; // 💡 파라미터 간소화
+    public void togglePremium(long spaceNo, long hostId, String currentPremiumStatus) throws Exception;
+    
     
     public List<Map<String, Object>> listCategory() throws Exception;
     public List<Map<String, Object>> listOption() throws Exception;

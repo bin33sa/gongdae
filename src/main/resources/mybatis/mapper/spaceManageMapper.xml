@@ -121,11 +121,27 @@
                s.space_name AS spaceName, 
                s.region, 
                s.space_intro AS spaceIntro,
+               s.is_premium AS isPremium,
                NVL((SELECT MAX(u.max_capacity) FROM SPACE_UNIT u WHERE u.space_no = s.space_no), 0) AS maxCapacity,
                (SELECT MIN(i.file_url) FROM SPACE_IMAGE i WHERE i.space_no = s.space_no) AS fileUrl
         FROM SPACE s
         WHERE s.host_id = #{hostId} AND s.status = 'ACTIVE'
         ORDER BY s.space_no DESC
     </select>
+
+    <update id="updateSpacePremiumFlag" parameterType="map">
+        UPDATE SPACE SET is_premium = #{isPremium} WHERE space_no = #{spaceNo}
+    </update>
+
+    <insert id="insertPremiumHistory" parameterType="map">
+        INSERT INTO SPACE_PREMIUM (premium_no, space_no, host_id, status, applied_at)
+        VALUES (SEQ_SPACE_PREMIUM.NEXTVAL, #{spaceNo}, #{hostId}, #{status}, SYSDATE)
+    </insert>
+
+    <update id="updatePremiumHistory" parameterType="map">
+        UPDATE SPACE_PREMIUM 
+        SET status = #{status}, canceled_at = SYSDATE 
+        WHERE space_no = #{spaceNo} AND status IN ('PENDING', 'ACTIVE')
+    </update>
     
 </mapper>

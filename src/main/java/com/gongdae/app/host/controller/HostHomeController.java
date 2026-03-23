@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gongdae.app.domain.dto.SessionInfo;
 import com.gongdae.app.domain.dto.SpaceInquiryDTO;
@@ -41,9 +42,7 @@ public class HostHomeController {
         return "host/main/home";
     }
 
-    // ==========================================
-    // 1. 매장 관리 (DB 연동 완료)
-    // ==========================================
+    
     @GetMapping("menu/store")
     public String store(Model model) throws Exception {
         SessionInfo info = LoginMemberUtil.getSessionInfo();
@@ -54,19 +53,17 @@ public class HostHomeController {
         return "host/menu/store";
     }
 
-    // ==========================================
-    // 2. 1:1 문의 관리 (DB 연동 완료)
-    // ==========================================
+   
     @GetMapping("menu/qna")
     public String qna(@RequestParam(name = "inquiryNo", required = false, defaultValue = "0") long inquiryNo, Model model) throws Exception {
         SessionInfo info = LoginMemberUtil.getSessionInfo();
         long hostId = info.getMember_id();
 
-        // 좌측 문의 리스트 가져오기
+        
         List<SpaceInquiryDTO> list = inquiryService.listInquiryByHost(hostId);
         SpaceInquiryDTO detail = null;
 
-        // 우측 상세 채팅창 데이터 가져오기
+       
         if (inquiryNo != 0) {
             detail = inquiryService.findInquiryById(inquiryNo);
         } else if (!list.isEmpty()) {
@@ -85,7 +82,7 @@ public class HostHomeController {
         SessionInfo info = LoginMemberUtil.getSessionInfo();
         try {
             SpaceInquiryDTO verify = inquiryService.findInquiryById(dto.getInquiryNo());
-            // 내 공간에 달린 문의가 맞는지 권한 검증
+           
             if(verify != null && verify.getHostId() == info.getMember_id()) {
                 dto.setHostId(info.getMember_id());
                 inquiryService.updateInquiryReply(dto);
@@ -97,9 +94,7 @@ public class HostHomeController {
     }
 
 
-    // ==========================================
-    // 3. 아직 DB 연동 안 된 빈 페이지들 
-    // ==========================================
+   
     @GetMapping("menu/space")
     public String space(Model model) {
         model.addAttribute("active", "space");
@@ -117,4 +112,28 @@ public class HostHomeController {
         model.addAttribute("active", "sales");
         return "host/menu/sales";
     }
+    
+    @PostMapping("premium/toggle")
+    public String premiumToggle(
+            @RequestParam(name = "spaceNo") long spaceNo, 
+            @RequestParam(name = "currentPremium", defaultValue = "N") String currentPremium,
+            RedirectAttributes rttr) {
+        
+        try {
+            SessionInfo info = LoginMemberUtil.getSessionInfo();
+            spaceService.togglePremium(spaceNo, info.getMember_id(), currentPremium);
+            
+            String msg = "";
+            if ("N".equals(currentPremium)) msg = "프리미엄 광고 신청이 접수되었습니다. (관리자 승인 대기)";
+            else if ("P".equals(currentPremium)) msg = "프리미엄 광고 신청이 취소되었습니다.";
+            else if ("Y".equals(currentPremium)) msg = "프리미엄 광고가 해지되었습니다.";
+            
+            rttr.addFlashAttribute("message", msg);
+        } catch (Exception e) {
+            log.error("프리미엄 토글 실패", e);
+        }
+        return "redirect:/host/menu/store";
+    }
+    
+    
 }

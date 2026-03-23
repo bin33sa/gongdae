@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/host/*")
 public class HostMemberController {
 	
+	
 	@RequestMapping(value = "member/login", method = {RequestMethod.GET, RequestMethod.POST})
 	public String loginForm(@RequestParam(name = "error", required = false) String error, 
 			Model model) {
@@ -72,5 +73,7 @@ public class HostMemberController {
 		// 수정 완료 메세지 표시
 		return "host/member/complete";
 	}
+	
+	
 	
 }

@@ -63,11 +63,37 @@
                             <span><i class="bi bi-people"></i> 최대 ${dto.maxCapacity}명</span>
                         </div>
 
-                        <div class="store-actions">
+                        <div class="store-actions mt-3 d-flex gap-2">
                             <button type="button" class="btn btn-sm btn-edit" 
                                     onclick="location.href='<c:url value="/host/space/update?spaceNo=${dto.spaceNo}"/>'">수정</button>
                             
-                            <form action="<c:url value='/host/space/delete'/>" method="post" class="m-0" onsubmit="return confirm('정말 [${dto.spaceName}] 매장을 삭제하시겠습니까?');">
+                          <form action="<c:url value='/host/premium/toggle'/>" method="post" class="m-0">
+                                <input type="hidden" name="spaceNo" value="${dto.spaceNo}">
+                                <input type="hidden" name="currentPremium" value="${empty dto.isPremium ? 'N' : dto.isPremium}">
+                                
+                                <c:choose>
+                                    <c:when test="${dto.isPremium == 'Y'}">
+                                        <button type="submit" class="btn btn-sm btn-success fw-bold" 
+                                                onclick="return confirm('프리미엄 적용을 해지하시겠습니까?\n(일반 수수료율로 즉시 복귀됩니다)');">
+                                            <i class="bi bi-star-fill text-warning"></i> 프리미엄 적용중
+                                        </button>
+                                    </c:when>
+                                    <c:when test="${dto.isPremium == 'P'}">
+                                        <button type="submit" class="btn btn-sm btn-secondary fw-bold" 
+                                                onclick="return confirm('진행 중인 프리미엄 심사를 취소하시겠습니까?');">
+                                            <i class="bi bi-hourglass-split"></i> 승인 대기중
+                                        </button>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <button type="submit" class="btn btn-sm btn-outline-warning text-dark fw-bold" 
+                                                onclick="return confirm('이 공간을 프리미엄으로 신청하시겠습니까?\n(관리자 심사 완료 후 적용됩니다)');">
+                                            <i class="bi bi-star"></i> 프리미엄 신청
+                                        </button>
+                                    </c:otherwise>
+                                </c:choose>
+                            </form>
+
+                            <form action="<c:url value='/host/space/delete'/>" method="post" class="m-0 ms-auto" onsubmit="return confirm('정말 삭제하시겠습니까?');">
                                 <input type="hidden" name="spaceNo" value="${dto.spaceNo}">
                                 <button type="submit" class="btn btn-sm btn-delete">삭제</button>
                             </form>
