@@ -28,51 +28,48 @@ public class PaginateUtil {
 	 * @return 페이징 처리 결과
 	 */
 	public String paging(int current_page, int total_page, String list_url) {
-		StringBuilder sb = new StringBuilder();
+	    StringBuffer sb = new StringBuffer();
+	    
+	    int numPerBlock = 10;
+	    int currentPageSetup;
+	    int n, page;
+	    
+	    if (current_page == 0 || total_page == 0) return "";
+	    
+	    if (list_url.indexOf("?") != -1) {
+	        list_url = list_url + "&";
+	    } else {
+	        list_url = list_url + "?";
+	    }
 
-		int numPerBlock = 10;
-		int currentPageSetup;
-		int n, page;
+	    currentPageSetup = (current_page / numPerBlock) * numPerBlock;
+	    if (current_page % numPerBlock == 0) {
+	        currentPageSetup = currentPageSetup - numPerBlock;
+	    }
 
-		if (current_page < 1 || total_page < current_page) {
-			return "";
-		}
+	    if (total_page > numPerBlock && currentPageSetup > 0) {
+	        sb.append("<a href='" + list_url + "page=1'>&laquo;</a>"); 
+	        sb.append("<a href='" + list_url + "page=" + currentPageSetup + "'>&lt;</a>"); 
+	    }
 
-		list_url += list_url.contains("?") ? "&" : "?";
+	    page = currentPageSetup + 1;
+	    while (page <= total_page && page <= (currentPageSetup + numPerBlock)) {
+	        if (page == current_page) {
+	            sb.append("<span class='active'>" + page + "</span>");
+	        } else {
+	            sb.append("<a href='" + list_url + "page=" + page + "'>" + page + "</a>");
+	        }
+	        page++;
+	    }
 
-		currentPageSetup = (current_page / numPerBlock) * numPerBlock;
-		if (current_page % numPerBlock == 0) {
-			currentPageSetup = currentPageSetup - numPerBlock;
-		}
+	    n = current_page + numPerBlock;
+	    if (n > total_page) n = total_page;
+	    if (total_page - currentPageSetup > numPerBlock) {
+	        sb.append("<a href='" + list_url + "page=" + page + "'>&gt;</a>"); 
+	        sb.append("<a href='" + list_url + "page=" + total_page + "'>&raquo;</a>"); 
+	    }
 
-		sb.append("<div class='paginate'>");
-		n = current_page - numPerBlock;
-		if (total_page > numPerBlock && currentPageSetup > 0) {
-			sb.append(createLinkUrl(list_url, 1, "&#x226A", "처음"));
-			sb.append(createLinkUrl(list_url, n, "&#x003C", "이전"));
-		}
-
-		page = currentPageSetup + 1;
-		while (page <= total_page && page <= (currentPageSetup + numPerBlock)) {
-			if (page == current_page) {
-				sb.append("<span>" + page + "</span>");
-			} else {
-				sb.append(createLinkUrl(list_url, page, String.valueOf(page)));
-			}
-
-			page++;
-		}
-
-		n = current_page + numPerBlock;
-		if (n > total_page)
-			n = total_page;
-		if (total_page - currentPageSetup > numPerBlock) {
-			sb.append(createLinkUrl(list_url, n, "&#x003E", "다음"));
-			sb.append(createLinkUrl(list_url, total_page, "&#x226B", "마지막"));
-		}
-		sb.append("</div>");
-
-		return sb.toString();
+	    return sb.toString();
 	}
 
 	/**

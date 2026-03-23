@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gongdae.app.admin.mapper.AdminSpaceManageMapper">
+
+    <sql id="where-list">
+        <if test="status != null and status != ''">
+            AND s.status = #{status}
+        </if>
+        <if test="isPremium != null and isPremium != ''">
+            AND s.is_premium = #{isPremium}
+        </if>
+        <if test="kwd != null and kwd != ''">
+            <choose>
+                <when test="schType == 'spaceName'">
+                    AND INSTR(s.space_name, #{kwd}) &gt; 0
+                </when>
+                <when test="schType == 'hostId'">
+                    AND INSTR(m.login_id, #{kwd}) &gt; 0
+                </when>
+            </choose>
+        </if>
+    </sql>
+
+    <select id="dataCountSpace" parameterType="map" resultType="Integer">
+        SELECT NVL(COUNT(*), 0)
+        FROM space s
+        JOIN member m ON s.host_id = m.member_id
+        <where>
+            <include refid="where-list"/>
+        </where>
+    </select>
+
+    <select id="listSpace" parameterType="map" resultType="com.gongdae.app.admin.domain.dto.SpaceManageDto">
+        SELECT s.space_no AS spaceNo, 
+               s.space_name AS spaceName, 
+               s.status, 
+               s.is_premium AS isPremium,
+               TO_CHAR(s.created_at, 'YYYY-MM-DD') AS createdAt,
+               s.category_no AS categoryNo, 
+               c.name AS categoryName,
+               s.host_id AS hostId, 
+               m.login_id AS hostLoginId, 
+               hd.name AS hostName
+        FROM space s
+        JOIN member m ON s.host_id = m.member_id
+        LEFT JOIN host_detail hd ON m.member_id = hd.member_id
+        LEFT JOIN category_space c ON s.category_no = c.category_no
+        <where>
+            <include refid="where-list"/>
+        </where>
+        ORDER BY s.space_no DESC
+        OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+    </select>
+
+    <select id="dataCountPremium" parameterType="map" resultType="Integer">
+        SELECT NVL(COUNT(*), 0)
+        FROM space_premium p
+        JOIN space s ON p.space_no = s.space_no
+        <where>
+            <if test="premiumStatus != null and premiumStatus != ''">
+                p.status = #{premiumStatus}
+            </if>
+        </where>
+    </select>
+
+    <select id="listPremium" parameterType="map" resultType="com.gongdae.app.admin.domain.dto.SpaceManageDto">
+        SELECT p.premium_no AS premiumNo, 
+               p.space_no AS spaceNo, 
+               p.status AS premiumStatus,
+               TO_CHAR(p.applied_at, 'YYYY-MM-DD HH24:MI') AS appliedAt,
+               s.space_name AS spaceName, 
+               m.login_id AS hostLoginId, 
+               hd.name AS hostName
+        FROM space_premium p
+        JOIN space s ON p.space_no = s.space_no
+        JOIN member m ON p.host_id = m.member_id
+        LEFT JOIN host_detail hd ON m.member_id = hd.member_id
+        <where>
+            <if test="premiumStatus != null and premiumStatus != ''">
+                p.status = #{premiumStatus}
+            </if>
+        </where>
+        ORDER BY p.premium_no DESC
+        OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+    </select>
+
+    <update id="updateSpaceStatus" parameterType="map">
+        UPDATE space
+        SET status = #{status},
+            admin_id = #{adminId},
+            updated_at = SYSDATE
+        WHERE space_no = #{spaceNo}
+    </update>
+
+    <update id="updateSpacePremiumFlagToY" parameterType="Long">
+        UPDATE space 
+        SET is_premium = 'Y' 
+        WHERE space_no = #{spaceNo}
+    </update>
+
+    <update id="updateSpacePremiumFlagToN" parameterType="Long">
+        UPDATE space 
+        SET is_premium = 'N' 
+        WHERE space_no = #{spaceNo}
+    </update>
+
+    <update id="approvePremium" parameterType="map">
+        UPDATE space_premium 
+        SET status = 'ACTIVE', 
+            admin_id = #{adminId}, 
+            applied_at = SYSDATE 
+        WHERE space_no = #{spaceNo} AND status = 'PENDING'
+    </update>
+
+    <update id="cancelPremium" parameterType="map">
+        UPDATE space_premium 
+        SET status = 'CANCELED', 
+            canceled_at = SYSDATE,
+            admin_id = #{adminId}
+        WHERE space_no = #{spaceNo} AND status = 'ACTIVE'
+    </update>
+
+    <insert id="insertPremiumForce" parameterType="map">
+        INSERT INTO space_premium (premium_no, space_no, host_id, status, applied_at, admin_id)
+        VALUES (SEQ_SPACE_PREMIUM.NEXTVAL, #{spaceNo}, #{hostId}, 'ACTIVE', SYSDATE, #{adminId})
+    </insert>
+
+    <select id="findByIdSpace" parameterType="Long" resultType="com.gongdae.app.admin.domain.dto.SpaceManageDto">
+        SELECT s.space_no AS spaceNo, 
+               s.space_name AS spaceName, 
+               s.biz_reg_num AS bizRegNum, 
+               s.address, 
+               s.detail_addr AS detailAddr, 
+               s.region,
+               s.bank_name AS bankName, 
+               s.account_no AS accountNo, 
+               s.account_holder AS accountHolder,
+               s.status, 
+               s.is_premium AS isPremium, 
+               TO_CHAR(s.created_at, 'YYYY-MM-DD HH24:MI') AS createdAt,
+               c.name AS categoryName,
+               s.host_id AS hostId, 
+               m.login_id AS hostLoginId, 
+               hd.name AS hostName,
+               hd.email AS hostEmail, 
+               hd.phone AS hostPhone
+        FROM space s
+        JOIN member m ON s.host_id = m.member_id
+        LEFT JOIN host_detail hd ON m.member_id = hd.member_id
+        LEFT JOIN category_space c ON s.category_no = c.category_no
+        WHERE s.space_no = #{spaceNo}
+    </select>
+
+    <select id="listSpaceImage" parameterType="Long" resultType="com.gongdae.app.admin.domain.dto.SpaceManageDto">
+        SELECT image_no AS unitNo, file_url AS imageUrl
+        FROM space_image
+        WHERE space_no = #{spaceNo}
+        ORDER BY image_no ASC
+    </select>
+
+    <select id="listSpaceUnit" parameterType="Long" resultType="com.gongdae.app.admin.domain.dto.SpaceManageDto">
+        SELECT unit_no AS unitNo, title AS unitTitle, 
+               price_per_hour AS unitPrice, max_capacity AS unitCapacity, 
+               description
+        FROM space_unit
+        WHERE space_no = #{spaceNo}
+        ORDER BY unit_no ASC
+    </select>
+
+</mapper>
