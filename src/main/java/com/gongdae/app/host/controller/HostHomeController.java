@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.gongdae.app.domain.dto.ReservationManageDTO;
 import com.gongdae.app.domain.dto.SessionInfo;
 import com.gongdae.app.domain.dto.SpaceInquiryDTO;
 import com.gongdae.app.domain.dto.SpaceManageDTO;
 import com.gongdae.app.security.LoginMemberUtil;
+import com.gongdae.app.service.ReservationManageService;
 import com.gongdae.app.service.SpaceInquiryService;
 import com.gongdae.app.service.SpaceManageService;
 
@@ -26,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/host/*")
 public class HostHomeController {
 	
-   
+	private final ReservationManageService reservationService;
     private final SpaceManageService spaceService;
     private final SpaceInquiryService inquiryService;
 	
@@ -102,8 +104,13 @@ public class HostHomeController {
     }
 
     @GetMapping("menu/reservation")
-    public String reservation(Model model) {
-        model.addAttribute("active", "reservation");
+    public String reservationList(Model model) throws Exception {
+        SessionInfo info = LoginMemberUtil.getSessionInfo();
+        
+        List<ReservationManageDTO> list = reservationService.listReservation(info.getMember_id());
+        
+        model.addAttribute("list", list);
+        
         return "host/menu/reservation";
     }
 

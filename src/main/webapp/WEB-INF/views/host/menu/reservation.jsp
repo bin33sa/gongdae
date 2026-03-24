@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -8,7 +9,6 @@
 
     <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
 
-    <!-- 예약 CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/host/menu/reservation.css">
 </head>
 <body>
@@ -19,13 +19,11 @@
 
 <main class="container mt-5 mb-5">
 
-    <!-- 타이틀 -->
     <div class="mb-4">
         <h3 class="fw-bold">예약 내역</h3>
         <p class="text-muted">전체 예약 현황을 확인하고 관리하세요.</p>
     </div>
 
-    <!-- 필터 -->
     <div class="reservation-filter-box mb-4">
         <div class="row g-3 align-items-end">
 
@@ -42,72 +40,88 @@
             <div class="col-md-3">
                 <label class="form-label small">상태</label>
                 <select class="form-select">
-                    <option>전체</option>
-                    <option>예약 완료</option>
-                    <option>이용 중</option>
-                    <option>이용 완료</option>
-                    <option>취소</option>
+                    <option value="">전체</option>
+                    <option value="PENDING">결제 대기</option>
+                    <option value="RESERVED">예약 확정</option>
+                    <option value="COMPLETED">이용 완료</option>
+                    <option value="CANCELLED">취소</option>
                 </select>
             </div>
 
             <div class="col-md-3">
-                <button class="btn btn-search w-100">조회하기</button>
+                <button type="button" class="btn btn-search w-100">조회하기</button>
             </div>
 
         </div>
     </div>
 
-    <!-- 테이블 -->
     <div class="reservation-table-box">
 
-        <div class="table-header">
+        <div class="table-header mb-3">
             <h5 class="fw-bold m-0">예약 리스트</h5>
         </div>
 
-        <table class="table reservation-table">
-            <thead>
+        <table class="table reservation-table text-center align-middle">
+            <thead class="table-light">
                 <tr>
                     <th>예약번호</th>
                     <th>예약일</th>
-                    <th>매장명</th>
-                    <th>예약자</th>
+                    <th>매장명 / 룸</th>
+                    <th>예약자(인원)</th>
                     <th>이용시간</th>
                     <th>금액</th>
                     <th>상태</th>
                 </tr>
             </thead>
             <tbody>
-
-                <tr>
-                    <td>#R1023</td>
-                    <td>2026-03-18</td>
-                    <td>홍대 루프탑 파티룸</td>
-                    <td>김공대</td>
-                    <td>18:00 ~ 21:00</td>
-                    <td>₩ 150,000</td>
-                    <td><span class="badge badge-active">이용 중</span></td>
-                </tr>
-
-                <tr>
-                    <td>#R1022</td>
-                    <td>2026-03-17</td>
-                    <td>강남 스터디룸 A호</td>
-                    <td>이학생</td>
-                    <td>10:00 ~ 13:00</td>
-                    <td>₩ 80,000</td>
-                    <td><span class="badge badge-done">이용 완료</span></td>
-                </tr>
-
-                <tr>
-                    <td>#R1021</td>
-                    <td>2026-03-16</td>
-                    <td>홍대 루프탑 파티룸</td>
-                    <td>박게스트</td>
-                    <td>20:00 ~ 23:00</td>
-                    <td>₩ 120,000</td>
-                    <td><span class="badge badge-cancel">취소</span></td>
-                </tr>
-
+                <c:choose>
+                    <c:when test="${empty list}">
+                        <tr>
+                            <td colspan="7" class="py-5 text-muted">조건에 맞는 예약 내역이 없습니다.</td>
+                        </tr>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="dto" items="${list}">
+                            <tr>
+                                <td class="fw-bold text-secondary">#R${dto.resNo}</td>
+                                
+                                <td>${dto.resDate}</td>
+                                
+                                <td class="text-start">
+                                    <div class="fw-bold text-dark">${dto.spaceName}</div>
+                                    <div class="small text-muted">${dto.unitTitle}</div>
+                                </td>
+                                
+                                <td>
+                                    ${dto.guestName} <span class="small text-muted">(${dto.peopleCount}명)</span>
+                                </td>
+                                
+                                <td>${dto.startTime}:00 ~ ${dto.endTime}:00</td>
+                                
+                                <td class="fw-bold">
+                                    ₩ <fmt:formatNumber value="${dto.totalPrice}" pattern="#,###"/>
+                                </td>
+                                
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${dto.status == 'PENDING'}">
+                                            <span class="badge bg-warning text-dark">결제 대기</span>
+                                        </c:when>
+                                        <c:when test="${dto.status == 'RESERVED'}">
+                                            <span class="badge badge-active">예약 확정</span>
+                                        </c:when>
+                                        <c:when test="${dto.status == 'COMPLETED'}">
+                                            <span class="badge badge-done">이용 완료</span>
+                                        </c:when>
+                                        <c:when test="${dto.status == 'CANCELLED'}">
+                                            <span class="badge badge-cancel">취소</span>
+                                        </c:when>
+                                    </c:choose>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
             </tbody>
         </table>
 
