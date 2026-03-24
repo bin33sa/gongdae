@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gongdae.app.mapper.HostMainMapper">
+
+    <select id="getSalesSummary" resultType="com.gongdae.app.domain.dto.HostSalesDTO" parameterType="Long">
+        SELECT 
+            NVL(SUM(CASE WHEN TO_CHAR(r.res_date, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM') 
+                         THEN p.pay_amount ELSE 0 END), 0) AS thisMonthSales,
+            
+            NVL(SUM(p.pay_amount), 0) AS totalSales,
+            
+            COUNT(CASE WHEN TO_CHAR(r.res_date, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM') 
+                       THEN 1 END) AS thisMonthResCount,
+            
+            COUNT(r.res_no) AS totalResCount
+            
+        FROM RESERVATION r
+        JOIN SPACE_UNIT u ON r.unit_no = u.unit_no
+        JOIN SPACE s ON u.space_no = s.space_no
+        JOIN PAYMENT p ON r.res_no = p.res_no
+        WHERE s.host_id = #{hostId}
+          AND p.pay_status = 'PAID'
+          AND r.status IN ('RESERVED', 'COMPLETED')
+    </select>
+
+</mapper>

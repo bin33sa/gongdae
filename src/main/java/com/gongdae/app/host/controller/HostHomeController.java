@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.gongdae.app.domain.dto.HostSalesDTO;
 import com.gongdae.app.domain.dto.ReservationManageDTO;
 import com.gongdae.app.domain.dto.SessionInfo;
 import com.gongdae.app.domain.dto.SpaceInquiryDTO;
 import com.gongdae.app.domain.dto.SpaceManageDTO;
 import com.gongdae.app.security.LoginMemberUtil;
+import com.gongdae.app.service.HostMainService;
 import com.gongdae.app.service.ReservationManageService;
 import com.gongdae.app.service.SpaceInquiryService;
 import com.gongdae.app.service.SpaceManageService;
@@ -31,18 +33,28 @@ public class HostHomeController {
 	private final ReservationManageService reservationService;
     private final SpaceManageService spaceService;
     private final SpaceInquiryService inquiryService;
-	
+	private final HostMainService hostMainService;
     @GetMapping("main/prelogin")
     public String prelogin() {
         return "host/main/prelogin";
     }
     
-  
     @GetMapping("main/home")
-    public String home(Model model) {
+    public String hostMain(Model model) throws Exception {
+        SessionInfo info = LoginMemberUtil.getSessionInfo();
+        
+        // 1. 매출 요약 데이터 가져오기
+        HostSalesDTO salesDto = hostMainService.getSalesSummary(info.getMember_id());
         model.addAttribute("active", "home");
+        // 2. 모델에 담아서 JSP로 전달
+        model.addAttribute("sales", salesDto);
+        
         return "host/main/home";
     }
+  
+    
+   
+   
 
     
     @GetMapping("menu/store")

@@ -138,7 +138,7 @@
     				<i class="bi bi-file-earmark-text me-2"></i>입점 제안서 보기
 				</a>
                 
-                <a href="<c:url value='/member/login'/>" class="btn-host-solid">
+                <a href="<c:url value='/host/space/write'/>" class="btn-host-solid">
                     매장 등록 시작하기 <i class="bi bi-arrow-right ms-1"></i>
                 </a>
             </div>
