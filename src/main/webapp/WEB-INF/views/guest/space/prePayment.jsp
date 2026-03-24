@@ -5,7 +5,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>예약 결제 - 공대생 호스트 센터</title>
+    <title>예약 확인 및 결제 - 공대생</title>
     
     <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -14,106 +14,148 @@
         @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable.css");
         
         :root {
-            --primary-color: #E53935; /* 공대생 적색 포인트 */
-            --bg-color: #f8f9fa;
+            --primary-color: #E53935; /* 공대생 브랜드 적색 */
+            --bg-color: #f4f6f8;
+            --card-border-radius: 20px;
         }
         
         body { 
-            font-family: 'Pretendard Variable', Pretendard, -apple-system, sans-serif; 
+            font-family: 'Pretendard Variable', Pretendard, sans-serif; 
             background-color: var(--bg-color); 
-            color: #333; 
+            color: #222; 
         }
 
-        /* 폼 & 섹션 공통 스타일 */
-        .checkout-section {
+        /* 메인 컨테이너 중앙 집중 */
+        .checkout-main-container {
+            max-width: 840px; 
+            margin: 0 auto;
+        }
+
+        /* 섹션 카드 스타일 */
+        .checkout-card {
             background: #fff;
-            border-radius: 16px;
-            padding: 32px;
-            margin-bottom: 24px;
-            border: 1px solid #ebebeb;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            border-radius: var(--card-border-radius);
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
         }
         
-        .section-title { 
-            font-size: 1.25rem; 
+        .card-title { 
+            font-size: 1.4rem; 
             font-weight: 800; 
-            margin-bottom: 24px;
+            margin-bottom: 30px;
             color: #111;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        /* 입력 폼 스타일 */
+        /* 인풋 스타일 */
         .form-control, .form-select {
-            padding: 14px 16px;
-            border-radius: 10px;
-            border: 1px solid #e0e0e0;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
             font-size: 1rem;
+            background-color: #fff;
         }
-        .form-control:focus, .form-select:focus {
+        .form-control:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.25rem rgba(229, 57, 53, 0.15);
+            box-shadow: 0 0 0 0.25rem rgba(229, 57, 53, 0.1);
         }
         .form-label {
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        /* 공간 정보 요약바 */
+        .space-info-bar {
+            background-color: #f8f9fa;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #eaeaea;
+        }
+
+        /* 하단 최종 결제 카드 전용 스타일 */
+        .final-summary-card {
+            background: #fff;
+            border-radius: var(--card-border-radius);
+            padding: 40px;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 10px 30px rgba(229, 57, 53, 0.08);
+            margin-bottom: 50px;
+        }
+
+        /* 결제 수단 선택 라디오 버튼 커스텀 */
+        .pay-method-option {
+            border: 2px solid #eee;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .form-check-input:checked + .pay-method-option {
+            border-color: var(--primary-color);
+            background-color: rgba(229, 57, 53, 0.03);
+        }
+        .pay-method-icon {
+            font-size: 1.5rem;
             color: #555;
         }
-
-        /* 우측 플로팅 요약 위젯 */
-        .sticky-summary-widget {
-            position: sticky;
-            top: 30px; 
-            background: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 16px;
-            padding: 32px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+        .form-check-input:checked + .pay-method-option .pay-method-icon {
+            color: var(--primary-color);
         }
 
-        /* 커스텀 버튼 */
-        .btn-primary-custom {
+        /* 버튼 스타일 */
+        .btn-pay-submit {
             background-color: var(--primary-color);
             border: none;
             color: white;
-            padding: 16px;
-            font-size: 1.1rem;
+            padding: 20px;
+            font-size: 1.2rem;
             font-weight: 800;
-            border-radius: 12px;
-            transition: all 0.2s;
+            border-radius: 16px;
+            width: 100%;
+            transition: background 0.2s;
         }
-        .btn-primary-custom:hover { 
-            background-color: #c62828; 
-            color: white; 
-            transform: translateY(-2px);
-        }
+        .btn-pay-submit:hover { background-color: #c62828; }
         
-        .btn-outline-custom {
-            border: 1px solid #ddd;
-            background-color: #fff;
-            color: #333;
+        .btn-cancel {
+            background-color: #eee;
+            color: #555;
+            padding: 15px;
+            border-radius: 12px;
             font-weight: 600;
-            border-radius: 8px;
-        }
-        .btn-outline-custom:hover {
-            background-color: #f8f9fa;
-            border-color: #ccc;
+            border: none;
+            width: 100%;
         }
 
-        /* 요약 텍스트 정렬 */
+        /* 요약 텍스트 행 */
         .summary-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
-            color: #555;
-            font-size: 1rem;
+            font-size: 1.1rem;
+            color: #444;
         }
-        
-        /* 썸네일 이미지 */
-        .space-thumbnail {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 10px;
+        /* 계산식 전용 스타일 */
+        .calc-formula {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
     </style>
 </head>
@@ -123,110 +165,161 @@
     <jsp:include page="/WEB-INF/views/guest/layout/header.jsp"/>
 </header>
 
-<main class="container my-5">
-    
-    <div class="mb-5">
-        <h2 class="fw-bold" style="font-size: 2rem;">확인 및 결제</h2>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-8 pe-lg-4">
-            
-            <div class="checkout-section">
-                <h4 class="section-title">예약 공간 정보</h4>
-                
-                <div class="d-flex align-items-center gap-3 mb-4 p-3 bg-light rounded-3 border">
-                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=150&auto=format&fit=crop" class="space-thumbnail" alt="공간 이미지">
-                    <div>
-                        <div class="fw-bold fs-5 text-dark mb-1">홍대 파티룸 핫플레이스</div>
-                        <div class="text-muted small"><i class="bi bi-door-open me-1"></i>A룸 (루프탑 포함)</div>
-                    </div>
-                </div>
-
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <div class="p-3 border rounded-3 h-100">
-                            <div class="text-muted small mb-2 fw-bold"><i class="bi bi-calendar-check me-2"></i>일정</div>
-                            <div class="fw-bold text-dark fs-6 mb-1">2026. 03. 30 (월)</div>
-                            <div class="text-secondary small">14:00 ~ 18:00 (총 4시간)</div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="p-3 border rounded-3 h-100">
-                            <div class="text-muted small mb-2 fw-bold"><i class="bi bi-people me-2"></i>인원</div>
-                            <div class="fw-bold text-dark fs-6">총 4명</div>
-                            <div class="text-secondary small mt-1">최대 8인 가능</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="checkout-section">
-                <h4 class="section-title">예약자 정보</h4>
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <label class="form-label">예약자 이름</label>
-                        <input type="text" class="form-control" value="김공대" readonly style="background-color: #fcfcfc;">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">연락처 <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" value="010-1234-5678">
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label">호스트에게 남길 메모 <span class="text-muted fw-normal">(선택)</span></label>
-                        <textarea class="form-control" rows="3" placeholder="예: 차량 1대 주차 등록 부탁드립니다."></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <div class="checkout-section">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h4 class="section-title m-0">포인트 사용</h4>
-                    <span class="text-muted small fw-bold">보유 포인트: <span class="text-dark">5,000</span> P</span>
-                </div>
-                
-                <div class="input-group">
-                    <input type="number" class="form-control font-monospace fs-5 text-end" value="0" min="0" placeholder="0">
-                    <span class="input-group-text bg-white">P</span>
-                    <button class="btn btn-outline-custom px-4" type="button">전액사용</button>
-                </div>
-            </div>
-
+<main class="container my-5 py-3">
+    <div class="checkout-main-container">
+        
+        <div class="mb-5 text-center">
+            <h1 class="fw-bold" style="font-size: 2.5rem; letter-spacing: -1px;">확인 및 결제</h1>
+            <p class="text-muted fs-5 mt-2">예약 정보를 확인하고 결제를 진행해 주세요.</p>
         </div>
 
-        <div class="col-lg-4 mt-4 mt-lg-0">
-            <div class="sticky-summary-widget">
-                <h4 class="fw-bold mb-4 fs-5">결제 상세</h4>
-                
-                <div class="summary-row">
-                    <span>공간 대여료</span>
-                    <span class="fw-bold text-dark">60,000원</span>
+        <div class="checkout-card">
+            <h4 class="card-title"><i class="bi bi-shop text-danger"></i>예약 공간 정보</h4>
+            
+            <div class="space-info-bar d-flex align-items-center gap-4 mb-4">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=150&h=150&auto=format&fit=crop" class="rounded-3" style="width:100px; height:100px; object-fit:cover;" alt="공간 이미지">
+                <div class="flex-grow-1">
+                    <div class="badge bg-white text-danger border border-danger mb-2 fw-bold">파티룸</div>
+                    <div class="fw-bold fs-4 text-dark mb-1">홍대 파티룸 핫플레이스</div>
+                    <div class="text-secondary"><i class="bi bi-geo-alt me-1"></i>서울 마포구 어울마당로</div>
                 </div>
-                
-                <div class="summary-row text-danger">
-                    <span>포인트 할인</span>
-                    <span class="fw-bold">- 0원</span>
-                </div>
-                
-                <hr class="my-4 border-secondary opacity-25">
-                
-                <div class="d-flex justify-content-between align-items-end mb-4">
-                    <span class="fw-bold text-dark fs-6">총 결제 금액</span>
-                    <span class="fw-bold" style="font-size: 1.8rem; color: var(--primary-color);">
-                        <fmt:formatNumber value="60000" pattern="#,###"/>원
-                    </span>
-                </div>
+            </div>
 
-                <div class="bg-light p-3 rounded-3 mb-4 text-center">
-                    <span class="text-muted small">결제 시 <span class="fw-bold text-dark">600P</span>가 적립됩니다.</span>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="p-3 border rounded-3 bg-light h-100">
+                        <div class="text-muted small mb-1 fw-bold">선택 일정</div>
+                        <div class="fw-bold text-dark fs-5 mb-1">2026. 03. 30 (월)</div>
+                        <div class="text-secondary small">14:00 ~ 18:00 (총 4시간)</div>
+                    </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="p-3 border rounded-3 bg-light h-100">
+                        <div class="text-muted small mb-1 fw-bold">예약 인원</div>
+                        <div class="fw-bold text-dark fs-5 mb-1">총 4명</div>
+                        <div class="text-secondary small">기준 4인 / 최대 8인</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                <button type="button" class="btn btn-primary-custom w-100 mb-2">
-                    결제하기
-                </button>
-                <button type="button" class="btn btn-light w-100 fw-bold py-3 text-muted border" onclick="history.back();">
-                    뒤로 가기
-                </button>
+        <div class="checkout-card">
+            <h4 class="card-title"><i class="bi bi-person-circle text-danger"></i>예약자 정보</h4>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <label class="form-label">이름</label>
+                    <input type="text" class="form-control" value="김공대" readonly style="background-color: #f8f9fa; color:#777;">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">휴대폰 번호 <span class="text-danger">*</span></label>
+                    <input type="tel" class="form-control" value="010-1234-5678" placeholder="숫자만 입력">
+                </div>
+            </div>
+        </div>
+
+        <div class="checkout-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="card-title m-0"><i class="bi bi-p-circle text-danger"></i>포인트 할인</h4>
+                <span class="text-muted fw-bold">보유 포인트: <span class="text-dark">5,000</span> P</span>
+            </div>
+            
+            <div class="input-group input-group-lg">
+                <input type="number" class="form-control text-end font-monospace" value="0" min="0" placeholder="0">
+                <span class="input-group-text bg-white fw-bold">P</span>
+                <button class="btn btn-outline-dark px-4 fw-bold" type="button" style="border-radius: 0 12px 12px 0;">전액사용</button>
+            </div>
+            <p class="text-muted small mt-2 mb-0"><i class="bi bi-info-circle me-1"></i>최소 1,000P부터 100P 단위로 사용 가능합니다.</p>
+        </div>
+
+        <div class="checkout-card">
+            <h4 class="card-title"><i class="bi bi-credit-card-2-back text-danger"></i>결제 수단</h4>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <input type="radio" class="form-check-input d-none" name="payMethod" id="methodCard" checked>
+                    <label class="pay-method-option" for="methodCard">
+                        <i class="bi bi-credit-card pay-method-icon"></i>
+                        <span class="fw-bold">신용/체크카드</span>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="radio" class="form-check-input d-none" name="payMethod" id="methodKakao">
+                    <label class="pay-method-option" for="methodKakao">
+                        <img src="https://developers.kakao.com/tool/resource/static/img/logo/p_bi_kakaopay_re.png" height="20" alt="카카오페이">
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <input type="radio" class="form-check-input d-none" name="payMethod" id="methodToss">
+                    <label class="pay-method-option" for="methodToss">
+                        <img src="https://static.toss.im/tds/icon/png/4x/icon-toss-logo.png" height="20" alt="토스페이">
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="checkout-card">
+            <h4 class="card-title"><i class="bi bi-check2-square text-danger"></i>약관 동의</h4>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="agreeAll">
+                <label class="form-check-label fw-bold fs-6 text-dark" for="agreeAll">
+                    주문 내용 확인 및 아래 약관에 모두 동의합니다.
+                </label>
+            </div>
+            <hr class="my-3">
+            <div class="d-flex flex-column gap-2 ps-2 text-muted small">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="agree1" required>
+                    <label class="form-check-label" for="agree1">[필수] 개인정보 수집 및 이용 동의 <a href="#" class="text-decoration-none text-primary ms-1">보기</a></label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="agree2" required>
+                    <label class="form-check-label" for="agree2">[필수] 개인정보 제3자 제공 동의 <a href="#" class="text-decoration-none text-primary ms-1">보기</a></label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="agree3" required>
+                    <label class="form-check-label" for="agree3">[필수] 공간 대여 이용약관 및 취소/환불 규정 동의 <a href="#" class="text-danger ms-1 fw-bold">보기</a></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="final-summary-card">
+            <div class="row align-items-center">
+                <div class="col-md-7 pe-md-5">
+                    
+                    <div class="calc-formula">
+                        <span>시간당 15,000원 <i class="bi bi-x mx-1"></i> 총 4시간</span>
+                        <span class="fw-bold text-dark">60,000원</span>
+                    </div>
+
+                    <div class="summary-row mt-3">
+                        <span class="fw-bold">공간 대여료</span>
+                        <span class="fw-bold text-dark">60,000원</span>
+                    </div>
+                    <div class="summary-row text-danger">
+                        <span>포인트 할인</span>
+                        <span class="fw-bold">- 0원</span>
+                    </div>
+                    
+                    <hr class="my-3">
+                    
+                    <div class="d-flex justify-content-between align-items-end mb-2">
+                        <span class="fw-bold text-dark fs-5">최종 결제 금액</span>
+                        <span class="fw-bold" style="font-size: 2.2rem; color: var(--primary-color); line-height: 1;">
+                            <fmt:formatNumber value="60000" pattern="#,###"/>원
+                        </span>
+                    </div>
+                    <div class="text-end text-muted small mt-1">
+                        결제 완료 시 <span class="fw-bold text-dark">600P</span> 적립 예정
+                    </div>
+                </div>
+                
+                <div class="col-md-5 mt-4 mt-md-0 pl-md-4 border-start">
+                    <button type="submit" class="btn btn-pay-submit mb-3">
+                        <fmt:formatNumber value="60000" pattern="#,###"/>원 결제하기
+                    </button>
+                    <button type="button" class="btn btn-cancel" onclick="history.back();">
+                        예약 취소
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -238,6 +331,14 @@
 </footer>
 
 <jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
+
+<script>
+    // 간단한 약관 전체 동의 스크립트
+    document.getElementById('agreeAll').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.form-check-input[required]');
+        checkboxes.forEach(cb => cb.checked = this.checked);
+    });
+</script>
 
 </body>
 </html>
