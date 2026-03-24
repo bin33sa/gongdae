@@ -24,9 +24,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/admin/*")
 @Slf4j
 public class HomeManageController {
-	
+    
     private final AdminDashboardService dashboardService;
-	 
+    
     @GetMapping("login")
     public String handleLogin(@RequestParam(name = "error", required = false) String error, Model model) {
         
@@ -89,13 +89,14 @@ public class HomeManageController {
             }
             dto.setWeeklyVisitors(weeklyVis);
 
-            List<Long> hourlyVis = new ArrayList<>(Collections.nCopies(7, 0L));
+            // ✨ 수정 완료: 0~23시까지 총 24개의 공간을 가진 리스트 생성
+            List<Long> hourlyVis = new ArrayList<>(Collections.nCopies(24, 0L));
             if (hourList != null) {
                 for (Map<String, Object> map : hourList) {
                     int hour = ((Number) map.get("HOUR")).intValue();
-                    int index = (hour - 9) / 2; 
-                    if (index >= 0 && index < 7) {
-                        hourlyVis.set(index, hourlyVis.get(index) + ((Number) map.get("CNT")).longValue());
+                    // HOUR 값 자체를 인덱스(0~23)로 사용하여 해당 시간의 CNT를 업데이트
+                    if (hour >= 0 && hour < 24) {
+                        hourlyVis.set(hour, ((Number) map.get("CNT")).longValue());
                     }
                 }
             }

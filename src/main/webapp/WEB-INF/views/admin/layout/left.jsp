@@ -52,6 +52,8 @@
             </div>
             <div class="submenu nav flex-column">
                 <a href="${pageContext.request.contextPath}/admin/spaces/list" class="nav-link sub-menu-item">매장 목록</a>
+                <a href="${pageContext.request.contextPath}/admin/spaces/premium" class="nav-link sub-menu-item">프리미엄 목록</a>
+                <a href="${pageContext.request.contextPath}/admin/spaces/approval" class="nav-link sub-menu-item">신청 리스트</a>
             </div>
         </div>
 
