@@ -23,13 +23,14 @@
             <div class="dashboard-box mb-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="fw-bold text-main m-0"><i class="bi bi-shop me-2 text-primary"></i>신규 매장 승인 대기</h5>
-                    <span class="badge bg-primary rounded-pill">${spaceCount}건 대기중</span>
+                    <span class="badge bg-primary rounded-pill text-white">${spaceCount}건 대기중</span>
                 </div>
                 <div class="table-responsive" style="max-height: 350px; overflow-y: auto;">
                     <table class="table text-main mb-0 align-middle text-center">
-                        <thead>
+                        <thead class="sticky-top" style="background-color: var(--bg-card);">
                             <tr>
                                 <th class="admin-th">공간번호</th>
+                                <th class="admin-th">분류</th>
                                 <th class="admin-th text-start">공간명</th>
                                 <th class="admin-th">호스트</th>
                                 <th class="admin-th">신청일</th>
@@ -38,13 +39,13 @@
                         </thead>
                         <tbody>
                             <c:if test="${empty spaceList}">
-                                <tr><td colspan="5" class="admin-td py-5 text-muted">승인 대기 중인 신규 매장이 없습니다.</td></tr>
+                                <tr><td colspan="6" class="admin-td py-5 text-muted">승인 대기 중인 신규 매장이 없습니다.</td></tr>
                             </c:if>
                             <c:forEach var="dto" items="${spaceList}">
                                 <tr>
                                     <td class="admin-td text-muted">#S-${dto.spaceNo}</td>
+                                    <td class="admin-td"><span class="badge bg-secondary bg-opacity-25 text-muted">${dto.categoryName}</span></td>
                                     <td class="admin-td fw-bold text-start text-truncate" style="max-width: 250px;">
-                                        <span class="badge bg-secondary bg-opacity-25 text-muted me-2">${dto.categoryName}</span>
                                         ${dto.spaceName}
                                     </td>
                                     <td class="admin-td">${dto.hostName}</td>
@@ -66,9 +67,10 @@
                 </div>
                 <div class="table-responsive" style="max-height: 350px; overflow-y: auto;">
                     <table class="table text-main mb-0 align-middle text-center">
-                        <thead>
+                        <thead class="sticky-top" style="background-color: var(--bg-card);">
                             <tr>
                                 <th class="admin-th">신청번호</th>
+                                <th class="admin-th">분류</th>
                                 <th class="admin-th text-start">공간명</th>
                                 <th class="admin-th">호스트</th>
                                 <th class="admin-th">신청일시</th>
@@ -77,11 +79,12 @@
                         </thead>
                         <tbody>
                             <c:if test="${empty premiumList}">
-                                <tr><td colspan="5" class="admin-td py-5 text-muted">승인 대기 중인 프리미엄 내역이 없습니다.</td></tr>
+                                <tr><td colspan="6" class="admin-td py-5 text-muted">승인 대기 중인 프리미엄 내역이 없습니다.</td></tr>
                             </c:if>
                             <c:forEach var="dto" items="${premiumList}">
                                 <tr>
                                     <td class="admin-td text-muted">#P-${dto.premiumNo}</td>
+                                    <td class="admin-td"><span class="badge bg-secondary bg-opacity-25 text-muted">${dto.categoryName}</span></td>
                                     <td class="admin-td fw-bold text-start text-truncate" style="max-width: 250px;">${dto.spaceName}</td>
                                     <td class="admin-td">${dto.hostName}</td>
                                     <td class="admin-td text-muted small-txt">${dto.appliedAt}</td>

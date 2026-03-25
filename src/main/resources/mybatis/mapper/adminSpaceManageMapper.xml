@@ -70,12 +70,14 @@
                p.status AS premiumStatus,
                TO_CHAR(p.applied_at, 'YYYY-MM-DD HH24:MI') AS appliedAt,
                s.space_name AS spaceName, 
+               c.name AS categoryName,
                m.login_id AS hostLoginId, 
                hd.name AS hostName
         FROM space_premium p
         JOIN space s ON p.space_no = s.space_no
         JOIN member m ON p.host_id = m.member_id
         LEFT JOIN host_detail hd ON m.member_id = hd.member_id
+        LEFT JOIN category_space c ON s.category_no = c.category_no
         <where>
             <if test="premiumStatus != null and premiumStatus != ''">
                 p.status = #{premiumStatus}

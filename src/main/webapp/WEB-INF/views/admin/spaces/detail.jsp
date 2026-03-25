@@ -49,25 +49,25 @@
             
             <c:if test="${from == 'approval'}">
                 <c:if test="${dto.status == 'PENDING'}">
-                    <div class="alert alert-warning border-0 d-flex justify-content-between align-items-center mb-4 p-4 shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center mb-4 p-4 rounded" style="background-color: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3);">
                         <div>
-                            <h5 class="fw-bold mb-1 text-dark">신규 등록 심사</h5>
-                            <p class="mb-0 text-dark opacity-75">정보를 확인 후 승인 또는 반려를 선택해 주세요.</p>
+                            <h5 class="fw-bold mb-1" style="color: #F59E0B;"><i class="bi bi-exclamation-triangle-fill me-2"></i>신규 등록 심사</h5>
+                            <p class="mb-0 text-muted">정보를 꼼꼼히 확인 후 승인 또는 반려를 선택해 주세요.</p>
                         </div>
                         <div class="d-flex gap-2">
-                            <button class="btn btn-danger px-4" onclick="executeStatus('REJECTED')">반려 처리</button>
-                            <button class="btn btn-success px-4" onclick="executeStatus('ACTIVE')">최종 승인</button>
+                            <button class="btn btn-outline-danger px-4" onclick="executeStatus('REJECTED')">반려 처리</button>
+                            <button class="btn btn-success px-4" onclick="executeStatus('ACTIVE')" style="background-color: #10B981; border-color: #10B981;">최종 승인</button>
                         </div>
                     </div>
                 </c:if>
                 <c:if test="${dto.status != 'PENDING'}">
-                    <div class="alert alert-info border-0 d-flex justify-content-between align-items-center mb-4 p-4 shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center mb-4 p-4 rounded" style="background-color: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3);">
                         <div>
-                            <h5 class="fw-bold mb-1 text-dark">프리미엄 결재 대기</h5>
-                            <p class="mb-0 text-dark opacity-75">호스트의 프리미엄 등록 신청을 승인하거나 반려합니다.</p>
+                            <h5 class="fw-bold mb-1" style="color: #3B82F6;"><i class="bi bi-star-fill me-2"></i>프리미엄 결재 대기</h5>
+                            <p class="mb-0 text-muted">호스트의 프리미엄 등록 신청을 승인하거나 반려합니다.</p>
                         </div>
                         <div class="d-flex gap-2">
-                            <button class="btn btn-secondary px-4" onclick="executePremium('cancelPremium')">반려 처리</button>
+                            <button class="btn btn-outline-secondary px-4" onclick="executePremium('cancelPremium')">반려 처리</button>
                             <button class="btn btn-primary px-4" onclick="executePremium('approvePremium')">프리미엄 승인</button>
                         </div>
                     </div>
@@ -75,14 +75,14 @@
             </c:if>
 
             <c:if test="${from == 'premium'}">
-                <div class="alert alert-info border-0 d-flex justify-content-between align-items-center mb-4 p-4 shadow-sm">
+                <div class="d-flex justify-content-between align-items-center mb-4 p-4 rounded" style="background-color: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3);">
                     <div>
-                        <h5 class="fw-bold mb-1 text-dark">프리미엄 컨트롤 패널</h5>
-                        <p class="mb-0 text-dark opacity-75">해당 공간에 대한 프리미엄 혜택을 강제로 승인하거나 박탈할 수 있습니다.</p>
+                        <h5 class="fw-bold mb-1" style="color: #8B5CF6;"><i class="bi bi-gear-fill me-2"></i>프리미엄 컨트롤 패널</h5>
+                        <p class="mb-0 text-muted">해당 공간에 대한 프리미엄 혜택을 강제로 승인하거나 박탈할 수 있습니다.</p>
                     </div>
                     <div class="d-flex gap-2">
-                        <button class="btn btn-secondary px-4" onclick="executePremium('cancelPremium')">해제 / 박탈</button>
-                        <button class="btn btn-primary px-4" onclick="executePremium('approvePremium')">재승인</button>
+                        <button class="btn btn-outline-secondary px-4" onclick="executePremium('cancelPremium')">해제 / 박탈</button>
+                        <button class="btn btn-primary px-4" style="background-color: #8B5CF6; border-color: #8B5CF6;" onclick="executePremium('approvePremium')">재승인</button>
                     </div>
                 </div>
             </c:if>
@@ -106,9 +106,9 @@
                     <table class="table text-main mb-0 align-middle">
                         <tr>
                             <th class="admin-th" style="width: 15%;">공간 번호</th>
-                            <td class="admin-td text-muted" style="width: 35%;">#S-${dto.spaceNo} <span class="badge bg-secondary bg-opacity-25 text-muted ms-2">${dto.categoryName}</span></td>
-                            <th class="admin-th" style="width: 15%;">등록일시</th>
-                            <td class="admin-td" style="width: 35%;">${dto.createdAt}</td>
+                            <td class="admin-td text-muted" style="width: 35%;">#S-${dto.spaceNo}</td>
+                            <th class="admin-th" style="width: 15%;">분류</th>
+                            <td class="admin-td" style="width: 35%;"><span class="badge bg-secondary bg-opacity-25 text-muted">${dto.categoryName}</span></td>
                         </tr>
                         <tr>
                             <th class="admin-th">호스트 정보</th>
@@ -124,7 +124,9 @@
                         </tr>
                         <tr>
                             <th class="admin-th border-0">주소</th>
-                            <td colspan="3" class="admin-td border-0 text-muted">[${dto.region}] ${dto.address} ${dto.detailAddr}</td>
+                            <td class="admin-td border-0 text-muted">[${dto.region}] ${dto.address} ${dto.detailAddr}</td>
+                            <th class="admin-th border-0">등록일시</th>
+                            <td class="admin-td border-0">${dto.createdAt}</td>
                         </tr>
                     </table>
                 </div>

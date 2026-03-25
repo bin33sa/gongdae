@@ -6,6 +6,7 @@
 <html lang="ko">
 <head>
     <jsp:include page="/WEB-INF/views/admin/layout/headerResources.jsp"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <title>공대생 Admin - 매장 전체 목록</title>
 </head>
 <body class="admin-page">
@@ -19,6 +20,7 @@
                     <h3 class="fw-bold mb-2">매장 전체 관리</h3>
                     <p class="mb-0 text-muted">플랫폼에 등록된 전체 공간을 조회합니다.</p>
                 </div>
+                <button id="btn-export-excel" class="btn btn-purple"><i class="bi bi-download me-2"></i>엑셀 다운로드</button>
             </div>
             <div class="dashboard-box">
                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -125,7 +127,35 @@ document.addEventListener('DOMContentLoaded', () => {
             searchList();
         }
     });
+
+    document.getElementById('btn-export-excel').addEventListener('click', function() {
+        var table = document.querySelector('.table');
+        var cloneTable = table.cloneNode(true);
+
+        var ths = cloneTable.querySelectorAll('th:last-child');
+        ths.forEach(th => th.remove());
+        var tds = cloneTable.querySelectorAll('td:last-child');
+        tds.forEach(td => td.remove());
+
+        var selects = table.querySelectorAll('select');
+        var clonedSelects = cloneTable.querySelectorAll('select');
+        for(var i=0; i<selects.length; i++) {
+            if(selects[i].closest('.table')) {
+                var selectedText = selects[i].options[selects[i].selectedIndex].text;
+                var textNode = document.createTextNode(selectedText);
+                clonedSelects[i].parentNode.replaceChild(textNode, clonedSelects[i]);
+            }
+        }
+
+        var wb = XLSX.utils.table_to_book(cloneTable, {sheet: "매장목록"});
+        var today = new Date();
+        var dateString = today.getFullYear() + ('0' + (today.getMonth() + 1)).slice(-2) + ('0' + today.getDate()).slice(-2);
+        var fileName = '매장_전체_목록_' + dateString + '.xlsx';
+
+        XLSX.writeFile(wb, fileName);
+    });
 });
+
 function changeSpaceStatus(spaceNo, newStatus) {
     if(!confirm("상태를 변경하시겠습니까?")) {
         location.reload();
