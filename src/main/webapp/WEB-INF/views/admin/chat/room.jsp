@@ -89,7 +89,7 @@
     var chatModalInstance = null; 
     
     var adminId = '<sec:authentication property="principal.member.member_id" />';
-    var adminName = '<sec:authentication property="principal.member.name" />';
+    var adminName = '<sec:authentication property="principal.member.name" htmlEscape="false" />';
 
     document.addEventListener('DOMContentLoaded', () => {
         connect();

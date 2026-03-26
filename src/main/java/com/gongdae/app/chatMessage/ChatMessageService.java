@@ -32,8 +32,8 @@ public class ChatMessageService {
         return chatRepository.findFirstByMemberIdOrderByCreatedAtDesc(memberId).orElse(null);
     }
 
-    public ChatMessage findByRoomId(String roomId) {
-        return chatRepository.findFirstByRoomIdOrderByCreatedAtDesc(roomId).orElse(null);
+    public String createNewRoomId(Long memberId) {
+        return "ROOM_" + memberId;
     }
     
     @Transactional

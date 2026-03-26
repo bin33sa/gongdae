@@ -39,21 +39,20 @@ public class AdminChatController {
         Map<String, Object> map = new java.util.HashMap<>();
         
         String nickname = chatService.findNicknameByMemberId(memberId);
-        
         if (nickname == null) {
             map.put("error", "존재하지 않는 회원번호입니다.");
             return map;
         }
         
         map.put("nickname", nickname); 
-
+        
         ChatMessage existingRoom = chatService.findByMemberId(memberId);
         if (existingRoom != null) {
             map.put("exists", true);
             map.put("roomId", existingRoom.getRoomId());
         } else {
             map.put("exists", false);
-            map.put("roomId", chatService.createNewRoomId());
+            map.put("roomId", chatService.createNewRoomId(memberId));
         }
         
         return map;
