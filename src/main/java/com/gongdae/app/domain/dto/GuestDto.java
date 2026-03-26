@@ -27,8 +27,8 @@ public class GuestDto {
 	private String tel;
 	private String profile_photo;
 	private String gender;
-	private String point; // 포인트
 	private String grade; // 회원 등급
+	private String point; // 포인트
 	
 	private MultipartFile selectFile;
 	

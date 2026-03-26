@@ -40,10 +40,10 @@ public class SpaceController {
 		} catch (Exception e) {
 		}
 		
-		return "common/space/search";
+		return "space/search";
 	}
 	
-	@GetMapping("detail/{id}")
+	@GetMapping("{id}")
 	public String detailPage(@PathVariable(name = "id") String spaceId, Model model) throws Exception {
 		
 		try {
@@ -51,12 +51,12 @@ public class SpaceController {
 			
 		} catch (Exception e) {
 		}
-		return "common/space/detail";
+		return "space/detail";
 	}
 	
 	@GetMapping("payment")
 	public String paymentForm() throws Exception {
-		return "common/space/payment";
+		return "space/payment";
 	}
 	
 	
@@ -88,6 +88,7 @@ public class SpaceController {
 		
 		return ResponseEntity.ok(result);
 	}
+	
 	
 	
 	

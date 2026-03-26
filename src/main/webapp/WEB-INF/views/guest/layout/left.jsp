@@ -79,12 +79,21 @@
 				<div class="row text-center g-0">
 
 					<div class="col-3"
-						onclick="location.href='${pageContext.request.contextPath}/my/grade'">
+						onclick="location.href='${pageContext.request.contextPath}/guest/grade'">
 						<div class="mb-1">
 							<i class="bi bi-award fs-4"></i>
 						</div>
 						<div class="small text-muted">
 							내 등급<br> <span class="text-dark fw-bold">${member.grade}</span>
+						</div>
+					</div>
+					<div class="col-3"
+						onclick="location.href='${pageContext.request.contextPath}/guest/point'">
+						<div class="mb-1">
+							<i class="bi bi-cash-coin fs-4"></i>
+						</div>
+						<div class="small text-muted">
+							포인트<br> <span class="text-dark fw-bold">${member.point}</span>
 						</div>
 					</div>
 					<div class="col-3"
@@ -97,18 +106,6 @@
 						<div class="small text-muted">예약 리스트</div>
 
 					</div>
-					<div class="col-3"
-						onclick="location.href='${pageContext.request.contextPath}/my/mileage'">
-						<div class="mb-1">
-							<i class="bi bi-cash-coin fs-4"></i>
-						</div>
-						<div class="small text-muted">
-							마일리지<br>
-						</div>
-					</div>
-
-
-
 					<div class="col-3"
 						onclick="location.href='${pageContext.request.contextPath}/my/wishlist'">
 

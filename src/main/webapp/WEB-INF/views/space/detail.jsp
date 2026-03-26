@@ -209,7 +209,7 @@ body {
                     </div>
                 </div>
 
-                <button type="button" class="btn btn-primary-custom w-100 py-3">
+                <button type="button" class="btn btn-primary-custom w-100 py-3" onclick="location.href='${pageContext.request.contextPath}/space/payment'">
                     예약 진행하기
                 </button>
                 <div class="text-center text-muted small mt-3">

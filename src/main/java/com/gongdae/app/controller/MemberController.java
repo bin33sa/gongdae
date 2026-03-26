@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.gongdae.app.domain.dto.MemberDto;
-import com.gongdae.app.service.MemberService;
 import com.gongdae.app.domain.dto.SessionInfo;
+import com.gongdae.app.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -82,16 +81,7 @@ public class MemberController {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
-	}
-
-
-	//////////////////////////////////////////////////////////////////////////////////////// 
-	@GetMapping("updatePwd")
-	public String updatePwdForm() throws Exception{
-		return "guest/member/updatePwd";
-	}
-
-
+	}	
 	
 	
 }

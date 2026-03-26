@@ -325,11 +325,14 @@ public class GuestController {
 		}
 	}
 
-
-	//////////////////////////////////////////////////////////////////////////////////////// 
-	@GetMapping("updatePwd")
-	public String updatePwdForm() throws Exception{
-		return "guest/member/updatePwd";
+	@GetMapping("grade")
+	public String grade() {
+		return "guest/member/grade";
+	}
+	
+	@GetMapping("point") 
+	public String mileage() {
+		return "guest/member/point";
 	}
 
 

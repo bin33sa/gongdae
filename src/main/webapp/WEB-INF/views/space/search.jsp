@@ -249,6 +249,9 @@
 
         </div>
 
+		<!-- 검색조건: 검색어, 공간종류, 지역, 날짜, 시간, 인원 -->
+		<!-- 정렬조건: 최신순, 별점 높은 순, 후기 많은 순, 가격작은순, 가격높은순 -->
+
         <!-- 펼쳐진 필터 -->
         <div class="search-expanded">
 
@@ -303,7 +306,7 @@
 					<!-- 상품 카드 -->
 					<div class="col-12 col-sm-6 col-lg-3">
 						<div class="card product-card h-100 border-0"
-							onclick="location.href='${pageContext.request.contextPath}/space/detail'">
+							onclick="location.href='${pageContext.request.contextPath}/space/36'">
 							<!-- 이미지 영역 -->
 							<div class="position-relative">
 								<img
@@ -342,7 +345,7 @@
 					<!-- 상품 카드 -->
 					<div class="col-12 col-sm-6 col-lg-3">
 						<div class="card product-card h-100 border-0"
-							onclick="location.href='${pageContext.request.contextPath}/space/detail'">
+							onclick="location.href='${pageContext.request.contextPath}/space/36'">
 							<!-- 이미지 영역 -->
 							<div class="position-relative">
 								<img

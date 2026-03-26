@@ -178,21 +178,12 @@ input{
 
         <h3>결제 방법</h3>
 
-        <div class="payment-method">
-            <label>
-                <input type="radio" name="pay"> 신용카드
-            </label>
-
-            <label>
-                <input type="radio" name="pay"> 카카오페이
-            </label>
-
-            <label>
-                <input type="radio" name="pay"> 네이버페이
-            </label>
-        </div>
-
-        <button class="pay-btn">결제하기</button>
+		<!-- 결제 UI -->
+        <div id="payment-method"></div>
+		<!-- 이용약관 UI -->
+		<div id="agreement"></div>
+		<!-- 결재하기 버튼 -->
+        <button class="pay-btn" id="payment-button" >결제하기</button>
     </div>
 
 </div>
@@ -203,6 +194,61 @@ input{
 </footer>
 
 <jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
+
+<!-- SDK 추가 -->
+<script src="https://js.tosspayments.com/v2/standard"></script>
+
+<script type="text/javascript">
+	main();
+	
+	async function main() {
+		const button = document.getElementById("payment-button");
+		
+		const amount = {
+          	currency: "KRW",
+          	value: 5000,
+        }
+		
+		// 결제 위젯 초기화
+		const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
+		const customerKey = generateRandomString();
+		const tossPayments = TossPayments(clientKey);
+        const widgets = tossPayments.widgets({
+         	customerKey,
+        });
+
+     	// ------ 주문의 결제 금액 설정 ------
+       	await widgets.setAmount(amount);
+
+        await Promise.all([
+          	// ------  결제 UI 렌더링 ------
+          	widgets.renderPaymentMethods({
+            	selector: "#payment-method",
+            	variantKey: "DEFAULT",
+          	}),
+          	// ------  이용약관 UI 렌더링 ------
+          	widgets.renderAgreement({ selector: "#agreement", variantKey: "AGREEMENT" }),
+        ]);
+        
+     	// ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
+        button.addEventListener("click", async function () {
+          	await widgets.requestPayment({
+	            orderId: "4G5Pk49qYHo7WYBeMjck5",
+	            orderName: "토스 티셔츠 외 2건",
+	            successUrl: window.location.origin + "/payment/success",
+	            failUrl: window.location.origin + "/payment/fail",
+	            customerEmail: "customer123@gmail.com",
+	            customerName: "김토스",
+	            customerMobilePhone: "01012341234",
+          	});
+        });
+		
+	}
+	
+	function generateRandomString() {
+		return window.btoa(Math.random()).slice(0, 20);
+	}
+</script>
 
 </body>
 </html>
