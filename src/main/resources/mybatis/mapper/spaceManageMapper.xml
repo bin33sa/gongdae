@@ -116,17 +116,38 @@
         WHERE u.space_no = #{spaceNo} ORDER BY u.unit_no ASC
     </select>
     
-    <select id="listSpace" resultType="com.gongdae.app.domain.dto.SpaceManageDTO" parameterType="Long">
-        SELECT s.space_no AS spaceNo, 
-               s.space_name AS spaceName, 
-               s.region, 
-               s.space_intro AS spaceIntro,
-               s.is_premium AS isPremium,
-               NVL((SELECT MAX(u.max_capacity) FROM SPACE_UNIT u WHERE u.space_no = s.space_no), 0) AS maxCapacity,
-               (SELECT MIN(i.file_url) FROM SPACE_IMAGE i WHERE i.space_no = s.space_no) AS fileUrl
+    <select id="dataCountSpace" parameterType="Long" resultType="Integer">
+        SELECT NVL(COUNT(*), 0)
+        FROM SPACE
+        WHERE host_id = #{hostId} 
+          AND status != 'DELETED' </select>
+
+    <select id="listSpace" parameterType="map" resultType="com.gongdae.app.domain.dto.SpaceManageDTO">
+        SELECT 
+            s.space_no AS spaceNo,
+            s.space_name AS spaceName,
+            s.space_intro AS spaceIntro,
+            s.region AS region,
+            s.status AS status,
+            s.is_premium AS isPremium,
+            
+           
+            (SELECT MAX(max_capacity) 
+             FROM SPACE_UNIT 
+             WHERE space_no = s.space_no) AS maxCapacity,
+             
+            
+            (SELECT file_url 
+             FROM SPACE_IMAGE 
+             WHERE space_no = s.space_no 
+             ORDER BY image_no ASC 
+             FETCH FIRST 1 ROWS ONLY) AS fileUrl
+
         FROM SPACE s
-        WHERE s.host_id = #{hostId} AND s.status = 'ACTIVE'
+        WHERE s.host_id = #{hostId} 
+          AND s.status != 'DELETED'
         ORDER BY s.space_no DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY
     </select>
 
     <update id="updateSpacePremiumFlag" parameterType="map">

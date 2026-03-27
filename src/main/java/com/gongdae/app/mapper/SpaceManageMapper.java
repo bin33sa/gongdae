@@ -35,8 +35,8 @@ public interface SpaceManageMapper {
     SpaceManageDTO findImageById(long imageNo);
     List<Long> listSpaceOption(long spaceNo); 
     List<SpaceManageDTO> listSpaceUnit(long spaceNo);
-    List<SpaceManageDTO> listSpace(long hostId) throws Exception;
-    
+    List<SpaceManageDTO> listSpace(Map<String, Object> map) throws Exception;
+    int dataCountSpace(long hostId) throws Exception;
     void updateSpacePremiumFlag(Map<String, Object> map) throws Exception;
     void insertPremiumHistory(Map<String, Object> map) throws Exception;
     void updatePremiumHistory(Map<String, Object> map) throws Exception;

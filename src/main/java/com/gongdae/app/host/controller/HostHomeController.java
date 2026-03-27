@@ -62,12 +62,48 @@ public class HostHomeController {
 
     
     @GetMapping("menu/store")
-    public String store(Model model) throws Exception {
+    public String store(
+            @RequestParam(name = "page", defaultValue = "1") int current_page,
+            Model model) throws Exception {
+        
         SessionInfo info = LoginMemberUtil.getSessionInfo();
-        List<SpaceManageDTO> list = spaceService.listSpace(info.getMember_id());
+        long hostId = info.getMember_id();
+        int size = 6; 
 
+       
+        int dataCount = spaceService.dataCountSpace(hostId);
+
+      
+        int total_page = paginateUtil.pageCount(dataCount, size);
+        if (current_page > total_page) {
+            current_page = total_page;
+        }
+
+        
+        int offset = (current_page - 1) * size;
+        if(offset < 0) offset = 0;
+
+       
+        Map<String, Object> map = new HashMap<>();
+        map.put("hostId", hostId);
+        map.put("offset", offset);
+        map.put("size", size);
+
+        
+        List<SpaceManageDTO> list = spaceService.listSpace(map);
+
+        
+        String paging = paginateUtil.pagingMethod(current_page, total_page, "searchStore");
+
+       
         model.addAttribute("list", list);
+        model.addAttribute("page", current_page);
+        model.addAttribute("dataCount", dataCount);
+        model.addAttribute("size", size);
+        model.addAttribute("total_page", total_page);
+        model.addAttribute("paging", paging);
         model.addAttribute("active", "store");
+
         return "host/menu/store";
     }
 

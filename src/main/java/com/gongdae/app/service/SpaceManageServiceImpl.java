@@ -228,10 +228,7 @@ public class SpaceManageServiceImpl implements SpaceManageService {
 	public List<SpaceManageDTO> listSpaceUnit(long spaceNo) throws Exception {
 		return mapper.listSpaceUnit(spaceNo);
 	}
-	@Override
-	public List<SpaceManageDTO> listSpace(long hostId) throws Exception {
-		return mapper.listSpace(hostId);
-	}
+	
 
 	@Transactional(rollbackFor = Exception.class)
     @Override
@@ -262,4 +259,25 @@ public class SpaceManageServiceImpl implements SpaceManageService {
             mapper.updatePremiumHistory(map);
         }
     }
+	
+	@Override
+    public int dataCountSpace(long hostId) throws Exception {
+        try {
+            return mapper.dataCountSpace(hostId);
+        } catch (Exception e) {
+            log.error("매장 개수 카운트 에러 : ", e);
+            throw e;
+        }
+    }
+
+    @Override
+    public List<SpaceManageDTO> listSpace(Map<String, Object> map) throws Exception {
+        try {
+            return mapper.listSpace(map);
+        } catch (Exception e) {
+            log.error("매장 목록 조회 에러 : ", e);
+            throw e;
+        }
+    }
+	
 }

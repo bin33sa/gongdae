@@ -104,8 +104,23 @@
             </div>
         </c:forEach>
 
+    </div> <div class="d-flex justify-content-center mt-5">
+        ${paging}
     </div>
+
+    <form name="searchForm" action="<c:url value='/host/menu/store'/>" method="get">
+        <input type="hidden" name="page" value="1">
+    </form>
 </main>
+
+<script>
+    function searchStore(page) {
+        const form = document.searchForm;
+        form.page.value = page;
+        form.submit();
+    }
+</script>
+
 
 <footer>
     <jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
