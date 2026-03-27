@@ -7,7 +7,7 @@
     <title>매장 관리 - 공대생 호스트 센터</title>
 
     <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
-
+<jsp:include page="/WEB-INF/views/host/layout/chatWidget.jsp"/>
     <!-- CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/host/menu/store.css">
 </head>

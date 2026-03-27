@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     
     <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
-    
+    <jsp:include page="/WEB-INF/views/host/layout/chatWidget.jsp"/>
     <style>
         body { background-color: #f4f6f9; font-family: 'Pretendard', sans-serif; }
         

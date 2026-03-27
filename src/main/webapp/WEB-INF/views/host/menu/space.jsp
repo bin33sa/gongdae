@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>공간 등록 관리 - 공대생 호스트</title>
-    
+    <jsp:include page="/WEB-INF/views/host/layout/chatWidget.jsp"/>
     <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/host/menu/space.css">
     

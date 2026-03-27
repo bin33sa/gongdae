@@ -8,7 +8,7 @@
     <title>상세매출 - 공대생 호스트 센터</title>
 
     <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
-
+<jsp:include page="/WEB-INF/views/host/layout/chatWidget.jsp"/>
     <!-- 🔥 상세매출 CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/host/menu/sales.css">
 
