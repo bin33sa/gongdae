@@ -108,4 +108,19 @@
 		ORDER BY num DESC
 		FETCH FIRST 1 ROWS ONLY
 	</select>
+	
+	<update id="updatePoint">
+	    UPDATE GUEST_DETAIL 
+	    SET point = point + #{point, jdbcType=NUMERIC} 
+	    WHERE member_id IN 
+	    <foreach collection="memberIds" item="memberId" separator="," open="(" close=")">
+	        #{memberId, jdbcType=NUMERIC}
+	    </foreach>
+	</update>
+
+    <select id="getReservationCount" parameterType="Long" resultType="Integer">
+        SELECT COUNT(res_no) 
+        FROM reservation 
+        WHERE guest_id = #{member_id} AND status = 'COMPLETED'
+    </select>
 </mapper>

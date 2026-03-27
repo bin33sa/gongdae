@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gongdae.app.admin.mapper.SaleManageMapper">
+
+    <select id="getTodaySummary" resultType="com.gongdae.app.admin.domain.dto.SalesManageDto">
+        SELECT 
+            TO_CHAR(SYSDATE, 'YYYY-MM-DD') AS salesDate,
+            (SELECT NVL(SUM(pay_amount), 0) FROM payment WHERE TRUNC(pay_date) = TRUNC(SYSDATE) AND pay_status = 'PAID') AS payAmount,
+            (SELECT COUNT(*) FROM payment WHERE TRUNC(pay_date) = TRUNC(SYSDATE) AND pay_status = 'PAID') AS payCount,
+            (SELECT COUNT(*) FROM refund WHERE TRUNC(refund_at) = TRUNC(SYSDATE)) AS refundCount,
+            (SELECT NVL(SUM(refund_amount), 0) FROM refund WHERE TRUNC(refund_at) = TRUNC(SYSDATE)) AS refundAmount
+        FROM DUAL
+    </select>
+
+    <select id="getDailySalesList" resultType="com.gongdae.app.admin.domain.dto.SalesManageDto">
+        SELECT 
+            TO_CHAR(d.dt, 'YYYY-MM-DD (DY)') AS salesDate,
+            NVL(p.payCount, 0) AS payCount,
+            NVL(p.payAmount, 0) AS payAmount,
+            NVL(r.refundCount, 0) AS refundCount,
+            NVL(r.refundAmount, 0) AS refundAmount,
+            NVL(p.payAmount, 0) - NVL(r.refundAmount, 0) AS netAmount
+        FROM (
+            SELECT TRUNC(SYSDATE) - LEVEL + 1 AS dt 
+            FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> 7
+        ) d
+        LEFT JOIN (
+            SELECT TRUNC(pay_date) AS dt, COUNT(*) AS payCount, SUM(pay_amount) AS payAmount
+            FROM payment WHERE pay_status = 'PAID' GROUP BY TRUNC(pay_date)
+        ) p ON d.dt = p.dt
+        LEFT JOIN (
+            SELECT TRUNC(refund_at) AS dt, COUNT(*) AS refundCount, SUM(refund_amount) AS refundAmount
+            FROM refund GROUP BY TRUNC(refund_at)
+        ) r ON d.dt = r.dt
+        ORDER BY d.dt DESC
+    </select>
+
+    <select id="getThisMonthSummary" resultType="com.gongdae.app.admin.domain.dto.SalesManageDto">
+        SELECT 
+            TO_CHAR(SYSDATE, 'YYYY"년" MM"월"') AS salesDate,
+            (SELECT NVL(SUM(pay_amount), 0) FROM payment WHERE TO_CHAR(pay_date, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM') AND pay_status = 'PAID') AS payAmount,
+            (SELECT COUNT(*) FROM payment WHERE TO_CHAR(pay_date, 'YYYY-MM') = TO_CHAR(SYSDATE, 'YYYY-MM') AND pay_status = 'PAID') AS payCount
+        FROM DUAL
+    </select>
+
+    <select id="getLastMonthSummary" resultType="com.gongdae.app.admin.domain.dto.SalesManageDto">
+        SELECT 
+            TO_CHAR(ADD_MONTHS(SYSDATE, -1), 'YYYY"년" MM"월"') AS salesDate,
+            (SELECT NVL(SUM(pay_amount), 0) FROM payment WHERE TO_CHAR(pay_date, 'YYYY-MM') = TO_CHAR(ADD_MONTHS(SYSDATE, -1), 'YYYY-MM') AND pay_status = 'PAID') AS payAmount
+        FROM DUAL
+    </select>
+
+    <select id="getMonthlySalesList" resultType="com.gongdae.app.admin.domain.dto.SalesManageDto">
+        SELECT 
+            m.month_str AS salesDate,
+            NVL(p.payCount, 0) AS payCount,
+            NVL(p.payAmount, 0) AS payAmount,
+            NVL(r.refundAmount, 0) AS refundAmount,
+            NVL(p.payAmount, 0) - NVL(r.refundAmount, 0) AS netAmount
+        FROM (
+            SELECT TO_CHAR(SYSDATE, 'YYYY') || '년 ' || LPAD(LEVEL, 2, '0') || '월' AS month_str,
+                   TO_CHAR(SYSDATE, 'YYYY') || '-' || LPAD(LEVEL, 2, '0') AS ym
+            FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> 12
+        ) m
+        LEFT JOIN (
+            SELECT TO_CHAR(pay_date, 'YYYY-MM') AS ym, COUNT(*) AS payCount, SUM(pay_amount) AS payAmount
+            FROM payment WHERE pay_status = 'PAID' GROUP BY TO_CHAR(pay_date, 'YYYY-MM')
+        ) p ON m.ym = p.ym
+        LEFT JOIN (
+            SELECT TO_CHAR(refund_at, 'YYYY-MM') AS ym, SUM(refund_amount) AS refundAmount
+            FROM refund GROUP BY TO_CHAR(refund_at, 'YYYY-MM')
+        ) r ON m.ym = r.ym
+        WHERE m.ym <![CDATA[<=]]> TO_CHAR(SYSDATE, 'YYYY-MM')
+        ORDER BY m.ym DESC
+    </select>
+
+    <sql id="search-where">
+        <if test="kw != null and kw != ''">
+            <choose>
+                <when test="col == 'resNo'"> AND r.res_no = #{kw} </when>
+                <when test="col == 'guestName'"> AND g.name LIKE '%' || #{kw} || '%' </when>
+                <when test="col == 'spaceName'"> AND s.space_name LIKE '%' || #{kw} || '%' </when>
+                <otherwise>
+                    AND (g.name LIKE '%' || #{kw} || '%' OR s.space_name LIKE '%' || #{kw} || '%')
+                </otherwise>
+            </choose>
+        </if>
+        <if test="status != null and status != ''">
+            AND r.status = #{status}
+        </if>
+        <if test="startDate != null and startDate != ''">
+            AND r.res_date >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND r.res_date <![CDATA[<]]> TO_DATE(#{endDate}, 'YYYY-MM-DD') + 1
+        </if>
+    </sql>
+
+    <select id="getReservationCount" parameterType="map" resultType="int">
+        SELECT COUNT(r.res_no)
+        FROM reservation r
+        LEFT JOIN guest_detail g ON r.guest_id = g.member_id
+        LEFT JOIN space_unit su ON r.unit_no = su.unit_no
+        LEFT JOIN space s ON su.space_no = s.space_no
+        <where>
+            <include refid="search-where"/>
+        </where>
+    </select>
+
+    <select id="getReservationList" parameterType="map" resultType="com.gongdae.app.admin.domain.dto.SalesManageDto">
+        SELECT 
+            r.res_no AS resNo,
+            '#' || r.res_no AS resNoStr,
+            r.guest_id AS guestId,
+            g.name AS guestName,
+            s.space_name AS spaceName,
+            TO_CHAR(r.res_date, 'YYYY-MM-DD') || ' ' || LPAD(r.start_time, 2, '0') || ':00' AS resDate,
+            NVL(p.pay_amount, 0) AS amount,
+            TO_CHAR(p.pay_date, 'YYYY-MM-DD HH24:MI') AS payDate,
+            p.pay_status AS payStatus,
+            CASE r.status 
+                WHEN 'RESERVED' THEN '예약완료' 
+                WHEN 'CANCELLED' THEN '취소됨' 
+                WHEN 'COMPLETED' THEN '이용완료' 
+                WHEN 'PENDING' THEN '보류중' 
+                ELSE r.status 
+            END AS resStatus,
+            CASE r.status 
+                WHEN 'RESERVED' THEN 'status-reserved' 
+                WHEN 'CANCELLED' THEN 'status-cancelled' 
+                WHEN 'COMPLETED' THEN 'status-completed' 
+                WHEN 'PENDING' THEN 'status-pending' 
+                ELSE 'status-default' 
+            END AS statusColor
+        FROM reservation r
+        LEFT JOIN guest_detail g ON r.guest_id = g.member_id
+        LEFT JOIN space_unit su ON r.unit_no = su.unit_no
+        LEFT JOIN space s ON su.space_no = s.space_no
+        LEFT JOIN payment p ON r.res_no = p.res_no
+        <where>
+            <include refid="search-where"/>
+        </where>
+        ORDER BY r.res_no DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY
+    </select>
+	
+	<select id="getReservationDetail" parameterType="Long" resultType="com.gongdae.app.admin.domain.dto.SalesManageDto">
+        SELECT 
+            r.res_no AS resNo,
+            '#' || r.res_no AS resNoStr,
+            r.guest_id AS guestId,
+            g.name AS guestName,
+            s.space_name AS spaceName,
+            TO_CHAR(r.res_date, 'YYYY-MM-DD') || ' ' || LPAD(r.start_time, 2, '0') || ':00' AS resDate,
+            NVL(p.pay_amount, 0) AS amount,
+            TO_CHAR(p.pay_date, 'YYYY-MM-DD HH24:MI:SS') AS payDate,
+            p.pay_status AS payStatus,
+            r.status AS resStatus,
+            CASE r.status 
+                WHEN 'RESERVED' THEN '예약완료' 
+                WHEN 'CANCELLED' THEN '취소됨' 
+                WHEN 'COMPLETED' THEN '이용완료' 
+                WHEN 'PENDING' THEN '보류중' 
+                ELSE r.status 
+            END AS settlementStatus,  CASE r.status 
+                WHEN 'RESERVED' THEN 'status-reserved' 
+                WHEN 'CANCELLED' THEN 'status-cancelled' 
+                WHEN 'COMPLETED' THEN 'status-completed' 
+                WHEN 'PENDING' THEN 'status-pending' 
+                ELSE 'status-default' 
+            END AS statusColor
+        FROM reservation r
+        LEFT JOIN guest_detail g ON r.guest_id = g.member_id
+        LEFT JOIN space_unit su ON r.unit_no = su.unit_no
+        LEFT JOIN space s ON su.space_no = s.space_no
+        LEFT JOIN payment p ON r.res_no = p.res_no
+        WHERE r.res_no = #{resNo}
+    </select>
+	
+</mapper>

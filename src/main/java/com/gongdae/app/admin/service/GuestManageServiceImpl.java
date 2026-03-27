@@ -134,4 +134,37 @@ public class GuestManageServiceImpl implements GuestManageService {
 		return dto;
 	}
 	
+	@Override
+    public void updatePoint(Map<String, Object> map) throws Exception {
+        try {
+            mapper.updatePoint(map);
+        } catch (Exception e) {
+            log.info("updatePoint : ", e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void updateAutoGrade(Long member_id) throws Exception {
+        try {
+            int resCount = mapper.getReservationCount(member_id);
+            String newGrade = "BRONZE";
+            
+            if (resCount >= 50) {
+                newGrade = "GOLD";
+            } else if (resCount >= 10) {
+                newGrade = "SILVER";
+            }
+            
+            Map<String, Object> map = new java.util.HashMap<>();
+            map.put("member_id", member_id);
+            map.put("grade", newGrade);
+            
+            mapper.updateGuestDetail(map); 
+        } catch (Exception e) {
+            log.info("updateAutoGrade : ", e);
+            throw e;
+        }
+    }
+	
 }
