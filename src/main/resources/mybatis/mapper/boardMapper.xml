@@ -79,7 +79,16 @@
 		ORDER BY board_no DESC
     </select>
     
-    
+    <select id="homeBoardList" resultType="com.gongdae.app.domain.dto.BoardDto">
+    	SELECT 
+    		board_no AS num, title, content, type,
+    		TO_CHAR(created_at, 'YYYY-MM-DD') AS created_at,
+    		TO_CHAR(updated_at, 'YYYY-MM-DD') AS updated_at
+    	FROM board
+    	WHERE type IN ('NOTICE', 'EVENT') AND block = 0
+		ORDER BY board_no DESC
+		FETCH FIRST 3 ROWS ONLY
+    </select>
     
 	
 	

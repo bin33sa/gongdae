@@ -72,9 +72,9 @@
 
 					<div class="category-mask">
 						<div class="category-wrap">
-							<button class="category-btn active">전체</button>
+							<button class="category-btn active" data-num="">전체</button>
 							<c:forEach var="category" items="${categoryList}">
-			       				<button class="category-btn">${category.name}</button>
+			       				<button class="category-btn" data-num="${category.categoryNo}">${category.name}</button>
 			       			</c:forEach>
 						</div>
 					</div>
@@ -88,98 +88,7 @@
 	<!-- 공간 리스트 -->
 	<section class="section home-space-section">
 		<div class="container">
-			<div class="row g-4">
-
-   				<div class="col-12 col-sm-6 col-lg-3">
-      				<div class="card product-card h-100 border-0" onclick="location.href='${pageContext.request.contextPath}/space/detail/1'">
-	        			<div class="position-relative product-thumb">
-	          				<img src="${pageContext.request.contextPath}/dist/images/image.png" class="card-img-top product-img" alt="상품이미지">
-	          				<button class="wishlist-btn">
-	            				<i class="bi bi-heart"></i>
-	          				</button>
-	        			</div>
-
-	        			<div class="card-body product-body">
-	          				<h6 class="card-title mb-1">파티룸 A</h6>
-
-	          				<div class="rating mb-2">
-	            				<i class="bi bi-star-fill text-warning"></i>
-	            				<span class="fw-semibold">4.8</span>
-	            				<span class="text-muted small">(128)</span>
-	          				</div>
-
-	          				<p class="text-muted small mb-2">서울 강남 · 최대 10명</p>
-	          				<p class="fw-bold product-price mb-0">₩120,000</p>
-	        			</div>
-      				</div>
-    			</div>
-
-    			<div class="col-12 col-sm-6 col-lg-3">
-      				<div class="card product-card h-100 border-0">
-	        			<div class="position-relative product-thumb">
-	          				<img src="${pageContext.request.contextPath}/dist/images/image.png" class="card-img-top product-img" alt="상품이미지">
-	          				<button class="wishlist-btn">
-	            				<i class="bi bi-heart"></i>
-	          				</button>
-	        			</div>
-
-	        			<div class="card-body product-body">
-	          				<h6 class="card-title mb-1">스터디룸 B</h6>
-	          				<div class="rating mb-2">
-	            				<i class="bi bi-star-fill text-warning"></i>
-	            				<span class="fw-semibold">4.7</span>
-	            				<span class="text-muted small">(92)</span>
-	          				</div>
-	          				<p class="text-muted small mb-2">서울 마포 · 최대 6명</p>
-	          				<p class="fw-bold product-price mb-0">₩45,000</p>
-	        			</div>
-      				</div>
-    			</div>
-
-    			<div class="col-12 col-sm-6 col-lg-3">
-      				<div class="card product-card h-100 border-0">
-	        			<div class="position-relative product-thumb">
-	          				<img src="${pageContext.request.contextPath}/dist/images/image.png" class="card-img-top product-img" alt="상품이미지">
-	          				<button class="wishlist-btn">
-	            				<i class="bi bi-heart"></i>
-	          				</button>
-	        			</div>
-
-	        			<div class="card-body product-body">
-	          				<h6 class="card-title mb-1">촬영 스튜디오 C</h6>
-	          				<div class="rating mb-2">
-	            				<i class="bi bi-star-fill text-warning"></i>
-	            				<span class="fw-semibold">4.9</span>
-	            				<span class="text-muted small">(201)</span>
-	          				</div>
-	          				<p class="text-muted small mb-2">서울 성수 · 최대 8명</p>
-	          				<p class="fw-bold product-price mb-0">₩89,000</p>
-	        			</div>
-      				</div>
-    			</div>
-
-    			<div class="col-12 col-sm-6 col-lg-3">
-      				<div class="card product-card h-100 border-0">
-	        			<div class="position-relative product-thumb">
-	          				<img src="${pageContext.request.contextPath}/dist/images/image.png" class="card-img-top product-img" alt="상품이미지">
-	          				<button class="wishlist-btn">
-	            				<i class="bi bi-heart"></i>
-	          				</button>
-	        			</div>
-
-	        			<div class="card-body product-body">
-	          				<h6 class="card-title mb-1">회의실 D</h6>
-	          				<div class="rating mb-2">
-	            				<i class="bi bi-star-fill text-warning"></i>
-	            				<span class="fw-semibold">4.6</span>
-	            				<span class="text-muted small">(74)</span>
-	          				</div>
-	          				<p class="text-muted small mb-2">서울 종로 · 최대 12명</p>
-	          				<p class="fw-bold product-price mb-0">₩65,000</p>
-	        			</div>
-      				</div>
-    			</div>
-  			</div>
+			<div class="row g-4"></div>
 		</div>
 	</section>
 
@@ -261,45 +170,19 @@
 			</div>
 
 			<div class="row g-4">
-				<div class="col-12 col-md-6 col-lg-4">
-					<div class="card notice-card h-100 border-0">
-						<div class="card-body">
-							<span class="badge notice-badge-danger mb-2">공지</span>
-							<h6 class="fw-bold mb-2">공간 예약 시스템 점검 안내</h6>
-							<p class="text-muted small mb-3">
-								보다 안정적인 서비스 제공을 위해 예약 시스템 점검이 진행됩니다.
-								점검 시간 동안 일부 서비스 이용이 제한될 수 있습니다.
-							</p>
-							<div class="text-muted small">2026.03.04</div>
+				<c:forEach var="board" items="${boardList}">
+					<div class="col-12 col-md-6 col-lg-4">
+						<div class="card notice-card h-100 border-0"
+							onclick="location.href='${pageContext.request.contextPath}/${board.type == 'NOTICE' ? 'notice' : 'event'}/${board.num}'">
+							<div class="card-body">
+								<span class="badge ${board.type == 'NOTICE' ? 'notice-badge-danger' : 'notice-badge-default'} mb-2">${board.type == 'NOTICE' ? '공지' : '안내'}</span>
+								<h6 class="fw-bold mb-2">${board.title}</h6>
+								<div class="text-muted small mb-3">${board.content}</div>
+								<div class="text-muted small">${board.created_at}</div>
+							</div>
 						</div>
 					</div>
-				</div>
-
-				<div class="col-12 col-md-6 col-lg-4">
-					<div class="card notice-card h-100 border-0">
-						<div class="card-body">
-							<span class="badge notice-badge-default mb-2">안내</span>
-							<h6 class="fw-bold mb-2">신규 공간 등록 이벤트 안내</h6>
-							<p class="text-muted small mb-3">
-								신규 공간을 등록하시는 호스트 분들께 등록 수수료 할인 이벤트가 진행됩니다.
-							</p>
-							<div class="text-muted small">2026.03.02</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-12 col-md-6 col-lg-4">
-					<div class="card notice-card h-100 border-0">
-						<div class="card-body">
-							<span class="badge notice-badge-default mb-2">안내</span>
-							<h6 class="fw-bold mb-2">서비스 이용약관 개정 안내</h6>
-							<p class="text-muted small mb-3">
-								서비스 이용약관이 일부 개정되어 2026년 3월 10일부터 적용됩니다.
-							</p>
-							<div class="text-muted small">2026.02.28</div>
-						</div>
-					</div>
-				</div>
+				</c:forEach>
 			</div>
 		</div>
 	</section>
@@ -345,67 +228,70 @@ function scrollCategory(amount) {
 }
 
 // 카테고리 별 공간 출력
+function loadSpaceList(categoryNo) {
+	const url = '${pageContext.request.contextPath}/space/homeSpacelist';
+	const params = 'category=' + categoryNo;
+	
+	const fn = function(data) {
+		let out = '';
+		
+		console.log(data);
+
+		for(let space of data.list) {
+			
+			out += `
+				<div class="col-12 col-sm-6 col-lg-3">
+	  				<div class="card product-card h-100 border-0" onclick="location.href='${pageContext.request.contextPath}/space/` + space.num + `'">
+	        			<div class="position-relative product-thumb">
+	          				<img src="${pageContext.request.contextPath}/dist/images/image.png" class="card-img-top product-img" alt="상품이미지">
+	          				<button class="wishlist-btn">
+	            				<i class="bi bi-heart"></i>
+	          				</button>
+	        			</div>
+
+	        			<div class="card-body product-body">
+	          				<h6 class="card-title mb-1">` + space.name +  `</h6>
+
+	          				<div class="rating mb-2">
+	            				<i class="bi bi-star-fill text-warning"></i>
+	            				<span class="fw-semibold">4.8</span>
+	            				<span class="text-muted small">(128)</span>
+	          				</div>
+
+	          				<p class="text-muted small mb-2">` + space.address + ` · 최대 ` + space.capacity + `명</p>
+	          				<p class="fw-bold product-price mb-0">₩` + space.price + `</p>
+	        			</div>
+	  				</div>
+				</div>
+			`;
+		}
+		
+		spaceSection.innerHTML = out;
+	};
+	
+	const headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+	const options = {
+			method: 'POST',
+			headers: headers,
+			body: params,
+	};
+	
+	fetch(url, options)
+		.then(res => res.json())
+		.then(data => fn(data))
+		.catch(err => console.log("error:", err));
+
+}
+
+loadSpaceList('');
+
 mask.addEventListener('click', function(e) {
 	if(e.target.matches('.category-btn')) {
 		const categoryBtns = this.querySelectorAll('.category-btn');
 		categoryBtns.forEach(btn => btn.classList.remove('active'));
 		e.target.classList.add('active');
 		
-		const url = '${pageContext.request.contextPath}/space/list';
-		const params = 'category=';
-		
-		const fn = function(data) {
-
-			
-			
-			let out = '';
-			
-			for(let space of data.list) {
-					
-				out += `
-					<div class="col-12 col-sm-6 col-lg-3">
-	      				<div class="card product-card h-100 border-0" onclick="location.href='${pageContext.request.contextPath}/space/detail'">
-		        			<div class="position-relative product-thumb">
-		          				<img src="${pageContext.request.contextPath}/dist/images/image.png" class="card-img-top product-img" alt="상품이미지">
-		          				<button class="wishlist-btn">
-		            				<i class="bi bi-heart"></i>
-		          				</button>
-		        			</div>
-	
-		        			<div class="card-body product-body">
-		          				<h6 class="card-title mb-1">` + space.title +  `</h6>
-	
-		          				<div class="rating mb-2">
-		            				<i class="bi bi-star-fill text-warning"></i>
-		            				<span class="fw-semibold">4.8</span>
-		            				<span class="text-muted small">(128)</span>
-		          				</div>
-	
-		          				<p class="text-muted small mb-2">` + space.region + ` · 최대 ` + space.capacity + `명</p>
-		          				<p class="fw-bold product-price mb-0">₩` + space.price + `</p>
-		        			</div>
-	      				</div>
-	    			</div>
-				`;
-				
-		
-			}
-			
-			
-			spaceSection.insertAdjacentHTML('beforeend', out);
-		};
-		
-		const headers = {'Content-Type': 'application/x-www-form-urlencoded'};
-		const options = {
-				method: 'POST',
-				headers: headers,
-				body: params,
-		};
-		
-		fetch(url, options)
-			.then(res => res.json())
-			.then(data => fn(data))
-			.catch(err => console.log("error:", err));
+		loadSpaceList(e.target.dataset.num);
 	}
 });
 

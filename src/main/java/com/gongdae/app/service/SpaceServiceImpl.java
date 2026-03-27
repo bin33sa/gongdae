@@ -10,6 +10,7 @@ import com.gongdae.app.common.StorageService;
 import com.gongdae.app.domain.dto.CategoryDTO;
 import com.gongdae.app.domain.dto.MemberDto;
 import com.gongdae.app.domain.dto.SpaceDTO;
+import com.gongdae.app.domain.dto.SpaceUnitDTO;
 import com.gongdae.app.mapper.SpaceMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,30 @@ import lombok.extern.slf4j.Slf4j;
 public class SpaceServiceImpl implements SpaceService {
 	private final SpaceMapper mapper;
 	private final StorageService storageService;
-	
 
+	@Override
+	public List<CategoryDTO> categoryList() {
+		List<CategoryDTO> categoryList = null;
+		try {
+			categoryList = mapper.categoryList();
+		} catch (Exception e) {
+			log.info("categoryList: ", e);
+		}
+		return categoryList;
+	}
+
+	@Override
+	public List<SpaceDTO> homeSpaceList(Map<String, Object> params) {
+		List<SpaceDTO> spaceList = null;
+		try {
+			spaceList = mapper.homeSpaceList(params);
+		} catch (Exception e) {
+			log.info("spaceList: ", e);
+		}
+		
+		return spaceList;
+	}
+	
 	@Override
 	public List<SpaceDTO> spaceList(Map<String, Object> params) {
 		List<SpaceDTO> spaceList = null;
@@ -36,17 +59,6 @@ public class SpaceServiceImpl implements SpaceService {
 	}
 	
 	@Override
-	public List<CategoryDTO> categoryList() {
-		List<CategoryDTO> categoryList = null;
-		try {
-			categoryList = mapper.categoryList();
-		} catch (Exception e) {
-			log.info("categoryList: ", e);
-		}
-		return categoryList;
-	}
-	
-	@Override
 	public SpaceDTO findSpaceById(String spaceId) {
 		SpaceDTO space = null;
 		try {
@@ -56,6 +68,18 @@ public class SpaceServiceImpl implements SpaceService {
 		}
 		
 		return space;
+	}
+
+	@Override
+	public List<SpaceUnitDTO> findSpaceUnitById(String spaceId) {
+		List<SpaceUnitDTO> spaceUnitList = null;
+		try {
+			spaceUnitList = mapper.findSpaceUnitById(spaceId);
+		} catch (Exception e) {
+			log.info("findSpaceUnitById: ", e);
+		}
+		
+		return spaceUnitList;
 	}
 	
 	///////////////////////////////////////////

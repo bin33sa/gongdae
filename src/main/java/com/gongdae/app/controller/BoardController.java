@@ -94,7 +94,7 @@ public class BoardController {
 	
 	@GetMapping("/notice/{num}")
 	public String noticeDetail(@PathVariable(name = "num") long num,
-			@RequestParam(name = "page") String page,
+			@RequestParam(name = "page", defaultValue = "1") String page,
 			@RequestParam(name = "kwd", defaultValue = "") String kwd,
 			Model model) throws Exception {
 		
@@ -191,7 +191,7 @@ public class BoardController {
 	
 	@GetMapping("/event/{num}")
 	public String eventDetail(@PathVariable(name = "num") long num,
-			@RequestParam(name = "page") String page,
+			@RequestParam(name = "page", defaultValue = "1") String page,
 			Model model) throws Exception {
 		
 		String query = "page=" + page;

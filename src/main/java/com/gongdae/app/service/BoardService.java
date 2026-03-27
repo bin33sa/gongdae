@@ -16,4 +16,6 @@ public interface BoardService {
 	public List<BoardDto> eventList(Map<String, Object> map);
 	
 	public List<BoardDto> faqList();
+	
+	public List<BoardDto> homeBoardList();
 }

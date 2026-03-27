@@ -46,21 +46,42 @@ public class SpaceController {
 	@GetMapping("{id}")
 	public String detailPage(@PathVariable(name = "id") String spaceId, Model model) throws Exception {
 		
-		try {
+		try {			
 			model.addAttribute("space", service.findSpaceById(spaceId));
+			model.addAttribute("spaceUnits", service.findSpaceUnitById(spaceId));
 			
 		} catch (Exception e) {
 		}
 		return "space/detail";
 	}
 	
-	@GetMapping("payment")
-	public String paymentForm() throws Exception {
-		return "space/payment";
+	
+
+	
+	@PostMapping("homeSpacelist")
+	public ResponseEntity<?> homeSpaceList(@RequestParam(name = "category", defaultValue = "") String category) throws Exception {
+		
+		Map<String, Object> result = new HashMap<>();
+		
+		try {
+			SessionInfo info = LoginMemberUtil.getSessionInfo();
+
+			String guestId = "";
+			if(info != null) guestId = info.getLogin_id();
+			
+			Map<String, Object> params = new HashMap<>();
+			params.put("category", category);
+			params.put("guest", guestId);
+			
+			List<SpaceDTO> list = service.homeSpaceList(params);
+			
+			result.put("list", list);
+			
+		} catch (Exception e) {
+		}
+		
+		return ResponseEntity.ok(result);
 	}
-	
-	
-	
 	
 	@PostMapping("list")
 	public ResponseEntity<?> spaceList(@RequestParam(name = "category") String category) throws Exception {
@@ -90,6 +111,10 @@ public class SpaceController {
 	}
 	
 	
+	@GetMapping("payment")
+	public String paymentForm() throws Exception {
+		return "space/payment";
+	}
 	
 	
 	

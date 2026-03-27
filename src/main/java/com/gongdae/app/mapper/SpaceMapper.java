@@ -9,13 +9,16 @@ import org.apache.ibatis.annotations.Mapper;
 import com.gongdae.app.domain.dto.CategoryDTO;
 import com.gongdae.app.domain.dto.MemberDto;
 import com.gongdae.app.domain.dto.SpaceDTO;
+import com.gongdae.app.domain.dto.SpaceUnitDTO;
 
 @Mapper
 public interface SpaceMapper {
 
 	public List<CategoryDTO> categoryList();
+	public List<SpaceDTO> homeSpaceList(Map<String, Object> params);
 	public List<SpaceDTO> spaceList(Map<String, Object> params);
 	public SpaceDTO findSpaceById(String spaceId);
+	public List<SpaceUnitDTO> findSpaceUnitById(String spaceId);
 	
 	////////////////////////////////////
 	

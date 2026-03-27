@@ -10,6 +10,7 @@ import lombok.Setter;
 public class BoardDto {
 	private long num;
 	private String admin_name;
+	private String type;
 	private String title;
 	private String content;
 	private String created_at;

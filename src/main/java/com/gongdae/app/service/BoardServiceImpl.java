@@ -93,7 +93,16 @@ public class BoardServiceImpl implements BoardService {
 		return list;
 	}
 
-	
+	@Override
+	public List<BoardDto> homeBoardList() {
+		List<BoardDto> list = null;
+		try {
+			list = mapper.homeBoardList();
+		} catch (Exception e) {
+			log.info("noticeList: ", e);
+		}
+		return list;
+	}
 	
 
 

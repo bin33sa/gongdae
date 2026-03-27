@@ -97,10 +97,10 @@ body {
 <main class="container mb-5">
     
     <div class="mb-4">
-        <span class="badge bg-dark mb-2 px-2 py-1 fw-normal">스터디룸</span>
-        <h2 class="fw-bold" style="font-size: 2rem;">온트랙클래스 강남점</h2>
+        <span class="badge bg-dark mb-2 px-2 py-1 fw-normal">${space.category}</span>
+        <h2 class="fw-bold" style="font-size: 2rem;">${space.name}</h2>
         <div class="text-muted mt-2 fs-6">
-            <i class="bi bi-geo-alt-fill me-1 text-danger"></i> 서울 강남구 강남대로 34번길 11, 202동 202호
+            <i class="bi bi-geo-alt-fill me-1 text-danger"></i> ${space.address}, ${space.address2}
         </div>
     </div>
 
@@ -146,24 +146,18 @@ body {
 
             <div class="detail-section border-bottom-0 pb-0">
                 <h4 class="section-title">예약 가능한 룸</h4>
-                
-                <div class="unit-card d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5 class="fw-bold mb-2">A룸 (대형 회의실)</h5>
-                        <div class="text-muted small mb-2"><i class="bi bi-person-fill me-1"></i>최대 8인 <span class="mx-2">|</span> 최소 2시간</div>
-                        <span class="fw-bold text-danger fs-5">15,000원</span> / 시간
-                    </div>
-                    <button class="btn btn-outline-dark px-4 py-2">선택</button>
-                </div>
-
-                <div class="unit-card d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5 class="fw-bold mb-2">B룸 (포커스 룸)</h5>
-                        <div class="text-muted small mb-2"><i class="bi bi-person-fill me-1"></i>최대 4인 <span class="mx-2">|</span> 최소 1시간</div>
-                        <span class="fw-bold text-danger fs-5">8,000원</span> / 시간
-                    </div>
-                    <button class="btn btn-outline-dark px-4 py-2">선택</button>
-                </div>
+                <c:forEach var="spaceUnit" items="${spaceUnits}">
+	                <div class="unit-card d-flex justify-content-between align-items-center">
+	                    <div>
+	                        <h5 class="fw-bold mb-2">${spaceUnit.title}</h5>
+	                        <div class="text-muted small mb-2"><i class="bi bi-person-fill me-1"></i>최대 ${spaceUnit.maxCapacity}인 <span class="mx-2">|</span> 최소 ${spaceUnit.minHours}시간</div>
+	                        <span class="fw-bold text-danger fs-5">
+	                        	<fmt:formatNumber value="${spaceUnit.pricePerHour}" type="number" groupingUsed="true"/>원
+                        	</span> / 시간
+	                    </div>
+	                    <button class="btn btn-outline-dark px-4 py-2">선택</button>
+	                </div>
+                </c:forEach>
             </div>
 
             <div class="detail-section">

@@ -21,4 +21,5 @@ public interface BoardMapper {
 
 	public List<BoardDto> faqList();
 	
+	public List<BoardDto> homeBoardList();
 }

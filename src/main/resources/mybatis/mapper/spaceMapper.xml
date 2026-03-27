@@ -5,10 +5,31 @@
 	
 	<select id="categoryList" resultType="com.gongdae.app.domain.dto.CategoryDTO">
 		SELECT
-			category_no, name
+			category_no AS categoryNo, name
 		FROM category_space
 		ORDER BY category_no
 	
+	</select>
+	
+	<select id="homeSpaceList" resultType="com.gongdae.app.domain.dto.SpaceDTO">
+		SELECT 
+			space_no AS num, space_name AS name, 
+			'0' AS rating,
+			'0' AS review_num,
+			'qwe' AS address,
+			'0' AS capacity,
+			'1000' AS price,
+			'0' AS isWished,
+			'0' AS thumbnail
+		FROM space
+		<where>
+			<if test="category != null and category != '' ">
+				category_no = #{category}
+			</if>
+		</where>
+		ORDER BY
+			CASE WHEN isPremium = 1 THEN 1 ELSE 2 END
+		FETCH FIRST 4 ROWS ONLY
 	</select>
 	
 	<select id="spaceList" resultType="com.gongdae.app.domain.dto.SpaceDTO">
@@ -43,10 +64,28 @@
 	
 	<select id="findSpaceById" resultType="com.gongdae.app.domain.dto.SpaceDTO">
 		SELECT 
-			space_no, host_id, cat.name AS category, space_name,
+			space_no AS num, 
+			host_id, 
+			cat.name AS category, 
+			space_name AS name,
+			address, detail_addr AS address2
 		FROM space s
 		LEFT OUTER JOIN category_space cat ON s.category_no = cat.category_no
-		
+		WHERE space_no = #{spaceId}
+	</select>
+	
+	<select id="findSpaceUnitById" resultType="com.gongdae.app.domain.dto.SpaceUnitDTO">
+		SELECT 
+			su.unit_no AS unitNo,
+			title,
+			price_per_hour AS pricePerHour,
+			max_capacity AS maxCapacity,
+			description,
+			thumbnail_url AS thumbnailUrl,
+			sp.min_hours AS minHours
+		FROM space_unit su
+		LEFT OUTER JOIN space_policy sp ON su.unit_no = sp.unit_no
+		WHERE space_no = #{spaceId}
 	</select>
 	
 

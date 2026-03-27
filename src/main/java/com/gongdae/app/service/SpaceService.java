@@ -6,14 +6,17 @@ import java.util.Map;
 import com.gongdae.app.domain.dto.CategoryDTO;
 import com.gongdae.app.domain.dto.MemberDto;
 import com.gongdae.app.domain.dto.SpaceDTO;
+import com.gongdae.app.domain.dto.SpaceUnitDTO;
 
 public interface SpaceService {
 	
 	public List<CategoryDTO> categoryList();
 	
+	public List<SpaceDTO> homeSpaceList(Map<String, Object> params);
 	public List<SpaceDTO> spaceList(Map<String, Object> params);
 	
 	public SpaceDTO findSpaceById(String spaceId);
+	public List<SpaceUnitDTO> findSpaceUnitById(String spaceId);
 	
 	/////////////////////////////////////////////////////////////////////////////////
 	public void insertMember(MemberDto dto, String uploadPath) throws Exception;
