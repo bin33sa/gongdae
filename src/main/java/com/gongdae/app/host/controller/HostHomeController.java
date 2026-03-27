@@ -1,6 +1,8 @@
 package com.gongdae.app.host.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.gongdae.app.common.PaginateUtil;
 import com.gongdae.app.domain.dto.HostSalesDTO;
 import com.gongdae.app.domain.dto.ReservationManageDTO;
 import com.gongdae.app.domain.dto.SessionInfo;
@@ -34,6 +37,7 @@ public class HostHomeController {
     private final SpaceManageService spaceService;
     private final SpaceInquiryService inquiryService;
 	private final HostMainService hostMainService;
+	private final PaginateUtil paginateUtil;
     @GetMapping("main/prelogin")
     public String prelogin() {
         return "host/main/prelogin";
@@ -116,15 +120,55 @@ public class HostHomeController {
     }
 
     @GetMapping("menu/reservation")
-    public String reservationList(Model model) throws Exception {
+    public String reservationList(
+            @RequestParam(name = "page", defaultValue = "1") int current_page, // 💡 현재 페이지 파라미터 받기
+            Model model) throws Exception {
+        
         SessionInfo info = LoginMemberUtil.getSessionInfo();
+        long hostId = info.getMember_id();
+
+        int size = 10;
         
-        List<ReservationManageDTO> list = reservationService.listReservation(info.getMember_id());
         
+        int dataCount = reservationService.dataCountReservation(hostId); 
+        
+  
+        int total_page = paginateUtil.pageCount(dataCount, size);
+        
+       
+        if (current_page > total_page) {
+            current_page = total_page;
+        }
+
+       
+        int offset = (current_page - 1) * size;
+        if(offset < 0) offset = 0;
+
+       
+        Map<String, Object> map = new HashMap<>();
+        map.put("hostId", hostId);
+        map.put("offset", offset);
+        map.put("size", size);
+
+       
+        List<ReservationManageDTO> list = reservationService.listReservation(map); 
+
+        
+        String listUrl = "/host/menu/reservation";
+        String paging = paginateUtil.pagingUrl(current_page, total_page, listUrl);
+
+       
         model.addAttribute("list", list);
-        
+        model.addAttribute("page", current_page);
+        model.addAttribute("dataCount", dataCount);
+        model.addAttribute("size", size);
+        model.addAttribute("total_page", total_page);
+        model.addAttribute("paging", paging); 
+        model.addAttribute("active", "reservation");
+
         return "host/menu/reservation";
     }
+
 
     @GetMapping("menu/sales")
     public String sales(Model model) {

@@ -124,10 +124,16 @@
                 </c:choose>
             </tbody>
         </table>
+        
+        <div class="d-flex justify-content-center mt-4">
+            ${paging}
+        </div>
 
-    </div>
-
+    </div> 
+    
 </main>
+
+
 
 <footer>
     <jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>

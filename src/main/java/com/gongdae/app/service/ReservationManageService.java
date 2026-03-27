@@ -1,8 +1,11 @@
 package com.gongdae.app.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.gongdae.app.domain.dto.ReservationManageDTO;
 
 public interface ReservationManageService {
-    List<ReservationManageDTO> listReservation(long hostId) throws Exception;
+    List<ReservationManageDTO> listReservation(Map<String, Object> map) throws Exception;
+    int dataCountReservation(long hostId) throws Exception;
 }
