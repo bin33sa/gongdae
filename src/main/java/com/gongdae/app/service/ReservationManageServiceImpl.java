@@ -33,4 +33,25 @@ public class ReservationManageServiceImpl implements ReservationManageService {
 		return mapper.dataCountReservation(hostId);
 		
 	}
+	
+	@Override
+    public int dataCountSales(Map<String, Object> map) throws Exception {
+        try {
+            return mapper.dataCountSales(map);
+        } catch (Exception e) {
+            log.error("매출 데이터 카운트 실패", e);
+            throw e;
+        }
+    }
+
+    
+    @Override
+    public List<ReservationManageDTO> listSales(Map<String, Object> map) throws Exception {
+        try {
+            return mapper.listSales(map);
+        } catch (Exception e) {
+            log.error("매출 목록 조회 실패", e);
+            throw e;
+        }
+    }
 }

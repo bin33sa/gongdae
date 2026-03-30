@@ -47,10 +47,10 @@ public class HostHomeController {
     public String hostMain(Model model) throws Exception {
         SessionInfo info = LoginMemberUtil.getSessionInfo();
         
-        // 1. 매출 요약 데이터 가져오기
+       
         HostSalesDTO salesDto = hostMainService.getSalesSummary(info.getMember_id());
         model.addAttribute("active", "home");
-        // 2. 모델에 담아서 JSP로 전달
+       
         model.addAttribute("sales", salesDto);
         
         return "host/main/home";
@@ -157,7 +157,7 @@ public class HostHomeController {
 
     @GetMapping("menu/reservation")
     public String reservationList(
-            @RequestParam(name = "page", defaultValue = "1") int current_page, // 💡 현재 페이지 파라미터 받기
+            @RequestParam(name = "page", defaultValue = "1") int current_page, 
             Model model) throws Exception {
         
         SessionInfo info = LoginMemberUtil.getSessionInfo();
@@ -207,8 +207,56 @@ public class HostHomeController {
 
 
     @GetMapping("menu/sales")
-    public String sales(Model model) {
+    public String sales(
+            @RequestParam(name = "page", defaultValue = "1") int current_page,
+            @RequestParam(name = "spaceNo", defaultValue = "0") long spaceNo, 
+            @RequestParam(name = "startDate", defaultValue = "") String startDate, 
+            @RequestParam(name = "endDate", defaultValue = "") String endDate,
+            Model model) throws Exception {
+        
+        SessionInfo info = LoginMemberUtil.getSessionInfo();
+        long hostId = info.getMember_id();
+        int size = 10;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("hostId", hostId);
+        map.put("spaceNo", spaceNo);
+        map.put("startDate", startDate);
+        map.put("endDate", endDate);
+
+       
+        int dataCount = reservationService.dataCountSales(map); 
+        int total_page = paginateUtil.pageCount(dataCount, size);
+        if (current_page > total_page) current_page = total_page;
+
+        int offset = (current_page - 1) * size;
+        if(offset < 0) offset = 0;
+        map.put("offset", offset);
+        map.put("size", size);
+
+       
+        List<ReservationManageDTO> list = reservationService.listSales(map);
+        String paging = paginateUtil.pagingMethod(current_page, total_page, "searchSales");
+
+       
+        HostSalesDTO summary = hostMainService.getSalesSummary(hostId);
+        
+       
+        List<SpaceManageDTO> spaceList = spaceService.listSpaceDrop(hostId); 
+
+        model.addAttribute("list", list);
+        model.addAttribute("summary", summary);    
+        model.addAttribute("spaceList", spaceList); 
+        
+    
+        model.addAttribute("spaceNo", spaceNo);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        
+        model.addAttribute("page", current_page);
+        model.addAttribute("paging", paging);
         model.addAttribute("active", "sales");
+
         return "host/menu/sales";
     }
     

@@ -117,11 +117,24 @@
                 </tr>
             </tbody>
         </table>
+        
+        <div class="d-flex justify-content-center mt-4">
+            ${paging}
+        </div>
 
-    </div>
+        <form name="searchForm" action="<c:url value='/host/menu/sales'/>" method="get">
+            <input type="hidden" name="page" value="1">
+            </form>
 
-</main>
+    </div> </main>
 
+<script>
+    function searchSales(page) {
+        const form = document.searchForm;
+        form.page.value = page; // 클릭한 페이지 번호를 input에 세팅
+        form.submit();          // 폼을 전송하여 해당 페이지 데이터를 요청
+    }
+</script>
 <footer>
     <jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
 </footer>

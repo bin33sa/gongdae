@@ -279,5 +279,11 @@ public class SpaceManageServiceImpl implements SpaceManageService {
             throw e;
         }
     }
+    
+    @Override
+    public List<SpaceManageDTO> listSpaceDrop(long hostId) throws Exception {
+        return mapper.listSpaceDrop(hostId);
+    }
+    
 	
 }

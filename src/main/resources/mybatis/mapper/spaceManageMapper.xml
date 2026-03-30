@@ -165,4 +165,11 @@
         WHERE space_no = #{spaceNo} AND status IN ('PENDING', 'ACTIVE')
     </update>
     
+    <select id="listSpaceDrop" parameterType="Long" resultType="com.gongdae.app.domain.dto.SpaceManageDTO">
+        SELECT space_no AS spaceNo, space_name AS spaceName
+        FROM SPACE
+        WHERE host_id = #{hostId} AND status != 'DELETED'
+        ORDER BY space_no DESC
+    </select>
+    
 </mapper>

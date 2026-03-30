@@ -10,6 +10,11 @@ import com.gongdae.app.domain.dto.ReservationManageDTO;
 @Mapper
 public interface ReserveManageMapper {
 	List<ReservationManageDTO> listReservation(Map<String, Object> map) throws Exception;
+
 	int dataCountReservation(long hostId) throws Exception;
+
+	int dataCountSales(Map<String, Object> map) throws Exception;
+
 	
+	List<ReservationManageDTO> listSales(Map<String, Object> map) throws Exception;
 }

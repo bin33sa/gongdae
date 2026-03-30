@@ -20,7 +20,7 @@ public interface SpaceManageMapper {
     void insertSpacePolicy(SpaceManageDTO dto) throws Exception;
     void insertSpaceUnitTime(SpaceManageDTO dto) throws Exception;
     void insertSpaceApproval(long spaceNo) throws Exception;
-    
+    List<SpaceManageDTO> listSpaceDrop(long hostId) throws Exception;
     void updateSpace(SpaceManageDTO dto) throws Exception;
     void deleteSpaceOptions(long spaceNo) throws Exception;
     void deleteSpaceUnitTimes(long spaceNo) throws Exception;

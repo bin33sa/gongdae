@@ -33,4 +33,56 @@
     WHERE s.host_id = #{hostId}
 </select>
 
+<select id="dataCountSales" parameterType="map" resultType="Integer">
+        SELECT NVL(COUNT(*), 0)
+        FROM RESERVATION r
+        JOIN SPACE_UNIT u ON r.unit_no = u.unit_no
+        JOIN SPACE s ON u.space_no = s.space_no
+        WHERE s.host_id = #{hostId} 
+          AND r.status IN ('COMPLETED', 'SETTLED')
+          
+        <if test="spaceNo != null and spaceNo != 0">
+            AND s.space_no = #{spaceNo}
+        </if>
+        
+        <if test="startDate != null and startDate != ''">
+            AND r.res_date &gt;= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+        </if>
+        
+        <if test="endDate != null and endDate != ''">
+            AND r.res_date &lt;= TO_DATE(#{endDate}, 'YYYY-MM-DD')
+        </if>
+    </select>
+
+    <select id="listSales" parameterType="map" resultType="com.gongdae.app.domain.dto.ReservationManageDTO">
+        SELECT 
+            r.res_no AS resNo,
+            s.space_name AS spaceName,
+            u.title AS unitTitle,
+            gd.nickname AS guestName, 
+            TO_CHAR(r.res_date, 'YYYY-MM-DD') AS resDate,
+            r.total_price AS totalPrice,
+            r.status AS status
+        FROM RESERVATION r
+        JOIN SPACE_UNIT u ON r.unit_no = u.unit_no
+        JOIN SPACE s ON u.space_no = s.space_no
+        JOIN GUEST_DETAIL gd ON r.guest_id = gd.member_id 
+        WHERE s.host_id = #{hostId} 
+          AND r.status IN ('COMPLETED', 'SETTLED')
+          
+        <if test="spaceNo != null and spaceNo != 0">
+            AND s.space_no = #{spaceNo}
+        </if>
+        <if test="startDate != null and startDate != ''">
+            AND r.res_date &gt;= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND r.res_date &lt;= TO_DATE(#{endDate}, 'YYYY-MM-DD')
+        </if>
+        
+        ORDER BY r.res_date DESC, r.res_no DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY
+    </select>
+
+
 </mapper>
