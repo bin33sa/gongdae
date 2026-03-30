@@ -105,8 +105,23 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${dto.status == 'PENDING'}">
-                                            <span class="badge bg-warning text-dark">결제 대기</span>
+                                            <span class="badge bg-warning text-dark mb-2 d-inline-block">승인 대기</span>
+                                            
+                                            <div class="d-flex justify-content-center gap-1">
+                                                <form action="<c:url value='/host/reservation/updateStatus'/>" method="post" style="margin:0;">
+                                                    <input type="hidden" name="resNo" value="${dto.resNo}">
+                                                    <input type="hidden" name="status" value="RESERVED">
+                                                    <button type="submit" class="btn btn-sm btn-success" style="font-size: 0.75rem;" onclick="return confirm('이 예약을 승인하시겠습니까?');">승인</button>
+                                                </form>
+                                                
+                                                <form action="<c:url value='/host/reservation/updateStatus'/>" method="post" style="margin:0;">
+                                                    <input type="hidden" name="resNo" value="${dto.resNo}">
+                                                    <input type="hidden" name="status" value="CANCELLED">
+                                                    <button type="submit" class="btn btn-sm btn-danger" style="font-size: 0.75rem;" onclick="return confirm('이 예약을 거절하시겠습니까?');">거절</button>
+                                                </form>
+                                            </div>
                                         </c:when>
+
                                         <c:when test="${dto.status == 'RESERVED'}">
                                             <span class="badge badge-active">예약 확정</span>
                                         </c:when>
@@ -114,7 +129,7 @@
                                             <span class="badge badge-done">이용 완료</span>
                                         </c:when>
                                         <c:when test="${dto.status == 'CANCELLED'}">
-                                            <span class="badge badge-cancel">취소</span>
+                                            <span class="badge badge-cancel">취소/거절</span>
                                         </c:when>
                                     </c:choose>
                                 </td>

@@ -283,4 +283,31 @@ public class HostHomeController {
     }
     
     
+    @PostMapping("reservation/updateStatus")
+    public String updateReservationStatus(
+            @RequestParam(name = "resNo") long resNo,
+            @RequestParam(name = "status") String status,
+            RedirectAttributes rttr) {
+        
+        try {
+            SessionInfo info = LoginMemberUtil.getSessionInfo();
+            spaceService.updateReservationStatus(resNo, status, info.getMember_id());
+            
+            if ("RESERVED".equals(status)) {
+                rttr.addFlashAttribute("message", "예약이 승인되었습니다.");
+            } else if ("CANCELLED".equals(status)) {
+                rttr.addFlashAttribute("message", "예약이 거절(취소)되었습니다.");
+            }
+            
+        } catch (Exception e) {
+            // 💡 서비스에서 더블 부킹으로 던진 에러 메시지를 잡아내서 화면에 띄움
+            String msg = e.getMessage() != null ? e.getMessage() : "처리 중 오류가 발생했습니다.";
+            log.warn("예약 승인 불가: {}", msg);
+            rttr.addFlashAttribute("message", msg);
+        }
+        
+        return "redirect:/host/menu/reservation";
+    }
+    
+    
 }

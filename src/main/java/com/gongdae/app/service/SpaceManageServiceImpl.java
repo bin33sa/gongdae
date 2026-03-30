@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.gongdae.app.common.StorageService;
 import com.gongdae.app.domain.dto.SpaceManageDTO;
+import com.gongdae.app.mapper.ReserveManageMapper;
 import com.gongdae.app.mapper.SpaceManageMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class SpaceManageServiceImpl implements SpaceManageService {
 
 	private final SpaceManageMapper mapper;
 	private final StorageService storageService;
+	private final ReserveManageMapper manageMapper;
 
 	@Transactional(rollbackFor = { Exception.class })
 	@Override
@@ -183,7 +185,7 @@ public class SpaceManageServiceImpl implements SpaceManageService {
 		}
 	}
 
-	// 💡 논리적 삭제
+	
 	@Transactional(rollbackFor = { Exception.class })
 	@Override
 	public void deleteSpace(long spaceNo, long hostId) throws Exception {
@@ -238,23 +240,24 @@ public class SpaceManageServiceImpl implements SpaceManageService {
         map.put("hostId", hostId);
 
         if ("N".equals(currentPremiumStatus)) {
-            // 💡 1. [신청] 버튼 클릭 -> 승인 대기(P) 상태로 변경
+           
             map.put("isPremium", "P");
             map.put("status", "PENDING");
             mapper.updateSpacePremiumFlag(map);
             mapper.insertPremiumHistory(map);
             
         } else if ("P".equals(currentPremiumStatus)) {
-            // 💡 2. [승인 대기중] 버튼 클릭 -> 신청 취소(N) 상태로 복귀
+           
             map.put("isPremium", "N");
-            map.put("status", "CANCELED"); // 이력은 '취소됨'으로 남김
+            map.put("status", "CANCELED"); 
+            
             mapper.updateSpacePremiumFlag(map);
             mapper.updatePremiumHistory(map);
             
         } else if ("Y".equals(currentPremiumStatus)) {
-            // 💡 3. [적용중] 버튼 클릭 -> 광고 해지(N) 상태로 복귀
+          
             map.put("isPremium", "N");
-            map.put("status", "INACTIVE"); // 이력은 '해지됨'으로 남김
+            map.put("status", "INACTIVE");
             mapper.updateSpacePremiumFlag(map);
             mapper.updatePremiumHistory(map);
         }
@@ -285,5 +288,32 @@ public class SpaceManageServiceImpl implements SpaceManageService {
         return mapper.listSpaceDrop(hostId);
     }
     
-	
+    @Override
+    public void updateReservationStatus(long resNo, String status, long hostId) throws Exception {
+    	try {
+           
+            if ("RESERVED".equals(status)) {
+                int overlapCount = manageMapper.checkDoubleBooking(resNo);
+                if (overlapCount > 0) {
+                  
+                    throw new Exception("더블 부킹: 이미 해당 시간에 확정된 다른 예약이 존재합니다.");
+                }
+            }
+
+           
+            Map<String, Object> map = new HashMap<>();
+            map.put("resNo", resNo);
+            map.put("status", status);
+            map.put("hostId", hostId);
+            
+            mapper.updateReservationStatus(map);
+            
+        } catch (Exception e) {
+            log.error("예약 상태 변경 실패", e);
+            throw e; 
+        }
+    }
+    
+    
+    
 }

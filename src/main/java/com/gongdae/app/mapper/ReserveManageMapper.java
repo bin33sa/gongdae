@@ -14,7 +14,8 @@ public interface ReserveManageMapper {
 	int dataCountReservation(long hostId) throws Exception;
 
 	int dataCountSales(Map<String, Object> map) throws Exception;
-
+	
+	int checkDoubleBooking(long resNo) throws Exception;
 	
 	List<ReservationManageDTO> listSales(Map<String, Object> map) throws Exception;
 }

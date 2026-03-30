@@ -172,4 +172,19 @@
         ORDER BY space_no DESC
     </select>
     
+    <update id="updateReservationStatus" parameterType="map">
+        UPDATE RESERVATION
+        SET status = #{status}, updated_at = SYSDATE
+        WHERE res_no = #{resNo}
+          AND unit_no IN (
+              SELECT u.unit_no 
+              FROM SPACE_UNIT u
+              JOIN SPACE s ON u.space_no = s.space_no
+              WHERE s.host_id = #{hostId}
+          )
+    </update>
+    
+   
+    
+    
 </mapper>
