@@ -46,12 +46,28 @@ public class HostHomeController {
     @GetMapping("main/home")
     public String hostMain(Model model) throws Exception {
         SessionInfo info = LoginMemberUtil.getSessionInfo();
+        long hostId = info.getMember_id();
         
+     
+        HostSalesDTO salesDto = hostMainService.getSalesSummary(hostId);
+        
+        
+        Map<String, Object> resMap = new HashMap<>();
+        resMap.put("hostId", hostId);
+        resMap.put("offset", 0); 
+        resMap.put("size", 5);   
+        List<ReservationManageDTO> recentReservations = reservationService.listReservation(resMap);
+
        
-        HostSalesDTO salesDto = hostMainService.getSalesSummary(info.getMember_id());
-        model.addAttribute("active", "home");
-       
+        int activeSpaceCount = spaceService.activeSpaceCount(hostId);
+        int pendingSpaceCount = spaceService.pendingSpaceCount(hostId);
+
+        
         model.addAttribute("sales", salesDto);
+        model.addAttribute("recentReservations", recentReservations); 
+        model.addAttribute("activeSpaceCount", activeSpaceCount);    
+        model.addAttribute("pendingSpaceCount", pendingSpaceCount);   
+        model.addAttribute("active", "home");
         
         return "host/main/home";
     }
@@ -158,48 +174,45 @@ public class HostHomeController {
     @GetMapping("menu/reservation")
     public String reservationList(
             @RequestParam(name = "page", defaultValue = "1") int current_page, 
+            @RequestParam(name = "startDate", defaultValue = "") String startDate, // 💡 추가
+            @RequestParam(name = "endDate", defaultValue = "") String endDate,     // 💡 추가
+            @RequestParam(name = "status", defaultValue = "") String status,       // 💡 추가
             Model model) throws Exception {
         
         SessionInfo info = LoginMemberUtil.getSessionInfo();
         long hostId = info.getMember_id();
-
         int size = 10;
         
-        
-        int dataCount = reservationService.dataCountReservation(hostId); 
-        
-  
-        int total_page = paginateUtil.pageCount(dataCount, size);
-        
-       
-        if (current_page > total_page) {
-            current_page = total_page;
-        }
-
-       
-        int offset = (current_page - 1) * size;
-        if(offset < 0) offset = 0;
-
-       
         Map<String, Object> map = new HashMap<>();
         map.put("hostId", hostId);
+        map.put("startDate", startDate);
+        map.put("endDate", endDate);
+        map.put("status", status);
+
+        // dataCountReservation 서명도 파라미터를 Map으로 받도록 서비스/매퍼를 변경해야 합니다!
+        int dataCount = reservationService.dataCountReservation(map); 
+        int total_page = paginateUtil.pageCount(dataCount, size);
+        if (current_page > total_page) current_page = total_page;
+
+        int offset = (current_page - 1) * size;
+        if(offset < 0) offset = 0;
         map.put("offset", offset);
         map.put("size", size);
 
-       
         List<ReservationManageDTO> list = reservationService.listReservation(map); 
+        String paging = paginateUtil.pagingMethod(current_page, total_page, "searchReservation"); // JS 함수 호출 방식으로 변경
 
-        
-        String listUrl = "/host/menu/reservation";
-        String paging = paginateUtil.pagingUrl(current_page, total_page, listUrl);
-
-       
         model.addAttribute("list", list);
         model.addAttribute("page", current_page);
         model.addAttribute("dataCount", dataCount);
         model.addAttribute("size", size);
         model.addAttribute("total_page", total_page);
         model.addAttribute("paging", paging); 
+        
+        // 검색 조건 유지를 위해 모델에 추가
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("status", status);
         model.addAttribute("active", "reservation");
 
         return "host/menu/reservation";

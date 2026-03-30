@@ -20,4 +20,8 @@ public interface SpaceManageService {
     List<SpaceManageDTO> listSpaceUnit(long spaceNo) throws Exception;
     int dataCountSpace(long hostId) throws Exception;
     List<SpaceManageDTO> listSpace(Map<String, Object> map) throws Exception;
+
+    int activeSpaceCount(long hostId) throws Exception;
+    int pendingSpaceCount(long hostId) throws Exception;
+    
 }

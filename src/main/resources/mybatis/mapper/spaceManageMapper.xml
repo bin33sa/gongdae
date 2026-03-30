@@ -185,6 +185,17 @@
     </update>
     
    
-    
+    <select id="activeSpaceCount" parameterType="Long" resultType="Integer">
+        SELECT NVL(COUNT(*), 0)
+        FROM SPACE
+        WHERE host_id = #{hostId} AND status = 'ACTIVE'
+    </select>
+
+    <select id="pendingSpaceCount" parameterType="Long" resultType="Integer">
+        SELECT NVL(COUNT(*), 0)
+        FROM SPACE_APPROVAL a
+        JOIN SPACE s ON a.space_no = s.space_no
+        WHERE s.host_id = #{hostId} AND a.status = 'PENDING'
+    </select>
     
 </mapper>

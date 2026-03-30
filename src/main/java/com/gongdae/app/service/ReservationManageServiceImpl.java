@@ -29,8 +29,8 @@ public class ReservationManageServiceImpl implements ReservationManageService {
     }
 
 	@Override
-	public int dataCountReservation(long hostId) throws Exception {
-		return mapper.dataCountReservation(hostId);
+	public int dataCountReservation(Map<String, Object> map) throws Exception {
+		return mapper.dataCountReservation(map);
 		
 	}
 	

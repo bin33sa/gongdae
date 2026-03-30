@@ -314,6 +314,16 @@ public class SpaceManageServiceImpl implements SpaceManageService {
         }
     }
     
+    @Override
+    public int activeSpaceCount(long hostId) throws Exception {
+        return mapper.activeSpaceCount(hostId);
+    }
+
+    @Override
+    public int pendingSpaceCount(long hostId) throws Exception {
+        return mapper.pendingSpaceCount(hostId);
+    }
+    
     
     
 }

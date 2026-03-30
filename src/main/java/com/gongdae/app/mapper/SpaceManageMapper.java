@@ -27,6 +27,9 @@ public interface SpaceManageMapper {
     void deleteSpacePolicies(long spaceNo) throws Exception;
     void deleteSpaceUnits(long spaceNo) throws Exception;
 
+    int activeSpaceCount(long hostId) throws Exception;
+    int pendingSpaceCount(long hostId) throws Exception;
+    
     void updateReservationStatus(Map<String, Object> map) throws Exception;
     void deleteSpaceImage(long imageNo) throws Exception;
     void deleteSpace(long spaceNo) throws Exception;

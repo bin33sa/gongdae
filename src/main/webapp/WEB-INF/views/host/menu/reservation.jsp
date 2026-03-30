@@ -8,7 +8,7 @@
     <title>예약 내역 - 공대생 호스트 센터</title>
 
     <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp"/>
-<jsp:include page="/WEB-INF/views/host/layout/chatWidget.jsp"/>
+    <jsp:include page="/WEB-INF/views/host/layout/chatWidget.jsp"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/host/menu/reservation.css">
 </head>
 <body>
@@ -25,34 +25,36 @@
     </div>
 
     <div class="reservation-filter-box mb-4">
-        <div class="row g-3 align-items-end">
+        <form name="searchForm" action="<c:url value='/host/menu/reservation'/>" method="get">
+            <input type="hidden" name="page" value="${page}">
+            
+            <div class="row g-3 align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label small">기간</label>
+                    <input type="date" name="startDate" value="${startDate}" class="form-control">
+                </div>
 
-            <div class="col-md-3">
-                <label class="form-label small">기간</label>
-                <input type="date" class="form-control">
+                <div class="col-md-3">
+                    <label class="form-label small">~</label>
+                    <input type="date" name="endDate" value="${endDate}" class="form-control">
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label small">상태</label>
+                    <select name="status" class="form-select">
+                        <option value="">전체</option>
+                        <option value="PENDING" ${status == 'PENDING' ? 'selected' : ''}>결제 대기 (승인 대기)</option>
+                        <option value="RESERVED" ${status == 'RESERVED' ? 'selected' : ''}>예약 확정</option>
+                        <option value="COMPLETED" ${status == 'COMPLETED' ? 'selected' : ''}>이용 완료</option>
+                        <option value="CANCELLED" ${status == 'CANCELLED' ? 'selected' : ''}>취소/거절</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-search w-100" onclick="searchReservation(1)">조회하기</button>
+                </div>
             </div>
-
-            <div class="col-md-3">
-                <label class="form-label small">~</label>
-                <input type="date" class="form-control">
-            </div>
-
-            <div class="col-md-3">
-                <label class="form-label small">상태</label>
-                <select class="form-select">
-                    <option value="">전체</option>
-                    <option value="PENDING">결제 대기</option>
-                    <option value="RESERVED">예약 확정</option>
-                    <option value="COMPLETED">이용 완료</option>
-                    <option value="CANCELLED">취소</option>
-                </select>
-            </div>
-
-            <div class="col-md-3">
-                <button type="button" class="btn btn-search w-100">조회하기</button>
-            </div>
-
-        </div>
+        </form>
     </div>
 
     <div class="reservation-table-box">
@@ -70,58 +72,55 @@
                     <th>예약자(인원)</th>
                     <th>이용시간</th>
                     <th>금액</th>
-                    <th>상태</th>
+                    <th>상태 및 관리</th>
                 </tr>
             </thead>
             <tbody>
                 <c:choose>
                     <c:when test="${empty list}">
                         <tr>
-                            <td colspan="7" class="py-5 text-muted">조건에 맞는 예약 내역이 없습니다.</td>
+                            <td colspan="7" class="py-5 text-center text-muted" style="background-color: #f8f9fa;">
+                                <i class="bi bi-calendar-x fs-1 d-block mb-3 text-secondary"></i>
+                                <h5 class="fw-bold text-dark">조건에 맞는 예약 내역이 없습니다.</h5>
+                                <p class="small mb-0">새로운 예약이 들어오면 이곳에서 확인할 수 있습니다.</p>
+                            </td>
                         </tr>
                     </c:when>
                     <c:otherwise>
                         <c:forEach var="dto" items="${list}">
                             <tr>
                                 <td class="fw-bold text-secondary">#R${dto.resNo}</td>
-                                
                                 <td>${dto.resDate}</td>
-                                
                                 <td class="text-start">
                                     <div class="fw-bold text-dark">${dto.spaceName}</div>
                                     <div class="small text-muted">${dto.unitTitle}</div>
                                 </td>
-                                
                                 <td>
                                     ${dto.guestName} <span class="small text-muted">(${dto.peopleCount}명)</span>
                                 </td>
-                                
                                 <td>${dto.startTime}:00 ~ ${dto.endTime}:00</td>
-                                
                                 <td class="fw-bold">
                                     ₩ <fmt:formatNumber value="${dto.totalPrice}" pattern="#,###"/>
                                 </td>
-                                
                                 <td>
                                     <c:choose>
                                         <c:when test="${dto.status == 'PENDING'}">
                                             <span class="badge bg-warning text-dark mb-2 d-inline-block">승인 대기</span>
                                             
                                             <div class="d-flex justify-content-center gap-1">
-                                                <form action="<c:url value='/host/reservation/updateStatus'/>" method="post" style="margin:0;">
+                                                <form action="<c:url value='/host/reservation/updateStatus'/>" method="post" class="m-0">
                                                     <input type="hidden" name="resNo" value="${dto.resNo}">
                                                     <input type="hidden" name="status" value="RESERVED">
-                                                    <button type="submit" class="btn btn-sm btn-success" style="font-size: 0.75rem;" onclick="return confirm('이 예약을 승인하시겠습니까?');">승인</button>
+                                                    <button type="submit" class="btn btn-sm btn-success px-2 py-1" style="font-size: 0.75rem;" onclick="return confirm('이 예약을 승인하시겠습니까?');">승인</button>
                                                 </form>
                                                 
-                                                <form action="<c:url value='/host/reservation/updateStatus'/>" method="post" style="margin:0;">
+                                                <form action="<c:url value='/host/reservation/updateStatus'/>" method="post" class="m-0">
                                                     <input type="hidden" name="resNo" value="${dto.resNo}">
                                                     <input type="hidden" name="status" value="CANCELLED">
-                                                    <button type="submit" class="btn btn-sm btn-danger" style="font-size: 0.75rem;" onclick="return confirm('이 예약을 거절하시겠습니까?');">거절</button>
+                                                    <button type="submit" class="btn btn-sm btn-danger px-2 py-1" style="font-size: 0.75rem;" onclick="return confirm('이 예약을 거절하시겠습니까?');">거절</button>
                                                 </form>
                                             </div>
                                         </c:when>
-
                                         <c:when test="${dto.status == 'RESERVED'}">
                                             <span class="badge badge-active">예약 확정</span>
                                         </c:when>
@@ -144,17 +143,28 @@
             ${paging}
         </div>
 
-    </div> 
-    
+    </div>
+
 </main>
-
-
 
 <footer>
     <jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
 </footer>
 
 <jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
+
+<script>
+    function searchReservation(page) {
+        const form = document.searchForm;
+        form.page.value = page;
+        form.submit();
+    }
+    
+    // 서버에서 전달받은 에러/성공 메시지가 있다면 alert 띄우기
+    <c:if test="${not empty message}">
+        alert("${message}");
+    </c:if>
+</script>
 
 </body>
 </html>

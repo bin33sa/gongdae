@@ -68,7 +68,7 @@
         .btn-more { font-size: 0.85rem; color: #666; text-decoration: none; font-weight: 600; }
         .btn-more:hover { color: var(--host-primary); }
         
-        /* 배지 스타일 */
+  
         .badge-pending { background-color: #ffebee; color: #d32f2f; padding: 6px 10px; font-weight: normal; }
         .badge-approved { background-color: #e8f5e9; color: #388e3c; padding: 6px 10px; font-weight: normal; }
     </style>
@@ -149,21 +149,45 @@
                                 </tr>
                             </thead>
                             <tbody class="text-center">
-                                <tr>
-                                    <td class="text-start ps-3 fw-bold">홍대 루프탑 파티룸</td>
-                                    <td>김게스트</td>
-                                    <td class="small">2026.03.10 14:00~18:00</td>
-                                    <td><span class="badge rounded-pill badge-pending">승인대기</span></td>
-                                    <td><button class="btn btn-sm btn-outline-danger">예약관리</button></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start ps-3 fw-bold">사당역 전면거울 댄스룸</td>
-                                    <td>이회원</td>
-                                    <td class="small">2026.03.05 10:00~12:00</td>
-                                    <td><span class="badge rounded-pill badge-approved">예약확정</span></td>
-                                    <td><button class="btn btn-sm btn-outline-secondary">상세보기</button></td>
-                                </tr>
-                            </tbody>
+                                <c:choose>
+                                    <c:when test="${empty recentReservations}">
+                                        <tr>
+                                            <td colspan="5" class="py-5 text-muted">최근 들어온 예약 내역이 없습니다.</td>
+                                        </tr>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:forEach var="dto" items="${recentReservations}">
+                                            <tr>
+                                                <td class="text-start ps-3 fw-bold">
+                                                    ${dto.spaceName}
+                                                    <div class="small text-muted fw-normal">${dto.unitTitle}</div>
+                                                </td>
+                                                <td>${dto.guestName}</td>
+                                                <td class="small">${dto.resDate} <br> ${dto.startTime}:00~${dto.endTime}:00</td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${dto.status == 'PENDING'}">
+                                                            <span class="badge rounded-pill badge-pending">승인대기</span>
+                                                        </c:when>
+                                                        <c:when test="${dto.status == 'RESERVED'}">
+                                                            <span class="badge rounded-pill badge-approved">예약확정</span>
+                                                        </c:when>
+                                                        <c:when test="${dto.status == 'COMPLETED'}">
+                                                            <span class="badge rounded-pill bg-secondary">이용완료</span>
+                                                        </c:when>
+                                                        <c:when test="${dto.status == 'CANCELLED'}">
+                                                            <span class="badge rounded-pill bg-danger">취소/거절</span>
+                                                        </c:when>
+                                                    </c:choose>
+                                                </td>
+                                                <td>
+                                                    <a href="<c:url value='/host/menu/reservation'/>" class="btn btn-sm btn-outline-secondary">예약관리</a>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </c:otherwise>
+                                </c:choose>
+                                </tbody>
                         </table>
                     </div>
                 </div>
@@ -184,7 +208,7 @@
                         <div class="border rounded p-3 mt-2 d-flex justify-content-between align-items-center bg-light">
                             <div>
                                 <div class="text-muted small fw-bold">운영 중인 공간</div>
-                                <div class="fw-bold fs-4 text-dark">2 개</div>
+                                <div class="fw-bold fs-4 text-dark">${activeSpaceCount} 개</div>
                             </div>
                             <div class="bg-white rounded-circle d-flex justify-content-center align-items-center shadow-sm" style="width: 50px; height: 50px;">
                                 <i class="bi bi-shop text-primary fs-4"></i>
@@ -194,7 +218,7 @@
                         <div class="border rounded p-3 d-flex justify-content-between align-items-center bg-light">
                             <div>
                                 <div class="text-muted small fw-bold">검수 대기 중</div>
-                                <div class="fw-bold fs-4 text-danger">1 개</div>
+                                <div class="fw-bold fs-4 text-danger">${pendingSpaceCount} 개</div>
                             </div>
                             <div class="bg-white rounded-circle d-flex justify-content-center align-items-center shadow-sm" style="width: 50px; height: 50px;">
                                 <i class="bi bi-hourglass-split text-danger fs-4"></i>
