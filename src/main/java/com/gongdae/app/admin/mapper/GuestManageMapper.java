@@ -23,4 +23,6 @@ public interface GuestManageMapper {
 	public void insertGuestStatus(GuestManageDto dto) throws SQLException;
 	public List<GuestManageDto> listGuestStatus(Long member_id);
 	public GuestManageDto findByStatus(Long member_id);
+	public void updatePoint(Map<String, Object> map) throws SQLException;
+    public int getReservationCount(Long member_id);
 }

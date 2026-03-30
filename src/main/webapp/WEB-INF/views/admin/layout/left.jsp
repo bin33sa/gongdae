@@ -16,6 +16,7 @@
             <div class="submenu nav flex-column">
                 <a href="${pageContext.request.contextPath}/admin/sales/daily" class="nav-link sub-menu-item">일별 매출</a>
                 <a href="${pageContext.request.contextPath}/admin/sales/monthly" class="nav-link sub-menu-item">월별 매출</a>
+                <a href="${pageContext.request.contextPath}/admin/sales/list" class="nav-link sub-menu-item">예약 내역</a>
             </div>
         </div>
 

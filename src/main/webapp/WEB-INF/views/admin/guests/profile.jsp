@@ -65,7 +65,12 @@
                         </tr>
                         <tr>
                             <th class="admin-th border-0">보유 포인트</th>
-                            <td class="admin-td fw-bold border-0 text-info"><fmt:formatNumber value="${dto.point}" pattern="#,###"/> P</td>
+                            <td class="admin-td fw-bold border-0 text-info">
+                                <fmt:formatNumber value="${dto.point}" pattern="#,###"/> P
+                                <button type="button" class="btn btn-sm btn-outline-info ms-3 px-2 py-0" onclick="givePointIndividual(${dto.member_id})">
+                                    <i class="bi bi-plus-slash-minus"></i> 지급/차감
+                                </button>
+                            </td>
                             <th class="admin-th border-0">계정 상태</th>
                             <td class="admin-td border-0">
                                 <c:choose>
@@ -77,25 +82,41 @@
                     </table>
                 </div>
 
-                <div class="mt-4 pt-4 d-flex justify-content-between align-items-center border-top border-secondary border-opacity-25">
-                    <form name="memberUpdateForm" class="d-flex align-items-center gap-2">
-                        <input type="hidden" name="member_id" value="${dto.member_id}">
-                        <label class="fw-bold text-main me-2">등급 관리</label>
-                        <select name="grade" class="form-select bg-transparent text-main border-secondary" style="width: 150px;">
-                            <option value="BRONZE" ${dto.grade == 'BRONZE' ? 'selected' : ''}>BRONZE</option>
-                            <option value="SILVER" ${dto.grade == 'SILVER' ? 'selected' : ''}>SILVER</option>
-                            <option value="GOLD" ${dto.grade == 'GOLD' ? 'selected' : ''}>GOLD</option>
-                        </select>
-                        <button type="button" class="btn btn-purple px-4" onclick="updateMemberOk();">등급 저장</button>
-                    </form>
+                <div class="mt-4 pt-4 d-flex justify-content-end align-items-center border-top border-secondary border-opacity-25">
                     <button type="button" class="btn btn-dark px-4 py-2 border border-secondary" onclick="statusDetailesMember();">
                         <i class="bi bi-shield-exclamation me-2 text-danger"></i>상태 변경 (제재/해제)
                     </button>
                 </div>
             </div>
 
-            <div class="dashboard-box">
-                <h5 class="fw-bold text-main mb-4"><i class="bi bi-clock-history me-2"></i> 계정 상태 변경 이력</h5>
+            <div class="dashboard-box mt-4">
+                <div class="d-flex justify-content-between align-items-center border-bottom border-secondary pb-3 mb-4">
+                    <h5 class="fw-bold text-main mb-0"><i class="bi bi-shield-lock me-2"></i>계정 상태 관리</h5>
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="updateStatusModal();">상태 변경</button>
+                </div>
+                
+                <table class="table table-borderless text-main align-middle mb-4">
+                    <tbody>
+                        <tr>
+                            <th class="py-2 text-muted fw-normal" style="width: 150px;">현재 상태</th>
+                            <td class="py-2">
+                                ${dto.enabled == 1 ? '<span class="status-normal">정상 활성화</span>' : '<span class="status-banned">계정 정지됨</span>'}
+                            </td>
+                        </tr>
+                        <c:if test="${not empty memberStatus}">
+                            <tr>
+                                <th class="py-2 text-muted fw-normal">최근 변경일</th>
+                                <td class="py-2">${memberStatus.reg_date}</td>
+                            </tr>
+                            <tr>
+                                <th class="py-2 text-muted fw-normal border-0">변경 사유</th>
+                                <td class="py-2 border-0">${memberStatus.memo} (처리자: ${memberStatus.registerName})</td>
+                            </tr>
+                        </c:if>
+                    </tbody>
+                </table>
+
+                <h6 class="fw-bold text-main mb-4 mt-5"><i class="bi bi-clock-history me-2"></i>계정 상태 변경 이력</h6>
                 <div class="table-responsive">
                     <table class="table text-main mb-0 align-middle">
                         <thead>
@@ -201,26 +222,20 @@ function statusDetailesMember() {
     new bootstrap.Modal(document.getElementById('statusModal')).show();
 }
 
+function updateStatusModal() {
+    new bootstrap.Modal(document.getElementById('statusModal')).show();
+}
+
 function selectStatusChange(el) {
     const memoInput = document.getElementById("memo");
     if(el.value !== "8" && el.value !== "") {
         memoInput.value = el.options[el.selectedIndex].text;
+    } else if (el.value === "0") {
+        memoInput.value = "정상 활성화 처리";
     } else {
         memoInput.value = "";
         memoInput.focus();
     }
-}
-
-async function updateMemberOk() {
-    if(!confirm("등급을 변경하시겠습니까?")) return;
-    const url = "${pageContext.request.contextPath}/admin/guests/updateGuest";
-    const query = new URLSearchParams(new FormData(document.memberUpdateForm)).toString();
-    try {
-        await fetchRequest(url, "PUT", query, "form", "text");
-        forceCloseModal(); 
-        alert("✅ 등급이 변경되었습니다.");
-        location.reload();
-    } catch (e) { console.error(e); }
 }
 
 async function updateStatusOk() {
@@ -228,14 +243,39 @@ async function updateStatusOk() {
     if(!f.status_code.value) { alert("상태를 선택하세요."); f.status_code.focus(); return; }
     if(!f.memo.value.trim()) { alert("사유를 입력하세요."); f.memo.focus(); return; }
     if(!confirm("상태를 변경하시겠습니까?")) return;
+    
     const url = "${pageContext.request.contextPath}/admin/guests/GuestStatus";
     const query = new URLSearchParams(new FormData(f)).toString();
+    
     try {
         await fetchRequest(url, "POST", query, "form", "text");
         forceCloseModal(); 
         alert("✅ 상태 변경이 완료되었습니다.");
         location.reload();
     } catch (e) { console.error(e); }
+}
+
+function givePointIndividual(memberId) {
+    const point = prompt("해당 회원에게 지급할 포인트를 입력하세요.\n(차감 시 숫자 앞에 - 입력)");
+    if(!point || isNaN(point)) return;
+
+    const params = new URLSearchParams();
+    params.append('memberIds[]', memberId);
+    params.append('point', point);
+
+    fetch('${pageContext.request.contextPath}/admin/guests/updatePoint', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params
+    })
+    .then(response => {
+        if(response.ok) {
+            alert("포인트가 적용되었습니다.");
+            location.reload();
+        } else {
+            alert("포인트 적용 실패");
+        }
+    });
 }
 </script>
 </body>

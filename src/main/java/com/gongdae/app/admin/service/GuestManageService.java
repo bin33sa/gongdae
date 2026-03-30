@@ -19,4 +19,7 @@ public interface GuestManageService {
 	public void insertGuestStatus(GuestManageDto dto) throws Exception;
 	public List<GuestManageDto> listGuestStatus(Long member_id);
 	public GuestManageDto findByStatus(Long member_id);
+	
+	public void updatePoint(Map<String, Object> map) throws Exception;
+    public void updateAutoGrade(Long member_id) throws Exception;
 }

@@ -11,14 +11,14 @@
 </head>
 <body class="admin-page">
 
-<div class="admin-layout">
+<div class="admin-layout d-flex flex-column min-vh-100">
     <jsp:include page="/WEB-INF/views/admin/layout/header.jsp"/>
 
-    <div class="admin-body">
+    <div class="admin-body d-flex flex-grow-1">
         <jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
 
-        <main class="admin-content">
-            <div class="page-title-wrap">
+        <main class="admin-content flex-grow-1">
+            <div class="page-title-wrap mb-4 d-flex justify-content-between align-items-center">
                 <div>
                     <h3 class="fw-bold mb-2">
                         <c:choose>
@@ -28,11 +28,11 @@
                             <c:otherwise>게시글 ${mode == 'update' ? '수정' : '작성'}</c:otherwise>
                         </c:choose>
                     </h3>
-                    <p class="mb-0 txt-muted">게시글을 ${mode == 'update' ? '수정' : '작성하고 등록'}합니다.</p>
+                    <p class="mb-0 text-muted">게시글을 ${mode == 'update' ? '수정' : '작성하고 등록'}합니다.</p>
                 </div>
             </div>
 
-            <div class="content-box col-lg-10 mx-auto">
+            <div class="dashboard-box col-lg-10 mx-auto">
                 <form name="boardForm" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/admin/bbs/${pathType}/${mode}">
                     <c:if test="${mode == 'update'}">
                         <input type="hidden" name="boardNo" value="${dto.boardNo}">
@@ -44,32 +44,32 @@
                     </c:if>
                     
                     <div class="mb-4">
-                        <label class="form-label txt-muted fw-bold">제목 <span class="required-mark">*</span></label>
+                        <label class="form-label text-muted fw-bold">제목 <span class="required-mark">*</span></label>
                         <input type="text" name="title" class="admin-input form-control" placeholder="게시글 제목을 입력하세요" value="${dto.title}" required>
                     </div>
 
                     <c:if test="${type == 'EVENT'}">
                         <div class="row mb-4">
                             <div class="col-md-6">
-                                <label class="form-label txt-muted fw-bold">이벤트 시작일</label>
+                                <label class="form-label text-muted fw-bold">이벤트 시작일</label>
                                 <input type="date" name="startDate" class="admin-input form-control" value="${dto.startDate}">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label txt-muted fw-bold">이벤트 종료일</label>
+                                <label class="form-label text-muted fw-bold">이벤트 종료일</label>
                                 <input type="date" name="endDate" class="admin-input form-control" value="${dto.endDate}">
                             </div>
                         </div>
                     </c:if>
 
                     <div class="mb-4">
-                        <label class="form-label txt-muted fw-bold">내용 <span class="required-mark">*</span></label>
+                        <label class="form-label text-muted fw-bold">내용 <span class="required-mark">*</span></label>
                         <div id="editor" class="editor-container"></div>
                         <textarea name="content" id="hiddenContent" class="d-none">${dto.content}</textarea>
                     </div>
 
                     <c:if test="${type != 'FAQ'}">
                         <div class="mb-4 mt-3">
-                            <label class="form-label txt-muted fw-bold">
+                            <label class="form-label text-muted fw-bold">
                                 <c:choose>
                                     <c:when test="${type == 'EVENT'}">
                                         목록 썸네일 이미지 <span class="required-mark">*</span>
@@ -81,7 +81,7 @@
                             <input type="file" name="selectFile" class="admin-input form-control" ${type == 'EVENT' ? 'accept="image/*"' : ''}>
                             
                             <c:if test="${mode == 'update' && not empty dto.saveFilename}">
-                                <div class="mt-2 txt-muted small-txt d-flex align-items-center">
+                                <div class="mt-2 text-muted small-txt d-flex align-items-center">
                                     <i class="bi bi-paperclip me-1"></i> 현재 첨부된 파일: ${dto.originalFilename}
                                     <button type="button" class="btn btn-sm btn-outline-danger ms-3 py-0 px-2" onclick="deleteFile();">삭제</button>
                                 </div>
@@ -90,7 +90,7 @@
                     </c:if>
 
                     <div class="mb-5">
-                        <label class="form-label txt-muted fw-bold">게시글 상태</label>
+                        <label class="form-label text-muted fw-bold">게시글 상태</label>
                         <div class="status-wrap">
                             <div>
                                 <input type="radio" name="block" id="block0" value="0" class="d-none status-radio-normal" ${empty dto || dto.block == 0 ? 'checked' : ''}>
@@ -159,7 +159,6 @@
                     method: 'POST',
                     body: formData
                 });
-                
                 const result = await response.json();
                 
                 if(result.url) {

@@ -11,21 +11,21 @@
 </head>
 <body class="admin-page">
 
-<div class="admin-layout">
+<div class="admin-layout d-flex flex-column min-vh-100">
     <jsp:include page="/WEB-INF/views/admin/layout/header.jsp"/>
 
-    <div class="admin-body">
+    <div class="admin-body d-flex flex-grow-1">
         <jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
 
-        <main class="admin-content">
-            <div class="content-box col-lg-10 mx-auto">
+        <main class="admin-content flex-grow-1">
+            <div class="dashboard-box col-lg-10 mx-auto">
                 
                 <div class="article-header">
                     <div class="article-title-row">
                         <span class="article-badge">
                             ${type == 'NOTICE' ? '공지사항' : (type == 'EVENT' ? '이벤트' : 'FAQ')}
                         </span>
-                        <div class="txt-muted small-txt">
+                        <div class="text-muted small-txt">
                             조회수 <span class="text-info fw-bold ms-1">${dto.viewCount}</span>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                             <i class="bi bi-clock me-1"></i> 
                             <c:choose>
                                 <c:when test="${not empty dto.updatedAt}">
-                                    ${fn:substring(fn:replace(dto.updatedAt, 'T', ' '), 0, 19)} <span class="text-muted" style="font-size: 0.85em;"></span>
+                                   ${fn:substring(fn:replace(dto.updatedAt, 'T', ' '), 0, 19)} <span class="text-muted" style="font-size: 0.85em;"></span>
                                 </c:when>
                                 <c:otherwise>
                                     ${fn:substring(fn:replace(dto.createdAt, 'T', ' '), 0, 19)}
@@ -64,7 +64,7 @@
                     <div class="attachment-box">
                         <i class="bi bi-paperclip fs-4 text-info me-3"></i>
                         <div>
-                            <div class="txt-muted small-txt mb-1">
+                            <div class="text-muted small-txt mb-1">
                                 <c:choose>
                                     <c:when test="${type == 'EVENT'}">썸네일 이미지</c:when>
                                     <c:otherwise>첨부파일</c:otherwise>

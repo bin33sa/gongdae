@@ -10,15 +10,14 @@
 </head>
 <body class="admin-page">
 
-<div class="admin-layout">
-
+<div class="admin-layout d-flex flex-column min-vh-100">
     <jsp:include page="/WEB-INF/views/admin/layout/header.jsp"/>
 
-    <div class="admin-body">
+    <div class="admin-body d-flex flex-grow-1">
         <jsp:include page="/WEB-INF/views/admin/layout/left.jsp"/>
 
-        <main class="admin-content">
-            <div class="page-title-wrap">
+        <main class="admin-content flex-grow-1">
+            <div class="page-title-wrap mb-4 d-flex justify-content-between align-items-center">
                 <div>
                     <h3 class="fw-bold mb-2">
                         <c:choose>
@@ -28,18 +27,17 @@
                             <c:otherwise>게시글 관리</c:otherwise>
                         </c:choose>
                     </h3>
-                    <p class="mb-0 txt-muted">등록된 게시글을 조회하고 관리합니다.</p>
+                    <p class="mb-0 text-muted">등록된 게시글을 조회하고 관리합니다.</p>
                 </div>
                 <button class="btn btn-purple btn-rounded px-4 py-2" onclick="location.href='${pageContext.request.contextPath}/admin/bbs/${pathType}/write';">
                     <i class="bi bi-pencil-square me-2"></i>글쓰기
                 </button>
             </div>
 
-            <div class="content-box">
+            <div class="dashboard-box">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div class="d-flex gap-2">
                         <form name="searchForm" class="d-flex gap-2 form-search">
-                            
                             <select name="schType" class="form-select admin-input" style="width: 130px;">
                                 <option value="all" ${schType == 'all' ? 'selected' : ''}>제목+내용</option>
                                 <option value="title" ${schType == 'title' ? 'selected' : ''}>제목</option>
@@ -53,7 +51,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="txt-muted small-txt">총 <strong class="text-main">${dataCount}</strong>건의 게시글</div>
+                    <div class="text-muted small-txt">총 <strong class="text-main">${dataCount}</strong>건의 게시글</div>
                 </div>
 
                 <div class="table-responsive">
@@ -73,12 +71,12 @@
                         <tbody>
                             <c:if test="${empty list}">
                                 <tr>
-                                    <td colspan="8" class="admin-td txt-center txt-muted" style="padding: 3rem 0;">등록된 게시글이 없습니다.</td> 
+                                    <td colspan="8" class="admin-td txt-center text-muted" style="padding: 3rem 0;">등록된 게시글이 없습니다.</td> 
                                 </tr>
                             </c:if>
                             <c:forEach var="dto" items="${list}">
                                 <tr class="board-row">
-                                    <td class="admin-td txt-muted txt-center">${dto.boardNo}</td>
+                                    <td class="admin-td text-muted txt-center">${dto.boardNo}</td>
                                     <td class="admin-td text-start fw-bold">
                                         <c:url var="url" value="/admin/bbs/${pathType}/article/${dto.boardNo}">
                                             <c:param name="page" value="${page}"/>
@@ -87,7 +85,6 @@
                                                 <c:param name="kwd" value="${kwd}"/>
                                             </c:if>									
                                         </c:url>
-
                                         <div class="text-wrap">
                                             <a href="${url}" class="text-main text-decoration-none hover-accent">
                                                 <c:out value="${dto.title}"/>
@@ -95,7 +92,7 @@
                                         </div>
                                     </td>
                                     <td class="admin-td txt-center">${dto.adminName}</td>
-                                    <td class="admin-td txt-center txt-muted small-txt">
+                                    <td class="admin-td txt-center text-muted small-txt">
                                         ${dto.createdAt.toString().substring(0, 10)}
                                     </td>
                                     <td class="admin-td txt-center fw-bold">${dto.viewCount}</td>
@@ -138,7 +135,6 @@
 <jsp:include page="/WEB-INF/views/admin/layout/footerResources.jsp"/>
 
 <script type="text/javascript">
-// ✨ 힌트 적용: 검색어 입력 후 엔터 누를 때 꼬이지 않게 방어
 document.addEventListener('DOMContentLoaded', () => {
     const inputEL = document.querySelector('form[name=searchForm] input[name=kwd]');
     
@@ -150,12 +146,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// ✨ 힌트 적용: URLSearchParams로 안전하게 인코딩하여 GET 요청 전송
 function searchList() {
     const f = document.searchForm;
-    // (선택) 검색어가 비어있어도 어드민은 전체 목록을 봐야 할 수 있으므로 trim 검사는 뺐습니다.
-    
-    // form 요소는 FormData를 이용하여 URLSearchParams 으로 변환
     const formData = new FormData(f);
     const params = new URLSearchParams(formData).toString();
     
