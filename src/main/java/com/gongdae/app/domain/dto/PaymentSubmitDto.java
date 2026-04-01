@@ -7,10 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PaymentConfirmDto {
+public class PaymentSubmitDto {
 	private long res_no;
-	private String orderId;
-    private String amount;
+    private String method;
     private String paymentKey;
-	
+    private int totalAmount;
 }

@@ -15,14 +15,27 @@
 
 <main>
 
-<div class="payment-container">
-
-    <h2>결제 성공</h2>
-    <p id="paymentKey"></p>
-    <p id="orderId"></p>
-    <p id="amount"></p>
-
-</div>
+	<div class="row justify-content-center" data-aos="fade-up" data-aos-delay="200">
+		<div class="col-md-5">
+			<div class="bg-white box-shadow mt-5 mb-5 p-5">
+				<h3 class="text-center pt-3">결재 실패</h3>
+				<hr class="mt-4">
+				
+				<div class="my-5">
+					<div class="text-center">
+						<p class="text-center" id="code"></p>
+						<p class="text-center" id="message"></p>
+					</div>
+				</div>
+                   
+				<div>
+					<button type="button" class="btn-accent btn-lg w-100" onclick="location.href='${pageContext.request.contextPath}/';">
+						메인화면으로 이동 <i class="bi bi-arrow-counterclockwise"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </main>
 
 <footer>
@@ -32,48 +45,13 @@
 <jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
 
 <script type="text/javascript">
-	//쿼리 파라미터 값이 결제 요청할 때 보낸 데이터와 동일한지 반드시 확인하세요.
-	// 클라이언트에서 결제 금액을 조작하는 행위를 방지할 수 있습니다.
 	const urlParams = new URLSearchParams(window.location.search);
-	const paymentKey = urlParams.get("paymentKey");
-	const orderId = urlParams.get("orderId");
-	const amount = urlParams.get("amount");
 	
-	async function confirm() {
-	  	const requestData = {
-	    	paymentKey: paymentKey,
-	    	orderId: orderId,
-	    	amount: amount,
-	  	};
+	const codeElement = document.getElementById("code");
+	const messageElement = document.getElementById("message");
 	
-	  	const response = await fetch("/confirm", {
-	    	method: "POST",
-	    	headers: {
-	      		"Content-Type": "application/json",
-	    	},
-	    	body: JSON.stringify(requestData),
-	  	});
-	
-	  	const json = await response.json();
-	
-	  	if (!response.ok) {
-		    // 결제 실패 비즈니스 로직을 구현하세요.
-		    console.log(json);
-		    window.location.href = `/fail?message=${json.message}&code=${json.code}`;
-	  	}
-	
-	  	// 결제 성공 비즈니스 로직을 구현하세요.
-	  	console.log(json);
-	}
-	confirm();
-	
-	const paymentKeyElement = document.getElementById("paymentKey");
-	const orderIdElement = document.getElementById("orderId");
-	const amountElement = document.getElementById("amount");
-	
-	orderIdElement.textContent = "주문번호: " + orderId;
-	amountElement.textContent = "결제 금액: " + amount;
-	paymentKeyElement.textContent = "paymentKey: " + paymentKey;
+	codeElement.textContent = "에러코드: " + urlParams.get("code");;
+	messageElement.textContent = "실패 사유: " + urlParams.get("message");;
 </script>
 
 </body>

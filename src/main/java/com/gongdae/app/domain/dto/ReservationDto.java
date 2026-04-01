@@ -8,15 +8,16 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ReservationDto {
-	private long num;
-	private String admin_name;
-	private String title;
-	private String content;
+	private long res_no;
+	private long guest_id;
+	private long space_no;
+	private long unit_no;
+	private String res_date;
+	private int start_time;
+	private int end_time;
+	private String people_count;
+	private int total_price;
+	private String status;
 	private String created_at;
 	private String updated_at;
-	private String saveFilename;
-	private String originalFilename;
-	private String start_date;
-	private String end_date;
-	
 }

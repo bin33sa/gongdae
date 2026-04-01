@@ -74,7 +74,7 @@
 		WHERE space_no = #{spaceId}
 	</select>
 	
-	<select id="findSpaceUnitById" resultType="com.gongdae.app.domain.dto.SpaceUnitDTO">
+	<select id="spaceUnitList" resultType="com.gongdae.app.domain.dto.SpaceUnitDTO">
 		SELECT 
 			su.unit_no AS unitNo,
 			title,
@@ -88,122 +88,18 @@
 		WHERE space_no = #{spaceId}
 	</select>
 	
-
-	<!-- ***************************************************************************** -->
-	<insert id="insertMemberStatus" parameterType="com.gongdae.app.domain.dto.MemberDto">
-		INSERT INTO memberStatus(num, member_id, status_code, memo, register_id, reg_date)
-		VALUES (memberStatus_seq.NEXTVAL, #{member_id}, #{status_code}, #{memo}, #{register_id}, SYSDATE)
-	</insert>
-
-    <update id="updateMemberEnabled" parameterType="map">
-		UPDATE member SET enabled = #{enabled}
-		<where>
-			<choose>
-				<when test="login_id != null">
-					login_id = #{login_id}
-				</when>
-				<otherwise>
-					member_id = #{member_id}
-				</otherwise>
-			</choose>
-		</where>
-    </update>
-    
-    <update id="deleteProfilePhoto" parameterType="map">
-		UPDATE member2 SET profile_photo = ''
-		WHERE member_id = #{member_id}
-    </update>
-
-	<update id="updateLastLogin" parameterType="Long">
-		UPDATE member SET last_login = SYSDATE, failure_cnt = 0
-		WHERE member_id = #{member_id}
-	</update>
-
-	<update id="updateLastLoginId" parameterType="String">
-		UPDATE member SET last_login = SYSDATE, failure_cnt = 0
-		WHERE login_id = #{login_id}
-	</update>
-
-	<select id="findById" parameterType="Long" resultType="com.gongdae.app.domain.dto.MemberDto">
-	    SELECT 
-	        m1.member_id, 
-	        m1.login_id, 
-	        m1.password, 
-	        m1.enabled, 
-	        m1.created_at, 
-	        m1.update_at, 
-	        m1.last_login,
-	        m3.authority,
-	        COALESCE(g.name, h.name, a.name) as name,
-	        COALESCE(g.email, h.email) as email,
-	        COALESCE(g.phone, h.phone) as tel,
-	        NULL as sns_provider,
-	        NULL as sns_id,
-	        NULL as birth,
-	        NULL as profile_photo,
-	        NULL as zip,
-	        NULL as addr1,
-	        NULL as addr2,
-	        NULL as receive_email
-	    FROM member m1
-	    LEFT OUTER JOIN memberAuthority m3 ON m1.login_id = m3.login_id
-	    LEFT OUTER JOIN guest_detail g ON m1.member_id = g.member_id
-	    LEFT OUTER JOIN host_detail h ON m1.member_id = h.member_id
-	    LEFT OUTER JOIN admin_detail a ON m1.member_id = a.member_id
-	    WHERE m1.member_id = #{member_id}
-	</select>
-
-	<select id="findByLoginId" parameterType="String" resultType="com.gongdae.app.domain.dto.MemberDto">
-	    SELECT 
-	        m1.member_id, 
-	        m1.login_id, 
-	        m1.password, 
-	        m1.enabled, 
-	        m1.created_at, 
-	        m1.update_at, 
-	        m1.last_login,
-	        m3.authority,
-	        COALESCE(g.name, h.name, a.name) as name,
-	        g.nickname,
-	        COALESCE(g.email, h.email) as email,
-	        COALESCE(g.phone, h.phone) as tel,
-	        NULL as sns_provider,
-	        NULL as sns_id,
-	        NULL as profile_photo
-	    FROM member m1
-	    LEFT OUTER JOIN memberAuthority m3 ON m1.login_id = m3.login_id
-	    LEFT OUTER JOIN guest_detail g ON m1.member_id = g.member_id
-	    LEFT OUTER JOIN host_detail h ON m1.member_id = h.member_id
-	    LEFT OUTER JOIN admin_detail a ON m1.member_id = a.member_id
-	    WHERE m1.login_id = #{login_id}
-	</select>
-
-	<select id="getMemberId" parameterType="String" resultType="Long">
-		SELECT member_id
-		FROM member
-		WHERE login_id = #{login_id}
-	</select>
-
-	<select id="checkFailureCount" parameterType="String" resultType="Integer">
-		SELECT NVL(failure_cnt, 0) failure_cnt
-		FROM member
-		WHERE login_id = #{login_id}
-	</select>
-	
-	<update id="updateFailureCountReset" parameterType="String">
-		UPDATE member SET failure_cnt = 0
-		WHERE login_id = #{login_id}
-	</update>
-	
-	<update id="updateFailureCount" parameterType="String">
-		UPDATE member SET failure_cnt = failure_cnt + 1
-		WHERE login_id = #{login_id}
-	</update>
-
-	<select id="findByAuthority" parameterType="String" resultType="String">
-		SELECT authority
-		FROM memberAuthority
-		WHERE login_id = #{login_id}
+	<select id="findSpaceUnitById" resultType="com.gongdae.app.domain.dto.SpaceUnitDTO">
+		SELECT 
+			su.unit_no AS unitNo,
+			title,
+			price_per_hour AS pricePerHour,
+			max_capacity AS maxCapacity,
+			description,
+			thumbnail_url AS thumbnailUrl,
+			sp.min_hours AS minHours
+		FROM space_unit su
+		LEFT OUTER JOIN space_policy sp ON su.unit_no = sp.unit_no
+		WHERE su.unit_no = #{unitId}
 	</select>
 	
 	

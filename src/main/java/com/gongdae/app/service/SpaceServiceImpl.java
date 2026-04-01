@@ -2,13 +2,10 @@ package com.gongdae.app.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 
-import com.gongdae.app.common.StorageService;
 import com.gongdae.app.domain.dto.CategoryDTO;
-import com.gongdae.app.domain.dto.MemberDto;
 import com.gongdae.app.domain.dto.SpaceDTO;
 import com.gongdae.app.domain.dto.SpaceUnitDTO;
 import com.gongdae.app.mapper.SpaceMapper;
@@ -21,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SpaceServiceImpl implements SpaceService {
 	private final SpaceMapper mapper;
-	private final StorageService storageService;
 
 	@Override
 	public List<CategoryDTO> categoryList() {
@@ -59,7 +55,7 @@ public class SpaceServiceImpl implements SpaceService {
 	}
 	
 	@Override
-	public SpaceDTO findSpaceById(String spaceId) {
+	public SpaceDTO findSpaceById(long spaceId) {
 		SpaceDTO space = null;
 		try {
 			space = mapper.findSpaceById(spaceId);
@@ -71,193 +67,27 @@ public class SpaceServiceImpl implements SpaceService {
 	}
 
 	@Override
-	public List<SpaceUnitDTO> findSpaceUnitById(String spaceId) {
+	public List<SpaceUnitDTO> spaceUnitList(long spaceId) {
 		List<SpaceUnitDTO> spaceUnitList = null;
 		try {
-			spaceUnitList = mapper.findSpaceUnitById(spaceId);
+			spaceUnitList = mapper.spaceUnitList(spaceId);
 		} catch (Exception e) {
-			log.info("findSpaceUnitById: ", e);
+			log.info("spaceUnitList: ", e);
 		}
 		
 		return spaceUnitList;
 	}
 	
-	///////////////////////////////////////////
 	@Override
-	public void insertMember(MemberDto dto, String uploadPath) throws Exception {
-
-	}
-
-	@Override
-	public void insertMemberStatus(MemberDto dto) throws Exception {
+	public SpaceUnitDTO findSpaceUnitById(long unitId) {
+		SpaceUnitDTO spaceUnit = null;
 		try {
-			mapper.insertMemberStatus(dto);
+			spaceUnit = mapper.findSpaceUnitById(unitId);
 		} catch (Exception e) {
-			log.info("updateLastLogin : ", e);
-			
-			throw e;
-		}
-	}
-
-	@Override
-	public void updatePassword(MemberDto dto) throws Exception {
-
-	}
-
-	@Override
-	public void updateMemberEnabled(Map<String, Object> map) throws Exception {
-		try {
-			mapper.updateMemberEnabled(map);
-		} catch (Exception e) {
-			log.info("updateMemberEnabled : ", e);
-			
-			throw e;
-		}
-	}
-
-	@Override
-	public void updateMember(MemberDto dto, String uploadPath) throws Exception {
-
-	}
-
-	@Override
-	public void updateLastLogin(Long member_id) throws Exception {
-
-	}
-
-	@Override
-	public void updateLastLogin(String login_id) throws Exception {
-		try {
-			mapper.updateLastLoginId(login_id);
-		} catch (Exception e) {
-			log.info("updateLastLoginId : ", e);
-			
-			throw e;
-		}
-	}
-
-	@Override
-	public MemberDto findById(Long member_id) {
-		
-		return null;
-	}
-
-	@Override
-	public MemberDto findById(String login_id) {
-		MemberDto dto = null;
-
-		try {
-			dto = Objects.requireNonNull(mapper.findByLoginId(login_id));
-		} catch (NullPointerException e) {
-		} catch (Exception e) {
-			log.info("findById : ", e);
-		}
-
-		return dto;
-	}
-	
-	@Override
-	public Long getMemberId(String login_id) {
-
-		return 0L;
-	}
-	
-	@Override
-	public int checkFailureCount(String login_id) {
-		int result = 0;
-		
-		try {
-			result = mapper.checkFailureCount(login_id);
-		} catch (Exception e) {
-			log.info("checkFailureCount : ", e);
+			log.info("findSpaceUnitById: ", e);
 		}
 		
-		return result;
+		return spaceUnit;
 	}
-
-	@Override
-	public void updateFailureCountReset(String login_id) throws Exception {
-		try {
-			mapper.updateFailureCountReset(login_id);
-		} catch (Exception e) {
-			log.info("updateFailureCountReset : ", e);
-			
-			throw e;
-		}
-	}
-
-	@Override
-	public void updateFailureCount(String login_id) throws Exception {
-		try {
-			mapper.updateFailureCount(login_id);
-		} catch (Exception e) {
-			log.info("updateFailureCount : ", e);
-			
-			throw e;
-		}
-	}
-
-	@Override
-	public void deleteMember(Map<String, Object> map, String uploadPath) throws Exception {
-
-	}
-
-	@Override
-	public void deleteProfilePhoto(Map<String, Object> map, String uploadPath) throws Exception {
-		// 프로파일 포토 삭제
-		try {
-			String filename = (String)map.get("filename");
-			if(filename!= null && ! filename.isBlank()) {
-				storageService.deleteFile(uploadPath, filename);
-			}
-			
-			mapper.deleteProfilePhoto(map);
-		} catch (Exception e) {
-			log.info("deleteProfilePhoto : ", e);
-			
-			throw e;
-		}
-	}
-	
-	@Override
-	public void generatePwd(MemberDto dto) throws Exception {
-
-	}
-
-	@Override
-	public List<MemberDto> listFindMember(Map<String, Object> map) {
-		
-		return null;
-	}
-
-	@Override
-	public String findByAuthority(String login_id) {
-		String authority = null;
-		
-		try {
-			authority = mapper.findByAuthority(login_id);
-		} catch (Exception e) {
-			log.info("findByAuthority", e);
-		}
-		
-		return authority;
-	}
-
-	@Override
-	public void insertRefreshToken(MemberDto dto) throws Exception {
-
-	}
-
-	@Override
-	public void updateRefreshToken(MemberDto dto) throws Exception {
-
-	}
-
-	@Override
-	public MemberDto findByToken(String login_id) {
-
-		return null;
-	}
-
 
 }

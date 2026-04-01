@@ -13,13 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.gongdae.app.domain.dto.CategoryDTO;
 import com.gongdae.app.domain.dto.SessionInfo;
 import com.gongdae.app.domain.dto.SpaceDTO;
 import com.gongdae.app.security.LoginMemberUtil;
 import com.gongdae.app.service.SpaceService;
 
-import jakarta.mail.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,11 +42,11 @@ public class SpaceController {
 	}
 	
 	@GetMapping("{id}")
-	public String detailPage(@PathVariable(name = "id") String spaceId, Model model) throws Exception {
+	public String detailPage(@PathVariable(name = "id") long spaceId, Model model) throws Exception {
 		
 		try {			
 			model.addAttribute("space", service.findSpaceById(spaceId));
-			model.addAttribute("spaceUnits", service.findSpaceUnitById(spaceId));
+			model.addAttribute("spaceUnits", service.spaceUnitList(spaceId));
 			
 		} catch (Exception e) {
 		}
@@ -108,12 +106,6 @@ public class SpaceController {
 		}
 		
 		return ResponseEntity.ok(result);
-	}
-	
-	
-	@GetMapping("payment")
-	public String paymentForm() throws Exception {
-		return "space/payment";
 	}
 	
 	

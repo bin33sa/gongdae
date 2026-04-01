@@ -234,8 +234,6 @@ function loadSpaceList(categoryNo) {
 	
 	const fn = function(data) {
 		let out = '';
-		
-		console.log(data);
 
 		for(let space of data.list) {
 			

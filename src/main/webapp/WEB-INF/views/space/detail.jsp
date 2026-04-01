@@ -54,6 +54,10 @@ body {
 }
 .unit-card:hover { border-color: var(--primary-color); box-shadow: 0 4px 12px rgba(229, 57, 53, 0.08); }
 
+.active-card {
+	border-color: var(--primary-color);
+}
+
 /* 우측 플로팅 예약 위젯 */
 .sticky-booking-widget {
     position: sticky;
@@ -144,10 +148,10 @@ body {
                 </div>
             </div>
 
-            <div class="detail-section border-bottom-0 pb-0">
+            <div class="detail-section border-bottom-0 pb-0" id="unitList">
                 <h4 class="section-title">예약 가능한 룸</h4>
                 <c:forEach var="spaceUnit" items="${spaceUnits}">
-	                <div class="unit-card d-flex justify-content-between align-items-center">
+	                <div class="unit-card d-flex justify-content-between align-items-center" onclick="unitSelect(${spaceUnit.unitNo});">
 	                    <div>
 	                        <h5 class="fw-bold mb-2">${spaceUnit.title}</h5>
 	                        <div class="text-muted small mb-2"><i class="bi bi-person-fill me-1"></i>최대 ${spaceUnit.maxCapacity}인 <span class="mx-2">|</span> 최소 ${spaceUnit.minHours}시간</div>
@@ -155,7 +159,6 @@ body {
 	                        	<fmt:formatNumber value="${spaceUnit.pricePerHour}" type="number" groupingUsed="true"/>원
                         	</span> / 시간
 	                    </div>
-	                    <button class="btn btn-outline-dark px-4 py-2">선택</button>
 	                </div>
                 </c:forEach>
             </div>
@@ -185,30 +188,46 @@ body {
 
         <div class="col-lg-4">
             <div class="sticky-booking-widget">
-                <h3 class="fw-bold mb-4">15,000원 <span class="fs-6 fw-normal text-muted">/ 시간</span></h3>
                 
+                <form name="reservationForm" action="" method="post">
                 <div class="border rounded p-3 mb-4 border-2">
                     <div class="mb-3 border-bottom pb-3">
                         <label class="fw-bold small mb-1 text-muted">이용 날짜</label>
-                        <input type="date" class="form-control border-0 p-0 fs-5 fw-bold" value="2026-03-14" style="outline: none;">
+                        <input name="res_date" type="date" class="form-control border-0 p-0 fs-5 fw-bold" style="outline: none;">
+                    </div>
+                    <div class="mb-3 border-bottom pb-3">
+                        <label class="fw-bold small mb-1 text-muted">이용 시간</label>
+                        <div class="d-flex align-items-center gap-2">
+    	                    <input name="start_time" type="number" class="form-control border-0 p-0 fs-5 fw-bold" min="1" max="24" value="1" style="outline: none;">
+	                        <span>~</span>
+	                        <input name="end_time" type="number" class="form-control border-0 p-0 fs-5 fw-bold" min="1" max="24" value="1" style="outline: none;">
+                        </div>
                     </div>
                     <div>
                         <label class="fw-bold small mb-1 text-muted">이용 인원</label>
-                        <select class="form-select border-0 p-0 fs-5 fw-bold" style="outline: none; cursor:pointer;">
+                        <select name="people_count" class="form-select border-0 p-0 fs-5 fw-bold" style="outline: none; cursor:pointer;">
                             <option value="1">1명</option>
-                            <option value="2">2명</option>
-                            <option value="3" selected>3명</option>
+                            <option value="2" selected>2명</option>
+                            <option value="3">3명</option>
                             <option value="4">4명</option>
                         </select>
                     </div>
                 </div>
 
-                <button type="button" class="btn btn-primary-custom w-100 py-3" onclick="location.href='${pageContext.request.contextPath}/space/payment'">
+                <button type="button" class="btn btn-primary-custom w-100 py-3" onclick="sendReservation();">
                     예약 진행하기
                 </button>
-                <div class="text-center text-muted small mt-3">
-                    결제는 다음 단계에서 진행됩니다.
-                </div>
+                <input type="hidden" name="unit_no">
+                <input type="hidden" name="space_no" value="${space.num}">
+                </form>
+                <c:choose>
+	                <c:when test="${not empty message}">
+	    	            <div class="text-center text-danger small mt-3">${message}</div>
+   		        	</c:when>
+					<c:otherwise>
+	    	            <div class="text-center text-muted small mt-3">결제는 다음 단계에서 진행됩니다.</div>
+					</c:otherwise>    
+                </c:choose>
             </div>
         </div>
 
@@ -248,6 +267,49 @@ body {
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+function sendReservation() {
+	const f = document.reservationForm;
+	
+	if(! f.unit_no.value) {
+		alert("대여할 공간을 선택해야합니다.");
+		return;
+	}
+	
+	if(! f.res_date.value) {
+		alert("날짜를 선택해주세요");
+		return;
+	}
+	
+	if(f.start_time.value >= f.end_time.value) {
+		alert("대여 시작 시간이 종료 시간보다 앞서야 합니다.");
+		return;
+	}
+	
+	f.action = '${pageContext.request.contextPath}/payment/reservation';
+	f.submit();
+
+}
+
+function unitSelect(unitNo) {
+	document.reservationForm.unit_no.value = unitNo;
+}
+
+
+document.getElementById("unitList").addEventListener("click", function(e) {
+
+	if(e.target.classList.contains("unit-card")) {
+		this.querySelectorAll("unit-card").forEach(card => {
+			card.classList.remove("active-card");
+		})
+		
+		e.target.classList.add("active-card");
+	}
+})
+
+
+</script>
 
 <footer>
 	<jsp:include page="/WEB-INF/views/guest/layout/footer.jsp"/>
