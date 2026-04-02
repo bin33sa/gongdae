@@ -15,7 +15,7 @@ public class SpaceDTO {
 	private String review_num;
 	private String address;
 	private String capacity;
-	private String price;
+	private int price;
 	private String isWished;
 	private String thumbnail;
 	

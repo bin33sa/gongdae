@@ -13,15 +13,20 @@
 	
 	<select id="homeSpaceList" resultType="com.gongdae.app.domain.dto.SpaceDTO">
 		SELECT 
-			space_no AS num, space_name AS name,
+			s.space_no AS num, space_name AS name,
 			'0' AS rating,
 			'0' AS review_num,
-			regon AS address,
-			'0' AS capacity,
-			'1000' AS price,
+			region AS address,
+			max_capacity AS capacity,
+			price_per_hour AS price,
 			'0' AS isWished,
-			'0' AS thumbnail
-		FROM space
+			thumbnail_url AS thumbnail
+		FROM space s
+		LEFT JOIN (
+			SELECT su.*, ROW_NUMBER() OVER (PARTITION BY su.space_no ORDER BY su.unit_no ) rn
+			FROM space_unit su
+		) su
+		ON s.space_no = su.space_no AND su.rn = 1
 		<where>
 			<if test="category != null and category != '' ">
 				category_no = #{category}

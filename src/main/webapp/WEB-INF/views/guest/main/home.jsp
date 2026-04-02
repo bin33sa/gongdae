@@ -240,16 +240,16 @@ function loadSpaceList(categoryNo) {
 			
 			out += `
 				<div class="col-12 col-sm-6 col-lg-3">
-	  				<div class="card product-card h-100 border-0" onclick="location.href='${pageContext.request.contextPath}/space/` + space.num + `'">
+	  				<div class="card product-card h-100 border-0" onclick="location.href='${pageContext.request.contextPath}/space/\${space.num}'">
 	        			<div class="position-relative product-thumb">
-	          				<img src="${pageContext.request.contextPath}/dist/images/image.png" class="card-img-top product-img" alt="상품이미지">
+	          				<img src="${pageContext.request.contextPath}/uploads/space/\${space.thumbnail}" class="card-img-top product-img" alt="상품이미지">
 	          				<button class="wishlist-btn">
 	            				<i class="bi bi-heart"></i>
 	          				</button>
 	        			</div>
 
 	        			<div class="card-body product-body">
-	          				<h6 class="card-title mb-1">` + space.name +  `</h6>
+	          				<h6 class="card-title mb-1">\${space.name}</h6>
 
 	          				<div class="rating mb-2">
 	            				<i class="bi bi-star-fill text-warning"></i>
@@ -257,8 +257,9 @@ function loadSpaceList(categoryNo) {
 	            				<span class="text-muted small">(128)</span>
 	          				</div>
 
-	          				<p class="text-muted small mb-2">` + space.address + ` · 최대 ` + space.capacity + `명</p>
-	          				<p class="fw-bold product-price mb-0">₩` + space.price + `</p>
+	          				<p class="text-muted small mb-2">\${space.address} · 최대 \${space.capacity}명</p>
+	          				<p class="fw-bold product-price mb-0">₩\${space.price.toLocaleString('ko-KR')}</p>
+	          				
 	        			</div>
 	  				</div>
 				</div>
