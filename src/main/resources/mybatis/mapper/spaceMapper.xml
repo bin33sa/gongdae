@@ -13,10 +13,10 @@
 	
 	<select id="homeSpaceList" resultType="com.gongdae.app.domain.dto.SpaceDTO">
 		SELECT 
-			space_no AS num, space_name AS name, 
+			space_no AS num, space_name AS name,
 			'0' AS rating,
 			'0' AS review_num,
-			'qwe' AS address,
+			regon AS address,
 			'0' AS capacity,
 			'1000' AS price,
 			'0' AS isWished,

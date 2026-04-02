@@ -25,19 +25,20 @@
 				<div id="carouselExampleAutoplaying" class="carousel slide home-carousel" data-bs-ride="carousel" data-bs-interval="5000">
 					
 					<div class="carousel-indicators">
-			   			<button type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-			    		<button type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="1" aria-label="Slide 2"></button>
-			    		<button type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="2" aria-label="Slide 3"></button>
+						<button type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+						<button type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="1" class="active" aria-current="true" aria-label="Slide 2"></button>
+						<button type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="2" class="active" aria-current="true" aria-label="Slide 3"></button>
 			  		</div>
 
 			  		<div class="carousel-inner">
-			    		<div class="carousel-item active">
-			      			<img src="${pageContext.request.contextPath}/dist/images/bg1.png" class="d-block w-100" alt="배너이미지1">
+			  		
+			  			<div class="carousel-item active">
+			      			<img src="${pageContext.request.contextPath}/dist/images/bg1.png" class="d-block w-100" alt="배너이미지	1">
 			    		</div>
-			    		<div class="carousel-item">
+			  			<div class="carousel-item">
 			      			<img src="${pageContext.request.contextPath}/dist/images/bg2.png" class="d-block w-100" alt="배너이미지2">
 			    		</div>
-			    		<div class="carousel-item">
+			  			<div class="carousel-item">
 			      			<img src="${pageContext.request.contextPath}/dist/images/bg3.png" class="d-block w-100" alt="배너이미지3">
 			    		</div>
 			  		</div>

@@ -94,7 +94,7 @@ public class AdminBoardController {
         dto.setMemberId(info.getMember_id()); 
         dto.setType(type.toUpperCase());
 
-        String uploadPath = uploadRoot + File.separator + "admin" + File.separator + type.toLowerCase();
+        String uploadPath = uploadRoot + File.separator + type.toLowerCase();
         
         if (selectFile != null && !selectFile.isEmpty()) {
             String saveFilename = storageService.uploadFileToServer(selectFile, uploadPath);

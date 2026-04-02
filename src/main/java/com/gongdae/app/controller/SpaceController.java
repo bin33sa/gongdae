@@ -30,7 +30,6 @@ public class SpaceController {
 
 	@GetMapping("search")
 	public String searchPage(Model model) throws Exception {
-		SessionInfo info = LoginMemberUtil.getSessionInfo();
 		
 		try {
 			model.addAttribute("categoryList", service.categoryList());
