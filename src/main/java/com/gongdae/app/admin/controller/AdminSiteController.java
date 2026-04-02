@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.gongdae.app.admin.domain.dto.ReportManageDto;
 import com.gongdae.app.admin.domain.dto.SiteManageDto;
@@ -22,6 +21,7 @@ import com.gongdae.app.admin.service.SiteManageService;
 import com.gongdae.app.common.FileManager;
 import com.gongdae.app.common.MyUtil;
 import com.gongdae.app.common.PaginateUtil;
+import com.gongdae.app.common.StorageService;
 import com.gongdae.app.domain.dto.SessionInfo;
 import com.gongdae.app.security.LoginMemberUtil;
 
@@ -40,6 +40,7 @@ public class AdminSiteController {
     private final PaginateUtil paginateUtil;
     private final MyUtil myUtil;
     private final FileManager fileManager;
+    private final StorageService storageService;
 
     @GetMapping("report")
     public String listReport(@RequestParam(name = "page", defaultValue = "1") int current_page,
@@ -143,25 +144,18 @@ public class AdminSiteController {
             String root = session.getServletContext().getRealPath("/");
             String pathname = root + "uploads" + File.separator + "banner";
             
-            MultipartFile mf = dto.getSelectFile();
-            if (mf != null && !mf.isEmpty()) {
+            if (dto.getSelectFile() != null && !dto.getSelectFile().isEmpty()) {               
                 SiteManageDto existingBanner = service.findBanner(dto.getType());
                 if (existingBanner != null && existingBanner.getSaveFilename() != null) {
                     fileManager.deletePath(pathname + File.separator + existingBanner.getSaveFilename());
                 }
                 
-                if (!fileManager.isDirectoryExist(pathname)) {
-                    fileManager.createAllDirectories(pathname);
+                String saveFilename = storageService.uploadFileToServer(dto.getSelectFile(), pathname);
+                
+                if (saveFilename != null) {
+                    dto.setSaveFilename(saveFilename);
+                    dto.setOriginalFilename(dto.getSelectFile().getOriginalFilename());
                 }
-                
-                String originalFilename = mf.getOriginalFilename();
-                String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-                String saveFilename = fileManager.generateUniqueFileName(pathname, extension);
-                
-                mf.transferTo(new File(pathname, saveFilename));
-                
-                dto.setSaveFilename(saveFilename);
-                dto.setOriginalFilename(originalFilename);
             }
 
             SiteManageDto existingBanner = service.findBanner(dto.getType());
@@ -172,7 +166,7 @@ public class AdminSiteController {
             }
 
         } catch (Exception e) {
-            log.info("updateBanner : ", e);
+            log.error("updateBanner error: ", e);
         }
 
         return "redirect:/admin/site/banner";
