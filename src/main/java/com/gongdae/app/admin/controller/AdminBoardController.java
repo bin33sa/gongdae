@@ -216,7 +216,7 @@ public class AdminBoardController {
             dto.setMemberId(info.getMember_id());
             dto.setType(type.toUpperCase());
 
-            String uploadPath = uploadRoot + File.separator + "admin" + File.separator + type.toLowerCase();
+            String uploadPath = uploadRoot + File.separator + type.toLowerCase();
             
             if (selectFile != null && !selectFile.isEmpty()) {
                 if(dto.getSaveFilename() != null && !dto.getSaveFilename().isBlank()) {
@@ -306,14 +306,14 @@ public class AdminBoardController {
         resp.setContentType("application/json; charset=utf-8");
         PrintWriter out = resp.getWriter();
         try {
-            String uploadPath = uploadRoot + File.separator + "admin" + File.separator + "editor";
+            String uploadPath = uploadRoot + File.separator + "editor";
             
             if(!fileManager.isDirectoryExist(uploadPath)) {
             	fileManager.createAllDirectories(uploadPath);
             }
             
             String saveFilename = storageService.uploadFileToServer(uploadFile, uploadPath);
-            String fileUrl = req.getContextPath() + "/uploads/admin/editor/" + saveFilename;
+            String fileUrl = req.getContextPath() + "/uploads/editor/" + saveFilename;
             
             out.print("{\"url\":\"" + fileUrl + "\"}");
         } catch (Exception e) {
