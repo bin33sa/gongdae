@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -41,7 +42,10 @@ public class AdminSiteController {
     private final MyUtil myUtil;
     private final FileManager fileManager;
     private final StorageService storageService;
-
+    
+    @Value("${file.upload-root}")
+    private String uploadRoot;
+    
     @GetMapping("report")
     public String listReport(@RequestParam(name = "page", defaultValue = "1") int current_page,
             @RequestParam(name = "schType", defaultValue = "reporter") String schType,
@@ -136,21 +140,20 @@ public class AdminSiteController {
     }
 
     @PostMapping("updateBanner")
-    public String updateBanner(SiteManageDto dto, HttpSession session) {
+    public String updateBanner(SiteManageDto dto) {
         try {
             SessionInfo info = LoginMemberUtil.getSessionInfo();
             dto.setAdminId(info.getMember_id());
 
-            String root = session.getServletContext().getRealPath("/");
-            String pathname = root + "uploads" + File.separator + "banner";
+            String uploadPath = uploadRoot + File.separator + "banner";
             
-            if (dto.getSelectFile() != null && !dto.getSelectFile().isEmpty()) {               
+            if (dto.getSelectFile() != null && !dto.getSelectFile().isEmpty()) {
                 SiteManageDto existingBanner = service.findBanner(dto.getType());
                 if (existingBanner != null && existingBanner.getSaveFilename() != null) {
-                    fileManager.deletePath(pathname + File.separator + existingBanner.getSaveFilename());
+                    fileManager.deletePath(uploadPath + File.separator + existingBanner.getSaveFilename());
                 }
                 
-                String saveFilename = storageService.uploadFileToServer(dto.getSelectFile(), pathname);
+                String saveFilename = storageService.uploadFileToServer(dto.getSelectFile(), uploadPath);
                 
                 if (saveFilename != null) {
                     dto.setSaveFilename(saveFilename);
