@@ -45,7 +45,7 @@
 			<!-- 대표 이미지 -->
 			<c:if test="not empty dto.saveFilename">
 				<div class="event-detail-image">
-					<img src="/uploads/admin/event/${dto.saveFilename}" alt="이벤트 이미지">
+					<img src="/uploads/event/${dto.saveFilename}" alt="이벤트 이미지">
 				</div>
 			</c:if>
 

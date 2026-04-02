@@ -70,7 +70,7 @@
 						<div class="col-md-3">
 							<div class="event-card" onclick="location.href='${url}'">
 								<div class="event-img">
-									<img src="/uploads/admin/event/${dto.saveFilename}">
+									<img src="/uploads/event/${dto.saveFilename}">
 								</div>
 								<div class="event-body">
 									<span class="event-badge active"> 진행중 </span>
