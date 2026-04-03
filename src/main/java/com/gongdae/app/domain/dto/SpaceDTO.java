@@ -18,8 +18,9 @@ public class SpaceDTO {
 	private int price;
 	private String isWished;
 	private String thumbnail;
+	private String space_intro;
 	
-	private String host_id;
+	private long host_id;
 	private String category;
 	private String address2;
 	

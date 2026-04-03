@@ -137,10 +137,17 @@
 			host_id, 
 			cat.name AS category, 
 			space_name AS name,
+			space_intro,
 			address, detail_addr AS address2
 		FROM space s
 		LEFT OUTER JOIN category_space cat ON s.category_no = cat.category_no
 		WHERE space_no = #{spaceId} AND status = 'ACTIVE'
+	</select>
+	
+	<select id="spaceImageList" resultType="String">
+		SELECT thumbnail_url
+		FROM space_unit
+		WHERE space_no = #{space_no}
 	</select>
 	
 	<select id="spaceUnitList" resultType="com.gongdae.app.domain.dto.SpaceUnitDTO">

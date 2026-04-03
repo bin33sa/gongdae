@@ -19,6 +19,7 @@ public interface SpaceService {
 	
 	public SpaceDTO findSpaceById(long spaceId);
 	
+	public List<String> spaceImageList(long spaceId);
 	public List<SpaceUnitDTO> spaceUnitList(long spaceId);
 	public SpaceUnitDTO findSpaceUnitById(long unitId);
 	

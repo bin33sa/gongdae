@@ -64,7 +64,7 @@
 					<span class="section-eyebrow">CATEGORY</span>
 					<h3 class="section-title">어떤 공간을 찾고 있나요?</h3>
 				</div>
-				<div onClick="" class="section-more">더보기</div>
+				<div onClick="homeSearch()" class="section-more">더보기</div>
 			</div>
 
 			<div class="category-panel">
@@ -226,6 +226,17 @@ function scrollCategory(amount) {
     if (!wrap) return;
     wrap.scrollBy({ left: amount, behavior: 'smooth' });
     setTimeout(updateFade, 220);
+}
+
+function homeSearch() {
+	const categoryBtns = document.querySelectorAll('.category-btn');
+	
+	categoryBtns.forEach(btn => {
+		if(btn.classList.contains('active')) {
+			location.href = '${pageContext.request.contextPath}/space/search?category=' + btn.dataset.num;
+		}
+	});	
+
 }
 
 // 카테고리 별 공간 출력

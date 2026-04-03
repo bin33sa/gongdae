@@ -26,16 +26,35 @@ body {
 /* 이미지 갤러리 그리드 */
 .gallery-container {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    grid-template-rows: 250px 250px;
     gap: 10px;
     border-radius: 16px;
     overflow: hidden;
     margin-bottom: 40px;
 }
+.gallery-container.count-1 {
+	grid-template-columns: 1fr;
+    grid-template-rows: 500px;
+}
+.gallery-container.count-2 {
+	grid-template-columns: 1fr 1fr;
+    grid-template-rows: 500px;
+}
+.gallery-container.count-3 {
+	grid-template-columns: 1fr 1fr;
+    grid-template-rows: 250px 250px;
+}
+.gallery-container.count-3 .main {
+	grid-row: span 2;
+}
+.gallery-container.count-4 {
+	grid-template-columns: 1fr 1fr;
+    grid-template-rows: 250px 250px;
+}
+
 .gallery-item { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: opacity 0.2s;}
 .gallery-item:hover { opacity: 0.9; filter: brightness(0.9);}
-.item-main { grid-row: 1 / 3; } 
+.gallery-itm:first-child { /*grid-row: 1 / 3;*/ } 
+
 
 /* 섹션 공통 스타일 */
 .detail-section {
@@ -108,12 +127,12 @@ body {
         </div>
     </div>
 
-    <div class="gallery-container">
-        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1000&auto=format&fit=crop" class="gallery-item item-main" alt="메인">
-        <img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?q=80&w=500&auto=format&fit=crop" class="gallery-item" alt="서브1">
-        <img src="https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?q=80&w=500&auto=format&fit=crop" class="gallery-item" alt="서브2">
-        <img src="https://images.unsplash.com/photo-1517502884422-41eaead166d4?q=80&w=500&auto=format&fit=crop" class="gallery-item" alt="서브3">
-        <img src="https://images.unsplash.com/photo-1600508774634-4e11d34730e2?q=80&w=500&auto=format&fit=crop" class="gallery-item" alt="서브4">
+    <div class="gallery-container count-${spaceImageCount}">
+    	<c:forEach var="img" items="${spaceImageList}" varStatus="status">
+	        <img src="${pageContext.request.contextPath}/uploads/space/${img}" class="gallery-item ${status.first ? 'main' : ''}" alt="공간사진">
+    	</c:forEach>
+    
+       
     </div>
 
     <div class="row">
@@ -121,19 +140,17 @@ body {
             
             <div class="d-flex align-items-center justify-content-between pb-4 border-bottom mt-2">
                 <div>
-                    <h4 class="fw-bold mb-1">호스트 : 일석준 님</h4>
-                    <span class="text-muted">응답률 100% · 신속한 답변을 자랑하는 우수 호스트입니다.</span>
+                    <h4 class="fw-bold mb-1">호스트 : ${host.name} 님</h4>
                 </div>
-                <img src="https://ui-avatars.com/api/?name=석준&background=E53935&color=fff" class="rounded-circle" style="width: 56px; height: 56px;" alt="호스트">
+                <img src="${pageContext.request.contextPath}/uploads/host/${host.profile_photo}"
+                	onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/dist/images/avatar.png';"
+					class="rounded-circle" style="width: 56px; height: 56px;" alt="호스트">
             </div>
 
             <div class="detail-section">
                 <h4 class="section-title">공간 소개</h4>
                 <p style="line-height: 1.8; color: #444; font-size: 1.05rem;">
-                    강남역 도보 3분 거리에 위치한 최고급 스터디룸 및 프리미엄 회의 공간입니다.<br><br>
-                    대형 모니터와 화이트보드가 모든 룸에 기본 세팅되어 있으며, 
-                    스타트업 미팅, 스터디 모임, 독서 모임 등에 최적화된 쾌적한 환경을 제공합니다. 
-                    향긋한 커피 머신과 다과도 무료로 이용해 보세요!
+                    <c:out value="${space.space_intro}"/>
                 </p>
             </div>
 
@@ -300,7 +317,7 @@ function unitSelect(unitNo) {
 document.getElementById("unitList").addEventListener("click", function(e) {
 
 	if(e.target.classList.contains("unit-card")) {
-		this.querySelectorAll("unit-card").forEach(card => {
+		this.querySelectorAll(".unit-card").forEach(card => {
 			card.classList.remove("active-card");
 		})
 		

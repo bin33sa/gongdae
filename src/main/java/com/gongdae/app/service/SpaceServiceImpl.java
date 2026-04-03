@@ -103,6 +103,18 @@ public class SpaceServiceImpl implements SpaceService {
 	}
 
 	@Override
+	public List<String> spaceImageList(long spaceId) {
+		List<String> imageList = null;
+		try {
+			imageList = mapper.spaceImageList(spaceId);
+		} catch (Exception e) {
+			log.info("spaceImageList: ", e);
+		}
+		
+		return imageList;
+	}
+
+	@Override
 	public List<SpaceUnitDTO> spaceUnitList(long spaceId) {
 		List<SpaceUnitDTO> spaceUnitList = null;
 		try {

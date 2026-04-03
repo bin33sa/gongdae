@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gongdae.app.admin.service.HostManageService;
 import com.gongdae.app.domain.dto.SessionInfo;
 import com.gongdae.app.domain.dto.SpaceDTO;
 import com.gongdae.app.security.LoginMemberUtil;
@@ -27,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = "/space/*")
 public class SpaceController {
 	private final SpaceService service;
+	private final HostManageService hostService;
 
 	@GetMapping("search")
 	public String searchPage(@RequestParam(name = "kwd", defaultValue = "") String kwd,
@@ -57,8 +59,15 @@ public class SpaceController {
 	public String detailPage(@PathVariable(name = "id") long spaceId, Model model) throws Exception {
 		
 		try {			
-			model.addAttribute("space", service.findSpaceById(spaceId));
+			SpaceDTO space = service.findSpaceById(spaceId);
+			List<String> spaceImageList = service.spaceImageList(spaceId);
+			
+			model.addAttribute("space", space);
 			model.addAttribute("spaceUnits", service.spaceUnitList(spaceId));
+			model.addAttribute("spaceImageList", spaceImageList);
+			model.addAttribute("spaceImageCount", spaceImageList.size());
+			
+			model.addAttribute("host", hostService.findById(space.getHost_id()));
 			
 		} catch (Exception e) {
 		}
