@@ -36,10 +36,46 @@ public class SpaceServiceImpl implements SpaceService {
 		try {
 			spaceList = mapper.homeSpaceList(params);
 		} catch (Exception e) {
-			log.info("spaceList: ", e);
+			log.info("homeSpaceList: ", e);
 		}
 		
 		return spaceList;
+	}
+	
+	@Override
+	public int premiumCount(Map<String, Object> params) {
+		int spaceCount = 0;
+		try {
+			spaceCount = mapper.premiumCount(params);
+		} catch (Exception e) {
+			log.info("spaceList: ", e);
+		}
+		
+		return spaceCount;
+	}
+	
+	@Override
+	public List<SpaceDTO> premiumSpaceList(Map<String, Object> params) {
+		List<SpaceDTO> spaceList = null;
+		try {
+			spaceList = mapper.premiumSpaceList(params);
+		} catch (Exception e) {
+			log.info("premiumSpaceList: ", e);
+		}
+		
+		return spaceList;
+	}
+	
+	@Override
+	public int spaceCount(Map<String, Object> params) {
+		int spaceCount = 0;
+		try {
+			spaceCount = mapper.spaceCount(params);
+		} catch (Exception e) {
+			log.info("spaceList: ", e);
+		}
+		
+		return spaceCount;
 	}
 	
 	@Override

@@ -14,6 +14,9 @@ public interface SpaceMapper {
 
 	public List<CategoryDTO> categoryList();
 	public List<SpaceDTO> homeSpaceList(Map<String, Object> params);
+	public int premiumCount(Map<String, Object> params);
+	public List<SpaceDTO> premiumSpaceList(Map<String, Object> params);
+	public int spaceCount(Map<String, Object> params);
 	public List<SpaceDTO> spaceList(Map<String, Object> params);
 	public SpaceDTO findSpaceById(long spaceId);
 	public List<SpaceUnitDTO> spaceUnitList(long spaceId);

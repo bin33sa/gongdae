@@ -64,7 +64,7 @@
 					<span class="section-eyebrow">CATEGORY</span>
 					<h3 class="section-title">어떤 공간을 찾고 있나요?</h3>
 				</div>
-				<a href="${pageContext.request.contextPath}/space/search" class="section-more">더보기</a>
+				<div onClick="" class="section-more">더보기</div>
 			</div>
 
 			<div class="category-panel">

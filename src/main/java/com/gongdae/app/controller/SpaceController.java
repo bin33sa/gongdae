@@ -29,11 +29,24 @@ public class SpaceController {
 	private final SpaceService service;
 
 	@GetMapping("search")
-	public String searchPage(Model model) throws Exception {
+	public String searchPage(@RequestParam(name = "kwd", defaultValue = "") String kwd,
+			@RequestParam(name = "category", defaultValue = "") String category,
+			@RequestParam(name = "region", defaultValue = "") String region,
+			Model model) throws Exception {
 		
 		try {
-			model.addAttribute("categoryList", service.categoryList());
+			Map<String, Object> params = new HashMap<>();
+			params.put("kwd", kwd);
+			params.put("category", category);
+			params.put("region", region);
 			
+			model.addAttribute("categoryList", service.categoryList());
+			model.addAttribute("kwd", kwd);
+			model.addAttribute("category", category);
+			model.addAttribute("region", region);
+			
+			model.addAttribute("premiumCount", service.premiumCount(params));
+			model.addAttribute("spaceCount", service.spaceCount(params));
 		} catch (Exception e) {
 		}
 		
@@ -80,23 +93,46 @@ public class SpaceController {
 		return ResponseEntity.ok(result);
 	}
 	
-	@PostMapping("list")
-	public ResponseEntity<?> spaceList(@RequestParam(name = "category") String category) throws Exception {
-		// 넘겨받는 데이터
-		// pageNo, kwd, region, capacity, categoryIdx, date, startTime, endTime, orderType
-		
-		System.out.println("spacelist:controller");
+	@PostMapping("premiumSpaceList")
+	public ResponseEntity<?> premiumSpaceList(@RequestParam(name = "kwd", defaultValue = "") String kwd,
+			@RequestParam(name = "category", defaultValue = "") String category,
+			@RequestParam(name = "region", defaultValue = "") String region) throws Exception {
 		
 		Map<String, Object> result = new HashMap<>();
 		
 		try {
-			SessionInfo info = LoginMemberUtil.getSessionInfo();
 			
 			Map<String, Object> params = new HashMap<>();
+			params.put("kwd", kwd);
+			params.put("category", category);
+			params.put("region", region);
+			
+			List<SpaceDTO> list = service.premiumSpaceList(params);
+			
+			result.put("list", list);
+			
+			
+		} catch (Exception e) {
+		}
+		
+		return ResponseEntity.ok(result);
+	}
+	
+	@PostMapping("list")
+	public ResponseEntity<?> spaceList(@RequestParam(name = "kwd", defaultValue = "") String kwd,
+			@RequestParam(name = "category", defaultValue = "") String category,
+			@RequestParam(name = "region", defaultValue = "") String region) throws Exception {
+		
+		Map<String, Object> result = new HashMap<>();
+		
+		try {
+			
+			Map<String, Object> params = new HashMap<>();
+			params.put("kwd", kwd);
+			params.put("category", category);
+			params.put("region", region);
 			
 			List<SpaceDTO> list = service.spaceList(params);
-			
-			// 전달해야될 요소: 검색된 클래스 목록, 현재 페이지, 총 페이지 수
 			
 			result.put("list", list);
 			

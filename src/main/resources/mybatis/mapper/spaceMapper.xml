@@ -8,7 +8,6 @@
 			category_no AS categoryNo, name
 		FROM category_space
 		ORDER BY category_no
-	
 	</select>
 	
 	<select id="homeSpaceList" resultType="com.gongdae.app.domain.dto.SpaceDTO">
@@ -31,40 +30,105 @@
 			<if test="category != null and category != '' ">
 				category_no = #{category}
 			</if>
+			AND status = 'ACTIVE'
 		</where>
 		ORDER BY
-			CASE WHEN isPremium = 1 THEN 1 ELSE 2 END
+			CASE WHEN is_premium = 'Y' THEN 1 ELSE 2 END
 		FETCH FIRST 4 ROWS ONLY
+	</select>
+	
+	<select id="premiumCount" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM space s
+		<where>
+			<if test="kwd != null and kwd != '' ">
+				( INSTR(space_name, #{kwd}) &gt; 0 OR INSTR(space_intro, #{kwd}) &gt; 0 )
+			</if>
+			<if test="category != null and category != '' ">
+				AND category_no = #{category}
+			</if>
+			<if test="region != null and region != '' ">
+				AND region = #{region}
+			</if>			
+			AND status = 'ACTIVE' AND is_premium = 'Y'
+		</where>
+	</select>
+	
+	<select id="premiumSpaceList" resultType="com.gongdae.app.domain.dto.SpaceDTO">
+		SELECT 
+			s.space_no AS num, space_name AS name,
+			'0' AS rating,
+			'0' AS review_num,
+			region AS address,
+			max_capacity AS capacity,
+			price_per_hour AS price,
+			'0' AS isWished,
+			thumbnail_url AS thumbnail
+		FROM space s
+		LEFT JOIN (
+			SELECT su.*, ROW_NUMBER() OVER (PARTITION BY su.space_no ORDER BY su.unit_no ) rn
+			FROM space_unit su
+		) su
+		ON s.space_no = su.space_no AND su.rn = 1
+		<where>
+			<if test="kwd != null and kwd != '' ">
+				( INSTR(space_name, #{kwd}) &gt; 0 OR INSTR(space_intro, #{kwd}) &gt; 0 )
+			</if>
+			<if test="category != null and category != '' ">
+				AND category_no = #{category}
+			</if>
+			<if test="region != null and region != '' ">
+				AND region = #{region}
+			</if>			
+			AND status = 'ACTIVE' AND is_premium = 'Y'
+		</where>
+	</select>
+	
+	<select id="spaceCount" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM space s
+		<where>
+			<if test="kwd != null and kwd != '' ">
+				( INSTR(space_name, #{kwd}) &gt; 0 OR INSTR(space_intro, #{kwd}) &gt; 0 )
+			</if>
+			<if test="category != null and category != '' ">
+				AND category_no = #{category}
+			</if>
+			<if test="region != null and region != '' ">
+				AND region = #{region}
+			</if>			
+			AND status = 'ACTIVE'
+		</where>
 	</select>
 	
 	<select id="spaceList" resultType="com.gongdae.app.domain.dto.SpaceDTO">
 		SELECT 
-			'TestSpace' AS title,
-			'서울 강남' AS region,
-			'8' AS capacity,
-			'120000' AS price
-		FROM dual
-		UNION ALL
-		SELECT 
-			'TestSpace' AS title,
-			'서울 강남' AS region,
-			'8' AS capacity,
-			'120000' AS price
-		FROM dual
-		UNION ALL
-		SELECT 
-			'TestSpace' AS title,
-			'서울 강남' AS region,
-			'8' AS capacity,
-			'120000' AS price
-		FROM dual
-		UNION ALL
-		SELECT 
-			'TestSpace' AS title,
-			'서울 강남' AS region,
-			'8' AS capacity,
-			'120000' AS price
-		FROM dual
+			s.space_no AS num, space_name AS name,
+			'0' AS rating,
+			'0' AS review_num,
+			region AS address,
+			max_capacity AS capacity,
+			price_per_hour AS price,
+			'0' AS isWished,
+			thumbnail_url AS thumbnail
+		FROM space s
+		LEFT JOIN (
+			SELECT su.*, ROW_NUMBER() OVER (PARTITION BY su.space_no ORDER BY su.unit_no ) rn
+			FROM space_unit su
+		) su
+		ON s.space_no = su.space_no AND su.rn = 1
+		<where>
+			<if test="kwd != null and kwd != '' ">
+				( INSTR(space_name, #{kwd}) &gt; 0 OR INSTR(space_intro, #{kwd}) &gt; 0 )
+			</if>
+			<if test="category != null and category != '' ">
+				AND category_no = #{category}
+			</if>
+			<if test="region != null and region != '' ">
+				AND region = #{region}
+			</if>			
+			AND status = 'ACTIVE'
+		</where>
 	</select>
 	
 	<select id="findSpaceById" resultType="com.gongdae.app.domain.dto.SpaceDTO">
@@ -76,7 +140,7 @@
 			address, detail_addr AS address2
 		FROM space s
 		LEFT OUTER JOIN category_space cat ON s.category_no = cat.category_no
-		WHERE space_no = #{spaceId}
+		WHERE space_no = #{spaceId} AND status = 'ACTIVE'
 	</select>
 	
 	<select id="spaceUnitList" resultType="com.gongdae.app.domain.dto.SpaceUnitDTO">

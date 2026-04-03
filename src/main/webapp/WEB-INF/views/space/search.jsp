@@ -8,6 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>공대생 - 공간 대여 생각날 때</title>
 <jsp:include page="/WEB-INF/views/guest/layout/headerResources.jsp" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/dist/css/guest/page/home.css" type="text/css">
 <style type="text/css"> 
 /* ============================= */
 /* 🔥 검색 바 전체 */
@@ -233,8 +234,6 @@
 
                 <div class="filter-dropdown full">
                     <div class="option-list">
-                        <button class="option-btn">별점 높은순</button>
-                        <button class="option-btn">후기 많은순</button>
                         <button class="option-btn">가격 높은순</button>
                         <button class="option-btn">가격 낮은순</button>
                     </div>
@@ -243,8 +242,8 @@
 
             <!-- 🔍 검색 -->
             <div class="search-input-box">
-                <input type="text" placeholder="지역, 공간명, 키워드 검색">
-                <button>검색</button>
+                <input type="text" name="kwdInput" value="${kwd}" placeholder="지역, 공간명, 키워드 검색">
+                <button onclick="kwdSearch()">검색</button>
             </div>
 
         </div>
@@ -259,18 +258,15 @@
             <div class="filter-row">
                 <div class="label">공간 종류</div>
                 <div class="option-list">
-                    <button class="option-btn active">전체</button>
-                    <button class="option-btn">파티룸</button>
-                    <button class="option-btn">스터디룸</button>
-                    <button class="option-btn">댄스연습실</button>
-                    <button class="option-btn">보컬연습실</button>
-                    <button class="option-btn">악기연습실</button>
-                    <button class="option-btn">촬영스튜디오</button>
-                    <button class="option-btn">공연장</button>
-                    <button class="option-btn">공유주방</button>
-                    <button class="option-btn">회의실</button>
-                    <button class="option-btn">화실</button>
-                    <button class="option-btn">글램핑</button>
+                	<button class="option-btn 
+                		${category == ''? 'active': ''}"
+                		onclick="categorySearch('')">전체</button>
+                	<c:forEach var="categoryBtn" items="${categoryList}">
+                		<button class="option-btn 
+                			${category == categoryBtn.categoryNo? 'active': ''}"
+                			onclick="categorySearch(${categoryBtn.categoryNo})">
+                			${categoryBtn.name}</button>
+                	</c:forEach>
                 </div>
             </div>
 
@@ -278,15 +274,24 @@
             <div class="filter-row">
                 <div class="label">지역</div>
                 <div class="option-list">
-                    <button class="option-btn active">전체</button>
-                    <button class="option-btn">서울</button>
-                    <button class="option-btn">경기</button>
-                    <button class="option-btn">인천</button>
-                    <button class="option-btn">강원</button>
-                    <button class="option-btn">충청</button>
-                    <button class="option-btn">전라</button>
-                    <button class="option-btn">경상</button>
-                    <button class="option-btn">제주</button>
+                    <button class="option-btn ${region == '' ? 'active' : ''}"
+                   		onclick="regionSearch('')">전체</button>
+                    <button class="option-btn ${region == '서울' ? 'active' : ''}"
+                    	onclick="regionSearch('서울')">서울</button>
+                    <button class="option-btn ${region == '경기' ? 'active' : ''}"
+                    	onclick="regionSearch('경기')">경기</button>
+                    <button class="option-btn ${region == '인천' ? 'active' : ''}"
+                    	onclick="regionSearch('인천')">인천</button>
+                    <button class="option-btn ${region == '강원' ? 'active' : ''}"
+                    	onclick="regionSearch('강원')">강원</button>
+                    <button class="option-btn ${region == '충청' ? 'active' : ''}"
+                    	onclick="regionSearch('충청')">충청</button>
+                    <button class="option-btn ${region == '전라' ? 'active' : ''}"
+                    	onclick="regionSearch('전라')">전라</button>
+                    <button class="option-btn ${region == '경상' ? 'active' : ''}"
+                    	onclick="regionSearch('경상')">경상</button>
+                    <button class="option-btn ${region == '제주' ? 'active' : ''}"
+                    	onclick="regionSearch('제주')">제주</button>
                 </div>
             </div>
 
@@ -297,79 +302,25 @@
 	<main>
 		<!-- 프리미엄존 -->
 		<div class="section">
-			<div class="container mt-5">
+			<div class="container mt-5 premium-space-section">
 				<!-- 제목 -->
-				<div class="d-flex justify-content-between align-items-center mb-3">
-					<h4 class="fw-bold mb-0">프리미엄존</h4>
-				</div>
-				<div class="row g-4">
-					<!-- 상품 카드 -->
-					<div class="col-12 col-sm-6 col-lg-3">
-						<div class="card product-card h-100 border-0"
-							onclick="location.href='${pageContext.request.contextPath}/space/36'">
-							<!-- 이미지 영역 -->
-							<div class="position-relative">
-								<img
-									src="${pageContext.request.contextPath}/dist/images/image.png"
-									class="card-img-top product-img" alt="상품이미지">
-								<!-- ❤️ 찜 버튼 -->
-								<button class="wishlist-btn">
-									<i class="bi bi-heart"></i>
-								</button>
-							</div>
-							<!-- 카드 내용 -->
-							<div class="card-body">
-								<h6 class="card-title mb-1">파티룸 A</h6>
-								<!-- ⭐ 평점 -->
-								<div class="rating mb-2">
-									<i class="bi bi-star-fill text-warning"></i> <span
-										class="fw-semibold">4.8</span> <span class="text-muted small">(128)</span>
-								</div>
-								<p class="text-muted small mb-2">서울 강남 · 최대 10명</p>
-								<p class="fw-bold text-primary mb-0">₩120,000</p>
-							</div>
-						</div>
+				<c:if test="${premiumCount != 0}">
+					<div class="d-flex justify-content-between align-items-center mb-3">
+						<h4 class="fw-bold mb-0">프리미엄존</h4>
 					</div>
-				</div>
+				</c:if>
+				<div class="row g-4"></div>
 				<!-- 더보기 -->
 			</div>
 		</div>
 		<!-- 일반 공간 리스트 -->
 		<div class="section">
-			<div class="container">
+			<div class="container normal-space-section">
 				<!-- 제목 -->
 				<div class="d-flex justify-content-between align-items-center mb-3">
-					<h4 class="fw-bold mb-0">312개의 공간이 있습니다.</h4>
+					<h4 class="fw-bold mb-0">${spaceCount}개의 공간이 있습니다.</h4>
 				</div>
-				<div class="row g-4">
-					<!-- 상품 카드 -->
-					<div class="col-12 col-sm-6 col-lg-3">
-						<div class="card product-card h-100 border-0"
-							onclick="location.href='${pageContext.request.contextPath}/space/36'">
-							<!-- 이미지 영역 -->
-							<div class="position-relative">
-								<img
-									src="${pageContext.request.contextPath}/dist/images/image.png"
-									class="card-img-top product-img" alt="상품이미지">
-								<!-- ❤️ 찜 버튼 -->
-								<button class="wishlist-btn">
-									<i class="bi bi-heart"></i>
-								</button>
-							</div>
-							<!-- 카드 내용 -->
-							<div class="card-body">
-								<h6 class="card-title mb-1">파티룸 A</h6>
-								<!-- ⭐ 평점 -->
-								<div class="rating mb-2">
-									<i class="bi bi-star-fill text-warning"></i> <span
-										class="fw-semibold">4.8</span> <span class="text-muted small">(128)</span>
-								</div>
-								<p class="text-muted small mb-2">서울 강남 · 최대 10명</p>
-								<p class="fw-bold text-primary mb-0">₩120,000</p>
-							</div>
-						</div>
-					</div>
-				</div>
+				<div class="row g-4"></div>
 				<!-- 더보기 -->
 			</div>
 		</div>
@@ -404,6 +355,149 @@ document.addEventListener('click', function (e) {
         });
     }
 });
+
+
+function kwdSearch() {
+	const params = new URLSearchParams(window.location.search);
+	params.set("kwd", document.querySelector('input[name="kwdInput"]').value);
+	console.log(params.toString());
+	
+	location.href='${pageContext.request.contextPath}/space/search?' + params.toString();
+}
+
+function categorySearch(category) {
+	const params = new URLSearchParams(window.location.search);
+	params.set("category", category);
+	console.log(params.toString());
+	
+	location.href='${pageContext.request.contextPath}/space/search?' + params.toString();
+}
+
+function regionSearch(region) {
+	const params = new URLSearchParams(window.location.search);
+	params.set("region", region);
+	console.log(params.toString());
+	
+	location.href='${pageContext.request.contextPath}/space/search?' + params.toString();
+}
+
+
+const normalSpaceSection = document.querySelector('.normal-space-section .row.g-4');
+const premiumSpaceSection = document.querySelector('.premium-space-section .row.g-4');
+
+function loadPremiumSpaceList() {
+	const url = '${pageContext.request.contextPath}/space/premiumSpaceList';
+	const params = new URLSearchParams(window.location.search);
+	
+	console.log(params.toString());
+	
+	const fn = function(data) {
+		let out = '';
+
+		for(let space of data.list) {
+			
+			out += `
+				<div class="col-12 col-sm-6 col-lg-3">
+	  				<div class="card product-card h-100 border-0" onclick="location.href='${pageContext.request.contextPath}/space/\${space.num}'">
+	        			<div class="position-relative product-thumb">
+	          				<img src="${pageContext.request.contextPath}/uploads/space/\${space.thumbnail}" class="card-img-top product-img" alt="상품이미지">
+	          				<button class="wishlist-btn">
+	            				<i class="bi bi-heart"></i>
+	          				</button>
+	        			</div>
+
+	        			<div class="card-body product-body">
+	          				<h6 class="card-title mb-1">\${space.name}</h6>
+
+	          				<div class="rating mb-2">
+	            				<i class="bi bi-star-fill text-warning"></i>
+	            				<span class="fw-semibold">4.8</span>
+	            				<span class="text-muted small">(128)</span>
+	          				</div>
+
+	          				<p class="text-muted small mb-2">\${space.address} · 최대 \${space.capacity}명</p>
+	          				<p class="fw-bold product-price mb-0">₩\${space.price.toLocaleString('ko-KR')}</p>
+	          				
+	        			</div>
+	  				</div>
+				</div>
+			`;
+		}
+		
+		premiumSpaceSection.innerHTML = out;
+	};
+	
+	const headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+	const options = {
+			method: 'POST',
+			headers: headers,
+			body: params.toString(),
+	};
+	
+	fetch(url, options)
+		.then(res => res.json())
+		.then(data => fn(data))
+		.catch(err => console.log("error:", err));
+
+}
+
+function loadSpaceList() {
+	const url = '${pageContext.request.contextPath}/space/list';
+	const params = new URLSearchParams(window.location.search);
+	
+	const fn = function(data) {
+		let out = '';
+
+		for(let space of data.list) {
+			
+			out += `
+				<div class="col-12 col-sm-6 col-lg-3">
+	  				<div class="card product-card h-100 border-0" onclick="location.href='${pageContext.request.contextPath}/space/\${space.num}'">
+	        			<div class="position-relative product-thumb">
+	          				<img src="${pageContext.request.contextPath}/uploads/space/\${space.thumbnail}" class="card-img-top product-img" alt="상품이미지">
+	          				<button class="wishlist-btn">
+	            				<i class="bi bi-heart"></i>
+	          				</button>
+	        			</div>
+
+	        			<div class="card-body product-body">
+	          				<h6 class="card-title mb-1">\${space.name}</h6>
+
+	          				<div class="rating mb-2">
+	            				<i class="bi bi-star-fill text-warning"></i>
+	            				<span class="fw-semibold">4.8</span>
+	            				<span class="text-muted small">(128)</span>
+	          				</div>
+
+	          				<p class="text-muted small mb-2">\${space.address} · 최대 \${space.capacity}명</p>
+	          				<p class="fw-bold product-price mb-0">₩\${space.price.toLocaleString('ko-KR')}</p>
+	          				
+	        			</div>
+	  				</div>
+				</div>
+			`;
+		}
+		
+		normalSpaceSection.innerHTML = out;
+	};
+	
+	const headers = {'Content-Type': 'application/x-www-form-urlencoded'};
+	const options = {
+			method: 'POST',
+			headers: headers,
+			body: params.toString(),
+	};
+	
+	fetch(url, options)
+		.then(res => res.json())
+		.then(data => fn(data))
+		.catch(err => console.log("error:", err));
+
+}
+
+loadPremiumSpaceList();
+loadSpaceList();
+
 
 </script>
 </html>
