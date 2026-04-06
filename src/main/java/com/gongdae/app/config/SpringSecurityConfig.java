@@ -32,12 +32,23 @@ public class SpringSecurityConfig {
 		HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
 		requestCache.setMatchingRequestParameterName(null);
 
-		String[] excludeUri = { "/", "/index.jsp", "/member/login", "/guest/signup", "/member/logout",
-	            "/member/userIdCheck", "/guest/nicknameCheck", "/complete", "/guest/findId", "/guest/findPwd", "/guest/pwd", "/expired", "/dist/**",
-	            "/js/**", "/vendor/**","/favicon.ico","/guest/main", "/guest/list", "/uploads/**", "/favicon.ico", "/WEB-INF/views/**",
-	            "/oauth/kakao/callback", "/host/main/prelogin", "/host/member/login", "/admin/login", 
-	            "/wish/*", "/notice/**","/faq/**","/event/**", "/review/*", "/terms",
-	            "/dist/docs/*" };
+		String[] excludeUri = { 
+			    "/", "/index.jsp", "/member/login", "/guest/signup", "/host/member/signup", "/member/logout",
+			    "/member/userIdCheck", "/guest/nicknameCheck", "/complete", "/guest/findId", "/guest/findPwd", "/guest/pwd", "/expired", "/dist/**",
+			    "/js/**", "/vendor/**","/favicon.ico","/guest/main", "/guest/list", "/uploads/**", "/favicon.ico", "/WEB-INF/views/**",
+			    "/oauth/kakao/callback", "/host/main/prelogin", "/host/member/login", "/admin/login", 
+			    "/wish/*", "/notice/**","/faq/**","/event/**", "/review/*", "/terms", "/dist/docs/*",
+			    
+			    
+			    "/host/member/userIdCheck",  
+			    "/host/member/emailCheck",   
+			    "/host/member/findId",      
+			    "/host/member/findPwd",     
+			    "/host/member/pwd" , 
+			    "/host/signup",
+			    "/host/update",
+			    "/host/nicknameCheck"
+			};
 				
 
 		http.cors(Customizer.withDefaults()) 

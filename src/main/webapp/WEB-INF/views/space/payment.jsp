@@ -14,7 +14,7 @@
         @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable.css");
         
         :root {
-            --primary-color: #E53935; /* 공대생 브랜드 적색 */
+            --primary-color: #E53935; 
             --bg-color: #f4f6f8;
             --card-border-radius: 20px;
         }
@@ -51,7 +51,7 @@
             gap: 10px;
         }
 
-        /* 인풋 스타일 */
+     
         .form-control, .form-select {
             padding: 16px;
             border-radius: 12px;

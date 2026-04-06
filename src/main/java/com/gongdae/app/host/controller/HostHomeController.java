@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.gongdae.app.domain.dto.BoardDto;
 import com.gongdae.app.common.PaginateUtil;
 import com.gongdae.app.domain.dto.HostSalesDTO;
 import com.gongdae.app.domain.dto.ReservationManageDTO;
@@ -19,6 +20,7 @@ import com.gongdae.app.domain.dto.SessionInfo;
 import com.gongdae.app.domain.dto.SpaceInquiryDTO;
 import com.gongdae.app.domain.dto.SpaceManageDTO;
 import com.gongdae.app.security.LoginMemberUtil;
+import com.gongdae.app.service.BoardService;
 import com.gongdae.app.service.HostMainService;
 import com.gongdae.app.service.ReservationManageService;
 import com.gongdae.app.service.SpaceInquiryService;
@@ -38,8 +40,18 @@ public class HostHomeController {
     private final SpaceInquiryService inquiryService;
 	private final HostMainService hostMainService;
 	private final PaginateUtil paginateUtil;
-    @GetMapping("main/prelogin")
-    public String prelogin() {
+	private final BoardService boardService;
+	
+	@GetMapping("main/prelogin")
+    public String prelogin(Model model) {
+        try {
+            
+            List<BoardDto> noticeList = boardService.homeBoardList();
+            model.addAttribute("noticeList", noticeList);
+        } catch (Exception e) {
+            log.error("메인 공지사항 불러오기 실패", e);
+        }
+        
         return "host/main/prelogin";
     }
     
@@ -174,9 +186,9 @@ public class HostHomeController {
     @GetMapping("menu/reservation")
     public String reservationList(
             @RequestParam(name = "page", defaultValue = "1") int current_page, 
-            @RequestParam(name = "startDate", defaultValue = "") String startDate, // 💡 추가
-            @RequestParam(name = "endDate", defaultValue = "") String endDate,     // 💡 추가
-            @RequestParam(name = "status", defaultValue = "") String status,       // 💡 추가
+            @RequestParam(name = "startDate", defaultValue = "") String startDate, 
+            @RequestParam(name = "endDate", defaultValue = "") String endDate,     
+            @RequestParam(name = "status", defaultValue = "") String status,       
             Model model) throws Exception {
         
         SessionInfo info = LoginMemberUtil.getSessionInfo();
@@ -189,7 +201,7 @@ public class HostHomeController {
         map.put("endDate", endDate);
         map.put("status", status);
 
-        // dataCountReservation 서명도 파라미터를 Map으로 받도록 서비스/매퍼를 변경해야 합니다!
+      
         int dataCount = reservationService.dataCountReservation(map); 
         int total_page = paginateUtil.pageCount(dataCount, size);
         if (current_page > total_page) current_page = total_page;
@@ -200,7 +212,7 @@ public class HostHomeController {
         map.put("size", size);
 
         List<ReservationManageDTO> list = reservationService.listReservation(map); 
-        String paging = paginateUtil.pagingMethod(current_page, total_page, "searchReservation"); // JS 함수 호출 방식으로 변경
+        String paging = paginateUtil.pagingMethod(current_page, total_page, "searchReservation"); 
 
         model.addAttribute("list", list);
         model.addAttribute("page", current_page);
@@ -209,7 +221,7 @@ public class HostHomeController {
         model.addAttribute("total_page", total_page);
         model.addAttribute("paging", paging); 
         
-        // 검색 조건 유지를 위해 모델에 추가
+      
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
         model.addAttribute("status", status);
@@ -313,7 +325,7 @@ public class HostHomeController {
             }
             
         } catch (Exception e) {
-            // 💡 서비스에서 더블 부킹으로 던진 에러 메시지를 잡아내서 화면에 띄움
+           
             String msg = e.getMessage() != null ? e.getMessage() : "처리 중 오류가 발생했습니다.";
             log.warn("예약 승인 불가: {}", msg);
             rttr.addFlashAttribute("message", msg);

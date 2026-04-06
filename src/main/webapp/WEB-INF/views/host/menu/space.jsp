@@ -37,9 +37,9 @@
         </div>
         
         <c:if test="${mode == 'update'}">
-            <form action="<c:url value='/host/space/delete'/>" method="post" onsubmit="return confirm('정말 이 공간을 삭제하시겠습니까?');">
+            <form id="deleteSpaceForm" action="<c:url value='/host/space/delete'/>" method="post">
                 <input type="hidden" name="spaceNo" value="${dto.spaceNo}">
-                <button type="submit" class="btn btn-outline-danger">
+                <button type="button" class="btn btn-outline-danger" onclick="confirmSpaceDelete()">
                     <i class="bi bi-trash3"></i> 공간 삭제
                 </button>
             </form>
@@ -48,7 +48,7 @@
 
     <div class="row g-4">
         <div class="col-lg-12">
-            <form action="<c:url value='/host/space/${mode}'/>" method="post" enctype="multipart/form-data">
+            <form id="updateSpaceForm" action="<c:url value='/host/space/${mode}'/>" method="post" enctype="multipart/form-data">
                 
                 <c:if test="${mode == 'update'}">
                     <input type="hidden" name="spaceNo" value="${dto.spaceNo}">
@@ -87,10 +87,16 @@
                     <div class="mb-4">
                         <label class="form-label">주소 <span class="text-danger">*</span></label>
                         <div class="d-flex gap-2 mb-2">
-                            <input type="text" name="address" id="address" class="form-control" value="${dto.address}" required readonly>
-                            <button type="button" class="btn btn-outline-secondary" style="white-space: nowrap;">주소 검색</button>
+                            <input type="text" id="zipCode" name="zipCode" class="form-control" placeholder="우편번호" style="width: 150px;" readonly>
+                            <button type="button" class="btn btn-outline-secondary" style="white-space: nowrap;" onclick="searchZipCode()">주소 검색</button>
                         </div>
-                        <input type="text" name="detailAddr" class="form-control" value="${dto.detailAddr}">
+                        <div class="mb-2">
+                            <input type="text" name="address" id="address" class="form-control" value="${dto.address}" placeholder="기본 주소" readonly>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <input type="text" name="detailAddr" id="detailAddr" class="form-control" value="${dto.detailAddr}" placeholder="상세 주소를 입력해주세요">
+                            <input type="text" id="extraAddress" name="extraAddress" class="form-control" placeholder="참고항목 (동, 건물명)" readonly style="width: 30%;">
+                        </div>
                     </div>
 
                     <div class="p-3 bg-light border rounded">
@@ -142,8 +148,7 @@
                                 <c:forEach var="unit" items="${listUnit}" varStatus="st">
                                     <div class="unit-box border rounded p-4 mb-3 position-relative" style="background-color: #fcfcfc;">
                                         <c:if test="${st.index > 0}">
-                                            <button type="button" class="btn btn-sm btn-outline-danger position-absolute" style="top: 15px; right: 15px;"
-                                                    onclick="this.parentElement.remove()"><i class="bi bi-trash"></i> 삭제</button>
+                                            <button type="button" class="btn btn-sm btn-outline-danger position-absolute" style="top: 15px; right: 15px;" onclick="removeUnit(this)"><i class="bi bi-trash"></i> 삭제</button>
                                         </c:if>
                                         
                                         <h6 class="fw-bold mb-3" style="color: #333;">룸 #${st.count}</h6>
@@ -170,16 +175,22 @@
                                                     <c:set var="daysStr" value="월,화,수,목,금,토,일"/>
                                                     <c:forEach var="d" items="${daysStr.split(',')}">
                                                         <tr>
-                                                            <td style="width: 15%;"><span class="badge bg-light text-dark border w-100 py-2">${d}</span></td>
-                                                            <td style="width: 15%;">
-                                                                <div class="form-check form-switch d-flex justify-content-center m-0">
-                                                                    <input class="form-check-input closed-checkbox" type="checkbox" onchange="toggleTime(this)">
-                                                                    <label class="form-check-label small ms-1">휴무</label>
+                                                            <td style="width: 12%;"><span class="badge bg-light text-dark border w-100 py-2">${d}</span></td>
+                                                            <td style="width: 24%;">
+                                                                <div class="d-flex justify-content-center gap-3 m-0">
+                                                                    <div class="form-check form-switch m-0">
+                                                                        <input class="form-check-input closed-checkbox" type="checkbox" onchange="toggleClosed(this)">
+                                                                        <label class="form-check-label small text-nowrap">휴무</label>
+                                                                    </div>
+                                                                    <div class="form-check form-switch m-0">
+                                                                        <input class="form-check-input all-day-checkbox" type="checkbox" onchange="toggleAllDay(this)">
+                                                                        <label class="form-check-label small text-nowrap">24시</label>
+                                                                    </div>
                                                                 </div>
                                                             </td>
-                                                            <td style="width: 32%;"><input type="time" name="openTimes" class="form-control form-control-sm time-input" value="10:00" step="3600" required></td>
+                                                            <td style="width: 29%;"><input type="time" name="openTimes" class="form-control form-control-sm time-input" value="10:00" required></td>
                                                             <td style="width: 6%;">~</td>
-                                                            <td style="width: 32%;"><input type="time" name="closeTimes" class="form-control form-control-sm time-input" value="23:00" step="3600" required></td>
+                                                            <td style="width: 29%;"><input type="time" name="closeTimes" class="form-control form-control-sm time-input" value="23:00" required></td>
                                                         </tr>
                                                     </c:forEach>
                                                 </tbody>
@@ -244,16 +255,22 @@
                                                 <c:set var="daysStr" value="월,화,수,목,금,토,일"/>
                                                 <c:forEach var="d" items="${daysStr.split(',')}">
                                                     <tr>
-                                                        <td style="width: 15%;"><span class="badge bg-light text-dark border w-100 py-2">${d}</span></td>
-                                                        <td style="width: 15%;">
-                                                            <div class="form-check form-switch d-flex justify-content-center m-0">
-                                                                <input class="form-check-input closed-checkbox" type="checkbox" onchange="toggleTime(this)">
-                                                                <label class="form-check-label small ms-1">휴무</label>
+                                                        <td style="width: 12%;"><span class="badge bg-light text-dark border w-100 py-2">${d}</span></td>
+                                                        <td style="width: 24%;">
+                                                            <div class="d-flex justify-content-center gap-3 m-0">
+                                                                <div class="form-check form-switch m-0">
+                                                                    <input class="form-check-input closed-checkbox" type="checkbox" onchange="toggleClosed(this)">
+                                                                    <label class="form-check-label small text-nowrap">휴무</label>
+                                                                </div>
+                                                                <div class="form-check form-switch m-0">
+                                                                    <input class="form-check-input all-day-checkbox" type="checkbox" onchange="toggleAllDay(this)">
+                                                                    <label class="form-check-label small text-nowrap">24시</label>
+                                                                </div>
                                                             </div>
                                                         </td>
-                                                        <td style="width: 32%;"><input type="time" name="openTimes" class="form-control form-control-sm time-input" value="10:00" step="3600" required></td>
+                                                        <td style="width: 29%;"><input type="time" name="openTimes" class="form-control form-control-sm time-input" value="10:00" required></td>
                                                         <td style="width: 6%;">~</td>
-                                                        <td style="width: 32%;"><input type="time" name="closeTimes" class="form-control form-control-sm time-input" value="23:00" step="3600" required></td>
+                                                        <td style="width: 29%;"><input type="time" name="closeTimes" class="form-control form-control-sm time-input" value="23:00" required></td>
                                                     </tr>
                                                 </c:forEach>
                                             </tbody>
@@ -305,12 +322,8 @@
                             <label class="form-label small fw-bold text-danger"><i class="bi bi-trash"></i> 등록된 이미지 (클릭 시 즉시 삭제됩니다)</label>
                             <div class="d-flex flex-wrap gap-3">
                                 <c:forEach var="vo" items="${listFile}">
-                                    <div class="position-relative" style="cursor: pointer; transition: opacity 0.2s;" 
-                                         onclick="deleteSpaceImage('${vo.imageNo}', this)"
-                                         onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
-                                        
+                                    <div class="position-relative" style="cursor: pointer; transition: opacity 0.2s;" onclick="deleteSpaceImage('${vo.imageNo}', this)" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
                                         <img src="${pageContext.request.contextPath}/dist/images/${vo.fileUrl}" class="rounded border shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
-                                        
                                         <div class="position-absolute top-0 end-0 bg-danger text-white rounded-circle d-flex justify-content-center align-items-center shadow" style="width: 24px; height: 24px; transform: translate(30%, -30%);">
                                             <i class="bi bi-x fw-bold"></i>
                                         </div>
@@ -329,7 +342,7 @@
                             <c:forEach var="opt" items="${optionList}">
                                 <c:set var="isChecked" value="false" />
                                 <c:if test="${mode == 'update' && not empty selectedOptions}">
-                                     <c:forEach var="selOpt" items="${selectedOptions}">
+                                    <c:forEach var="selOpt" items="${selectedOptions}">
                                         <c:if test="${selOpt == opt.optionNo}"><c:set var="isChecked" value="true" /></c:if>
                                      </c:forEach>
                                 </c:if>
@@ -359,9 +372,45 @@
 </footer>
 <jsp:include page="/WEB-INF/views/guest/layout/footerResources.jsp"/>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
     let unitCount = ${mode == 'update' ? listUnit.size() : 1};
     const daysArr = ['월', '화', '수', '목', '금', '토', '일'];
+
+    function searchZipCode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                var addr = '';
+                var extraAddr = '';
+
+                if (data.userSelectedType === 'R') {
+                    addr = data.roadAddress;
+                } else {
+                    addr = data.jibunAddress;
+                }
+
+                if(data.userSelectedType === 'R'){
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    document.getElementById("extraAddress").value = extraAddr;
+                } else {
+                    document.getElementById("extraAddress").value = '';
+                }
+
+                document.getElementById('zipCode').value = data.zonecode;
+                document.getElementById("address").value = addr;
+                document.getElementById("detailAddr").focus();
+            }
+        }).open();
+    }
 
     function addUnit() {
         unitCount++;
@@ -371,24 +420,29 @@
         daysArr.forEach(day => {
             timeRowsHtml += `
                 <tr>
-                    <td style="width: 15%;"><span class="badge bg-light text-dark border w-100 py-2">\${day}</span></td>
-                    <td style="width: 15%;">
-                        <div class="form-check form-switch d-flex justify-content-center m-0">
-                            <input class="form-check-input closed-checkbox" type="checkbox" onchange="toggleTime(this)">
-                            <label class="form-check-label small ms-1">휴무</label>
+                    <td style="width: 12%;"><span class="badge bg-light text-dark border w-100 py-2">\${day}</span></td>
+                    <td style="width: 24%;">
+                        <div class="d-flex justify-content-center gap-3 m-0">
+                            <div class="form-check form-switch m-0">
+                                <input class="form-check-input closed-checkbox" type="checkbox" onchange="toggleClosed(this)">
+                                <label class="form-check-label small text-nowrap">휴무</label>
+                            </div>
+                            <div class="form-check form-switch m-0">
+                                <input class="form-check-input all-day-checkbox" type="checkbox" onchange="toggleAllDay(this)">
+                                <label class="form-check-label small text-nowrap">24시</label>
+                            </div>
                         </div>
                     </td>
-                    <td style="width: 32%;"><input type="time" name="openTimes" class="form-control form-control-sm time-input" value="10:00" step="3600" required></td>
+                    <td style="width: 29%;"><input type="time" name="openTimes" class="form-control form-control-sm time-input" value="10:00" required></td>
                     <td style="width: 6%;">~</td>
-                    <td style="width: 32%;"><input type="time" name="closeTimes" class="form-control form-control-sm time-input" value="23:00" step="3600" required></td>
+                    <td style="width: 29%;"><input type="time" name="closeTimes" class="form-control form-control-sm time-input" value="23:00" required></td>
                 </tr>
             `;
         });
 
         const html = `
             <div class="unit-box border rounded p-4 mb-3 position-relative mt-3" style="background-color: #fcfcfc;">
-                <button type="button" class="btn btn-sm btn-outline-danger position-absolute" style="top: 15px; right: 15px;"
-                        onclick="this.parentElement.remove()">
+                <button type="button" class="btn btn-sm btn-outline-danger position-absolute" style="top: 15px; right: 15px;" onclick="removeUnit(this)">
                     <i class="bi bi-trash"></i> 삭제
                 </button>
                 
@@ -448,13 +502,32 @@
         container.insertAdjacentHTML('beforeend', html);
     }
     
-    // 💡 휴무 체크박스 토글 함수 (시간 조절 및 읽기 전용 처리)
-    function toggleTime(checkbox) {
+    function removeUnit(btn) {
+        Swal.fire({
+            title: '룸 삭제',
+            text: '이 룸을 삭제하시겠습니까?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#E53935',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '삭제',
+            cancelButtonText: '취소',
+            customClass: { popup: 'rounded-4 shadow-sm' }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                btn.parentElement.remove();
+            }
+        });
+    }
+
+    // 휴무 버튼 토글 로직
+    function toggleClosed(checkbox) {
         const row = checkbox.closest('tr');
         const timeInputs = row.querySelectorAll('.time-input');
+        const allDayCheckbox = row.querySelector('.all-day-checkbox');
         
         if (checkbox.checked) {
-            // 휴무 체크 시
+            if(allDayCheckbox) allDayCheckbox.checked = false; 
             timeInputs[0].value = "00:00";
             timeInputs[1].value = "00:00";
             timeInputs[0].setAttribute('readonly', true);
@@ -462,7 +535,6 @@
             timeInputs[0].classList.add('bg-light');
             timeInputs[1].classList.add('bg-light');
         } else {
-            // 휴무 해제 시
             timeInputs[0].value = "10:00";
             timeInputs[1].value = "23:00";
             timeInputs[0].removeAttribute('readonly');
@@ -472,21 +544,82 @@
         }
     }
 
-    // Submit 시 일괄 삭제 처리용 함수 (지연 삭제)
-    function deleteSpaceImage(imageNo, el) {
-        if(!confirm("이 이미지를 삭제하시겠습니까?\n(수정 완료 버튼을 눌러야 최종 삭제됩니다)")) {
-            return;
-        }
-
-        const form = document.querySelector('form');
-        const hiddenInput = document.createElement('input');
-        hiddenInput.type = 'hidden';
-        hiddenInput.name = 'deleteImageNos';
-        hiddenInput.value = imageNo;
+    // 24시 버튼 토글 로직
+    function toggleAllDay(checkbox) {
+        const row = checkbox.closest('tr');
+        const timeInputs = row.querySelectorAll('.time-input');
+        const closedCheckbox = row.querySelector('.closed-checkbox');
         
-        form.appendChild(hiddenInput);
-        el.style.display = 'none'; 
+        if (checkbox.checked) {
+            if(closedCheckbox) closedCheckbox.checked = false;
+            timeInputs[0].value = "00:00";
+            timeInputs[1].value = "23:59";
+            timeInputs[0].setAttribute('readonly', true);
+            timeInputs[1].setAttribute('readonly', true);
+            timeInputs[0].classList.add('bg-light');
+            timeInputs[1].classList.add('bg-light');
+        } else {
+            timeInputs[0].value = "10:00";
+            timeInputs[1].value = "23:00";
+            timeInputs[0].removeAttribute('readonly');
+            timeInputs[1].removeAttribute('readonly');
+            timeInputs[0].classList.remove('bg-light');
+            timeInputs[1].classList.remove('bg-light');
+        }
     }
+
+    function confirmSpaceDelete() {
+        Swal.fire({
+            title: '공간 삭제',
+            html: '정말 이 공간을 삭제하시겠습니까?<br><span style="font-size:0.9em; color:#E53935;">관련된 모든 룸과 이미지도 함께 삭제되며 복구할 수 없습니다.</span>',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#E53935',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '네, 삭제합니다',
+            cancelButtonText: '취소',
+            customClass: { popup: 'rounded-4 shadow-sm' }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('deleteSpaceForm').submit();
+            }
+        });
+    }
+
+    function deleteSpaceImage(imageNo, el) {
+        Swal.fire({
+            title: '이미지 삭제',
+            html: '이 이미지를 삭제하시겠습니까?<br><span style="font-size:0.9em; color:#666;">(수정 완료 버튼을 눌러야 최종 반영됩니다)</span>',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '삭제',
+            cancelButtonText: '취소',
+            customClass: { popup: 'rounded-4 shadow-sm' }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.getElementById('updateSpaceForm');
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'deleteImageNos';
+                hiddenInput.value = imageNo;
+                
+                form.appendChild(hiddenInput);
+                el.style.display = 'none'; 
+            }
+        });
+    }
+
+    <c:if test="${not empty message}">
+        Swal.fire({
+            icon: 'info',
+            title: '알림',
+            text: '${message}',
+            confirmButtonColor: '#E53935',
+            customClass: { popup: 'rounded-4 shadow-sm' }
+        });
+    </c:if>
 </script>
 
 </body>

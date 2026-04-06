@@ -7,6 +7,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.gongdae.app.domain.dto.HostDto;
+import com.gongdae.app.domain.dto.SessionInfo;
+import com.gongdae.app.security.LoginMemberUtil;
+import com.gongdae.app.host.service.HostService; // 본인의 JPA 서비스로 주입
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,63 +23,70 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/host/*")
 public class HostMemberController {
 	
+   
+    private final HostService hostService;
 	
 	@RequestMapping(value = "member/login", method = {RequestMethod.GET, RequestMethod.POST})
-	public String loginForm(@RequestParam(name = "error", required = false) String error, 
-			Model model) {
-		
+	public String loginForm(@RequestParam(name = "error", required = false) String error, Model model) {
 		if(error != null) {
 			model.addAttribute("message", "아이디 또는 패스워드가 일치하지 않습니다.");
 		}
-		
 		return "host/member/login";
 	}
 	
-	@GetMapping("findId")
+	//@GetMapping("member/signup")
+	public String signupForm(Model model) throws Exception {
+        model.addAttribute("mode", "signup");
+		return "host/member/signup";
+	}
+	
+	@PostMapping("member/signup")
+	public String signupSubmit(HostDto dto, RedirectAttributes rAttr) throws Exception {
+        
+        rAttr.addFlashAttribute("message", "회원가입이 완료되었습니다.");
+		return "redirect:/host/member/login";
+	}
+
+  
+	@GetMapping("member/edit")
+	public String editForm(Model model) throws Exception {
+     
+        SessionInfo info = LoginMemberUtil.getSessionInfo();
+        
+        if (info == null) {
+            return "redirect:/host/member/login";
+        }
+
+       
+        HostDto dto = hostService.findById(info.getMember_id());
+        
+        
+        model.addAttribute("dto", dto);
+        model.addAttribute("mode", "update");
+
+		return "host/member/edit";
+	}
+
+   
+	@PostMapping("member/update")
+	public String editSubmit(HostDto dto, RedirectAttributes rAttr) throws Exception {
+        SessionInfo info = LoginMemberUtil.getSessionInfo();
+        dto.setMember_id(info.getMember_id());
+        
+       
+      
+        
+        rAttr.addFlashAttribute("message", "정보가 성공적으로 수정되었습니다.");
+		return "redirect:/host/main/home";
+	}
+	
+	@GetMapping("member/findId")
 	public String findIdForm() throws Exception {
 		return "host/member/findId";
 	}
 	
-	@PostMapping("findId")
-	public String findIdSubmit() throws Exception {
-		return "redirect:/host/login";
-	}
-	
-	@GetMapping("findPwd")
+	@GetMapping("member/findPwd")
 	public String findPwdForm() throws Exception {
 		return "host/member/findPwd";
 	}
-	
-	@PostMapping("findPwd")
-	public String findPwdSubmit() throws Exception {
-		
-		// 패스워드를 메일로 보내거나, 추가 인증 작업을 하고 로그인 창으로 리다이렉트
-		return "redirect:/host/login";
-	}
-	
-	@GetMapping("signup")
-	public String signupForm() throws Exception {
-		return "host/member/signup";
-	}
-	
-	@PostMapping("signup")
-	public String signupSubmit() throws Exception {
-		
-		// 로그인을 시켜주고 메인으로 가야할지, 로그인 페이지로 가야할지 모르겠음
-		return "redirect:/host/login";
-	}
-
-	@GetMapping("edit")
-	public String editForm() throws Exception {
-		return "host/member/edit";
-	}
-
-	@PostMapping("edit")
-	public String editSubmit() throws Exception {
-		// 수정 완료 메세지 표시
-		return "host/member/complete";
-	}
-	
-	
-	
 }

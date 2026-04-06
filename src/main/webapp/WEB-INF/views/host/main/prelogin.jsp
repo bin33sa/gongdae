@@ -181,27 +181,31 @@
                     <div class="notice-board">
                         <div class="notice-header">
                             <h4 class="fw-bold m-0" style="color: #333;">호스트 센터 새소식</h4>
-                            <a href="#" class="text-muted text-decoration-none small">더보기 +</a>
+                            <a href="<c:url value='/board/list'/>" class="text-muted text-decoration-none small">더보기 +</a>
                         </div>
                         
                         <ul class="notice-list">
-                            <li>
-                                <a href="#"><span class="badge bg-light text-danger border border-danger me-2">필독</span> 2026년 상반기 정산 시스템 업데이트 안내</a>
-                                <span class="notice-date">2026.03.12</span>
-                            </li>
-                            <li>
-                                <a href="#">봄 시즌 맞이 공간 할인 프로모션 참여 호스트 모집</a>
-                                <span class="notice-date">2026.03.05</span>
-                            </li>
-                            <li>
-                                <a href="#">새로운 공간 옵션(편의시설) 태그 15종이 추가되었습니다.</a>
-                                <span class="notice-date">2026.02.28</span>
-                            </li>
-                            <li>
-                                <a href="#">[안내] 호스트 고객센터 전화 상담 시간 변경 안내</a>
-                                <span class="notice-date">2026.02.15</span>
-                            </li>
-                        </ul>
+                            <c:choose>
+                                <c:when test="${empty noticeList}">
+                                    <li class="justify-content-center text-muted py-4">등록된 새소식이 없습니다.</li>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:forEach var="dto" items="${noticeList}">
+                                        <li>
+                                           <a href="<c:url value='/notice/${dto.num}'/>">
+                                                
+                                                <c:if test="${dto.type == 'NOTICE' || dto.type == '필독'}">
+                                                    <span class="badge bg-light text-danger border border-danger me-2">필독</span>
+                                                </c:if>
+                                                
+                                                ${dto.title} 
+                                            </a>
+                                            <span class="notice-date">${dto.created_at.substring(0, 10)}</span>
+                                        </li>
+                                    </c:forEach>
+                                </c:otherwise>
+                            </c:choose>
+                            </ul>
                     </div>
                     
                 </div>
