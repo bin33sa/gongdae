@@ -84,7 +84,7 @@
 	        COALESCE(g.phone, h.phone) as tel,
 	        NULL as sns_provider,
 	        NULL as sns_id,
-	        NULL as profile_photo
+	        COALESCE(g.profile_image_url, h.profile_image_url) as profile_photo
 	    FROM member m1
 	    LEFT OUTER JOIN memberAuthority m3 ON m1.login_id = m3.login_id
 	    LEFT OUTER JOIN guest_detail g ON m1.member_id = g.member_id

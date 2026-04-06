@@ -279,7 +279,7 @@ body {
             
             <div class="modal-footer border-top-0 pt-0 mb-2 mx-2">
                 <button type="button" class="btn btn-light px-4 py-2 fw-bold" data-bs-dismiss="modal">취소</button>
-                <button type="button" class="btn btn-danger px-4 py-2 fw-bold" style="background-color: var(--primary-color);">문의 등록</button>
+                <button type="button" class="btn btn-danger px-4 py-2 fw-bold" data-bs-dismiss="modal">문의 등록</button>
             </div>
         </div>
     </div>
