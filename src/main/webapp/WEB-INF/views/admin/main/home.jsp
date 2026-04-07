@@ -106,7 +106,7 @@
                     <div class="dashboard-box">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h5 class="fw-bold text-main m-0">최근 예약 내역 (최근 5건)</h5>
-                            <button class="btn btn-sm" style="background-color: var(--border-color); color: var(--text-main);" onclick="location.href='${pageContext.request.contextPath}/admin/spaces/list'">전체보기</button>
+                            <button class="btn btn-sm" style="background-color: var(--border-color); color: var(--text-main);" onclick="location.href='${pageContext.request.contextPath}/admin/sales/list'">전체보기</button>
                         </div>
                         <div class="table-responsive">
                             <table class="table text-main mb-0 align-middle">
